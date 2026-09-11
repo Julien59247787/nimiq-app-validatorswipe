@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Validator Swipe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Sora:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #f2f3f5;
+    --surface: #ffffff;
+    --surface-2: #e7e9ed;
+    --border: #d7dae0;
+    --text: #1b1e24;
+    --text-dim: #5c6270;
+    --text-faint: #91969f;
+    --signal: #1f9d6b;
+    --signal-strong: #157a53;
+    --violet: #6753c9;
+    --violet-strong: #4f3ea3;
+    --warn: #c8890a;
+    --shadow: 0 20px 48px -24px rgba(27,30,36,0.3);
+    --shadow-sm: 0 8px 20px -12px rgba(27,30,36,0.24);
+    --radius: 20px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #12141a; --surface: #1a1d25; --surface-2: #212530; --border: #2f3440;
+      --text: #eef0f4; --text-dim: #b7bcc7; --text-faint: #7d8390;
+      --signal: #34d399; --signal-strong: #6ee7b3; --violet: #9c8cf0; --violet-strong: #b9aefa;
+      --warn: #f0b429;
+      --shadow: 0 20px 48px -20px rgba(0,0,0,0.6); --shadow-sm: 0 8px 20px -12px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #12141a; --surface: #1a1d25; --surface-2: #212530; --border: #2f3440;
+    --text: #eef0f4; --text-dim: #b7bcc7; --text-faint: #7d8390;
+    --signal: #34d399; --signal-strong: #6ee7b3; --violet: #9c8cf0; --violet-strong: #b9aefa;
+    --warn: #f0b429;
+    --shadow: 0 20px 48px -20px rgba(0,0,0,0.6); --shadow-sm: 0 8px 20px -12px rgba(0,0,0,0.55);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:'Sora',system-ui,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3{ font-family:'Fraunces',Georgia,serif; text-wrap:balance; margin:0; font-weight:600; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  .num{ font-variant-numeric:tabular-nums; font-family:'Space Mono','SFMono-Regular',monospace; }
+  img{ max-width:100%; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+
+  header.top{ display:flex; align-items:center; justify-content:space-between; padding:22px 28px; max-width:1180px; margin:0 auto; }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:700; font-size:1.15rem; }
+  .brand .mark{ width:34px; height:34px; border-radius:10px; background:linear-gradient(155deg, var(--violet) 0%, var(--violet-strong) 100%); display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:var(--shadow-sm); }
+  .chip{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--signal-strong); background:var(--surface-2); border:1px solid var(--border); padding:7px 12px; border-radius:999px; font-weight:600; }
+
+  .hero{ padding:40px 0 30px; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; }
+  @media (max-width:880px){ .hero-grid{ grid-template-columns:1fr; } }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:.78rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--violet-strong); margin-bottom:18px; }
+  .eyebrow::before{ content:"🛡️"; font-size:1rem; }
+  .hero h1{ font-size:clamp(2.4rem,4.6vw,3.6rem); line-height:1.04; letter-spacing:-0.01em; }
+  .hero h1 em{ font-style:normal; color:var(--signal-strong); }
+  .hero p.lead{ margin-top:20px; font-size:1.1rem; color:var(--text-dim); max-width:46ch; }
+  .hero-cta{ display:flex; gap:12px; margin-top:30px; flex-wrap:wrap; }
+  .btn{ appearance:none; border:none; cursor:pointer; font-family:'Sora',sans-serif; font-weight:700; font-size:.95rem; padding:14px 24px; border-radius:14px; display:inline-flex; align-items:center; gap:8px; transition:transform .15s ease, box-shadow .15s ease; }
+  .btn:active{ transform:translateY(1px); }
+  .btn:focus-visible{ outline:3px solid var(--violet); outline-offset:2px; }
+  .btn-primary{ background:linear-gradient(135deg, var(--violet) 0%, var(--violet-strong) 100%); color:#f5f2ff; box-shadow:var(--shadow-sm); }
+  .btn-primary:hover{ box-shadow:var(--shadow); }
+  .btn-ghost{ background:transparent; color:var(--text); border:1.5px solid var(--border); }
+  .btn-ghost:hover{ border-color:var(--signal); color:var(--signal-strong); }
+  .stat-row{ display:flex; gap:28px; margin-top:38px; flex-wrap:wrap; }
+  .stat b{ display:block; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--signal-strong); }
+  .stat span{ font-size:.78rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:.06em; }
+
+  /* ---- swipe demo ---- */
+  .demo-stage{ display:flex; justify-content:center; }
+  .phone{ width:100%; max-width:360px; background:var(--surface); border:1px solid var(--border); border-radius:30px; box-shadow:var(--shadow); padding:16px; }
+  .phone-app-bar{ display:flex; align-items:center; justify-content:space-between; padding:8px 6px 14px; }
+  .phone-app-bar .app-name{ font-family:'Fraunces',serif; font-weight:700; font-size:1.02rem; }
+  .status-pill{ font-size:.65rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--border); color:var(--text-faint); display:flex; align-items:center; gap:5px; }
+  .status-pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--text-faint); }
+  .status-pill.live .dot{ background:var(--signal); box-shadow:0 0 0 3px color-mix(in srgb, var(--signal) 25%, transparent); }
+  .status-pill.live{ color:var(--signal); }
+
+  .card-stack{ position:relative; height:340px; margin:6px 6px 0; }
+  .v-card{
+    position:absolute; inset:0; background:var(--surface-2); border:1px solid var(--border); border-radius:18px;
+    padding:20px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm);
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .v-card.leaving-right{ transform: translateX(140%) rotate(18deg); opacity:0; }
+  .v-card.leaving-left{ transform: translateX(-140%) rotate(-18deg); opacity:0; }
+  .v-card .vname{ font-family:'Fraunces',serif; font-weight:700; font-size:1.2rem; }
+  .v-card .vtag{ font-size:.72rem; color:var(--text-faint); margin-top:2px; }
+  .v-metric{ margin-top:16px; }
+  .v-metric-row{ display:flex; justify-content:space-between; font-size:.76rem; color:var(--text-dim); margin-bottom:4px; }
+  .v-metric-row b{ color:var(--text); font-family:'Space Mono',monospace; }
+  .v-bar{ height:7px; border-radius:999px; background:var(--surface); border:1px solid var(--border); overflow:hidden; }
+  .v-bar-fill{ height:100%; background:linear-gradient(90deg, var(--signal), var(--signal-strong)); }
+  .v-bar-fill.violet{ background:linear-gradient(90deg, var(--violet), var(--violet-strong)); }
+  .v-desc{ margin-top:auto; font-size:.8rem; color:var(--text-faint); padding-top:14px; }
+
+  .swipe-actions{ display:flex; gap:12px; margin:16px 6px 0; }
+  .swipe-btn{
+    flex:1; padding:14px; border-radius:14px; border:1.5px solid var(--border); background:var(--surface);
+    font-size:1.3rem; cursor:pointer; transition:transform .12s ease;
+  }
+  .swipe-btn:active{ transform:scale(.94); }
+  .swipe-btn.pass{ color:var(--text-faint); }
+  .swipe-btn.delegate{ color:var(--signal-strong); border-color:var(--signal); }
+  .swipe-btn:disabled{ opacity:.35; cursor:not-allowed; }
+
+  .shortlist{ margin:16px 6px 0; }
+  .shortlist-title{ font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-faint); margin-bottom:8px; }
+  .shortlist-empty{ font-size:.78rem; color:var(--text-faint); }
+  .shortlist-item{ display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border:1px solid var(--border); border-radius:12px; background:var(--surface-2); font-size:.82rem; margin-bottom:6px; animation:pop .25s ease; }
+  @keyframes pop{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none; } }
+  .shortlist-item .badge{ font-size:.68rem; font-weight:700; color:var(--signal-strong); }
+
+  .helptext{ margin:12px 6px 0; font-size:.72rem; color:var(--text-faint); line-height:1.4; }
+
+  canvas#confetti{ position:fixed; inset:0; pointer-events:none; z-index:999; }
+
+  .section{ padding:84px 0; }
+  .section-head{ max-width:620px; margin:0 auto 44px; text-align:center; }
+  .section-head .eyebrow{ justify-content:center; display:flex; }
+  .section-head h2{ font-size:clamp(1.8rem,3vw,2.4rem); }
+  .section-head p{ color:var(--text-dim); margin-top:12px; }
+
+  .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  @media (max-width:820px){ .steps{ grid-template-columns:1fr; } }
+  .step{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:26px 24px; display:flex; flex-direction:column; gap:12px; }
+  .step .n{ font-family:'Fraunces',serif; font-size:1.6rem; color:var(--violet-strong); font-weight:700; }
+  .step h3{ font-size:1.05rem; }
+  .step p{ color:var(--text-dim); font-size:.92rem; }
+
+  .faq-list{ display:flex; flex-direction:column; gap:16px; max-width:720px; margin:0 auto; }
+  .faq-item{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px 26px; }
+  .faq-item h3{ font-size:1.02rem; margin-bottom:8px; font-family:'Sora',sans-serif; font-weight:700; }
+  .faq-item p{ color:var(--text-dim); font-size:.92rem; }
+  .faq-item p b{ color:var(--text); }
+
+  .tech{ display:grid; grid-template-columns:.95fr 1.05fr; gap:40px; align-items:center; }
+  @media (max-width:880px){ .tech{ grid-template-columns:1fr; } }
+  .tech h2{ font-size:clamp(1.6rem,2.6vw,2.1rem); }
+  .tech p{ color:var(--text-dim); margin-top:14px; }
+  .tech ul{ margin:18px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .tech li{ display:flex; gap:10px; font-size:.9rem; color:var(--text-dim); }
+  .tech li::before{ content:"✓"; color:var(--signal-strong); font-weight:700; }
+  .code-panel{ background:#14161c; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; }
+  pre.code{ margin:0; padding:20px; font-family:'SFMono-Regular',Consolas,monospace; font-size:.82rem; line-height:1.6; color:#e8eaf0; overflow-x:auto; }
+  pre.code .k{ color:#9c8cf0; }
+  pre.code .s{ color:#34d399; }
+  pre.code .c{ color:#7d8390; }
+
+  footer{ padding:46px 0 60px; border-top:1px solid var(--border); }
+  .footer-grid{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap; }
+  footer .brand{ font-size:1rem; }
+  footer p{ color:var(--text-faint); font-size:.82rem; max-width:44ch; margin-top:8px; }
+  footer .meta{ font-size:.8rem; color:var(--text-faint); text-align:right; }
+  footer .meta div{ margin-bottom:4px; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<header class="top">
+  <div class="brand"><span class="mark">🛡️</span> Validator Swipe</div>
+  <div class="chip">Nimiq Mini Apps Competition · Cycle II</div>
+</header>
+
+<section class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Un mini app pour Nimiq Pay</div>
+      <h1>Choisis ton validateur <em>d'un geste</em>, délègue en un tap.</h1>
+      <p class="lead">Validator Swipe transforme le choix d'un validateur Nimiq — souvent une page de tableau austère — en une décision rapide et informée : score de confiance, taux de récompense, disponibilité. Tu compares, tu délègues, ta NIM reste à toi.</p>
+      <div class="hero-cta">
+        <a href="#demo" class="btn btn-primary">🛡️ Essayer la démo</a>
+        <a href="#faq" class="btn btn-ghost">Qui paie quoi ?</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b class="num">0 NIM</b><span>Frais de délégation</span></div>
+        <div class="stat"><b class="num">1</b><span>Tap pour déléguer</span></div>
+        <div class="stat"><b class="num">100%</b><span>Tes fonds restent à toi</span></div>
+      </div>
+    </div>
+
+    <div class="demo-stage" id="demo">
+      <div class="phone">
+        <div class="phone-app-bar">
+          <span class="app-name">🛡️ Validator Swipe</span>
+          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText">Données d'exemple</span></span>
+        </div>
+
+        <div class="card-stack" id="cardStack"></div>
+
+        <div class="swipe-actions">
+          <button class="swipe-btn pass" id="passBtn" aria-label="Passer">✕</button>
+          <button class="swipe-btn delegate" id="delegateBtn" aria-label="Déléguer">🛡️</button>
+        </div>
+        <p class="helptext">Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.</p>
+
+        <div class="shortlist">
+          <div class="shortlist-title">Délégations choisies</div>
+          <div id="shortlistList"><p class="shortlist-empty">Aucune délégation pour l'instant.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Comment ça marche</div>
+      <h2>Comparer, puis déléguer</h2>
+      <p>Pensé pour quelqu'un qui a de la NIM à faire fructifier mais ne veut pas éplucher un tableau de statistiques.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="n">01</span>
+        <h3>Tu compares les cartes</h3>
+        <p>Chaque validateur affiche son score de confiance, son taux de récompense et sa disponibilité — l'essentiel, sans jargon.</p>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <h3>Tu choisis</h3>
+        <p>Passe les validateurs qui ne t'intéressent pas, garde ceux que tu veux soutenir.</p>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <h3>Tu délègues, tu restes propriétaire</h3>
+        <p>La délégation part de ton wallet avec ta confirmation native. Le validateur ne détient jamais tes fonds — tu peux la retirer quand tu veux.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Qui paie quoi ?</div>
+      <h2>Déléguer n'est pas transférer</h2>
+      <p>C'est le point le plus souvent mal compris sur le staking — voici ce qui se passe vraiment.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>Le validateur reçoit-il mes NIM ?</h3>
+        <p><b>Non.</b> Une délégation (stake) reste dans une transaction rattachée à ton propre wallet — le validateur ne reçoit ni ne détient jamais tes fonds, il valide juste des blocs en ton nom.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Qui paie quoi au moment de déléguer ?</h3>
+        <p><b>Toi</b>, au sens où c'est ta transaction — mais aucun montant n'est "dépensé" comme un achat : tu le retrouves intégralement, tu peux le retirer plus tard.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Et les frais ?</h3>
+        <p>À <b>0 dans l'immense majorité des cas</b>, comme toutes les transactions Nimiq — la délégation ne fait pas exception.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap tech">
+    <div>
+      <div class="eyebrow">Intégration technique</div>
+      <h2>Une vraie transaction de staking</h2>
+      <p>Cette démo utilise des données d'exemple hors de Nimiq Pay. À l'intérieur, la liste de validateurs viendrait du dashboard, et chaque délégation serait une vraie transaction.</p>
+      <ul>
+        <li>Détection automatique de <code>window.nimiqPay</code> au chargement</li>
+        <li>Délégation envoyée via <code>sendNewStakerTransaction()</code></li>
+        <li>Aucune donnée de validateur inventée en production — source : dashboard des validateurs</li>
+        <li>Repli gracieux en mode démo hors de Nimiq Pay</li>
+      </ul>
+    </div>
+    <div class="code-panel">
+      <pre class="code"><span class="c">// Déléguer sans jamais transférer ses fonds</span>
+<span class="k">import</span> { init } <span class="k">from</span> <span class="s">'@nimiq/mini-app-sdk'</span>
+
+<span class="k">const</span> nimiq = <span class="k">await</span> init()
+<span class="k">const</span> txHash = <span class="k">await</span> nimiq.sendNewStakerTransaction({
+  delegation: validator.address,
+  value: stakeAmountLuna,
+})</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="brand">🛡️ Validator Swipe</div>
+      <p>Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.</p>
+    </div>
+    <div class="meta">
+      <div>Réseau : Nimiq (NIM)</div>
+      <div>SDK : @nimiq/mini-app-sdk</div>
+      <div>Statut : démo interactive, données d'exemple</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var VALIDATORS = [
+    { name: "Albatross Guild", tag: "Validateur communautaire", trust: 96, reward: 6.8, uptime: 99.9,
+      desc: "Actif depuis le lancement d'Albatross, gouvernance ouverte, rapports mensuels publics." },
+    { name: "Luna Point", tag: "Infrastructure dédiée", trust: 91, reward: 7.1, uptime: 99.7,
+      desc: "Nœuds redondants sur deux continents, historique sans incident depuis 8 mois." },
+    { name: "Garnet Stake Co.", tag: "Opérateur professionnel", trust: 88, reward: 7.4, uptime: 99.5,
+      desc: "Frais de délégation transparents, tableau de bord public des performances." },
+    { name: "ZeroFee Nodes", tag: "Petit validateur indépendant", trust: 79, reward: 8.0, uptime: 98.6,
+      desc: "Plus petit, taux de récompense plus élevé — compromis assumé sur la taille." },
+    { name: "Consensus Circle", tag: "Coopérative de validateurs", trust: 93, reward: 6.9, uptime: 99.8,
+      desc: "Détenue collectivement par une communauté de stakers, gouvernance participative." }
+  ];
+
+  var idx = 0;
+  var shortlist = [];
+  var $ = function(id){ return document.getElementById(id); };
+  var cardStack = $('cardStack'), passBtn = $('passBtn'), delegateBtn = $('delegateBtn'), shortlistList = $('shortlistList');
+
+  function renderCard(){
+    cardStack.innerHTML = '';
+    if (idx >= VALIDATORS.length){
+      cardStack.innerHTML = '<div class="v-card" style="align-items:center; justify-content:center; text-align:center;">' +
+        '<p style="color:var(--text-dim); font-size:.9rem;">Tu as vu tous les validateurs d\'exemple.<br>En production, la liste vient en direct du dashboard.</p></div>';
+      passBtn.disabled = true; delegateBtn.disabled = true;
+      return;
+    }
+    var v = VALIDATORS[idx];
+    var card = document.createElement('div');
+    card.className = 'v-card';
+    card.id = 'currentCard';
+    card.innerHTML =
+      '<div class="vname">' + v.name + '</div>' +
+      '<div class="vtag">' + v.tag + '</div>' +
+      '<div class="v-metric">' +
+        '<div class="v-metric-row"><span>Score de confiance</span><b>' + v.trust + '/100</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + v.trust + '%"></div></div>' +
+      '</div>' +
+      '<div class="v-metric">' +
+        '<div class="v-metric-row"><span>Taux de récompense</span><b>' + v.reward.toFixed(1) + '%</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill" style="width:' + Math.min(v.reward*10,100) + '%"></div></div>' +
+      '</div>' +
+      '<div class="v-metric">' +
+        '<div class="v-metric-row"><span>Disponibilité</span><b>' + v.uptime + '%</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill" style="width:' + v.uptime + '%"></div></div>' +
+      '</div>' +
+      '<p class="v-desc">' + v.desc + '</p>';
+    cardStack.appendChild(card);
+    passBtn.disabled = false; delegateBtn.disabled = false;
+  }
+
+  function pushShortlist(v){
+    if (shortlistList.querySelector('.shortlist-empty')) shortlistList.innerHTML = '';
+    var item = document.createElement('div');
+    item.className = 'shortlist-item';
+    item.innerHTML = '<span>' + v.name + '</span><span class="badge">🛡️ Délégué</span>';
+    shortlistList.insertBefore(item, shortlistList.firstChild);
+  }
+
+  function swipe(direction){
+    var card = $('currentCard');
+    if (!card) return;
+    var v = VALIDATORS[idx];
+    card.classList.add(direction === 'right' ? 'leaving-right' : 'leaving-left');
+    if (direction === 'right'){
+      shortlist.push(v);
+      pushShortlist(v);
+      burstConfetti(70);
+    }
+    setTimeout(function(){
+      idx++;
+      renderCard();
+    }, 260);
+  }
+
+  passBtn.addEventListener('click', function(){ swipe('left'); });
+  delegateBtn.addEventListener('click', function(){ swipe('right'); });
+
+  renderCard();
+
+  // ---------- confetti ----------
+  var canvas = $('confetti'), ctx = canvas.getContext('2d');
+  var particles = [];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  var confettiColors = ['#1f9d6b','#6753c9','#34d399','#9c8cf0'];
+  function burstConfetti(count){
+    if (reduceMotion) return;
+    var originX = window.innerWidth/2, originY = window.innerHeight*0.38;
+    for (var i=0;i<count;i++){
+      particles.push({
+        x: originX, y: originY, vx: (Math.random()-0.5)*9, vy: (Math.random()*-9)-2,
+        size: 4+Math.random()*4, color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+        rot: Math.random()*Math.PI, vr: (Math.random()-0.5)*0.3, life: 0
+      });
+    }
+  }
+  function tick(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (var i=particles.length-1;i>=0;i--){
+      var p = particles[i];
+      p.vy += 0.28; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life++;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, 1 - p.life/90);
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+      ctx.restore();
+      if (p.life > 90 || p.y > canvas.height+40) particles.splice(i,1);
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // ---------- real Nimiq Pay detection ----------
+  function tryConnectNimiqPay(){
+    if (!window.nimiqPay){ return; }
+    import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk/+esm').then(function(mod){
+      return mod.init();
+    }).then(function(){
+      $('statusText').textContent = 'Connecté à Nimiq Pay (données d\'exemple)';
+      $('statusPill').classList.add('live');
+    }).catch(function(err){
+      console.warn('Validator Swipe: Nimiq Pay SDK unavailable, staying in demo mode.', err);
+    });
+  }
+  tryConnectNimiqPay();
+})();
+</script>
+</body>
+</html>
