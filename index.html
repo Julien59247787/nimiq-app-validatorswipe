@@ -177,23 +177,23 @@
 
 <header class="top">
   <div class="brand"><span class="mark">🛡️</span> Validator Swipe</div>
-  <div class="chip">Nimiq Mini Apps Competition · Cycle II</div>
+  <div class="chip" data-i18n="header.chip">Nimiq Mini Apps Competition · Cycle II</div>
 </header>
 
 <section class="hero wrap">
   <div class="hero-grid">
     <div>
-      <div class="eyebrow">Un mini app pour Nimiq Pay</div>
-      <h1>Choisis ton validateur <em>d'un geste</em>, délègue en un tap.</h1>
-      <p class="lead">Validator Swipe transforme le choix d'un validateur Nimiq — souvent une page de tableau austère — en une décision rapide et informée : score de confiance, taux de récompense, disponibilité. Tu compares, tu délègues, ta NIM reste à toi.</p>
+      <div class="eyebrow" data-i18n="hero.eyebrow">Un mini app pour Nimiq Pay</div>
+      <h1 data-i18n="hero.title">Choisis ton validateur <em>d'un geste</em>, délègue en un tap.</h1>
+      <p class="lead" data-i18n="hero.lead">Validator Swipe transforme le choix d'un validateur Nimiq — souvent une page de tableau austère — en une décision rapide et informée : score de confiance, taux de récompense, disponibilité. Tu compares, tu délègues, ta NIM reste à toi.</p>
       <div class="hero-cta">
-        <a href="#demo" class="btn btn-primary">🛡️ Essayer la démo</a>
-        <a href="#faq" class="btn btn-ghost">Qui paie quoi ?</a>
+        <a href="#demo" class="btn btn-primary" data-i18n="hero.ctaDemo">🛡️ Essayer la démo</a>
+        <a href="#faq" class="btn btn-ghost" data-i18n="hero.ctaFaq">Qui paie quoi ?</a>
       </div>
       <div class="stat-row">
-        <div class="stat"><b class="num">0 NIM</b><span>Frais de délégation</span></div>
-        <div class="stat"><b class="num">1</b><span>Tap pour déléguer</span></div>
-        <div class="stat"><b class="num">100%</b><span>Tes fonds restent à toi</span></div>
+        <div class="stat"><b class="num">0 NIM</b><span data-i18n="hero.stat1">Frais de délégation</span></div>
+        <div class="stat"><b class="num">1</b><span data-i18n="hero.stat2">Tap pour déléguer</span></div>
+        <div class="stat"><b class="num">100%</b><span data-i18n="hero.stat3">Tes fonds restent à toi</span></div>
       </div>
     </div>
 
@@ -201,20 +201,20 @@
       <div class="phone">
         <div class="phone-app-bar">
           <span class="app-name">🛡️ Validator Swipe</span>
-          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText">Données d'exemple</span></span>
+          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Données d'exemple</span></span>
         </div>
 
         <div class="card-stack" id="cardStack"></div>
 
         <div class="swipe-actions">
-          <button class="swipe-btn pass" id="passBtn" aria-label="Passer">✕</button>
-          <button class="swipe-btn delegate" id="delegateBtn" aria-label="Déléguer">🛡️</button>
+          <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
+          <button class="swipe-btn delegate" id="delegateBtn" data-i18n-aria="app.delegateAria" aria-label="Déléguer">🛡️</button>
         </div>
-        <p class="helptext">Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.</p>
+        <p class="helptext" data-i18n="app.sampleDataNote">Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.</p>
 
         <div class="shortlist">
-          <div class="shortlist-title">Délégations choisies</div>
-          <div id="shortlistList"><p class="shortlist-empty">Aucune délégation pour l'instant.</p></div>
+          <div class="shortlist-title" data-i18n="app.shortlistTitle">Délégations choisies</div>
+          <div id="shortlistList"><p class="shortlist-empty" data-i18n="app.shortlistEmpty">Aucune délégation pour l'instant.</p></div>
         </div>
       </div>
     </div>
@@ -224,25 +224,25 @@
 <section class="section" id="how">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Comment ça marche</div>
-      <h2>Comparer, puis déléguer</h2>
-      <p>Pensé pour quelqu'un qui a de la NIM à faire fructifier mais ne veut pas éplucher un tableau de statistiques.</p>
+      <div class="eyebrow" data-i18n="how.eyebrow">Comment ça marche</div>
+      <h2 data-i18n="how.title">Comparer, puis déléguer</h2>
+      <p data-i18n="how.lead">Pensé pour quelqu'un qui a de la NIM à faire fructifier mais ne veut pas éplucher un tableau de statistiques.</p>
     </div>
     <div class="steps">
       <div class="step">
         <span class="n">01</span>
-        <h3>Tu compares les cartes</h3>
-        <p>Chaque validateur affiche son score de confiance, son taux de récompense et sa disponibilité — l'essentiel, sans jargon.</p>
+        <h3 data-i18n="how.step1Title">Tu compares les cartes</h3>
+        <p data-i18n="how.step1Body">Chaque validateur affiche son score de confiance, son taux de récompense et sa disponibilité — l'essentiel, sans jargon.</p>
       </div>
       <div class="step">
         <span class="n">02</span>
-        <h3>Tu choisis</h3>
-        <p>Passe les validateurs qui ne t'intéressent pas, garde ceux que tu veux soutenir.</p>
+        <h3 data-i18n="how.step2Title">Tu choisis</h3>
+        <p data-i18n="how.step2Body">Passe les validateurs qui ne t'intéressent pas, garde ceux que tu veux soutenir.</p>
       </div>
       <div class="step">
         <span class="n">03</span>
-        <h3>Tu délègues, tu restes propriétaire</h3>
-        <p>La délégation part de ton wallet avec ta confirmation native. Le validateur ne détient jamais tes fonds — tu peux la retirer quand tu veux.</p>
+        <h3 data-i18n="how.step3Title">Tu délègues, tu restes propriétaire</h3>
+        <p data-i18n="how.step3Body">La délégation part de ton wallet avec ta confirmation native. Le validateur ne détient jamais tes fonds — tu peux la retirer quand tu veux.</p>
       </div>
     </div>
   </div>
@@ -251,22 +251,22 @@
 <section class="section" id="faq">
   <div class="wrap">
     <div class="section-head">
-      <div class="eyebrow">Qui paie quoi ?</div>
-      <h2>Déléguer n'est pas transférer</h2>
-      <p>C'est le point le plus souvent mal compris sur le staking — voici ce qui se passe vraiment.</p>
+      <div class="eyebrow" data-i18n="faq.eyebrow">Qui paie quoi ?</div>
+      <h2 data-i18n="faq.title">Déléguer n'est pas transférer</h2>
+      <p data-i18n="faq.lead">C'est le point le plus souvent mal compris sur le staking — voici ce qui se passe vraiment.</p>
     </div>
     <div class="faq-list">
       <div class="faq-item">
-        <h3>Le validateur reçoit-il mes NIM ?</h3>
-        <p><b>Non.</b> Une délégation (stake) reste dans une transaction rattachée à ton propre wallet — le validateur ne reçoit ni ne détient jamais tes fonds, il valide juste des blocs en ton nom.</p>
+        <h3 data-i18n="faq.q1">Le validateur reçoit-il mes NIM ?</h3>
+        <p data-i18n="faq.a1"><b>Non.</b> Une délégation (stake) reste dans une transaction rattachée à ton propre wallet — le validateur ne reçoit ni ne détient jamais tes fonds, il valide juste des blocs en ton nom.</p>
       </div>
       <div class="faq-item">
-        <h3>Qui paie quoi au moment de déléguer ?</h3>
-        <p><b>Toi</b>, au sens où c'est ta transaction — mais aucun montant n'est "dépensé" comme un achat : tu le retrouves intégralement, tu peux le retirer plus tard.</p>
+        <h3 data-i18n="faq.q2">Qui paie quoi au moment de déléguer ?</h3>
+        <p data-i18n="faq.a2"><b>Toi</b>, au sens où c'est ta transaction — mais aucun montant n'est "dépensé" comme un achat : tu le retrouves intégralement, tu peux le retirer plus tard.</p>
       </div>
       <div class="faq-item">
-        <h3>Et les frais ?</h3>
-        <p>À <b>0 dans l'immense majorité des cas</b>, comme toutes les transactions Nimiq — la délégation ne fait pas exception.</p>
+        <h3 data-i18n="faq.q3">Et les frais ?</h3>
+        <p data-i18n="faq.a3">À <b>0 dans l'immense majorité des cas</b>, comme toutes les transactions Nimiq — la délégation ne fait pas exception.</p>
       </div>
     </div>
   </div>
@@ -275,14 +275,14 @@
 <section class="section">
   <div class="wrap tech">
     <div>
-      <div class="eyebrow">Intégration technique</div>
-      <h2>Une vraie transaction de staking</h2>
-      <p>Cette démo utilise des données d'exemple hors de Nimiq Pay. À l'intérieur, la liste de validateurs viendrait du dashboard, et chaque délégation serait une vraie transaction.</p>
+      <div class="eyebrow" data-i18n="tech.eyebrow">Intégration technique</div>
+      <h2 data-i18n="tech.title">Une vraie transaction de staking</h2>
+      <p data-i18n="tech.lead">Cette démo utilise des données d'exemple hors de Nimiq Pay. À l'intérieur, la liste de validateurs viendrait du dashboard, et chaque délégation serait une vraie transaction.</p>
       <ul>
-        <li>Détection automatique de <code>window.nimiqPay</code> au chargement</li>
-        <li>Délégation envoyée via <code>sendNewStakerTransaction()</code></li>
-        <li>Aucune donnée de validateur inventée en production — source : dashboard des validateurs</li>
-        <li>Repli gracieux en mode démo hors de Nimiq Pay</li>
+        <li data-i18n="tech.li1">Détection automatique de <code>window.nimiqPay</code> au chargement</li>
+        <li data-i18n="tech.li2">Délégation envoyée via <code>sendNewStakerTransaction()</code></li>
+        <li data-i18n="tech.li3">Aucune donnée de validateur inventée en production — source : dashboard des validateurs</li>
+        <li data-i18n="tech.li4">Repli gracieux en mode démo hors de Nimiq Pay</li>
       </ul>
     </div>
     <div class="code-panel">
@@ -302,12 +302,12 @@
   <div class="wrap footer-grid">
     <div>
       <div class="brand">🛡️ Validator Swipe</div>
-      <p>Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.</p>
+      <p data-i18n="footer.desc">Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.</p>
     </div>
     <div class="meta">
-      <div>Réseau : Nimiq (NIM)</div>
+      <div><span data-i18n="footer.network">Réseau</span> : Nimiq (NIM)</div>
       <div>SDK : @nimiq/mini-app-sdk</div>
-      <div>Statut : démo interactive, données d'exemple</div>
+      <div><span data-i18n="footer.status">Statut</span> : <span data-i18n="footer.statusValue">démo interactive, données d'exemple</span></div>
     </div>
   </div>
 </footer>
@@ -315,6 +315,135 @@
 <script>
 (function(){
   "use strict";
+
+  // ---------- i18n ----------
+  var SUPPORTED_LANGS = ['fr', 'en'];
+  var T = {
+    fr: {
+      'header.chip': 'Nimiq Mini Apps Competition · Cycle II',
+      'hero.eyebrow': 'Un mini app pour Nimiq Pay',
+      'hero.title': 'Choisis ton validateur <em>d\'un geste</em>, délègue en un tap.',
+      'hero.lead': 'Validator Swipe transforme le choix d\'un validateur Nimiq — souvent une page de tableau austère — en une décision rapide et informée : score de confiance, taux de récompense, disponibilité. Tu compares, tu délègues, ta NIM reste à toi.',
+      'hero.ctaDemo': '🛡️ Essayer la démo',
+      'hero.ctaFaq': 'Qui paie quoi ?',
+      'hero.stat1': 'Frais de délégation',
+      'hero.stat2': 'Tap pour déléguer',
+      'hero.stat3': 'Tes fonds restent à toi',
+      'app.statusDemo': 'Données d\'exemple',
+      'app.statusLive': 'Connecté à Nimiq Pay (données d\'exemple)',
+      'app.passAria': 'Passer',
+      'app.delegateAria': 'Déléguer',
+      'app.sampleDataNote': 'Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.',
+      'app.shortlistTitle': 'Délégations choisies',
+      'app.shortlistEmpty': 'Aucune délégation pour l\'instant.',
+      'app.trustScore': 'Score de confiance',
+      'app.rewardRate': 'Taux de récompense',
+      'app.uptime': 'Disponibilité',
+      'app.delegatedBadge': '🛡️ Délégué',
+      'app.endOfDeck': 'Tu as vu tous les validateurs d\'exemple.<br>En production, la liste vient en direct du dashboard.',
+      'how.eyebrow': 'Comment ça marche',
+      'how.title': 'Comparer, puis déléguer',
+      'how.lead': 'Pensé pour quelqu\'un qui a de la NIM à faire fructifier mais ne veut pas éplucher un tableau de statistiques.',
+      'how.step1Title': 'Tu compares les cartes',
+      'how.step1Body': 'Chaque validateur affiche son score de confiance, son taux de récompense et sa disponibilité — l\'essentiel, sans jargon.',
+      'how.step2Title': 'Tu choisis',
+      'how.step2Body': 'Passe les validateurs qui ne t\'intéressent pas, garde ceux que tu veux soutenir.',
+      'how.step3Title': 'Tu délègues, tu restes propriétaire',
+      'how.step3Body': 'La délégation part de ton wallet avec ta confirmation native. Le validateur ne détient jamais tes fonds — tu peux la retirer quand tu veux.',
+      'faq.eyebrow': 'Qui paie quoi ?',
+      'faq.title': 'Déléguer n\'est pas transférer',
+      'faq.lead': 'C\'est le point le plus souvent mal compris sur le staking — voici ce qui se passe vraiment.',
+      'faq.q1': 'Le validateur reçoit-il mes NIM ?',
+      'faq.a1': '<b>Non.</b> Une délégation (stake) reste dans une transaction rattachée à ton propre wallet — le validateur ne reçoit ni ne détient jamais tes fonds, il valide juste des blocs en ton nom.',
+      'faq.q2': 'Qui paie quoi au moment de déléguer ?',
+      'faq.a2': '<b>Toi</b>, au sens où c\'est ta transaction — mais aucun montant n\'est "dépensé" comme un achat : tu le retrouves intégralement, tu peux le retirer plus tard.',
+      'faq.q3': 'Et les frais ?',
+      'faq.a3': 'À <b>0 dans l\'immense majorité des cas</b>, comme toutes les transactions Nimiq — la délégation ne fait pas exception.',
+      'tech.eyebrow': 'Intégration technique',
+      'tech.title': 'Une vraie transaction de staking',
+      'tech.lead': 'Cette démo utilise des données d\'exemple hors de Nimiq Pay. À l\'intérieur, la liste de validateurs viendrait du dashboard, et chaque délégation serait une vraie transaction.',
+      'tech.li1': 'Détection automatique de <code>window.nimiqPay</code> au chargement',
+      'tech.li2': 'Délégation envoyée via <code>sendNewStakerTransaction()</code>',
+      'tech.li3': 'Aucune donnée de validateur inventée en production — source : dashboard des validateurs',
+      'tech.li4': 'Repli gracieux en mode démo hors de Nimiq Pay',
+      'footer.desc': 'Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.',
+      'footer.network': 'Réseau',
+      'footer.status': 'Statut',
+      'footer.statusValue': 'démo interactive, données d\'exemple'
+    },
+    en: {
+      'header.chip': 'Nimiq Mini Apps Competition · Cycle II',
+      'hero.eyebrow': 'A mini app for Nimiq Pay',
+      'hero.title': 'Pick your validator <em>with a swipe</em>, delegate with a tap.',
+      'hero.lead': 'Validator Swipe turns choosing a Nimiq validator — usually a dry table of numbers — into a fast, informed decision: trust score, reward rate, uptime. Compare, delegate, your NIM stays yours.',
+      'hero.ctaDemo': '🛡️ Try the demo',
+      'hero.ctaFaq': 'Who pays for what?',
+      'hero.stat1': 'Delegation fees',
+      'hero.stat2': 'Tap to delegate',
+      'hero.stat3': 'Your funds stay yours',
+      'app.statusDemo': 'Sample data',
+      'app.statusLive': 'Connected to Nimiq Pay (sample data)',
+      'app.passAria': 'Pass',
+      'app.delegateAria': 'Delegate',
+      'app.sampleDataNote': 'Trust score, reward rate and uptime are <b>samples</b> for this demo — in production, these figures come live from the validators dashboard.',
+      'app.shortlistTitle': 'Chosen delegations',
+      'app.shortlistEmpty': 'No delegation yet.',
+      'app.trustScore': 'Trust score',
+      'app.rewardRate': 'Reward rate',
+      'app.uptime': 'Uptime',
+      'app.delegatedBadge': '🛡️ Delegated',
+      'app.endOfDeck': 'You\'ve seen all the sample validators.<br>In production, the list comes live from the dashboard.',
+      'how.eyebrow': 'How it works',
+      'how.title': 'Compare, then delegate',
+      'how.lead': 'Built for someone with NIM to put to work who doesn\'t want to pore over a stats table.',
+      'how.step1Title': 'You compare the cards',
+      'how.step1Body': 'Each validator shows its trust score, reward rate, and uptime — the essentials, no jargon.',
+      'how.step2Title': 'You choose',
+      'how.step2Body': 'Pass on validators you\'re not interested in, keep the ones you want to support.',
+      'how.step3Title': 'You delegate, you stay the owner',
+      'how.step3Body': 'The delegation leaves your wallet with your native confirmation. The validator never holds your funds — you can withdraw it whenever you want.',
+      'faq.eyebrow': 'Who pays for what?',
+      'faq.title': 'Delegating isn\'t transferring',
+      'faq.lead': 'This is the most commonly misunderstood point about staking — here\'s what actually happens.',
+      'faq.q1': 'Does the validator receive my NIM?',
+      'faq.a1': '<b>No.</b> A delegation (stake) stays in a transaction tied to your own wallet — the validator never receives nor holds your funds, it just validates blocks on your behalf.',
+      'faq.q2': 'Who pays what at the moment of delegating?',
+      'faq.a2': '<b>You</b>, in the sense that it\'s your transaction — but no amount is "spent" like a purchase: you get it all back, and can withdraw it later.',
+      'faq.q3': 'Any fees?',
+      'faq.a3': '<b>0 in the vast majority of cases</b>, like every Nimiq transaction — delegation is no exception.',
+      'tech.eyebrow': 'Technical integration',
+      'tech.title': 'A real staking transaction',
+      'tech.lead': 'This demo uses sample data outside Nimiq Pay. Inside, the validator list would come from the dashboard, and every delegation would be a real transaction.',
+      'tech.li1': 'Automatic detection of <code>window.nimiqPay</code> on load',
+      'tech.li2': 'Delegation sent via <code>sendNewStakerTransaction()</code>',
+      'tech.li3': 'No invented validator data in production — source: validators dashboard',
+      'tech.li4': 'Graceful fallback to demo mode outside Nimiq Pay',
+      'footer.desc': 'Built for the Nimiq Mini Apps Competition, Cycle II (August 24 – September 18, 2026). Open prototype, no backend, designed to be hosted and loaded inside Nimiq Pay.',
+      'footer.network': 'Network',
+      'footer.status': 'Status',
+      'footer.statusValue': 'interactive demo, sample data'
+    }
+  };
+
+  function detectLang(){
+    var raw = window.nimiqPay && window.nimiqPay.language;
+    return SUPPORTED_LANGS.indexOf(raw) !== -1 ? raw : 'fr';
+  }
+  var currentLang = detectLang();
+
+  function t(key){
+    return (T[currentLang] && T[currentLang][key]) || T.fr[key] || key;
+  }
+
+  function applyStaticTranslations(){
+    document.documentElement.lang = currentLang;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      el.innerHTML = t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el){
+      el.setAttribute('aria-label', t(el.getAttribute('data-i18n-aria')));
+    });
+  }
 
   var VALIDATORS = [
     { name: "Albatross Guild", tag: "Validateur communautaire", trust: 96, reward: 6.8, uptime: 99.9,
@@ -338,7 +467,7 @@
     cardStack.innerHTML = '';
     if (idx >= VALIDATORS.length){
       cardStack.innerHTML = '<div class="v-card" style="align-items:center; justify-content:center; text-align:center;">' +
-        '<p style="color:var(--text-dim); font-size:.9rem;">Tu as vu tous les validateurs d\'exemple.<br>En production, la liste vient en direct du dashboard.</p></div>';
+        '<p style="color:var(--text-dim); font-size:.9rem;">' + t('app.endOfDeck') + '</p></div>';
       passBtn.disabled = true; delegateBtn.disabled = true;
       return;
     }
@@ -350,15 +479,15 @@
       '<div class="vname">' + v.name + '</div>' +
       '<div class="vtag">' + v.tag + '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>Score de confiance</span><b>' + v.trust + '/100</b></div>' +
+        '<div class="v-metric-row"><span>' + t('app.trustScore') + '</span><b>' + v.trust + '/100</b></div>' +
         '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + v.trust + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>Taux de récompense</span><b>' + v.reward.toFixed(1) + '%</b></div>' +
+        '<div class="v-metric-row"><span>' + t('app.rewardRate') + '</span><b>' + v.reward.toFixed(1) + '%</b></div>' +
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + Math.min(v.reward*10,100) + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>Disponibilité</span><b>' + v.uptime + '%</b></div>' +
+        '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + v.uptime + '%</b></div>' +
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + v.uptime + '%"></div></div>' +
       '</div>' +
       '<p class="v-desc">' + v.desc + '</p>';
@@ -370,7 +499,7 @@
     if (shortlistList.querySelector('.shortlist-empty')) shortlistList.innerHTML = '';
     var item = document.createElement('div');
     item.className = 'shortlist-item';
-    item.innerHTML = '<span>' + v.name + '</span><span class="badge">🛡️ Délégué</span>';
+    item.innerHTML = '<span>' + v.name + '</span><span class="badge">' + t('app.delegatedBadge') + '</span>';
     shortlistList.insertBefore(item, shortlistList.firstChild);
   }
 
@@ -393,6 +522,7 @@
   passBtn.addEventListener('click', function(){ swipe('left'); });
   delegateBtn.addEventListener('click', function(){ swipe('right'); });
 
+  applyStaticTranslations();
   renderCard();
 
   // ---------- confetti ----------
@@ -435,7 +565,7 @@
     import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk/+esm').then(function(mod){
       return mod.init();
     }).then(function(){
-      $('statusText').textContent = 'Connecté à Nimiq Pay (données d\'exemple)';
+      $('statusText').textContent = t('app.statusLive');
       $('statusPill').classList.add('live');
     }).catch(function(err){
       console.warn('Validator Swipe: Nimiq Pay SDK unavailable, staying in demo mode.', err);
