@@ -206,6 +206,11 @@
 
         <div class="card-stack" id="cardStack"></div>
 
+        <div class="field" style="margin:12px 6px 0;">
+          <label for="stakeAmt" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
+          <input type="number" id="stakeAmt" value="100" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
+        </div>
+
         <div class="swipe-actions">
           <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
           <button class="swipe-btn delegate" id="delegateBtn" data-i18n-aria="app.delegateAria" aria-label="Déléguer">🛡️</button>
@@ -336,6 +341,9 @@
       'app.sampleDataNote': 'Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.',
       'app.shortlistTitle': 'Délégations choisies',
       'app.shortlistEmpty': 'Aucune délégation pour l\'instant.',
+      'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
+      'app.delegating': 'Délégation en cours…',
+      'app.delegateError': 'La délégation a échoué ou a été annulée.',
       'app.trustScore': 'Score de confiance',
       'app.rewardRate': 'Taux de récompense',
       'app.uptime': 'Disponibilité',
@@ -388,6 +396,9 @@
       'app.sampleDataNote': 'Trust score, reward rate and uptime are <b>samples</b> for this demo — in production, these figures come live from the validators dashboard.',
       'app.shortlistTitle': 'Chosen delegations',
       'app.shortlistEmpty': 'No delegation yet.',
+      'app.stakeAmtLabel': 'Amount to delegate (NIM)',
+      'app.delegating': 'Delegating…',
+      'app.delegateError': 'The delegation failed or was cancelled.',
       'app.trustScore': 'Trust score',
       'app.rewardRate': 'Reward rate',
       'app.uptime': 'Uptime',
@@ -509,6 +520,12 @@
     var v = VALIDATORS[idx];
     card.classList.add(direction === 'right' ? 'leaving-right' : 'leaving-left');
     if (direction === 'right'){
+      // Intentionally NOT calling sendNewStakerTransaction() here yet: every
+      // validator above is sample data with no real address, so a real send
+      // would risk staking actual NIM to a made-up destination. Swap this
+      // for a real state.nimiq.sendNewStakerTransaction({ delegation: v.address,
+      // value: Math.round(parseFloat(stakeAmt.value)*100000) }) call once
+      // VALIDATORS carries real addresses from the dashboard.
       shortlist.push(v);
       pushShortlist(v);
       burstConfetti(70);
