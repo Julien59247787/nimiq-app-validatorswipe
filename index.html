@@ -484,12 +484,10 @@
 
   function renderCard(){
     cardStack.innerHTML = '';
-    if (idx >= VALIDATORS.length){
-      cardStack.innerHTML = '<div class="v-card" style="align-items:center; justify-content:center; text-align:center;">' +
-        '<p style="color:var(--text-dim); font-size:.9rem;">' + t('app.endOfDeck') + '</p></div>';
-      passBtn.disabled = true; delegateBtn.disabled = true;
-      return;
-    }
+    // Only two real validators exist today (Julien's own nodes) — loop back
+    // to the start instead of running out after a couple of swipes, so
+    // browsing stays possible either way rather than dead-ending.
+    if (idx >= VALIDATORS.length) idx = 0;
     var v = VALIDATORS[idx];
     var reliability = v.reliability != null ? v.reliability : v.availability;
     var card = document.createElement('div');
