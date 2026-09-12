@@ -462,16 +462,18 @@
     });
   }
 
-  // Real validators, real addresses, real metrics — sourced from
-  // nimiqhub.com/wallet/<address> (availability, reliability, fee, staked,
-  // stakers). No invented numbers: NimiqHub doesn't publish a "reward rate",
-  // so that metric is simply not shown for these two.
+  // Real validators, real addresses, real metrics — availability/reliability/
+  // fee/staked from nimiqhub.com/wallet/<address> (the same external source
+  // the main dashboard itself uses, per NIMIQ-MAIN: it doesn't compute a
+  // local Trustscore, only relays NimiqHub). Reward rate (11.71%) is the
+  // network APY net of fee from /api/v2/validator-network-stats — same
+  // figure for both since they share the same 1% fee.
   var VALIDATORS = [
     { name: "nodenimiq1.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
-      availability: 99.77, reliability: null, fee: 1.00, staked: "1.09M NIM", stakers: 5,
+      availability: 99.77, reliability: null, fee: 1.00, reward: 11.71, staked: "1.09M NIM", stakers: 5,
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family" },
     { name: "nodenimiq2.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
-      availability: 99.48, reliability: 100.00, fee: 1.00, staked: "467.93K NIM", stakers: 8,
+      availability: 99.48, reliability: 100.00, fee: 1.00, reward: 11.71, staked: "467.93K NIM", stakers: 8,
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family" }
   ];
 
@@ -505,7 +507,7 @@
         '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + reliability + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric-row" style="margin-top:6px; color:var(--text-faint); font-size:.76rem;">' +
-        '<span>' + t('app.fee') + ' ' + v.fee.toFixed(2) + '% · ' + v.stakers + ' ' + t('app.stakers') + ' · ' + v.staked + '</span>' +
+        '<span>' + t('app.rewardRate') + ' ' + v.reward.toFixed(2) + '% · ' + t('app.fee') + ' ' + v.fee.toFixed(2) + '% · ' + v.stakers + ' ' + t('app.stakers') + ' · ' + v.staked + '</span>' +
       '</div>' +
       '<p class="v-desc">' + v.desc + '</p>';
     cardStack.appendChild(card);
