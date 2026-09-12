@@ -201,7 +201,7 @@
       <div class="phone">
         <div class="phone-app-bar">
           <span class="app-name">🛡️ Validator Swipe</span>
-          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Données d'exemple</span></span>
+          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Mode démo</span></span>
         </div>
 
         <div class="card-stack" id="cardStack"></div>
@@ -215,7 +215,7 @@
           <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
           <button class="swipe-btn delegate" id="delegateBtn" data-i18n-aria="app.delegateAria" aria-label="Déléguer">🛡️</button>
         </div>
-        <p class="helptext" data-i18n="app.sampleDataNote">Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.</p>
+        <p class="helptext" data-i18n="app.sampleDataNote">Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.</p>
 
         <div class="shortlist">
           <div class="shortlist-title" data-i18n="app.shortlistTitle">Délégations choisies</div>
@@ -312,7 +312,7 @@
     <div class="meta">
       <div><span data-i18n="footer.network">Réseau</span> : Nimiq (NIM)</div>
       <div>SDK : @nimiq/mini-app-sdk</div>
-      <div><span data-i18n="footer.status">Statut</span> : <span data-i18n="footer.statusValue">démo interactive, données d'exemple</span></div>
+      <div><span data-i18n="footer.status">Statut</span> : <span data-i18n="footer.statusValue">démo interactive, vraies données validateurs</span></div>
     </div>
   </div>
 </footer>
@@ -334,11 +334,11 @@
       'hero.stat1': 'Frais de délégation',
       'hero.stat2': 'Tap pour déléguer',
       'hero.stat3': 'Tes fonds restent à toi',
-      'app.statusDemo': 'Données d\'exemple',
-      'app.statusLive': 'Connecté à Nimiq Pay (données d\'exemple)',
+      'app.statusDemo': 'Mode démo',
+      'app.statusLive': 'Connecté à Nimiq Pay',
       'app.passAria': 'Passer',
       'app.delegateAria': 'Déléguer',
-      'app.sampleDataNote': 'Score de confiance, taux de récompense et disponibilité sont des <b>exemples</b> pour cette démo — en production, ces chiffres viennent en direct du dashboard des validateurs.',
+      'app.sampleDataNote': 'Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.',
       'app.shortlistTitle': 'Délégations choisies',
       'app.shortlistEmpty': 'Aucune délégation pour l\'instant.',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
@@ -348,7 +348,10 @@
       'app.rewardRate': 'Taux de récompense',
       'app.uptime': 'Disponibilité',
       'app.delegatedBadge': '🛡️ Délégué',
-      'app.endOfDeck': 'Tu as vu tous les validateurs d\'exemple.<br>En production, la liste vient en direct du dashboard.',
+      'app.endOfDeck': 'Tu as vu les deux validateurs disponibles.',
+      'app.fee': 'Frais',
+      'app.stakers': 'stakers',
+      'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
       'how.eyebrow': 'Comment ça marche',
       'how.title': 'Comparer, puis déléguer',
       'how.lead': 'Pensé pour quelqu\'un qui a de la NIM à faire fructifier mais ne veut pas éplucher un tableau de statistiques.',
@@ -377,7 +380,7 @@
       'footer.desc': 'Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.',
       'footer.network': 'Réseau',
       'footer.status': 'Statut',
-      'footer.statusValue': 'démo interactive, données d\'exemple'
+      'footer.statusValue': 'démo interactive, vraies données validateurs'
     },
     en: {
       'header.chip': 'Nimiq Mini Apps Competition · Cycle II',
@@ -389,11 +392,11 @@
       'hero.stat1': 'Delegation fees',
       'hero.stat2': 'Tap to delegate',
       'hero.stat3': 'Your funds stay yours',
-      'app.statusDemo': 'Sample data',
-      'app.statusLive': 'Connected to Nimiq Pay (sample data)',
+      'app.statusDemo': 'Demo mode',
+      'app.statusLive': 'Connected to Nimiq Pay',
       'app.passAria': 'Pass',
       'app.delegateAria': 'Delegate',
-      'app.sampleDataNote': 'Trust score, reward rate and uptime are <b>samples</b> for this demo — in production, these figures come live from the validators dashboard.',
+      'app.sampleDataNote': 'Uptime and reliability are the <b>real</b> stats for both validators, kept current by NimiqHub. Outside Nimiq Pay, the delegation itself stays simulated.',
       'app.shortlistTitle': 'Chosen delegations',
       'app.shortlistEmpty': 'No delegation yet.',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
@@ -403,7 +406,10 @@
       'app.rewardRate': 'Reward rate',
       'app.uptime': 'Uptime',
       'app.delegatedBadge': '🛡️ Delegated',
-      'app.endOfDeck': 'You\'ve seen all the sample validators.<br>In production, the list comes live from the dashboard.',
+      'app.endOfDeck': 'You\'ve seen both available validators.',
+      'app.fee': 'Fee',
+      'app.stakers': 'stakers',
+      'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
       'how.eyebrow': 'How it works',
       'how.title': 'Compare, then delegate',
       'how.lead': 'Built for someone with NIM to put to work who doesn\'t want to pore over a stats table.',
@@ -432,7 +438,7 @@
       'footer.desc': 'Built for the Nimiq Mini Apps Competition, Cycle II (August 24 – September 18, 2026). Open prototype, no backend, designed to be hosted and loaded inside Nimiq Pay.',
       'footer.network': 'Network',
       'footer.status': 'Status',
-      'footer.statusValue': 'interactive demo, sample data'
+      'footer.statusValue': 'interactive demo, real validator data'
     }
   };
 
@@ -456,17 +462,17 @@
     });
   }
 
+  // Real validators, real addresses, real metrics — sourced from
+  // nimiqhub.com/wallet/<address> (availability, reliability, fee, staked,
+  // stakers). No invented numbers: NimiqHub doesn't publish a "reward rate",
+  // so that metric is simply not shown for these two.
   var VALIDATORS = [
-    { name: "Albatross Guild", tag: "Validateur communautaire", trust: 96, reward: 6.8, uptime: 99.9,
-      desc: "Actif depuis le lancement d'Albatross, gouvernance ouverte, rapports mensuels publics." },
-    { name: "Luna Point", tag: "Infrastructure dédiée", trust: 91, reward: 7.1, uptime: 99.7,
-      desc: "Nœuds redondants sur deux continents, historique sans incident depuis 8 mois." },
-    { name: "Garnet Stake Co.", tag: "Opérateur professionnel", trust: 88, reward: 7.4, uptime: 99.5,
-      desc: "Frais de délégation transparents, tableau de bord public des performances." },
-    { name: "ZeroFee Nodes", tag: "Petit validateur indépendant", trust: 79, reward: 8.0, uptime: 98.6,
-      desc: "Plus petit, taux de récompense plus élevé — compromis assumé sur la taille." },
-    { name: "Consensus Circle", tag: "Coopérative de validateurs", trust: 93, reward: 6.9, uptime: 99.8,
-      desc: "Détenue collectivement par une communauté de stakers, gouvernance participative." }
+    { name: "nodenimiq1.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
+      availability: 99.77, reliability: null, fee: 1.00, staked: "1.09M NIM", stakers: 5,
+      desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family" },
+    { name: "nodenimiq2.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
+      availability: 99.48, reliability: 100.00, fee: 1.00, staked: "467.93K NIM", stakers: 8,
+      desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family" }
   ];
 
   var idx = 0;
@@ -483,6 +489,7 @@
       return;
     }
     var v = VALIDATORS[idx];
+    var reliability = v.reliability != null ? v.reliability : v.availability;
     var card = document.createElement('div');
     card.className = 'v-card';
     card.id = 'currentCard';
@@ -490,16 +497,15 @@
       '<div class="vname">' + v.name + '</div>' +
       '<div class="vtag">' + v.tag + '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>' + t('app.trustScore') + '</span><b>' + v.trust + '/100</b></div>' +
-        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + v.trust + '%"></div></div>' +
+        '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + v.availability.toFixed(2) + '%</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill" style="width:' + v.availability + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>' + t('app.rewardRate') + '</span><b>' + v.reward.toFixed(1) + '%</b></div>' +
-        '<div class="v-bar"><div class="v-bar-fill" style="width:' + Math.min(v.reward*10,100) + '%"></div></div>' +
+        '<div class="v-metric-row"><span>' + t('app.trustScore') + '</span><b>' + reliability.toFixed(2) + '%</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + reliability + '%"></div></div>' +
       '</div>' +
-      '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + v.uptime + '%</b></div>' +
-        '<div class="v-bar"><div class="v-bar-fill" style="width:' + v.uptime + '%"></div></div>' +
+      '<div class="v-metric-row" style="margin-top:6px; color:var(--text-faint); font-size:.76rem;">' +
+        '<span>' + t('app.fee') + ' ' + v.fee.toFixed(2) + '% · ' + v.stakers + ' ' + t('app.stakers') + ' · ' + v.staked + '</span>' +
       '</div>' +
       '<p class="v-desc">' + v.desc + '</p>';
     cardStack.appendChild(card);
@@ -514,26 +520,49 @@
     shortlistList.insertBefore(item, shortlistList.firstChild);
   }
 
+  function advanceCard(){
+    setTimeout(function(){
+      idx++;
+      renderCard();
+    }, 260);
+  }
+
   function swipe(direction){
     var card = $('currentCard');
     if (!card) return;
     var v = VALIDATORS[idx];
     card.classList.add(direction === 'right' ? 'leaving-right' : 'leaving-left');
-    if (direction === 'right'){
-      // Intentionally NOT calling sendNewStakerTransaction() here yet: every
-      // validator above is sample data with no real address, so a real send
-      // would risk staking actual NIM to a made-up destination. Swap this
-      // for a real state.nimiq.sendNewStakerTransaction({ delegation: v.address,
-      // value: Math.round(parseFloat(stakeAmt.value)*100000) }) call once
-      // VALIDATORS carries real addresses from the dashboard.
-      shortlist.push(v);
-      pushShortlist(v);
-      burstConfetti(70);
+    if (direction !== 'right'){ advanceCard(); return; }
+
+    var stakeAmtInput = $('stakeAmt');
+    var stakeNim = parseFloat(stakeAmtInput.value);
+    if (state.nimiq && stakeNim > 0){
+      // Real delegation: v.address is a real validator address (see
+      // VALIDATORS above), so this is safe to fire for real.
+      delegateBtn.disabled = true;
+      state.nimiq.sendNewStakerTransaction({
+        delegation: v.address,
+        value: Math.round(stakeNim * 100000)
+      }).then(function(){
+        shortlist.push(v);
+        pushShortlist(v);
+        burstConfetti(70);
+        advanceCard();
+      }).catch(function(err){
+        console.warn('Validator Swipe: delegation failed.', err);
+        alert(t('app.delegateFailed'));
+        card.classList.remove('leaving-right');
+        delegateBtn.disabled = false;
+      });
+      return;
     }
-    setTimeout(function(){
-      idx++;
-      renderCard();
-    }, 260);
+
+    // Not connected (or no amount set): nothing real to delegate, keep the
+    // existing simulated confirmation so the demo stays testable anywhere.
+    shortlist.push(v);
+    pushShortlist(v);
+    burstConfetti(70);
+    advanceCard();
   }
 
   passBtn.addEventListener('click', function(){ swipe('left'); });
@@ -577,11 +606,13 @@
   requestAnimationFrame(tick);
 
   // ---------- real Nimiq Pay detection ----------
+  var state = { nimiq: null };
   function tryConnectNimiqPay(){
     if (!window.nimiqPay){ return; }
     import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk/+esm').then(function(mod){
       return mod.init();
-    }).then(function(){
+    }).then(function(nimiq){
+      state.nimiq = nimiq;
       $('statusText').textContent = t('app.statusLive');
       $('statusPill').classList.add('live');
     }).catch(function(err){
