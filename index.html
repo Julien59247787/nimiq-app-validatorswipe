@@ -338,7 +338,7 @@
       'app.statusLive': 'Connecté à Nimiq Pay',
       'app.passAria': 'Passer',
       'app.delegateAria': 'Déléguer',
-      'app.sampleDataNote': 'Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.',
+      'app.sampleDataNote': 'Les ~40 validateurs et leurs statistiques sont <b>réels</b>, mis à jour quotidiennement. Certaines métriques restent vides quand l\'historique est insuffisant — jamais devinées. Hors de Nimiq Pay, la délégation elle-même reste simulée.',
       'app.shortlistTitle': 'Délégations choisies',
       'app.shortlistEmpty': 'Aucune délégation pour l\'instant.',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
@@ -347,6 +347,8 @@
       'app.trustScore': 'Score de confiance',
       'app.rewardRate': 'Taux de récompense',
       'app.uptime': 'Disponibilité',
+      'app.stake': 'Staké',
+      'app.validatorTag': 'Validateur du réseau',
       'app.delegatedBadge': '🛡️ Délégué',
       'app.endOfDeck': 'Tu as vu les deux validateurs disponibles.',
       'app.fee': 'Frais',
@@ -396,7 +398,7 @@
       'app.statusLive': 'Connected to Nimiq Pay',
       'app.passAria': 'Pass',
       'app.delegateAria': 'Delegate',
-      'app.sampleDataNote': 'Uptime and reliability are the <b>real</b> stats for both validators, kept current by NimiqHub. Outside Nimiq Pay, the delegation itself stays simulated.',
+      'app.sampleDataNote': 'All ~40 validators and their stats are <b>real</b>, refreshed daily. Some metrics stay blank when there isn\'t enough history yet — never guessed. Outside Nimiq Pay, the delegation itself stays simulated.',
       'app.shortlistTitle': 'Chosen delegations',
       'app.shortlistEmpty': 'No delegation yet.',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
@@ -405,6 +407,8 @@
       'app.trustScore': 'Trust score',
       'app.rewardRate': 'Reward rate',
       'app.uptime': 'Uptime',
+      'app.stake': 'Staked',
+      'app.validatorTag': 'Network validator',
       'app.delegatedBadge': '🛡️ Delegated',
       'app.endOfDeck': 'You\'ve seen both available validators.',
       'app.fee': 'Fee',
@@ -462,34 +466,84 @@
     });
   }
 
-  // Real validators, real addresses, real metrics — availability/reliability/
-  // fee/staked from nimiqhub.com/wallet/<address> (the same external source
-  // the main dashboard itself uses, per NIMIQ-MAIN: it doesn't compute a
-  // local Trustscore, only relays NimiqHub). Reward rate (11.71%) is the
-  // network APY net of fee from /api/v2/validator-network-stats — same
-  // figure for both since they share the same 1% fee.
-  var VALIDATORS = [
+  // Real validators. Two known addresses (Julien's own nodes) get their
+  // friendly name/description; the rest of the network comes live from
+  // GET /api/v2/validators-list (address, stake, availability, reward_rate —
+  // some fields null where NimiqHub/the protocol don't have enough history).
+  // No invented numbers anywhere: a missing metric renders as "—", never a
+  // guessed figure.
+  var KNOWN_VALIDATORS = {
+    "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT": {
+      name: "nodenimiq1.nimiq-ju.fr", tag: "Validateur Nimiq",
+      desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
+    },
+    "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D": {
+      name: "nodenimiq2.nimiq-ju.fr", tag: "Validateur Nimiq",
+      desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
+    }
+  };
+
+  // Fallback used only if /api/v2/validators-list can't be reached (e.g.
+  // previewing this file outside the validators' hosting).
+  var FALLBACK_VALIDATORS = [
     { name: "nodenimiq1.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
-      availability: 99.77, reliability: null, fee: 1.00, reward: 11.71, staked: "1.09M NIM", stakers: 5,
-      desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family" },
+      availability: 99.77, reward: 11.71, staked: "1.09M NIM",
+      desc: KNOWN_VALIDATORS["NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT"].desc },
     { name: "nodenimiq2.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
-      availability: 99.48, reliability: 100.00, fee: 1.00, reward: 11.71, staked: "467.93K NIM", stakers: 8,
-      desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family" }
+      availability: 99.48, reward: 11.71, staked: "467.93K NIM",
+      desc: KNOWN_VALIDATORS["NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D"].desc }
   ];
+
+  function formatStake(luna){
+    var nim = luna / 100000;
+    if (nim >= 1000000) return (nim/1000000).toFixed(2) + 'M NIM';
+    if (nim >= 1000) return (nim/1000).toFixed(2) + 'K NIM';
+    return fmtNum(nim) + ' NIM';
+  }
+  function fmtNum(n){ return (Math.round(n*100)/100).toLocaleString('fr-FR', {maximumFractionDigits:2}); }
+  function shortAddr(addr){ return addr.slice(0,9) + '…' + addr.slice(-9); }
+
+  var VALIDATORS = FALLBACK_VALIDATORS;
+  function loadValidatorsList(){
+    return fetch('/api/v2/validators-list?limit=200').then(function(res){
+      if (!res.ok) throw new Error('validators-list failed: ' + res.status);
+      return res.json();
+    }).then(function(data){
+      var list = (data && data.validators) || [];
+      if (!list.length) return;
+      VALIDATORS = list.map(function(v){
+        var known = KNOWN_VALIDATORS[v.address];
+        return {
+          name: known ? known.name : shortAddr(v.address),
+          tag: known ? known.tag : t('app.validatorTag'),
+          address: v.address,
+          availability: v.availability != null ? v.availability * 100 : null,
+          reward: v.reward_rate != null ? v.reward_rate * 100 : null,
+          staked: formatStake(v.stake_luna),
+          desc: known ? known.desc : ''
+        };
+      });
+      idx = 0;
+      renderCard();
+    }).catch(function(err){
+      console.warn('Validator Swipe: could not load the full validator list, staying on the 2 known nodes.', err);
+    });
+  }
 
   var idx = 0;
   var shortlist = [];
   var $ = function(id){ return document.getElementById(id); };
   var cardStack = $('cardStack'), passBtn = $('passBtn'), delegateBtn = $('delegateBtn'), shortlistList = $('shortlistList');
 
+  function metricOrDash(value, suffix){
+    return value != null ? value.toFixed(2) + suffix : '—';
+  }
+
   function renderCard(){
     cardStack.innerHTML = '';
-    // Only two real validators exist today (Julien's own nodes) — loop back
-    // to the start instead of running out after a couple of swipes, so
-    // browsing stays possible either way rather than dead-ending.
+    // Loop back to the start instead of dead-ending the deck.
     if (idx >= VALIDATORS.length) idx = 0;
     var v = VALIDATORS[idx];
-    var reliability = v.reliability != null ? v.reliability : v.availability;
     var card = document.createElement('div');
     card.className = 'v-card';
     card.id = 'currentCard';
@@ -497,17 +551,17 @@
       '<div class="vname">' + v.name + '</div>' +
       '<div class="vtag">' + v.tag + '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + v.availability.toFixed(2) + '%</b></div>' +
-        '<div class="v-bar"><div class="v-bar-fill" style="width:' + v.availability + '%"></div></div>' +
+        '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + metricOrDash(v.availability, '%') + '</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.availability || 0) + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric">' +
-        '<div class="v-metric-row"><span>' + t('app.trustScore') + '</span><b>' + reliability.toFixed(2) + '%</b></div>' +
-        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + reliability + '%"></div></div>' +
+        '<div class="v-metric-row"><span>' + t('app.rewardRate') + '</span><b>' + metricOrDash(v.reward, '%') + '</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + (v.reward || 0) + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric-row" style="margin-top:6px; color:var(--text-faint); font-size:.76rem;">' +
-        '<span>' + t('app.rewardRate') + ' ' + v.reward.toFixed(2) + '% · ' + t('app.fee') + ' ' + v.fee.toFixed(2) + '% · ' + v.stakers + ' ' + t('app.stakers') + ' · ' + v.staked + '</span>' +
+        '<span>' + t('app.stake') + ' ' + v.staked + '</span>' +
       '</div>' +
-      '<p class="v-desc">' + v.desc + '</p>';
+      (v.desc ? '<p class="v-desc">' + v.desc + '</p>' : '');
     cardStack.appendChild(card);
     passBtn.disabled = false; delegateBtn.disabled = false;
   }
@@ -570,6 +624,7 @@
 
   applyStaticTranslations();
   renderCard();
+  loadValidatorsList();
 
   // ---------- confetti ----------
   var canvas = $('confetti'), ctx = canvas.getContext('2d');
