@@ -575,6 +575,17 @@
           desc: known ? known.desc : ''
         };
       });
+      // Present the most complete cards first (default order otherwise
+      // leads with mostly-empty ones on some validators) — presentation
+      // order only, no data changed or hidden. Stable sort keeps the
+      // original stake-descending order within each completeness tier.
+      function completeness(v){
+        return (v.availability != null ? 1 : 0) + (v.reliability != null ? 1 : 0) + (v.reward != null ? 1 : 0);
+      }
+      VALIDATORS = VALIDATORS
+        .map(function(v, i){ return { v: v, i: i, score: completeness(v) }; })
+        .sort(function(a, b){ return b.score - a.score || a.i - b.i; })
+        .map(function(entry){ return entry.v; });
       idx = 0;
       renderCard();
     }).catch(function(err){
