@@ -113,7 +113,16 @@
   .swipe-btn:active{ transform:scale(.94); }
   .swipe-btn.pass{ color:var(--text-faint); }
   .swipe-btn.delegate{ color:var(--signal-strong); border-color:var(--signal); }
+  .swipe-btn.nav{ color:var(--text-faint); flex:.6; font-size:1.05rem; }
+  .swipe-btn.star{ color:var(--warn); border-color:var(--warn); }
   .swipe-btn:disabled{ opacity:.35; cursor:not-allowed; }
+
+  .phase-tabs{ display:flex; gap:6px; margin:0 6px 12px; }
+  .phase-tab-btn{
+    flex:1; padding:10px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2);
+    color:var(--text-dim); font-weight:700; font-size:.82rem; cursor:pointer; font-family:'Sora',sans-serif;
+  }
+  .phase-tab-btn.active{ background:linear-gradient(135deg, var(--violet) 0%, var(--violet-strong) 100%); color:#f5f2ff; border-color:transparent; }
 
   .shortlist{ margin:16px 6px 0; }
   .shortlist-title{ font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-faint); margin-bottom:8px; }
@@ -204,22 +213,45 @@
           <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Mode démo</span></span>
         </div>
 
-        <div class="card-stack" id="cardStack"></div>
-
-        <div class="field" style="margin:12px 6px 0;">
-          <label for="stakeAmt" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
-          <input type="number" id="stakeAmt" value="100" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
+        <div class="phase-tabs">
+          <button class="phase-tab-btn active" id="browseTabBtn" data-i18n="app.browseTab">Parcourir</button>
+          <button class="phase-tab-btn" id="shortlistTabBtn"><span data-i18n="app.shortlistTab">Mes favoris</span> (<span id="shortlistCount">0</span>)</button>
         </div>
 
-        <div class="swipe-actions">
-          <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
-          <button class="swipe-btn delegate" id="delegateBtn" data-i18n-aria="app.delegateAria" aria-label="Déléguer">🛡️</button>
+        <!-- BROWSE PHASE -->
+        <div id="browsePhase">
+          <div class="card-stack" id="cardStack"></div>
+          <div class="field" style="margin:12px 6px 0;">
+            <label for="stakeAmt" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
+            <input type="number" id="stakeAmt" value="100" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
+          </div>
+          <div class="swipe-actions">
+            <button class="swipe-btn nav" id="backBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
+            <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
+            <button class="swipe-btn star" id="shortlistBtn" data-i18n-aria="app.shortlistAria" aria-label="Mettre de côté">⭐</button>
+          </div>
+          <p class="helptext" data-i18n="app.sampleDataNote">Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.</p>
+          <p class="helptext" data-i18n="app.browseHelptext">Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.</p>
         </div>
-        <p class="helptext" data-i18n="app.sampleDataNote">Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.</p>
+
+        <!-- SHORTLIST PHASE -->
+        <div id="shortlistPhase" style="display:none;">
+          <div class="card-stack" id="shortlistCardStack"></div>
+          <div class="field" style="margin:12px 6px 0;">
+            <label for="stakeAmt2" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
+            <input type="number" id="stakeAmt2" value="100" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
+          </div>
+          <div class="swipe-actions">
+            <button class="swipe-btn nav" id="shortlistBackBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
+            <button class="swipe-btn pass" id="removeBtn" data-i18n-aria="app.removeAria" aria-label="Retirer des favoris">🗑️</button>
+            <button class="swipe-btn delegate" id="delegateBtn" data-i18n-aria="app.delegateAria" aria-label="Déléguer">🛡️</button>
+          </div>
+          <p class="helptext" data-i18n="app.delegateHelptext">C'est ici, et seulement ici, qu'une vraie délégation part de ton wallet — jamais pendant le parcours large.</p>
+        </div>
 
         <div class="shortlist">
-          <div class="shortlist-title" data-i18n="app.shortlistTitle">Délégations choisies</div>
-          <div id="shortlistList"><p class="shortlist-empty" data-i18n="app.shortlistEmpty">Aucune délégation pour l'instant.</p></div>
+          <div class="shortlist-title" data-i18n="app.delegatedTitle">Délégations effectuées</div>
+          <div id="shortlistList"><p class="shortlist-empty" data-i18n="app.delegatedEmpty">Aucune délégation pour l'instant.</p></div>
         </div>
       </div>
     </div>
@@ -339,8 +371,16 @@
       'app.passAria': 'Passer',
       'app.delegateAria': 'Déléguer',
       'app.sampleDataNote': 'Les ~40 validateurs et leurs statistiques sont <b>réels</b>, mis à jour quotidiennement. Certaines métriques restent vides quand l\'historique est insuffisant — jamais devinées. Hors de Nimiq Pay, la délégation elle-même reste simulée.',
-      'app.shortlistTitle': 'Délégations choisies',
-      'app.shortlistEmpty': 'Aucune délégation pour l\'instant.',
+      'app.browseTab': 'Parcourir',
+      'app.shortlistTab': 'Mes favoris',
+      'app.backAria': 'Précédent',
+      'app.shortlistAria': 'Mettre de côté',
+      'app.removeAria': 'Retirer des favoris',
+      'app.browseHelptext': 'Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.',
+      'app.delegateHelptext': 'C\'est ici, et seulement ici, qu\'une vraie délégation part de ton wallet — jamais pendant le parcours large.',
+      'app.shortlistEmptyHint': 'Aucun favori pour l\'instant.<br>Reviens à "Parcourir" pour en mettre de côté.',
+      'app.delegatedTitle': 'Délégations effectuées',
+      'app.delegatedEmpty': 'Aucune délégation pour l\'instant.',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
       'app.delegating': 'Délégation en cours…',
       'app.delegateError': 'La délégation a échoué ou a été annulée.',
@@ -400,8 +440,16 @@
       'app.passAria': 'Pass',
       'app.delegateAria': 'Delegate',
       'app.sampleDataNote': 'All ~40 validators and their stats are <b>real</b>, refreshed daily. Some metrics stay blank when there isn\'t enough history yet — never guessed. Outside Nimiq Pay, the delegation itself stays simulated.',
-      'app.shortlistTitle': 'Chosen delegations',
-      'app.shortlistEmpty': 'No delegation yet.',
+      'app.browseTab': 'Browse',
+      'app.shortlistTab': 'My favorites',
+      'app.backAria': 'Previous',
+      'app.shortlistAria': 'Set aside',
+      'app.removeAria': 'Remove from favorites',
+      'app.browseHelptext': 'Setting aside costs nothing and delegates nothing — it just adds the validator to your favorites to compare before choosing.',
+      'app.delegateHelptext': 'This is the only place a real delegation leaves your wallet — never while browsing.',
+      'app.shortlistEmptyHint': 'No favorites yet.<br>Go back to "Browse" to set some aside.',
+      'app.delegatedTitle': 'Delegations made',
+      'app.delegatedEmpty': 'No delegation yet.',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
       'app.delegating': 'Delegating…',
       'app.delegateError': 'The delegation failed or was cancelled.',
@@ -534,25 +582,27 @@
     });
   }
 
+  // Two phases: browse (compare, bookmark — never moves funds) and
+  // shortlist (the only place "Déléguer" fires a real transaction). This
+  // keeps casual browsing of ~40 validators from ever risking an accidental
+  // stake, per Julien's request.
   var idx = 0;
-  var shortlist = [];
+  var shortIdx = 0;
+  var bookmarked = [];
+  var delegated = [];
   var $ = function(id){ return document.getElementById(id); };
-  var cardStack = $('cardStack'), passBtn = $('passBtn'), delegateBtn = $('delegateBtn'), shortlistList = $('shortlistList');
+  var cardStack = $('cardStack'), passBtn = $('passBtn'), shortlistBtn = $('shortlistBtn'), backBtn = $('backBtn');
+  var shortlistCardStack = $('shortlistCardStack'), delegateBtn = $('delegateBtn'), removeBtn = $('removeBtn'), shortlistBackBtn = $('shortlistBackBtn');
+  var browseTabBtn = $('browseTabBtn'), shortlistTabBtn = $('shortlistTabBtn'), shortlistCountEl = $('shortlistCount');
+  var browsePhase = $('browsePhase'), shortlistPhase = $('shortlistPhase');
+  var shortlistList = $('shortlistList');
 
   function metricOrDash(value, suffix){
     return value != null ? value.toFixed(2) + suffix : '—';
   }
 
-  function renderCard(){
-    cardStack.innerHTML = '';
-    // Loop back to the start instead of dead-ending the deck.
-    if (idx >= VALIDATORS.length) idx = 0;
-    var v = VALIDATORS[idx];
-    var card = document.createElement('div');
-    card.className = 'v-card';
-    card.id = 'currentCard';
-    card.innerHTML =
-      '<div class="vname">' + v.name + '</div>' +
+  function cardHtml(v){
+    return '<div class="vname">' + v.name + '</div>' +
       '<div class="vtag">' + v.tag + '</div>' +
       '<div class="v-metric">' +
         '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + metricOrDash(v.availability, '%') + '</b></div>' +
@@ -570,11 +620,47 @@
         '<span>' + t('app.stake') + ' ' + v.staked + ' · ' + t('app.fee') + ' ' + (v.fee != null ? v.fee.toFixed(2) + '%' : '—') + '</span>' +
       '</div>' +
       (v.desc ? '<p class="v-desc">' + v.desc + '</p>' : '');
-    cardStack.appendChild(card);
-    passBtn.disabled = false; delegateBtn.disabled = false;
   }
 
-  function pushShortlist(v){
+  function renderCard(){
+    cardStack.innerHTML = '';
+    if (idx >= VALIDATORS.length) idx = 0;
+    if (idx < 0) idx = 0;
+    var v = VALIDATORS[idx];
+    var card = document.createElement('div');
+    card.className = 'v-card';
+    card.id = 'currentCard';
+    card.innerHTML = cardHtml(v);
+    cardStack.appendChild(card);
+    passBtn.disabled = false; shortlistBtn.disabled = false;
+    backBtn.disabled = idx === 0;
+  }
+
+  function renderShortlistCard(){
+    shortlistCardStack.innerHTML = '';
+    if (!bookmarked.length){
+      shortlistCardStack.innerHTML = '<div class="v-card" style="align-items:center; justify-content:center; text-align:center;">' +
+        '<p style="color:var(--text-dim); font-size:.9rem;">' + t('app.shortlistEmptyHint') + '</p></div>';
+      delegateBtn.disabled = true; removeBtn.disabled = true; shortlistBackBtn.disabled = true;
+      return;
+    }
+    if (shortIdx >= bookmarked.length) shortIdx = bookmarked.length - 1;
+    if (shortIdx < 0) shortIdx = 0;
+    var v = bookmarked[shortIdx];
+    var card = document.createElement('div');
+    card.className = 'v-card';
+    card.id = 'currentShortlistCard';
+    card.innerHTML = cardHtml(v);
+    shortlistCardStack.appendChild(card);
+    delegateBtn.disabled = false; removeBtn.disabled = false;
+    shortlistBackBtn.disabled = shortIdx === 0;
+  }
+
+  function updateShortlistCount(){
+    shortlistCountEl.textContent = String(bookmarked.length);
+  }
+
+  function pushDelegated(v){
     if (shortlistList.querySelector('.shortlist-empty')) shortlistList.innerHTML = '';
     var item = document.createElement('div');
     item.className = 'shortlist-item';
@@ -582,38 +668,87 @@
     shortlistList.insertBefore(item, shortlistList.firstChild);
   }
 
+  function setPhase(phase){
+    var browsing = phase === 'browse';
+    browseTabBtn.classList.toggle('active', browsing);
+    shortlistTabBtn.classList.toggle('active', !browsing);
+    browsePhase.style.display = browsing ? 'block' : 'none';
+    shortlistPhase.style.display = browsing ? 'none' : 'block';
+    if (!browsing) renderShortlistCard();
+  }
+  browseTabBtn.addEventListener('click', function(){ setPhase('browse'); });
+  shortlistTabBtn.addEventListener('click', function(){ setPhase('shortlist'); });
+
   function advanceCard(){
+    var card = $('currentCard');
+    if (card) card.classList.add('leaving-left');
     setTimeout(function(){
       idx++;
       renderCard();
     }, 260);
   }
 
-  function swipe(direction){
-    var card = $('currentCard');
-    if (!card) return;
-    var v = VALIDATORS[idx];
-    card.classList.add(direction === 'right' ? 'leaving-right' : 'leaving-left');
-    if (direction !== 'right'){ advanceCard(); return; }
+  backBtn.addEventListener('click', function(){
+    if (idx === 0) return;
+    idx--;
+    renderCard();
+  });
 
-    var stakeAmtInput = $('stakeAmt');
+  passBtn.addEventListener('click', function(){ advanceCard(); });
+
+  shortlistBtn.addEventListener('click', function(){
+    var v = VALIDATORS[idx];
+    if (!bookmarked.some(function(b){ return b.address === v.address; })){
+      bookmarked.push(v);
+      updateShortlistCount();
+    }
+    var card = $('currentCard');
+    if (card) card.classList.add('leaving-right');
+    setTimeout(function(){
+      idx++;
+      renderCard();
+    }, 260);
+  });
+
+  shortlistBackBtn.addEventListener('click', function(){
+    if (shortIdx === 0) return;
+    shortIdx--;
+    renderShortlistCard();
+  });
+
+  removeBtn.addEventListener('click', function(){
+    if (!bookmarked.length) return;
+    bookmarked.splice(shortIdx, 1);
+    updateShortlistCount();
+    renderShortlistCard();
+  });
+
+  delegateBtn.addEventListener('click', function(){
+    if (!bookmarked.length) return;
+    var v = bookmarked[shortIdx];
+    var stakeAmtInput = $('stakeAmt2');
     var stakeNim = parseFloat(stakeAmtInput.value);
+    var card = $('currentShortlistCard');
+
+    function onDelegated(){
+      delegated.push(v);
+      pushDelegated(v);
+      bookmarked.splice(shortIdx, 1);
+      updateShortlistCount();
+      burstConfetti(90);
+      renderShortlistCard();
+    }
+
     if (state.nimiq && stakeNim > 0){
       // Real delegation: v.address is a real validator address (see
-      // VALIDATORS above), so this is safe to fire for real.
+      // VALIDATORS above) — the only place in this app that fires it.
       delegateBtn.disabled = true;
       state.nimiq.sendNewStakerTransaction({
         delegation: v.address,
         value: Math.round(stakeNim * 100000)
-      }).then(function(){
-        shortlist.push(v);
-        pushShortlist(v);
-        burstConfetti(70);
-        advanceCard();
-      }).catch(function(err){
+      }).then(onDelegated).catch(function(err){
         console.warn('Validator Swipe: delegation failed.', err);
         alert(t('app.delegateFailed'));
-        card.classList.remove('leaving-right');
         delegateBtn.disabled = false;
       });
       return;
@@ -621,14 +756,8 @@
 
     // Not connected (or no amount set): nothing real to delegate, keep the
     // existing simulated confirmation so the demo stays testable anywhere.
-    shortlist.push(v);
-    pushShortlist(v);
-    burstConfetti(70);
-    advanceCard();
-  }
-
-  passBtn.addEventListener('click', function(){ swipe('left'); });
-  delegateBtn.addEventListener('click', function(){ swipe('right'); });
+    onDelegated();
+  });
 
   applyStaticTranslations();
   renderCard();
