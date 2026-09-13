@@ -348,6 +348,7 @@
       'app.rewardRate': 'Taux de récompense',
       'app.uptime': 'Disponibilité',
       'app.stake': 'Staké',
+      'app.reliability': 'Fiabilité',
       'app.validatorTag': 'Validateur du réseau',
       'app.delegatedBadge': '🛡️ Délégué',
       'app.endOfDeck': 'Tu as vu les deux validateurs disponibles.',
@@ -408,6 +409,7 @@
       'app.rewardRate': 'Reward rate',
       'app.uptime': 'Uptime',
       'app.stake': 'Staked',
+      'app.reliability': 'Reliability',
       'app.validatorTag': 'Network validator',
       'app.delegatedBadge': '🛡️ Delegated',
       'app.endOfDeck': 'You\'ve seen both available validators.',
@@ -518,6 +520,7 @@
           tag: known ? known.tag : t('app.validatorTag'),
           address: v.address,
           availability: v.availability != null ? v.availability * 100 : null,
+          reliability: v.reliability != null ? v.reliability * 100 : null,
           reward: v.reward_rate != null ? v.reward_rate * 100 : null,
           staked: formatStake(v.stake_luna),
           desc: known ? known.desc : ''
@@ -555,8 +558,12 @@
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.availability || 0) + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric">' +
+        '<div class="v-metric-row"><span>' + t('app.reliability') + '</span><b>' + metricOrDash(v.reliability, '%') + '</b></div>' +
+        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + (v.reliability || 0) + '%"></div></div>' +
+      '</div>' +
+      '<div class="v-metric">' +
         '<div class="v-metric-row"><span>' + t('app.rewardRate') + '</span><b>' + metricOrDash(v.reward, '%') + '</b></div>' +
-        '<div class="v-bar"><div class="v-bar-fill violet" style="width:' + (v.reward || 0) + '%"></div></div>' +
+        '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.reward || 0) + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric-row" style="margin-top:6px; color:var(--text-faint); font-size:.76rem;">' +
         '<span>' + t('app.stake') + ' ' + v.staked + '</span>' +
