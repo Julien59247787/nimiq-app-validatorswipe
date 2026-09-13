@@ -521,6 +521,7 @@
           address: v.address,
           availability: v.availability != null ? v.availability * 100 : null,
           reliability: v.reliability != null ? v.reliability * 100 : null,
+          fee: v.fee != null ? v.fee * 100 : null,
           reward: v.reward_rate != null ? v.reward_rate * 100 : null,
           staked: formatStake(v.stake_luna),
           desc: known ? known.desc : ''
@@ -566,7 +567,7 @@
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.reward || 0) + '%"></div></div>' +
       '</div>' +
       '<div class="v-metric-row" style="margin-top:6px; color:var(--text-faint); font-size:.76rem;">' +
-        '<span>' + t('app.stake') + ' ' + v.staked + '</span>' +
+        '<span>' + t('app.stake') + ' ' + v.staked + ' · ' + t('app.fee') + ' ' + (v.fee != null ? v.fee.toFixed(2) + '%' : '—') + '</span>' +
       '</div>' +
       (v.desc ? '<p class="v-desc">' + v.desc + '</p>' : '');
     cardStack.appendChild(card);
