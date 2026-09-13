@@ -1,29 +1,35 @@
 # Validator Swipe — Nimiq Mini Apps Competition (Cycle II)
 
-## Concept
-Découverte et délégation de validateurs façon "swipe" : score de confiance, taux de récompense et
-disponibilité présentés carte par carte, délégation en un tap (`sendNewStakerTransaction`). Lien
-direct avec le dashboard des validateurs de Julien — rend le dashboard actionnable, pas seulement
-informatif.
+Notes internes de développement — le pitch destiné au jury est dans `README.md`.
 
 ## Statut
-Extra pour le dashboard, pas candidate à la soumission officielle du Cycle II (NIM Drop a été
-choisie). Dépôt GitHub privé par défaut. Les données de validateurs affichées sont des **exemples
-clairement identifiés comme tels** dans l'UI — en production, elles doivent venir du dashboard réel
-des validateurs, jamais inventées.
 
-## Ce qui est déjà construit
-- `index.html` — démo interactive complète, même famille visuelle (Fraunces + Sora), palette
-  graphite/vert-signal/violet différenciée du reste de la famille.
-- Pile de cartes swipeable (passer / déléguer), 5 validateurs d'exemple.
-- FAQ "Qui paie quoi ?" expliquant la différence entre déléguer et transférer (point souvent mal
-  compris sur le staking : le validateur ne détient jamais les fonds délégués).
-- Détection progressive de `window.nimiqPay`, appel réel `sendNewStakerTransaction()`.
+**Soumission officielle du Cycle II** (décidé par Julien le 13/09, vote d'équipe 3 voix sur 4,
+contre NIM Drop). Déployée et vérifiée en prod sur les deux validateurs
+(`dashboard-nodenimiq{1,2}.nimiq-ju.fr/miniapps/validator-swipe/`).
 
-## Ce qui manque pour une intégration dashboard réelle
-1. **Remplacer les données d'exemple par les vraies données des deux validateurs** (score de
-   confiance, taux de récompense, disponibilité) — nécessite une API/export depuis le dashboard
-   existant, à caler avec NIMIQ-BACKEND/NIMIQ-FRONTEND.
-2. Gestion du montant à déléguer (actuellement pas de champ de saisie, la démo se concentre sur la
-   comparaison/sélection).
-3. Hébergement sur l'infra des validateurs, comme les autres apps de la famille.
+## Ce qui est fait
+
+- Les ~40 validateurs actifs du réseau, données réelles via `/api/v2/validators-list`
+  (address, stake, disponibilité, fiabilité, taux de récompense, frais — `—` explicite si absent,
+  jamais deviné). Les deux validateurs de Julien gardent leur nom/description.
+- Flux en deux phases (ajouté le 13/09, demande de Julien) : **Parcourir** (passer / mettre de côté
+  — gratuit, aucune transaction) puis **Mes favoris** (retirer / déléguer — seul endroit où
+  `sendNewStakerTransaction()` part réellement). Navigation arrière dans les deux écrans.
+- i18n fr/en (pattern `T`/`t()`/`data-i18n`, cohérent avec le dashboard).
+- FAQ "Qui paie quoi ?" expliquant déléguer vs transférer.
+- Repli gracieux en mode démo hors de Nimiq Pay.
+
+## Ce qui reste à faire avant la deadline (18/09 23:59 UTC)
+
+1. **Test réel de bout en bout dans Nimiq Pay** (délégation réelle confirmée) — jamais fait pour
+   aucune des 4 mini apps, priorité absolue maintenant que le choix est tranché. Seul Julien peut
+   le faire (accès à l'app + un appareil).
+2. **Dépôt public** : `nimiq-app-validatorswipe` doit passer en public sous licence MIT (exigence du
+   règlement — pas d'alternative privé+accès juges). `LICENSE` (MIT) et `README.md` (pitch jury)
+   déjà ajoutés au dépôt en préparation. Seul Julien bascule un dépôt en public (règle d'équipe) —
+   à faire par lui avant soumission.
+3. Renseigner le formulaire de soumission (portail Nimiq) : nom/pseudo, profil GitHub, adresse
+   Nimiq de paiement du lead d'équipe — infos à fournir par Julien, pas par moi.
+4. Vidéo de démo (optionnelle mais encouragée, contribue au score storytelling) — à évaluer si le
+   temps le permet d'ici la deadline.
