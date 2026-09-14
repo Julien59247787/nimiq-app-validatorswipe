@@ -1589,22 +1589,13 @@
         delegation: v.address,
         value: stakeValueLuna
       }).then(onDelegated).catch(function(err){
-        // Some Nimiq Pay builds have thrown "expected instance of Address"
-        // on the spaced user-friendly format for this specific call (not
-        // seen on sendBasicTransaction). Retry once with whitespace
-        // stripped before giving up — cheap, harmless if unrelated.
-        var msg = (err && err.message) || String(err);
-        if (/address/i.test(msg)){
-          state.nimiq.sendNewStakerTransaction({
-            delegation: v.address.replace(/\s+/g, ''),
-            value: stakeValueLuna
-          }).then(onDelegated).catch(function(err2){
-            console.warn('Validator Swipe: delegation failed (both formats).', err, err2);
-            alert(t('app.delegateFailed'));
-            delegateBtn.disabled = false;
-          });
-          return;
-        }
+        // Confirmed via real-device test: the confirm screen already shows
+        // the validator address correctly, so the failure happens inside
+        // Nimiq Pay's own transaction build/sign step after confirmation —
+        // not something a client-side retry of the same call can fix, and
+        // firing a second sendXxx immediately risks hitting Nimiq Pay's own
+        // "transaction already in progress" guard while it's still busy.
+        // No auto-retry here; single clean attempt only.
         console.warn('Validator Swipe: delegation failed.', err);
         alert(t('app.delegateFailed'));
         delegateBtn.disabled = false;
