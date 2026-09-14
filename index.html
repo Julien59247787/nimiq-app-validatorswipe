@@ -18,8 +18,8 @@
     --text-faint: #91969f;
     --signal: #1f9d6b;
     --signal-strong: #157a53;
-    --violet: #6753c9;
-    --violet-strong: #4f3ea3;
+    --violet: #0582ca;
+    --violet-strong: #045a91;
     --warn: #c8890a;
     --shadow: 0 20px 48px -24px rgba(27,30,36,0.3);
     --shadow-sm: 0 8px 20px -12px rgba(27,30,36,0.24);
@@ -29,7 +29,7 @@
     :root:not([data-theme="light"]){
       --bg: #12141a; --surface: #1a1d25; --surface-2: #212530; --border: #2f3440;
       --text: #eef0f4; --text-dim: #b7bcc7; --text-faint: #7d8390;
-      --signal: #34d399; --signal-strong: #6ee7b3; --violet: #9c8cf0; --violet-strong: #b9aefa;
+      --signal: #34d399; --signal-strong: #6ee7b3; --violet: #4fa8da; --violet-strong: #81c0e4;
       --warn: #f0b429;
       --shadow: 0 20px 48px -20px rgba(0,0,0,0.6); --shadow-sm: 0 8px 20px -12px rgba(0,0,0,0.55);
     }
@@ -37,7 +37,7 @@
   :root[data-theme="dark"]{
     --bg: #12141a; --surface: #1a1d25; --surface-2: #212530; --border: #2f3440;
     --text: #eef0f4; --text-dim: #b7bcc7; --text-faint: #7d8390;
-    --signal: #34d399; --signal-strong: #6ee7b3; --violet: #9c8cf0; --violet-strong: #b9aefa;
+    --signal: #34d399; --signal-strong: #6ee7b3; --violet: #4fa8da; --violet-strong: #81c0e4;
     --warn: #f0b429;
     --shadow: 0 20px 48px -20px rgba(0,0,0,0.6); --shadow-sm: 0 8px 20px -12px rgba(0,0,0,0.55);
   }
@@ -196,6 +196,8 @@
   .credit-discord-link{ display:inline-flex; align-items:center; justify-content:center; min-width:38px; min-height:38px; padding:5px; border-radius:8px; color:inherit; text-decoration:none; transition:transform .15s, opacity .15s; }
   .credit-discord-link:hover{ transform:translateY(-1px) scale(1.04); opacity:.88; }
   .credit-discord-link img{ display:block; width:28px; height:28px; max-width:28px; object-fit:contain; }
+  .credit-mascot{ display:block; width:24px; height:24px; max-width:24px; object-fit:contain; opacity:.85; border-radius:6px; transition:transform .15s, opacity .15s; }
+  .credit-mascot:hover{ transform:translateY(-1px) scale(1.06); opacity:1; }
   @media (max-width:640px){
     .credit-footer{ flex-direction:column; gap:.3rem; padding:16px 12px; }
     .credit-separator{ display:none; }
@@ -392,6 +394,7 @@
   <a class="credit-discord-link" href="https://discord.gg/96gHeaZYRH" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le serveur Discord de @Ju" data-i18n-aria="footer.discordAria" title="Rejoindre le serveur Discord" data-i18n-title="footer.discordTitle">
     <img src="discord-logo.png" alt="Discord" width="92" height="24" loading="lazy" decoding="async">
   </a>
+  <img class="credit-mascot" src="tux-nimiq.png" alt="Mascotte @Ju &amp; Nimiq" title="@Ju &amp; Nimiq" width="24" height="24" loading="lazy" decoding="async">
 </div>
 
 <script>
