@@ -80,7 +80,18 @@
   /* ---- swipe demo ---- */
   .demo-stage{ display:flex; justify-content:center; }
   .phone{ width:100%; max-width:360px; background:var(--surface); border:1px solid var(--border); border-radius:30px; box-shadow:var(--shadow); padding:16px; }
-  .phone-app-bar{ display:flex; align-items:center; justify-content:space-between; padding:8px 6px 14px; }
+  .phone-app-bar{ display:flex; align-items:center; justify-content:space-between; padding:8px 6px 14px; gap:8px; }
+  .lang-dropdown{ position:relative; margin-left:.25rem; flex-shrink:0; }
+  .lang-dropdown-trigger{ display:flex; align-items:center; gap:4px; border:1px solid var(--border); background:var(--surface); border-radius:.5rem; padding:5px 7px; cursor:pointer; }
+  .lang-dropdown-trigger:hover{ background:var(--surface-2); }
+  .lang-dropdown-trigger:focus-visible{ outline:2px solid var(--violet); outline-offset:1px; }
+  .lang-dropdown-chevron{ font-size:10px; color:var(--text-faint); }
+  .lang-flag-icon svg{ display:block; width:20px; height:14px; border-radius:2px; }
+  .lang-dropdown-menu{ position:absolute; top:calc(100% + 4px); right:0; z-index:50; list-style:none; margin:0; padding:4px; background:var(--surface); border:1px solid var(--border); border-radius:.6rem; box-shadow:var(--shadow-sm); min-width:150px; max-height:280px; overflow-y:auto; }
+  .lang-dropdown-menu li{ display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:.4rem; cursor:pointer; font-size:13px; font-weight:700; color:var(--text); font-family:'Sora',sans-serif; }
+  .lang-dropdown-menu li:hover{ background:var(--surface-2); }
+  .lang-dropdown-menu li.active{ background:var(--surface-2); color:var(--violet-strong); }
+  @media (max-width:640px){ .lang-dropdown-menu{ right:-8px; } }
   .phone-app-bar .app-name{ font-family:'Fraunces',serif; font-weight:700; font-size:1.02rem; }
   .status-pill{ font-size:.65rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--border); color:var(--text-faint); display:flex; align-items:center; gap:5px; }
   .status-pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--text-faint); }
@@ -229,6 +240,13 @@
         <div class="phone-app-bar">
           <span class="app-name">🛡️ Validator Swipe</span>
           <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Mode démo</span></span>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button type="button" class="lang-dropdown-trigger" id="lang-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Choix de la langue">
+              <span class="lang-flag-icon" id="lang-dropdown-current-flag"></span>
+              <span class="lang-dropdown-chevron" aria-hidden="true">▾</span>
+            </button>
+            <ul class="lang-dropdown-menu" id="lang-dropdown-menu" role="listbox" hidden></ul>
+          </div>
         </div>
 
         <div class="phase-tabs">
@@ -535,11 +553,78 @@
     }
   };
 
+  // Manual choice (localStorage) beats auto-detection from Nimiq Pay, which
+  // beats the French fallback — same priority as the dashboard. A manual
+  // toggle matters here because a mini app opened directly inside Nimiq Pay
+  // (the real production path, not via the dashboard) has no other way to
+  // override a wrong auto-detected language.
+  var LANG_STORAGE_KEY = 'nimiq-miniapp-lang';
   function detectLang(){
+    try {
+      var stored = localStorage.getItem(LANG_STORAGE_KEY);
+      if (stored && SUPPORTED_LANGS.indexOf(stored) !== -1) return stored;
+    } catch (e) {}
     var raw = window.nimiqPay && window.nimiqPay.language;
     return SUPPORTED_LANGS.indexOf(raw) !== -1 ? raw : 'fr';
   }
   var currentLang = detectLang();
+  function getLang(){ return currentLang; }
+  function setLang(lang){
+    if (SUPPORTED_LANGS.indexOf(lang) === -1) return;
+    currentLang = lang;
+    try { localStorage.setItem(LANG_STORAGE_KEY, lang); } catch (e) {}
+  }
+
+  var LANG_META = {
+    fr: { name: 'Français', flag: '<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#ED2939"/><rect width="20" height="20" fill="#fff"/><rect width="10" height="20" fill="#002395"/></svg>' },
+    en: { name: 'English', flag: '<svg viewBox="0 0 30 20"><rect width="30" height="20" fill="#012169"/><line x1="0" y1="0" x2="30" y2="20" stroke="#fff" stroke-width="4.4"/><line x1="30" y1="0" x2="0" y2="20" stroke="#fff" stroke-width="4.4"/><line x1="0" y1="0" x2="30" y2="20" stroke="#C8102E" stroke-width="2"/><line x1="30" y1="0" x2="0" y2="20" stroke="#C8102E" stroke-width="2"/><rect x="12" width="6" height="20" fill="#fff"/><rect y="8" width="30" height="4" fill="#fff"/><rect x="13" width="4" height="20" fill="#C8102E"/><rect y="8.5" width="30" height="3" fill="#C8102E"/></svg>' }
+  };
+
+  function closeLangDropdown(){
+    var trigger = document.getElementById('lang-dropdown-trigger');
+    if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    var menu = document.getElementById('lang-dropdown-menu');
+    if (menu) menu.hidden = true;
+  }
+
+  function setupLangSwitch(){
+    var menu = document.getElementById('lang-dropdown-menu');
+    var trigger = document.getElementById('lang-dropdown-trigger');
+    if (menu){
+      menu.innerHTML = SUPPORTED_LANGS.map(function(code){
+        return '<li role="option" data-lang="' + code + '" tabindex="-1">' +
+          '<span class="lang-flag-icon">' + LANG_META[code].flag + '</span>' +
+          '<span class="lang-dropdown-name">' + LANG_META[code].name + '</span></li>';
+      }).join('');
+    }
+    if (trigger){
+      trigger.addEventListener('click', function(ev){
+        ev.stopPropagation();
+        var expanded = trigger.getAttribute('aria-expanded') === 'true';
+        if (expanded){ closeLangDropdown(); return; }
+        trigger.setAttribute('aria-expanded', 'true');
+        if (menu) menu.hidden = false;
+      });
+    }
+    if (menu){
+      menu.addEventListener('click', function(ev){
+        var li = ev.target.closest('li[data-lang]');
+        if (!li) return;
+        setLang(li.dataset.lang);
+        applyStaticTranslations();
+        renderCard();
+        renderShortlistCard();
+        closeLangDropdown();
+      });
+    }
+    document.addEventListener('click', function(ev){
+      var dd = document.getElementById('lang-dropdown');
+      if (dd && !dd.contains(ev.target)) closeLangDropdown();
+    });
+    document.addEventListener('keydown', function(ev){
+      if (ev.key === 'Escape') closeLangDropdown();
+    });
+  }
 
   function t(key){
     return (T[currentLang] && T[currentLang][key]) || T.fr[key] || key;
@@ -555,6 +640,11 @@
     });
     document.querySelectorAll('[data-i18n-title]').forEach(function(el){
       el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
+    });
+    var currentFlag = document.getElementById('lang-dropdown-current-flag');
+    if (currentFlag) currentFlag.innerHTML = (LANG_META[getLang()] && LANG_META[getLang()].flag) || '';
+    document.querySelectorAll('#lang-dropdown-menu li').forEach(function(li){
+      li.classList.toggle('active', li.dataset.lang === getLang());
     });
   }
 
@@ -812,6 +902,7 @@
     onDelegated();
   });
 
+  setupLangSwitch();
   applyStaticTranslations();
   renderCard();
   loadValidatorsList();
