@@ -1584,10 +1584,27 @@
       // Real delegation: v.address is a real validator address (see
       // VALIDATORS above) — the only place in this app that fires it.
       delegateBtn.disabled = true;
+      var stakeValueLuna = Math.round(stakeNim * 100000);
       state.nimiq.sendNewStakerTransaction({
         delegation: v.address,
-        value: Math.round(stakeNim * 100000)
+        value: stakeValueLuna
       }).then(onDelegated).catch(function(err){
+        // Some Nimiq Pay builds have thrown "expected instance of Address"
+        // on the spaced user-friendly format for this specific call (not
+        // seen on sendBasicTransaction). Retry once with whitespace
+        // stripped before giving up — cheap, harmless if unrelated.
+        var msg = (err && err.message) || String(err);
+        if (/address/i.test(msg)){
+          state.nimiq.sendNewStakerTransaction({
+            delegation: v.address.replace(/\s+/g, ''),
+            value: stakeValueLuna
+          }).then(onDelegated).catch(function(err2){
+            console.warn('Validator Swipe: delegation failed (both formats).', err, err2);
+            alert(t('app.delegateFailed'));
+            delegateBtn.disabled = false;
+          });
+          return;
+        }
         console.warn('Validator Swipe: delegation failed.', err);
         alert(t('app.delegateFailed'));
         delegateBtn.disabled = false;
