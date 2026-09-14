@@ -435,6 +435,7 @@
       'app.stake': 'Staké',
       'app.reliability': 'Fiabilité',
       'app.validatorTag': 'Validateur du réseau',
+      'app.knownValidatorTag': 'Validateur Nimiq',
       'app.delegatedBadge': '🛡️ Délégué',
       'app.endOfDeck': 'Tu as vu les deux validateurs disponibles.',
       'app.fee': 'Frais',
@@ -510,6 +511,7 @@
       'app.stake': 'Staked',
       'app.reliability': 'Reliability',
       'app.validatorTag': 'Network validator',
+      'app.knownValidatorTag': 'Nimiq Validator',
       'app.delegatedBadge': '🛡️ Delegated',
       'app.endOfDeck': 'You\'ve seen both available validators.',
       'app.fee': 'Fee',
@@ -656,11 +658,11 @@
   // guessed figure.
   var KNOWN_VALIDATORS = {
     "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT": {
-      name: "nodenimiq1.nimiq-ju.fr", tag: "Validateur Nimiq",
+      name: "nodenimiq1.nimiq-ju.fr",
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
     },
     "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D": {
-      name: "nodenimiq2.nimiq-ju.fr", tag: "Validateur Nimiq",
+      name: "nodenimiq2.nimiq-ju.fr",
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
     }
   };
@@ -668,10 +670,10 @@
   // Fallback used only if /api/v2/validators-list can't be reached (e.g.
   // previewing this file outside the validators' hosting).
   var FALLBACK_VALIDATORS = [
-    { name: "nodenimiq1.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
+    { name: "nodenimiq1.nimiq-ju.fr", isKnown: true, address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
       availability: 99.77, reward: 11.71, staked: "1.09M NIM",
       desc: KNOWN_VALIDATORS["NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT"].desc },
-    { name: "nodenimiq2.nimiq-ju.fr", tag: "Validateur Nimiq", address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
+    { name: "nodenimiq2.nimiq-ju.fr", isKnown: true, address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
       availability: 99.48, reward: 11.71, staked: "467.93K NIM",
       desc: KNOWN_VALIDATORS["NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D"].desc }
   ];
@@ -697,7 +699,7 @@
         var known = KNOWN_VALIDATORS[v.address];
         return {
           name: known ? known.name : shortAddr(v.address),
-          tag: known ? known.tag : t('app.validatorTag'),
+          isKnown: !!known,
           address: v.address,
           availability: v.availability != null ? v.availability * 100 : null,
           reliability: v.reliability != null ? v.reliability * 100 : null,
@@ -746,7 +748,7 @@
 
   function cardHtml(v){
     return '<div class="vname">' + v.name + '</div>' +
-      '<div class="vtag">' + v.tag + '</div>' +
+      '<div class="vtag">' + (v.isKnown ? t('app.knownValidatorTag') : t('app.validatorTag')) + '</div>' +
       '<div class="v-metric">' +
         '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + metricOrDash(v.availability, '%') + '</b></div>' +
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.availability || 0) + '%"></div></div>' +
