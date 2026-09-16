@@ -99,9 +99,9 @@
   .status-pill.live .dot{ background:var(--signal); box-shadow:0 0 0 3px color-mix(in srgb, var(--signal) 25%, transparent); }
   .status-pill.live{ color:var(--signal); }
 
-  .card-stack{ position:relative; height:296px; margin:6px 6px 0; }
+  .card-stack{ margin:6px 6px 0; }
   .v-card{
-    position:absolute; inset:0; background:var(--surface-2); border:1px solid var(--border); border-radius:18px;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:18px;
     padding:16px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm);
     transition: transform .3s ease, opacity .3s ease;
   }
@@ -239,6 +239,11 @@
     .credit-footer{ flex-direction:column; gap:.3rem; padding:16px 12px; }
     .credit-separator{ display:none; }
     .credit-discord-link{ min-height:44px; padding:8px 16px; }
+    /* On a real phone (incl. inside Nimiq Pay) there's no desktop "device
+       mockup" to frame — the .phone block IS the whole usable screen, so
+       let it use the full viewport width instead of the 360px cap meant
+       for the marketing page's decorative preview. */
+    .phone{ max-width:none; border-radius:0; border-left:none; border-right:none; }
   }
 
   @media (prefers-reduced-motion: reduce){
