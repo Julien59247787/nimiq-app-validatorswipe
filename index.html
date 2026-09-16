@@ -180,6 +180,13 @@
   pre.code .s{ color:#34d399; }
   pre.code .c{ color:#7d8390; }
 
+  .success-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:201; padding:20px; }
+  .success-modal-overlay[hidden]{ display:none; }
+  .success-modal{ background:var(--surface); border:2px solid var(--nimiq-gold); border-radius:var(--radius); box-shadow:var(--shadow); padding:32px 24px; max-width:380px; width:100%; text-align:center; }
+  .success-modal-icon{ font-size:2.4rem; margin-bottom:14px; }
+  .success-modal-human{ margin:0 0 26px; font-weight:700; font-size:1.2rem; color:var(--nimiq-gold); line-height:1.5; }
+  #successModalOkBtn{ width:100%; background:linear-gradient(135deg, var(--nimiq-gold) 0%, #b8860b 100%); }
+
   .error-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:200; padding:20px; }
   .error-modal-overlay[hidden]{ display:none; }
   .error-modal{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px 24px; max-width:420px; width:100%; }
@@ -415,6 +422,14 @@
   <img class="credit-mascot" src="tux-nimiq.png" alt="Mascotte @Ju &amp; Nimiq" title="@Ju &amp; Nimiq" width="24" height="24" loading="lazy" decoding="async">
 </div>
 
+<div class="success-modal-overlay" id="successModalOverlay" hidden>
+  <div class="success-modal" role="alertdialog" aria-modal="true" aria-labelledby="successModalHuman">
+    <div class="success-modal-icon" aria-hidden="true">🛡️✨</div>
+    <p class="success-modal-human" id="successModalHuman"></p>
+    <button type="button" class="btn btn-primary" id="successModalOkBtn" data-i18n="app.errorModalOk">OK</button>
+  </div>
+</div>
+
 <div class="error-modal-overlay" id="errorModalOverlay" hidden>
   <div class="error-modal" role="alertdialog" aria-modal="true" aria-labelledby="errorModalHuman">
     <p class="error-modal-human" id="errorModalHuman"></p>
@@ -477,6 +492,7 @@
       'app.stakers': 'stakers',
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
+      'app.delegateSuccess': 'Délégation réussie ! Tu délègues maintenant à {validator}.',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Détail technique',
       'app.delegateFailedDetail': 'Détail technique :',
@@ -560,6 +576,7 @@
       'app.stakers': 'stakers',
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
+      'app.delegateSuccess': 'Delegation successful! You\'re now delegating to {validator}.',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Technical detail',
       'app.delegateFailedDetail': 'Technical detail:',
@@ -1508,6 +1525,27 @@
     if (ev.key === 'Escape' && !errorModalOverlay.hidden) closeErrorModal();
   });
 
+  // ---------- success modal (stays until closed or auto-dismisses) ----------
+  var successModalOverlay = $('successModalOverlay');
+  var successModalTimer = null;
+  function showSuccessModal(validatorName){
+    $('successModalHuman').textContent = t('app.delegateSuccess').replace('{validator}', validatorName);
+    successModalOverlay.hidden = false;
+    clearTimeout(successModalTimer);
+    successModalTimer = setTimeout(closeSuccessModal, 6000);
+  }
+  function closeSuccessModal(){
+    successModalOverlay.hidden = true;
+    clearTimeout(successModalTimer);
+  }
+  $('successModalOkBtn').addEventListener('click', closeSuccessModal);
+  successModalOverlay.addEventListener('click', function(ev){
+    if (ev.target === successModalOverlay) closeSuccessModal();
+  });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && !successModalOverlay.hidden) closeSuccessModal();
+  });
+
   function metricOrDash(value, suffix){
     return value != null ? value.toFixed(2) + suffix : '—';
   }
@@ -1655,6 +1693,7 @@
       bookmarked.splice(shortIdx, 1);
       updateShortlistCount();
       burstConfetti(90);
+      showSuccessModal(v.name);
       renderShortlistCard();
     }
 
