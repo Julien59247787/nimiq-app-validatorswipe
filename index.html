@@ -183,6 +183,13 @@
   .active-delegation-banner{ display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, var(--nimiq-gold) 14%, transparent); border:1px solid var(--nimiq-gold); color:var(--nimiq-gold); font-weight:700; font-size:.85rem; }
   .active-delegation-banner[hidden]{ display:none; }
   .active-delegation-icon{ font-size:1rem; }
+  .retire-box{ margin:8px 6px 0; text-align:center; }
+  .retire-box[hidden]{ display:none; }
+  .retire-toggle{ background:none; border:none; color:var(--text-faint); font-size:.76rem; text-decoration:underline; cursor:pointer; font-family:'Sora',sans-serif; padding:4px; }
+  .retire-form{ margin-top:8px; text-align:left; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:14px; }
+  .retire-form[hidden]{ display:none; }
+  .retire-form label{ display:block; font-size:.8rem; font-weight:700; margin-bottom:6px; color:var(--text); }
+  .retire-form .helptext{ margin:8px 0 12px; }
 
   .success-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:201; padding:20px; }
   .success-modal-overlay[hidden]{ display:none; }
@@ -281,6 +288,16 @@
         <div class="active-delegation-banner" id="activeDelegationBanner" hidden>
           <span class="active-delegation-icon" aria-hidden="true">🛡️</span>
           <span id="activeDelegationText"></span>
+        </div>
+
+        <div class="retire-box" id="retireBox" hidden>
+          <button type="button" class="retire-toggle" id="retireToggleBtn" data-i18n="app.retireToggle">Retirer mon stake</button>
+          <div class="retire-form" id="retireForm" hidden>
+            <label for="retireAmt" data-i18n="app.retireAmtLabel">Montant à retirer (NIM)</label>
+            <input type="number" id="retireAmt" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
+            <p class="helptext" data-i18n="app.retireHint">Cette étape "retire" ton stake — les fonds ne reviennent dans ton wallet qu'après un délai d'attente du réseau (plusieurs heures), via une 2e étape à venir.</p>
+            <button type="button" class="btn btn-primary" id="retireConfirmBtn" data-i18n="app.retireConfirm" style="width:100%;">Confirmer le retrait</button>
+          </div>
         </div>
 
         <!-- BROWSE PHASE -->
@@ -503,6 +520,12 @@
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
       'app.delegateSuccess': 'Délégation réussie ! Tu délègues maintenant à {validator}.',
       'app.activeDelegation': 'Tu délègues actuellement à {validator}',
+      'app.retireToggle': 'Retirer mon stake',
+      'app.retireAmtLabel': 'Montant à retirer (NIM)',
+      'app.retireHint': 'Cette étape « retire » ton stake — les fonds ne reviennent dans ton wallet qu\'après un délai d\'attente du réseau (plusieurs heures), via une 2e étape à venir.',
+      'app.retireConfirm': 'Confirmer le retrait',
+      'app.retireInvalidAmount': 'Indique un montant valide à retirer.',
+      'app.retireSuccess': 'Retrait initié ! Tes fonds seront disponibles dans ton wallet après le délai d\'attente du réseau.',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Détail technique',
       'app.delegateFailedDetail': 'Détail technique :',
@@ -588,6 +611,12 @@
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
       'app.delegateSuccess': 'Delegation successful! You\'re now delegating to {validator}.',
       'app.activeDelegation': 'You\'re currently delegating to {validator}',
+      'app.retireToggle': 'Retire my stake',
+      'app.retireAmtLabel': 'Amount to retire (NIM)',
+      'app.retireHint': 'This step "retires" your stake — funds only return to your wallet after a network waiting period (several hours), via an upcoming 2nd step.',
+      'app.retireConfirm': 'Confirm withdrawal',
+      'app.retireInvalidAmount': 'Enter a valid amount to retire.',
+      'app.retireSuccess': 'Withdrawal initiated! Your funds will be available in your wallet after the network waiting period.',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Technical detail',
       'app.delegateFailedDetail': 'Technical detail:',
@@ -1540,8 +1569,8 @@
   // ---------- success modal (stays until closed or auto-dismisses) ----------
   var successModalOverlay = $('successModalOverlay');
   var successModalTimer = null;
-  function showSuccessModal(validatorName){
-    $('successModalHuman').textContent = t('app.delegateSuccess').replace('{validator}', validatorName);
+  function showSuccessModal(message){
+    $('successModalHuman').textContent = message;
     successModalOverlay.hidden = false;
     clearTimeout(successModalTimer);
     successModalTimer = setTimeout(closeSuccessModal, 6000);
@@ -1556,6 +1585,34 @@
   });
   document.addEventListener('keydown', function(ev){
     if (ev.key === 'Escape' && !successModalOverlay.hidden) closeSuccessModal();
+  });
+
+  // ---------- retire stake (step 1 of unstake — see app.retireHint) ----------
+  var retireToggleBtn = $('retireToggleBtn'), retireForm = $('retireForm'), retireConfirmBtn = $('retireConfirmBtn');
+  retireToggleBtn.addEventListener('click', function(){
+    retireForm.hidden = !retireForm.hidden;
+  });
+  retireConfirmBtn.addEventListener('click', function(){
+    var amt = parseFloat($('retireAmt').value);
+    if (!(amt > 0) || !state.nimiq){
+      showErrorModal(t('app.retireInvalidAmount'), '');
+      return;
+    }
+    retireConfirmBtn.disabled = true;
+    state.nimiq.sendRetireStakeTransaction({
+      retireStake: Math.round(amt * 100000)
+    }).then(function(){
+      showSuccessModal(t('app.retireSuccess'));
+      retireForm.hidden = true;
+      $('retireAmt').value = '';
+      retireConfirmBtn.disabled = false;
+    }).catch(function(err){
+      console.warn('Validator Swipe: retire stake failed.', err);
+      var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
+      var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
+      showErrorModal(humanMsg, rawDetail);
+      retireConfirmBtn.disabled = false;
+    });
   });
 
   function metricOrDash(value, suffix){
@@ -1713,7 +1770,7 @@
       bookmarked.splice(shortIdx, 1);
       updateShortlistCount();
       burstConfetti(90);
-      showSuccessModal(v.name);
+      showSuccessModal(t('app.delegateSuccess').replace('{validator}', v.name));
       updateActiveDelegationBanner();
       renderShortlistCard();
     }
@@ -1802,6 +1859,7 @@
       state.nimiq = nimiq;
       $('statusText').textContent = t('app.statusLive');
       $('statusPill').classList.add('live');
+      $('retireBox').hidden = false;
     }).catch(function(err){
       console.warn('Validator Swipe: Nimiq Pay SDK unavailable, staying in demo mode.', err);
     });
