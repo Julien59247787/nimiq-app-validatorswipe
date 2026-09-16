@@ -21,6 +21,7 @@
     --violet: #0582ca;
     --violet-strong: #045a91;
     --warn: #c8890a;
+    --nimiq-gold: #e9b213;
     --shadow: 0 20px 48px -24px rgba(27,30,36,0.3);
     --shadow-sm: 0 8px 20px -12px rgba(27,30,36,0.24);
     --radius: 20px;
@@ -125,7 +126,8 @@
   .swipe-btn.pass{ color:var(--text-faint); }
   .swipe-btn.delegate{ color:var(--signal-strong); border-color:var(--signal); }
   .swipe-btn.nav{ color:var(--text-faint); flex:.6; font-size:1.05rem; }
-  .swipe-btn.star{ color:var(--warn); border-color:var(--warn); }
+  .swipe-btn.star{ color:var(--nimiq-gold); border-color:var(--nimiq-gold); }
+  .v-card .vtag.known{ color:var(--nimiq-gold); font-weight:700; }
   .swipe-btn:disabled{ opacity:.35; cursor:not-allowed; }
 
   .phase-tabs{ display:flex; gap:6px; margin:0 6px 12px; }
@@ -1508,7 +1510,7 @@
 
   function cardHtml(v){
     return '<div class="vname">' + v.name + '</div>' +
-      '<div class="vtag">' + (v.isKnown ? t('app.knownValidatorTag') : t('app.validatorTag')) + '</div>' +
+      '<div class="vtag' + (v.isKnown ? ' known' : '') + '">' + (v.isKnown ? t('app.knownValidatorTag') : t('app.validatorTag')) + '</div>' +
       '<div class="v-metric">' +
         '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + metricOrDash(v.availability, '%') + '</b></div>' +
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.availability || 0) + '%"></div></div>' +
