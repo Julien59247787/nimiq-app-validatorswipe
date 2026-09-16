@@ -364,11 +364,6 @@
           </div>
           <p class="helptext" data-i18n="app.delegateHelptext">C'est ici, et seulement ici, qu'une vraie délégation part de ton wallet — jamais pendant le parcours large.</p>
         </div>
-
-        <div class="shortlist">
-          <div class="shortlist-title" data-i18n="app.delegatedTitle">Délégation actuelle</div>
-          <div id="shortlistList"><p class="shortlist-empty" data-i18n="app.delegatedEmpty">Aucune délégation pour l'instant.</p></div>
-        </div>
       </div>
     </div>
   </div>
@@ -1696,8 +1691,6 @@
   var shortlistCardStack = $('shortlistCardStack'), delegateBtn = $('delegateBtn'), removeBtn = $('removeBtn'), shortlistBackBtn = $('shortlistBackBtn'), shortlistNextBtn = $('shortlistNextBtn');
   var browseTabBtn = $('browseTabBtn'), shortlistTabBtn = $('shortlistTabBtn'), shortlistCountEl = $('shortlistCount');
   var browsePhase = $('browsePhase'), shortlistPhase = $('shortlistPhase');
-  var shortlistList = $('shortlistList');
-
   // ---------- error modal (human message first, raw detail collapsible) ----------
   var errorModalOverlay = $('errorModalOverlay');
   function showErrorModal(humanMsg, techDetail){
@@ -1898,18 +1891,6 @@
     shortlistCountEl.textContent = String(bookmarked.length);
   }
 
-  function pushDelegated(v){
-    // Reflects current on-chain state, not a history: a re-delegation
-    // (sendUpdateStakerTransaction) moves the SAME stake to a new
-    // validator, it doesn't add a second one — so this always shows
-    // exactly one entry, replaced in place rather than accumulated.
-    shortlistList.innerHTML = '';
-    var item = document.createElement('div');
-    item.className = 'shortlist-item';
-    item.innerHTML = '<span>' + v.name + '</span><span class="badge">' + t('app.delegatedBadge') + '</span>';
-    shortlistList.appendChild(item);
-  }
-
   var activeDelegationBanner = $('activeDelegationBanner');
   function updateActiveDelegationBanner(){
     if (!delegated.length){ activeDelegationBanner.hidden = true; return; }
@@ -1989,7 +1970,6 @@
 
     function onDelegated(isSwitch){
       delegated.push(v);
-      pushDelegated(v);
       bookmarked.splice(shortIdx, 1);
       updateShortlistCount();
       burstConfetti(90);
