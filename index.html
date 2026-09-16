@@ -537,6 +537,7 @@
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
       'app.delegateFailedConflict': 'Il semble y avoir un conflit avec un stake déjà en cours sur ce wallet — réessaie dans quelques instants.',
       'app.delegateSuccess': 'Délégation réussie ! Tu délègues maintenant à {validator}.',
+      'app.delegateSwitchSuccess': 'Basculé ! Ton stake existant délègue maintenant à {validator}.',
       'app.activeDelegation': 'Tu délègues actuellement à {validator}',
       'app.retireToggle': 'Retirer mon stake',
       'app.retireAmtLabel': 'Montant à retirer (NIM)',
@@ -634,6 +635,7 @@
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
       'app.delegateFailedConflict': 'There seems to be a conflict with a stake already in progress on this wallet — try again in a moment.',
       'app.delegateSuccess': 'Delegation successful! You\'re now delegating to {validator}.',
+      'app.delegateSwitchSuccess': 'Switched! Your existing stake now delegates to {validator}.',
       'app.activeDelegation': 'You\'re currently delegating to {validator}',
       'app.retireToggle': 'Retire my stake',
       'app.retireAmtLabel': 'Amount to retire (NIM)',
@@ -1962,13 +1964,13 @@
     var stakeNim = parseFloat(stakeAmtInput.value);
     var card = $('currentShortlistCard');
 
-    function onDelegated(){
+    function onDelegated(isSwitch){
       delegated.push(v);
       pushDelegated(v);
       bookmarked.splice(shortIdx, 1);
       updateShortlistCount();
       burstConfetti(90);
-      showSuccessModal(t('app.delegateSuccess').replace('{validator}', v.name));
+      showSuccessModal((isSwitch ? t('app.delegateSwitchSuccess') : t('app.delegateSuccess')).replace('{validator}', v.name));
       updateActiveDelegationBanner();
       fetchStakerStatus();
       renderShortlistCard();
@@ -1980,22 +1982,31 @@
       delegateBtn.disabled = true;
       var stakeValueLuna = Math.round(stakeNim * 100000);
 
-      function fireDelegation(hasExistingStaker){
+      function fireDelegation(hasExistingStaker, currentDelegation){
         // Nimiq's staking contract only allows ONE staker object per
         // address (confirmed via albatross-doc: "Create" makes the staker
         // object, "Stake" adds to an existing one and reuses its current
-        // delegation). Calling sendNewStakerTransaction when a staker
-        // already exists (even mid-retire) fails with "Transaction
+        // delegation, "UpdateStaker" changes which validator an existing
+        // staker delegates to). Calling sendNewStakerTransaction when a
+        // staker already exists (even mid-retire) fails with "Transaction
         // invalidated during transaction" (seen on real device,
-        // 2026-09-16) — so once staker-status confirms one exists, we must
-        // use sendStakeTransaction instead. Known limitation: this cannot
-        // switch delegation to a different validator (sendStakeTransaction
-        // has no delegation param) — only sendUpdateStakerTransaction can,
-        // which isn't wired up yet.
-        var call = hasExistingStaker
-          ? state.nimiq.sendStakeTransaction({ value: stakeValueLuna })
-          : state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
-        call.then(onDelegated).catch(function(err){
+        // 2026-09-16) — so once staker-status confirms one exists we pick
+        // between Stake (same validator, adds funds) and UpdateStaker
+        // (different validator, moves the whole existing stake — the core
+        // "swipe to a new validator" concept of this app). UpdateStaker has
+        // no value param: it re-targets the existing balance, it doesn't
+        // also add the amount typed in the form.
+        var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
+        var isSwitch = hasExistingStaker && currentDelegation && norm(currentDelegation) !== norm(v.address);
+        var call;
+        if (!hasExistingStaker){
+          call = state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
+        } else if (isSwitch){
+          call = state.nimiq.sendUpdateStakerTransaction({ newDelegation: v.address });
+        } else {
+          call = state.nimiq.sendStakeTransaction({ value: stakeValueLuna });
+        }
+        call.then(function(){ onDelegated(isSwitch); }).catch(function(err){
           // Confirmed via real-device test: the confirm screen already shows
           // the validator address correctly, so the failure happens inside
           // Nimiq Pay's own transaction build/sign step after confirmation —
@@ -2024,13 +2035,13 @@
         fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
           return res.json();
         }).then(function(data){
-          fireDelegation(!!(data && data.found));
+          fireDelegation(!!(data && data.found), data && data.delegation);
         }).catch(function(err){
           console.warn('Validator Swipe: could not check staker status before delegating, assuming none.', err);
-          fireDelegation(false);
+          fireDelegation(false, null);
         });
       } else {
-        fireDelegation(false);
+        fireDelegation(false, null);
       }
       return;
     }
