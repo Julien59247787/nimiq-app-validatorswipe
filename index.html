@@ -227,16 +227,14 @@
   .credit-claude-logo{ display:block; width:14px; height:14px; max-width:14px; max-height:14px; flex:0 0 auto; animation:credit-claude-pulse 1.6s ease-in-out infinite; }
   @keyframes credit-claude-pulse{ 0%,100%{ transform:scale(.82); } 50%{ transform:scale(1.18); } }
   .credit-author-fr{ display:inline-block; font-weight:900; letter-spacing:.015em; background:linear-gradient(90deg,#0055A4 0%,#0055A4 33.333%,#FFFFFF 33.333%,#FFFFFF 66.666%,#EF4135 66.666%,#EF4135 100%); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; filter:drop-shadow(0 0 1px rgba(12,18,38,.5)); }
-  .credit-discord-link{ display:inline-flex; align-items:center; justify-content:center; min-width:38px; min-height:38px; padding:5px; border-radius:8px; color:inherit; text-decoration:none; transition:transform .15s, opacity .15s; background:#5865F2; }
-  .credit-discord-link:hover{ transform:translateY(-1px) scale(1.04); opacity:.88; }
-  .credit-discord-link img{ display:block; width:28px; height:28px; max-width:28px; object-fit:contain; filter:brightness(0) invert(1); }
+  .credit-discord-link{ display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:5px 12px; border-radius:999px; border:1.5px solid #5865F2; color:#5865F2; font-weight:700; font-size:.76rem; text-decoration:none; transition:transform .15s, opacity .15s, background-color .15s; }
+  .credit-discord-link:hover{ transform:translateY(-1px) scale(1.04); background:#5865F2; color:#fff; }
   .credit-mascot{ display:block; width:24px; height:24px; max-width:24px; object-fit:contain; opacity:.85; border-radius:6px; transition:transform .15s, opacity .15s; }
   .credit-mascot:hover{ transform:translateY(-1px) scale(1.06); opacity:1; }
   @media (max-width:640px){
     .credit-footer{ flex-direction:column; gap:.3rem; padding:16px 12px; }
     .credit-separator{ display:none; }
-    .credit-discord-link{ min-height:44px; padding:8px 14px; }
-    .credit-discord-link img{ width:30px; height:30px; max-width:30px; }
+    .credit-discord-link{ min-height:44px; padding:8px 16px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -463,9 +461,7 @@
   <span><span data-i18n="footer.madeWith">Made with</span> <span class="credit-heart" aria-label="amour" data-i18n-aria="footer.loveAria">&#10084;&#65039;</span> <span data-i18n="footer.by">by</span> <span class="credit-author-fr" aria-label="@Ju, couleurs du drapeau francais">@Ju</span> <span class="credit-author-and" aria-hidden="true">&amp;</span> <span class="credit-author-claude" aria-label="Claude"><svg class="credit-claude-logo" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g stroke="#D97757" stroke-width="3.4" stroke-linecap="round"><line x1="12" y1="12" x2="12" y2="2" transform="rotate(0 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(30 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(60 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(90 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(120 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(150 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(180 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(210 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(240 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(270 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(300 12 12)"></line><line x1="12" y1="12" x2="12" y2="2" transform="rotate(330 12 12)"></line></g></svg></span></span>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <span data-i18n="footer.joinMe">Join me on</span>
-  <a class="credit-discord-link" href="https://discord.gg/96gHeaZYRH" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le serveur Discord de @Ju" data-i18n-aria="footer.discordAria" title="Rejoindre le serveur Discord" data-i18n-title="footer.discordTitle">
-    <img src="discord-logo.png" alt="Discord" width="92" height="24" loading="lazy" decoding="async">
-  </a>
+  <a class="credit-discord-link" href="https://discord.gg/96gHeaZYRH" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le serveur Discord de @Ju" data-i18n-aria="footer.discordAria" title="Rejoindre le serveur Discord" data-i18n-title="footer.discordTitle">Discord ↗</a>
   <img class="credit-mascot" src="tux-nimiq.png" alt="Mascotte @Ju &amp; Nimiq" title="@Ju &amp; Nimiq" width="24" height="24" loading="lazy" decoding="async">
 </div>
 
