@@ -297,6 +297,7 @@
             <button class="swipe-btn nav" id="shortlistBackBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
             <button class="swipe-btn pass" id="removeBtn" data-i18n-aria="app.removeAria" aria-label="Retirer des favoris">🗑️</button>
             <button class="swipe-btn delegate" id="delegateBtn" data-i18n-aria="app.delegateAria" aria-label="Déléguer">🛡️</button>
+            <button class="swipe-btn nav" id="shortlistNextBtn" data-i18n-aria="app.nextAria" aria-label="Suivant">▶</button>
           </div>
           <p class="helptext" data-i18n="app.delegateHelptext">C'est ici, et seulement ici, qu'une vraie délégation part de ton wallet — jamais pendant le parcours large.</p>
         </div>
@@ -449,6 +450,7 @@
       'app.backAria': 'Précédent',
       'app.shortlistAria': 'Mettre de côté',
       'app.removeAria': 'Retirer des favoris',
+      'app.nextAria': 'Suivant',
       'app.browseHelptext': 'Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.',
       'app.delegateHelptext': 'C\'est ici, et seulement ici, qu\'une vraie délégation part de ton wallet — jamais pendant le parcours large.',
       'app.shortlistEmptyHint': 'Aucun favori pour l\'instant.<br>Reviens à "Parcourir" pour en mettre de côté.',
@@ -531,6 +533,7 @@
       'app.backAria': 'Previous',
       'app.shortlistAria': 'Set aside',
       'app.removeAria': 'Remove from favorites',
+      'app.nextAria': 'Next',
       'app.browseHelptext': 'Setting aside costs nothing and delegates nothing — it just adds the validator to your favorites to compare before choosing.',
       'app.delegateHelptext': 'This is the only place a real delegation leaves your wallet — never while browsing.',
       'app.shortlistEmptyHint': 'No favorites yet.<br>Go back to "Browse" to set some aside.',
@@ -1477,7 +1480,7 @@
   var delegated = [];
   var $ = function(id){ return document.getElementById(id); };
   var cardStack = $('cardStack'), passBtn = $('passBtn'), shortlistBtn = $('shortlistBtn'), backBtn = $('backBtn');
-  var shortlistCardStack = $('shortlistCardStack'), delegateBtn = $('delegateBtn'), removeBtn = $('removeBtn'), shortlistBackBtn = $('shortlistBackBtn');
+  var shortlistCardStack = $('shortlistCardStack'), delegateBtn = $('delegateBtn'), removeBtn = $('removeBtn'), shortlistBackBtn = $('shortlistBackBtn'), shortlistNextBtn = $('shortlistNextBtn');
   var browseTabBtn = $('browseTabBtn'), shortlistTabBtn = $('shortlistTabBtn'), shortlistCountEl = $('shortlistCount');
   var browsePhase = $('browsePhase'), shortlistPhase = $('shortlistPhase');
   var shortlistList = $('shortlistList');
@@ -1543,7 +1546,7 @@
     if (!bookmarked.length){
       shortlistCardStack.innerHTML = '<div class="v-card" style="align-items:center; justify-content:center; text-align:center;">' +
         '<p style="color:var(--text-dim); font-size:.9rem;">' + t('app.shortlistEmptyHint') + '</p></div>';
-      delegateBtn.disabled = true; removeBtn.disabled = true; shortlistBackBtn.disabled = true;
+      delegateBtn.disabled = true; removeBtn.disabled = true; shortlistBackBtn.disabled = true; shortlistNextBtn.disabled = true;
       return;
     }
     if (shortIdx >= bookmarked.length) shortIdx = bookmarked.length - 1;
@@ -1556,6 +1559,7 @@
     shortlistCardStack.appendChild(card);
     delegateBtn.disabled = false; removeBtn.disabled = false;
     shortlistBackBtn.disabled = shortIdx === 0;
+    shortlistNextBtn.disabled = shortIdx >= bookmarked.length - 1;
   }
 
   function updateShortlistCount(){
@@ -1615,6 +1619,12 @@
   shortlistBackBtn.addEventListener('click', function(){
     if (shortIdx === 0) return;
     shortIdx--;
+    renderShortlistCard();
+  });
+
+  shortlistNextBtn.addEventListener('click', function(){
+    if (shortIdx >= bookmarked.length - 1) return;
+    shortIdx++;
     renderShortlistCard();
   });
 
