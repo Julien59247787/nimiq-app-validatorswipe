@@ -446,6 +446,7 @@
       'app.fee': 'Frais',
       'app.stakers': 'stakers',
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
+      'app.delegateFailedDetail': 'Détail technique :',
       'how.eyebrow': 'Comment ça marche',
       'how.title': 'Comparer, puis déléguer',
       'how.lead': 'Pensé pour quelqu\'un qui a de la NIM à faire fructifier mais ne veut pas éplucher un tableau de statistiques.',
@@ -523,6 +524,7 @@
       'app.fee': 'Fee',
       'app.stakers': 'stakers',
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
+      'app.delegateFailedDetail': 'Technical detail:',
       'how.eyebrow': 'How it works',
       'how.title': 'Compare, then delegate',
       'how.lead': 'Built for someone with NIM to put to work who doesn\'t want to pore over a stats table.',
@@ -1600,7 +1602,8 @@
         // "transaction already in progress" guard while it's still busy.
         // No auto-retry here; single clean attempt only.
         console.warn('Validator Swipe: delegation failed.', err);
-        alert(t('app.delegateFailed'));
+        var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
+        alert(t('app.delegateFailed') + (rawDetail ? '\n\n' + t('app.delegateFailedDetail') + ' ' + rawDetail : ''));
         delegateBtn.disabled = false;
       });
       return;
