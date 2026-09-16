@@ -16,8 +16,8 @@
     --text: #1b1e24;
     --text-dim: #5c6270;
     --text-faint: #91969f;
-    --signal: #1f9d6b;
-    --signal-strong: #157a53;
+    --signal: #e9b213;
+    --signal-strong: #b8860b;
     --violet: #0582ca;
     --violet-strong: #045a91;
     --warn: #c8890a;
@@ -30,7 +30,7 @@
     :root:not([data-theme="light"]){
       --bg: #12141a; --surface: #1a1d25; --surface-2: #212530; --border: #2f3440;
       --text: #eef0f4; --text-dim: #b7bcc7; --text-faint: #7d8390;
-      --signal: #34d399; --signal-strong: #6ee7b3; --violet: #4fa8da; --violet-strong: #81c0e4;
+      --signal: #f7cc53; --signal-strong: #f8d66d; --violet: #4fa8da; --violet-strong: #81c0e4;
       --warn: #f0b429;
       --shadow: 0 20px 48px -20px rgba(0,0,0,0.6); --shadow-sm: 0 8px 20px -12px rgba(0,0,0,0.55);
     }
@@ -38,7 +38,7 @@
   :root[data-theme="dark"]{
     --bg: #12141a; --surface: #1a1d25; --surface-2: #212530; --border: #2f3440;
     --text: #eef0f4; --text-dim: #b7bcc7; --text-faint: #7d8390;
-    --signal: #34d399; --signal-strong: #6ee7b3; --violet: #4fa8da; --violet-strong: #81c0e4;
+    --signal: #f7cc53; --signal-strong: #f8d66d; --violet: #4fa8da; --violet-strong: #81c0e4;
     --warn: #f0b429;
     --shadow: 0 20px 48px -20px rgba(0,0,0,0.6); --shadow-sm: 0 8px 20px -12px rgba(0,0,0,0.55);
   }
@@ -282,6 +282,7 @@
             <button class="swipe-btn nav" id="backBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
             <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
             <button class="swipe-btn star" id="shortlistBtn" data-i18n-aria="app.shortlistAria" aria-label="Mettre de côté">⭐</button>
+            <button class="swipe-btn nav" id="nextBtn" data-i18n-aria="app.nextAria" aria-label="Suivant">▶</button>
           </div>
           <p class="helptext" data-i18n="app.sampleDataNote">Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.</p>
           <p class="helptext" data-i18n="app.browseHelptext">Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.</p>
@@ -1481,7 +1482,7 @@
   var bookmarked = [];
   var delegated = [];
   var $ = function(id){ return document.getElementById(id); };
-  var cardStack = $('cardStack'), passBtn = $('passBtn'), shortlistBtn = $('shortlistBtn'), backBtn = $('backBtn');
+  var cardStack = $('cardStack'), passBtn = $('passBtn'), shortlistBtn = $('shortlistBtn'), backBtn = $('backBtn'), nextBtn = $('nextBtn');
   var shortlistCardStack = $('shortlistCardStack'), delegateBtn = $('delegateBtn'), removeBtn = $('removeBtn'), shortlistBackBtn = $('shortlistBackBtn'), shortlistNextBtn = $('shortlistNextBtn');
   var browseTabBtn = $('browseTabBtn'), shortlistTabBtn = $('shortlistTabBtn'), shortlistCountEl = $('shortlistCount');
   var browsePhase = $('browsePhase'), shortlistPhase = $('shortlistPhase');
@@ -1603,6 +1604,7 @@
   });
 
   passBtn.addEventListener('click', function(){ advanceCard(); });
+  nextBtn.addEventListener('click', function(){ advanceCard(); });
 
   shortlistBtn.addEventListener('click', function(){
     var v = VALIDATORS[idx];
