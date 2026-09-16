@@ -242,12 +242,14 @@
     .credit-discord-link{ min-height:44px; padding:8px 16px; }
     /* On a real phone (incl. inside Nimiq Pay) there's no desktop "device
        mockup" to frame — the .phone block IS the whole usable screen, so
-       let it use the full viewport width instead of the 360px cap meant
-       for the marketing page's decorative preview. The 28px side padding
-       from .wrap (hero section) is also cancelled here so .phone reaches
-       the true screen edges rather than leaving it framed by that gutter. */
-    .demo-stage{ margin:0 -28px; }
-    .phone{ max-width:none; border-radius:0; border-left:none; border-right:none; }
+       let it use (nearly) the full viewport width instead of the 360px
+       cap meant for the marketing page's decorative preview. Most of the
+       28px side padding from .wrap (hero section) is cancelled, but a
+       small ~14px gutter is kept — content flush against the edges looked
+       wrong against rounded-corner phone screens. Rounded corners/border
+       on .phone stay, since it's no longer edge-to-edge. */
+    .demo-stage{ margin:0 -14px; }
+    .phone{ max-width:none; }
   }
 
   @media (prefers-reduced-motion: reduce){
