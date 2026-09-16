@@ -145,6 +145,7 @@
   .shortlist-item .badge{ font-size:.68rem; font-weight:700; color:var(--signal-strong); }
 
   .helptext{ margin:12px 6px 0; font-size:.72rem; color:var(--text-faint); line-height:1.4; }
+  .browse-guidance{ margin:12px 6px 0; padding:10px 14px; border-radius:12px; background:var(--surface-2); border:1px solid var(--border); font-size:.8rem; color:var(--text-dim); text-align:center; }
 
   canvas#confetti{ position:fixed; inset:0; pointer-events:none; z-index:999; }
 
@@ -328,10 +329,7 @@
             <span id="validatorsListErrorTech" style="display:block; font-size:.78rem; opacity:.75; font-family:'SFMono-Regular',Consolas,monospace;"></span>
           </p>
           <div class="card-stack" id="cardStack"></div>
-          <div class="field" style="margin:12px 6px 0;">
-            <label for="stakeAmt" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
-            <input type="number" id="stakeAmt" value="100" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
-          </div>
+          <p class="browse-guidance" data-i18n="app.browseGuidance">Sélectionne tes validateurs préférés en les mettant en favoris (⭐).</p>
           <div class="swipe-actions">
             <button class="swipe-btn nav" id="backBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
             <button class="swipe-btn pass" id="passBtn" data-i18n-aria="app.passAria" aria-label="Passer">✕</button>
@@ -519,6 +517,7 @@
       'app.shortlistEmptyHint': 'Aucun favori pour l\'instant.<br>Reviens à "Parcourir" pour en mettre de côté.',
       'app.delegatedTitle': 'Délégations effectuées',
       'app.delegatedEmpty': 'Aucune délégation pour l\'instant.',
+      'app.browseGuidance': 'Sélectionne tes validateurs préférés en les mettant en favoris (⭐).',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
       'app.validatorsListError': 'Impossible de charger la liste complète des validateurs — affichage limité aux 2 nœuds connus.',
       'app.balanceHint': 'Vérifie que ce montant est bien disponible dans ton wallet Nimiq Pay avant de confirmer — l\'app ne peut pas encore lire ton solde.',
@@ -617,6 +616,7 @@
       'app.shortlistEmptyHint': 'No favorites yet.<br>Go back to "Browse" to set some aside.',
       'app.delegatedTitle': 'Delegations made',
       'app.delegatedEmpty': 'No delegation yet.',
+      'app.browseGuidance': 'Select your favorite validators by starring them (⭐).',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
       'app.validatorsListError': 'Could not load the full validator list — showing only the 2 known nodes.',
       'app.balanceHint': 'Make sure this amount is actually available in your Nimiq Pay wallet before confirming — the app can\'t read your balance yet.',
