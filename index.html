@@ -446,6 +446,7 @@
       'app.fee': 'Frais',
       'app.stakers': 'stakers',
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
+      'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
       'app.delegateFailedDetail': 'Détail technique :',
       'how.eyebrow': 'Comment ça marche',
       'how.title': 'Comparer, puis déléguer',
@@ -524,6 +525,7 @@
       'app.fee': 'Fee',
       'app.stakers': 'stakers',
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
+      'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
       'app.delegateFailedDetail': 'Technical detail:',
       'how.eyebrow': 'How it works',
       'how.title': 'Compare, then delegate',
@@ -1603,7 +1605,13 @@
         // No auto-retry here; single clean attempt only.
         console.warn('Validator Swipe: delegation failed.', err);
         var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
-        alert(t('app.delegateFailed') + (rawDetail ? '\n\n' + t('app.delegateFailedDetail') + ' ' + rawDetail : ''));
+        // "expected instance of Address" has been confirmed (real-device
+        // test, 2026-09-16) to actually mean "insufficient balance" in
+        // Nimiq Pay's current build — the raw message is misleading to a
+        // non-technical user, so show a human explanation first and keep
+        // the raw detail as a secondary line for debugging.
+        var humanMsg = /address/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
+        alert(humanMsg + (rawDetail ? '\n\n' + t('app.delegateFailedDetail') + ' ' + rawDetail : ''));
         delegateBtn.disabled = false;
       });
       return;
