@@ -1436,8 +1436,11 @@
       if (!list.length) return;
       VALIDATORS = list.map(function(v){
         var known = KNOWN_VALIDATORS[v.address];
+        // Prefer a published validator name from the API (v.name) once
+        // NIMIQ-BACKEND exposes it — falls back to the address short form
+        // until then. Our 2 known nodes still use their hardcoded name.
         return {
-          name: known ? known.name : shortAddr(v.address),
+          name: known ? known.name : (v.name || shortAddr(v.address)),
           isKnown: !!known,
           address: v.address,
           availability: v.availability != null ? v.availability * 100 : null,
