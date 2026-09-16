@@ -178,6 +178,15 @@
   pre.code .s{ color:#34d399; }
   pre.code .c{ color:#7d8390; }
 
+  .error-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:200; padding:20px; }
+  .error-modal-overlay[hidden]{ display:none; }
+  .error-modal{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px; max-width:420px; width:100%; }
+  .error-modal-human{ margin:0 0 14px; font-weight:700; font-size:1rem; color:var(--text); line-height:1.4; }
+  .error-modal-tech{ margin:0 0 18px; }
+  .error-modal-tech summary{ cursor:pointer; font-size:.78rem; color:var(--text-faint); user-select:none; }
+  .error-modal-tech p{ margin:8px 0 0; font-size:.78rem; color:var(--text-dim); font-family:'SFMono-Regular',Consolas,monospace; line-height:1.5; word-break:break-word; }
+  #errorModalOkBtn{ width:100%; }
+
   footer{ padding:46px 0 60px; border-top:1px solid var(--border); }
   .footer-grid{ display:flex; justify-content:space-between; align-items:flex-start; gap:24px; flex-wrap:wrap; }
   footer .brand{ font-size:1rem; }
@@ -258,7 +267,10 @@
 
         <!-- BROWSE PHASE -->
         <div id="browsePhase">
-          <p class="helptext" id="validatorsListError" style="display:none; color:var(--warn);"></p>
+          <p class="helptext" id="validatorsListError" style="display:none; color:var(--warn);">
+            <strong id="validatorsListErrorHuman" style="display:block;"></strong>
+            <span id="validatorsListErrorTech" style="display:block; font-size:.78rem; opacity:.75; font-family:'SFMono-Regular',Consolas,monospace;"></span>
+          </p>
           <div class="card-stack" id="cardStack"></div>
           <div class="field" style="margin:12px 6px 0;">
             <label for="stakeAmt" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
@@ -399,6 +411,17 @@
   <img class="credit-mascot" src="tux-nimiq.png" alt="Mascotte @Ju &amp; Nimiq" title="@Ju &amp; Nimiq" width="24" height="24" loading="lazy" decoding="async">
 </div>
 
+<div class="error-modal-overlay" id="errorModalOverlay" hidden>
+  <div class="error-modal" role="alertdialog" aria-modal="true" aria-labelledby="errorModalHuman">
+    <p class="error-modal-human" id="errorModalHuman"></p>
+    <details class="error-modal-tech" id="errorModalTechWrap">
+      <summary data-i18n="app.errorModalTechToggle">Détail technique</summary>
+      <p id="errorModalTech"></p>
+    </details>
+    <button type="button" class="btn btn-primary" id="errorModalOkBtn" data-i18n="app.errorModalOk">OK</button>
+  </div>
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -449,6 +472,8 @@
       'app.stakers': 'stakers',
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
+      'app.errorModalOk': 'OK',
+      'app.errorModalTechToggle': 'Détail technique',
       'app.delegateFailedDetail': 'Détail technique :',
       'how.eyebrow': 'Comment ça marche',
       'how.title': 'Comparer, puis déléguer',
@@ -529,6 +554,8 @@
       'app.stakers': 'stakers',
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
+      'app.errorModalOk': 'OK',
+      'app.errorModalTechToggle': 'Technical detail',
       'app.delegateFailedDetail': 'Technical detail:',
       'how.eyebrow': 'How it works',
       'how.title': 'Compare, then delegate',
@@ -1433,7 +1460,8 @@
       var box = $('validatorsListError');
       if (box){
         var detail = (err && err.message) || String(err);
-        box.textContent = t('app.validatorsListError') + ' ' + t('app.delegateFailedDetail') + ' ' + detail;
+        $('validatorsListErrorHuman').textContent = t('app.validatorsListError');
+        $('validatorsListErrorTech').textContent = t('app.delegateFailedDetail') + ' ' + detail;
         box.style.display = 'block';
       }
     });
@@ -1453,6 +1481,23 @@
   var browseTabBtn = $('browseTabBtn'), shortlistTabBtn = $('shortlistTabBtn'), shortlistCountEl = $('shortlistCount');
   var browsePhase = $('browsePhase'), shortlistPhase = $('shortlistPhase');
   var shortlistList = $('shortlistList');
+
+  // ---------- error modal (human message first, raw detail collapsible) ----------
+  var errorModalOverlay = $('errorModalOverlay');
+  function showErrorModal(humanMsg, techDetail){
+    $('errorModalHuman').textContent = humanMsg;
+    $('errorModalTech').textContent = techDetail || '';
+    $('errorModalTechWrap').hidden = !techDetail;
+    errorModalOverlay.hidden = false;
+  }
+  function closeErrorModal(){ errorModalOverlay.hidden = true; }
+  $('errorModalOkBtn').addEventListener('click', closeErrorModal);
+  errorModalOverlay.addEventListener('click', function(ev){
+    if (ev.target === errorModalOverlay) closeErrorModal();
+  });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && !errorModalOverlay.hidden) closeErrorModal();
+  });
 
   function metricOrDash(value, suffix){
     return value != null ? value.toFixed(2) + suffix : '—';
@@ -1620,7 +1665,7 @@
         // non-technical user, so show a human explanation first and keep
         // the raw detail as a secondary line for debugging.
         var humanMsg = /address/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
-        alert(humanMsg + (rawDetail ? '\n\n' + t('app.delegateFailedDetail') + ' ' + rawDetail : ''));
+        showErrorModal(humanMsg, rawDetail);
         delegateBtn.disabled = false;
       });
       return;
