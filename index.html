@@ -180,6 +180,10 @@
   pre.code .s{ color:#34d399; }
   pre.code .c{ color:#7d8390; }
 
+  .active-delegation-banner{ display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, var(--nimiq-gold) 14%, transparent); border:1px solid var(--nimiq-gold); color:var(--nimiq-gold); font-weight:700; font-size:.85rem; }
+  .active-delegation-banner[hidden]{ display:none; }
+  .active-delegation-icon{ font-size:1rem; }
+
   .success-modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:201; padding:20px; }
   .success-modal-overlay[hidden]{ display:none; }
   .success-modal{ background:var(--surface); border:2px solid var(--nimiq-gold); border-radius:var(--radius); box-shadow:var(--shadow); padding:32px 24px; max-width:380px; width:100%; text-align:center; }
@@ -272,6 +276,11 @@
         <div class="phase-tabs">
           <button class="phase-tab-btn active" id="browseTabBtn" data-i18n="app.browseTab">Parcourir</button>
           <button class="phase-tab-btn" id="shortlistTabBtn"><span data-i18n="app.shortlistTab">Mes favoris</span> (<span id="shortlistCount">0</span>)</button>
+        </div>
+
+        <div class="active-delegation-banner" id="activeDelegationBanner" hidden>
+          <span class="active-delegation-icon" aria-hidden="true">🛡️</span>
+          <span id="activeDelegationText"></span>
         </div>
 
         <!-- BROWSE PHASE -->
@@ -493,6 +502,7 @@
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
       'app.delegateSuccess': 'Délégation réussie ! Tu délègues maintenant à {validator}.',
+      'app.activeDelegation': 'Tu délègues actuellement à {validator}',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Détail technique',
       'app.delegateFailedDetail': 'Détail technique :',
@@ -577,6 +587,7 @@
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
       'app.delegateSuccess': 'Delegation successful! You\'re now delegating to {validator}.',
+      'app.activeDelegation': 'You\'re currently delegating to {validator}',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Technical detail',
       'app.delegateFailedDetail': 'Technical detail:',
@@ -1372,6 +1383,7 @@
         applyStaticTranslations();
         renderCard();
         renderShortlistCard();
+        updateActiveDelegationBanner();
         closeLangDropdown();
       });
     }
@@ -1618,6 +1630,14 @@
     shortlistList.insertBefore(item, shortlistList.firstChild);
   }
 
+  var activeDelegationBanner = $('activeDelegationBanner');
+  function updateActiveDelegationBanner(){
+    if (!delegated.length){ activeDelegationBanner.hidden = true; return; }
+    var latest = delegated[delegated.length - 1];
+    $('activeDelegationText').textContent = t('app.activeDelegation').replace('{validator}', latest.name);
+    activeDelegationBanner.hidden = false;
+  }
+
   function setPhase(phase){
     var browsing = phase === 'browse';
     browseTabBtn.classList.toggle('active', browsing);
@@ -1694,6 +1714,7 @@
       updateShortlistCount();
       burstConfetti(90);
       showSuccessModal(v.name);
+      updateActiveDelegationBanner();
       renderShortlistCard();
     }
 
