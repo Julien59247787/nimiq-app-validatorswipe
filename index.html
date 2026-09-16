@@ -183,6 +183,11 @@
   .active-delegation-banner{ display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, var(--nimiq-gold) 14%, transparent); border:1px solid var(--nimiq-gold); color:var(--nimiq-gold); font-weight:700; font-size:.85rem; }
   .active-delegation-banner[hidden]{ display:none; }
   .active-delegation-icon{ font-size:1rem; }
+  .my-stake-box{ margin:10px 6px 0; padding:12px 14px; border-radius:12px; background:var(--surface-2); border:1px solid var(--border); }
+  .my-stake-box[hidden]{ display:none; }
+  .my-stake-row{ display:flex; align-items:center; justify-content:space-between; font-size:.82rem; color:var(--text-dim); padding:4px 0; }
+  .my-stake-row[hidden]{ display:none; }
+  .my-stake-row b{ color:var(--text); font-family:'Fraunces',serif; }
   .retire-box{ margin:8px 6px 0; text-align:center; }
   .retire-box[hidden]{ display:none; }
   .retire-toggle{ background:none; border:none; color:var(--text-faint); font-size:.76rem; text-decoration:underline; cursor:pointer; font-family:'Sora',sans-serif; padding:4px; }
@@ -288,6 +293,22 @@
         <div class="active-delegation-banner" id="activeDelegationBanner" hidden>
           <span class="active-delegation-icon" aria-hidden="true">🛡️</span>
           <span id="activeDelegationText"></span>
+        </div>
+
+        <div class="my-stake-box" id="myStakeBox" hidden>
+          <div class="my-stake-row" id="myStakeActiveRow" hidden>
+            <span data-i18n="app.myStakeActiveLabel">Stake actif</span>
+            <b id="myStakeActiveValue"></b>
+          </div>
+          <div class="my-stake-row" id="myStakeInactiveRow" hidden>
+            <span data-i18n="app.myStakeInactiveLabel">En cours de retrait</span>
+            <b id="myStakeInactiveValue"></b>
+          </div>
+          <div class="my-stake-row" id="myStakeRetiredRow" hidden>
+            <span data-i18n="app.myStakeRetiredLabel">Prêt à récupérer</span>
+            <b id="myStakeRetiredValue"></b>
+          </div>
+          <button type="button" class="btn btn-primary" id="removeStakeBtn" data-i18n="app.removeStakeBtn" style="width:100%; margin-top:8px;" hidden>Récupérer mes fonds</button>
         </div>
 
         <div class="retire-box" id="retireBox" hidden>
@@ -526,6 +547,11 @@
       'app.retireConfirm': 'Confirmer le retrait',
       'app.retireInvalidAmount': 'Indique un montant valide à retirer.',
       'app.retireSuccess': 'Retrait initié ! Tes fonds seront disponibles dans ton wallet après le délai d\'attente du réseau.',
+      'app.myStakeActiveLabel': 'Stake actif',
+      'app.myStakeInactiveLabel': 'En cours de retrait',
+      'app.myStakeRetiredLabel': 'Prêt à récupérer',
+      'app.removeStakeBtn': 'Récupérer mes fonds',
+      'app.removeStakeSuccess': 'Fonds récupérés ! Ils sont de retour dans ton wallet Nimiq Pay.',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Détail technique',
       'app.delegateFailedDetail': 'Détail technique :',
@@ -617,6 +643,11 @@
       'app.retireConfirm': 'Confirm withdrawal',
       'app.retireInvalidAmount': 'Enter a valid amount to retire.',
       'app.retireSuccess': 'Withdrawal initiated! Your funds will be available in your wallet after the network waiting period.',
+      'app.myStakeActiveLabel': 'Active stake',
+      'app.myStakeInactiveLabel': 'Being withdrawn',
+      'app.myStakeRetiredLabel': 'Ready to claim',
+      'app.removeStakeBtn': 'Claim my funds',
+      'app.removeStakeSuccess': 'Funds claimed! They\'re back in your Nimiq Pay wallet.',
       'app.errorModalOk': 'OK',
       'app.errorModalTechToggle': 'Technical detail',
       'app.delegateFailedDetail': 'Technical detail:',
@@ -1660,12 +1691,74 @@
       retireForm.hidden = true;
       $('retireAmt').value = '';
       retireConfirmBtn.disabled = false;
+      fetchStakerStatus();
     }).catch(function(err){
       console.warn('Validator Swipe: retire stake failed.', err);
       var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
       var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
       showErrorModal(humanMsg, rawDetail);
       retireConfirmBtn.disabled = false;
+    });
+  });
+
+  // ---------- my stake (real on-chain state via NIMIQ-BACKEND RPC) ----------
+  var myStakeBox = $('myStakeBox'), removeStakeBtn = $('removeStakeBtn');
+  var lastStakerStatus = null;
+  function fetchStakerStatus(){
+    if (!state.myAddress) return;
+    fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
+      if (!res.ok) throw new Error('staker-status failed: ' + res.status);
+      return res.json();
+    }).then(function(data){
+      lastStakerStatus = data;
+      renderStakerStatus(data);
+    }).catch(function(err){
+      console.warn('Validator Swipe: could not load staker status.', err);
+    });
+  }
+  function renderStakerStatus(data){
+    if (!data || !data.found){
+      myStakeBox.hidden = true;
+      return;
+    }
+    myStakeBox.hidden = false;
+    var activeRow = $('myStakeActiveRow'), inactiveRow = $('myStakeInactiveRow'), retiredRow = $('myStakeRetiredRow');
+    if (data.active_balance_luna > 0){
+      activeRow.hidden = false;
+      $('myStakeActiveValue').textContent = formatStake(data.active_balance_luna);
+    } else {
+      activeRow.hidden = true;
+    }
+    if (data.inactive_balance_luna > 0){
+      inactiveRow.hidden = false;
+      $('myStakeInactiveValue').textContent = formatStake(data.inactive_balance_luna);
+    } else {
+      inactiveRow.hidden = true;
+    }
+    if (data.retired_balance_luna > 0){
+      retiredRow.hidden = false;
+      $('myStakeRetiredValue').textContent = formatStake(data.retired_balance_luna);
+      removeStakeBtn.hidden = false;
+    } else {
+      retiredRow.hidden = true;
+      removeStakeBtn.hidden = true;
+    }
+  }
+  removeStakeBtn.addEventListener('click', function(){
+    if (!state.nimiq || !lastStakerStatus || !(lastStakerStatus.retired_balance_luna > 0)) return;
+    removeStakeBtn.disabled = true;
+    state.nimiq.sendRemoveStakeTransaction({
+      value: lastStakerStatus.retired_balance_luna
+    }).then(function(){
+      showSuccessModal(t('app.removeStakeSuccess'));
+      removeStakeBtn.disabled = false;
+      fetchStakerStatus();
+    }).catch(function(err){
+      console.warn('Validator Swipe: remove stake failed.', err);
+      var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
+      var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
+      showErrorModal(humanMsg, rawDetail);
+      removeStakeBtn.disabled = false;
     });
   });
 
@@ -1826,6 +1919,7 @@
       burstConfetti(90);
       showSuccessModal(t('app.delegateSuccess').replace('{validator}', v.name));
       updateActiveDelegationBanner();
+      fetchStakerStatus();
       renderShortlistCard();
     }
 
@@ -1904,7 +1998,7 @@
   requestAnimationFrame(tick);
 
   // ---------- real Nimiq Pay detection ----------
-  var state = { nimiq: null };
+  var state = { nimiq: null, myAddress: null };
   function tryConnectNimiqPay(){
     if (!window.nimiqPay){ return; }
     import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk/+esm').then(function(mod){
@@ -1914,6 +2008,12 @@
       $('statusText').textContent = t('app.statusLive');
       $('statusPill').classList.add('live');
       $('retireBox').hidden = false;
+      nimiq.listAccounts().then(function(accounts){
+        state.myAddress = accounts && accounts[0];
+        fetchStakerStatus();
+      }).catch(function(err){
+        console.warn('Validator Swipe: could not list accounts.', err);
+      });
     }).catch(function(err){
       console.warn('Validator Swipe: Nimiq Pay SDK unavailable, staying in demo mode.', err);
     });
