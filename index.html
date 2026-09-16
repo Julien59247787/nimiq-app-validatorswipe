@@ -188,9 +188,12 @@
   .my-stake-row{ display:flex; align-items:center; justify-content:space-between; font-size:.82rem; color:var(--text-dim); padding:4px 0; }
   .my-stake-row[hidden]{ display:none; }
   .my-stake-row b{ color:var(--text); font-family:'Fraunces',serif; }
-  .retire-box{ margin:8px 6px 0; text-align:center; }
-  .retire-box[hidden]{ display:none; }
-  .retire-toggle{ background:none; border:none; color:var(--nimiq-gold); font-weight:700; font-size:.76rem; text-decoration:underline; cursor:pointer; font-family:'Sora',sans-serif; padding:4px; }
+  .my-stake-actions{ display:flex; gap:8px; margin-top:10px; }
+  .my-stake-actions[hidden]{ display:none; }
+  .my-stake-actions .btn{ flex:1; padding:10px 12px; font-size:.8rem; justify-content:center; }
+  .btn-retire{ background:transparent; border:1.5px solid var(--violet); color:var(--violet); }
+  .btn-retire:hover{ background:color-mix(in srgb, var(--violet) 12%, transparent); }
+  .btn-claim{ background:linear-gradient(135deg, var(--nimiq-gold) 0%, #b8860b 100%); border:none; color:#241c02; }
   .retire-form{ margin-top:8px; text-align:left; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:14px; }
   .retire-form[hidden]{ display:none; }
   .retire-form label{ display:block; font-size:.8rem; font-weight:700; margin-bottom:6px; color:var(--text); }
@@ -306,11 +309,10 @@
             <span data-i18n="app.myStakeRetiredLabel">Prêt à récupérer</span>
             <b id="myStakeRetiredValue"></b>
           </div>
-          <button type="button" class="btn btn-primary" id="removeStakeBtn" data-i18n="app.removeStakeBtn" style="width:100%; margin-top:8px;" hidden>Récupérer mes fonds</button>
-        </div>
-
-        <div class="retire-box" id="retireBox" hidden>
-          <button type="button" class="retire-toggle" id="retireToggleBtn" data-i18n="app.retireToggle">Retirer mon stake</button>
+          <div class="my-stake-actions" id="retireBox" hidden>
+            <button type="button" class="btn btn-retire" id="retireToggleBtn" data-i18n="app.retireToggle">Retirer mon stake</button>
+            <button type="button" class="btn btn-claim" id="removeStakeBtn" data-i18n="app.removeStakeBtn" hidden>Récupérer mes fonds</button>
+          </div>
           <div class="retire-form" id="retireForm" hidden>
             <label for="retireAmt" data-i18n="app.retireAmtLabel">Montant à retirer (NIM)</label>
             <input type="number" id="retireAmt" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-family:'Sora',sans-serif; font-size:.9rem;" />
