@@ -258,6 +258,7 @@
 
         <!-- BROWSE PHASE -->
         <div id="browsePhase">
+          <p class="helptext" id="validatorsListError" style="display:none; color:var(--warn);"></p>
           <div class="card-stack" id="cardStack"></div>
           <div class="field" style="margin:12px 6px 0;">
             <label for="stakeAmt" data-i18n="app.stakeAmtLabel">Montant à déléguer (NIM)</label>
@@ -431,6 +432,7 @@
       'app.delegatedTitle': 'Délégations effectuées',
       'app.delegatedEmpty': 'Aucune délégation pour l\'instant.',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
+      'app.validatorsListError': 'Impossible de charger la liste complète des validateurs — affichage limité aux 2 nœuds connus.',
       'app.balanceHint': 'Vérifie que ce montant est bien disponible dans ton wallet Nimiq Pay avant de confirmer — l\'app ne peut pas encore lire ton solde.',
       'app.delegating': 'Délégation en cours…',
       'app.delegateError': 'La délégation a échoué ou a été annulée.',
@@ -510,6 +512,7 @@
       'app.delegatedTitle': 'Delegations made',
       'app.delegatedEmpty': 'No delegation yet.',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
+      'app.validatorsListError': 'Could not load the full validator list — showing only the 2 known nodes.',
       'app.balanceHint': 'Make sure this amount is actually available in your Nimiq Pay wallet before confirming — the app can\'t read your balance yet.',
       'app.delegating': 'Delegating…',
       'app.delegateError': 'The delegation failed or was cancelled.',
@@ -1427,6 +1430,12 @@
       renderCard();
     }).catch(function(err){
       console.warn('Validator Swipe: could not load the full validator list, staying on the 2 known nodes.', err);
+      var box = $('validatorsListError');
+      if (box){
+        var detail = (err && err.message) || String(err);
+        box.textContent = t('app.validatorsListError') + ' ' + t('app.delegateFailedDetail') + ' ' + detail;
+        box.style.display = 'block';
+      }
     });
   }
 
