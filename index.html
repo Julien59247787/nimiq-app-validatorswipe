@@ -366,7 +366,7 @@
         </div>
 
         <div class="shortlist">
-          <div class="shortlist-title" data-i18n="app.delegatedTitle">Délégations effectuées</div>
+          <div class="shortlist-title" data-i18n="app.delegatedTitle">Délégation actuelle</div>
           <div id="shortlistList"><p class="shortlist-empty" data-i18n="app.delegatedEmpty">Aucune délégation pour l'instant.</p></div>
         </div>
       </div>
@@ -523,7 +523,7 @@
       'app.browseHelptext': 'Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.',
       'app.delegateHelptext': 'C\'est ici, et seulement ici, qu\'une vraie délégation part de ton wallet — jamais pendant le parcours large.',
       'app.shortlistEmptyHint': 'Aucun favori pour l\'instant.<br>Reviens à "Parcourir" pour en mettre de côté.',
-      'app.delegatedTitle': 'Délégations effectuées',
+      'app.delegatedTitle': 'Délégation actuelle',
       'app.delegatedEmpty': 'Aucune délégation pour l\'instant.',
       'app.browseGuidance': 'Sélectionne tes validateurs préférés en les mettant en favoris (⭐).',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
@@ -622,7 +622,7 @@
       'app.browseHelptext': 'Setting aside costs nothing and delegates nothing — it just adds the validator to your favorites to compare before choosing.',
       'app.delegateHelptext': 'This is the only place a real delegation leaves your wallet — never while browsing.',
       'app.shortlistEmptyHint': 'No favorites yet.<br>Go back to "Browse" to set some aside.',
-      'app.delegatedTitle': 'Delegations made',
+      'app.delegatedTitle': 'Current delegation',
       'app.delegatedEmpty': 'No delegation yet.',
       'app.browseGuidance': 'Select your favorite validators by starring them (⭐).',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
@@ -1899,11 +1899,15 @@
   }
 
   function pushDelegated(v){
-    if (shortlistList.querySelector('.shortlist-empty')) shortlistList.innerHTML = '';
+    // Reflects current on-chain state, not a history: a re-delegation
+    // (sendUpdateStakerTransaction) moves the SAME stake to a new
+    // validator, it doesn't add a second one — so this always shows
+    // exactly one entry, replaced in place rather than accumulated.
+    shortlistList.innerHTML = '';
     var item = document.createElement('div');
     item.className = 'shortlist-item';
     item.innerHTML = '<span>' + v.name + '</span><span class="badge">' + t('app.delegatedBadge') + '</span>';
-    shortlistList.insertBefore(item, shortlistList.firstChild);
+    shortlistList.appendChild(item);
   }
 
   var activeDelegationBanner = $('activeDelegationBanner');
