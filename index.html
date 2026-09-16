@@ -99,23 +99,23 @@
   .status-pill.live .dot{ background:var(--signal); box-shadow:0 0 0 3px color-mix(in srgb, var(--signal) 25%, transparent); }
   .status-pill.live{ color:var(--signal); }
 
-  .card-stack{ position:relative; height:340px; margin:6px 6px 0; }
+  .card-stack{ position:relative; height:296px; margin:6px 6px 0; }
   .v-card{
     position:absolute; inset:0; background:var(--surface-2); border:1px solid var(--border); border-radius:18px;
-    padding:20px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm);
+    padding:16px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm);
     transition: transform .3s ease, opacity .3s ease;
   }
   .v-card.leaving-right{ transform: translateX(140%) rotate(18deg); opacity:0; }
   .v-card.leaving-left{ transform: translateX(-140%) rotate(-18deg); opacity:0; }
-  .v-card .vname{ font-family:'Fraunces',serif; font-weight:700; font-size:1.2rem; }
-  .v-card .vtag{ font-size:.72rem; color:var(--text-faint); margin-top:2px; }
-  .v-metric{ margin-top:16px; }
-  .v-metric-row{ display:flex; justify-content:space-between; font-size:.76rem; color:var(--text-dim); margin-bottom:4px; }
+  .v-card .vname{ font-family:'Fraunces',serif; font-weight:700; font-size:1.1rem; }
+  .v-card .vtag{ font-size:.72rem; color:var(--text-faint); margin-top:1px; }
+  .v-metric{ margin-top:11px; }
+  .v-metric-row{ display:flex; justify-content:space-between; font-size:.76rem; color:var(--text-dim); margin-bottom:3px; }
   .v-metric-row b{ color:var(--text); font-family:'Space Mono',monospace; }
-  .v-bar{ height:7px; border-radius:999px; background:var(--surface); border:1px solid var(--border); overflow:hidden; }
+  .v-bar{ height:6px; border-radius:999px; background:var(--surface); border:1px solid var(--border); overflow:hidden; }
   .v-bar-fill{ height:100%; background:linear-gradient(90deg, var(--signal), var(--signal-strong)); }
   .v-bar-fill.violet{ background:linear-gradient(90deg, var(--violet), var(--violet-strong)); }
-  .v-desc{ margin-top:auto; font-size:.8rem; color:var(--text-faint); padding-top:14px; }
+  .v-desc{ margin-top:auto; font-size:.76rem; color:var(--text-faint); padding-top:10px; }
 
   .swipe-actions{ display:flex; gap:12px; margin:16px 6px 0; }
   .swipe-btn{
