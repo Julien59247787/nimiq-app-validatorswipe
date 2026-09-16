@@ -1741,7 +1741,7 @@
         // Nimiq Pay's current build — the raw message is misleading to a
         // non-technical user, so show a human explanation first and keep
         // the raw detail as a secondary line for debugging.
-        var humanMsg = /address/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
+        var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail) ? t('app.delegateFailedBalanceHint') : t('app.delegateFailed');
         showErrorModal(humanMsg, rawDetail);
         delegateBtn.disabled = false;
       });
