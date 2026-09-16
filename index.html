@@ -143,6 +143,7 @@
   .shortlist-item{ display:flex; justify-content:space-between; align-items:center; padding:9px 12px; border:1px solid var(--border); border-radius:12px; background:var(--surface-2); font-size:.82rem; margin-bottom:6px; animation:pop .25s ease; }
   @keyframes pop{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:none; } }
   .shortlist-item .badge{ font-size:.68rem; font-weight:700; color:var(--signal-strong); }
+  .shortlist-item .badge-past{ color:var(--text-faint); font-weight:600; }
 
   .helptext{ margin:12px 6px 0; font-size:.72rem; color:var(--text-faint); line-height:1.4; }
   .browse-guidance{ margin:12px 6px 0; padding:10px 14px; border-radius:12px; background:var(--surface-2); border:1px solid var(--border); font-size:.8rem; color:var(--text-dim); text-align:center; }
@@ -364,6 +365,11 @@
           </div>
           <p class="helptext" data-i18n="app.delegateHelptext">C'est ici, et seulement ici, qu'une vraie délégation part de ton wallet — jamais pendant le parcours large.</p>
         </div>
+
+        <div class="shortlist">
+          <div class="shortlist-title" data-i18n="app.delegatedTitle">Historique des délégations</div>
+          <div id="shortlistList"><p class="shortlist-empty" data-i18n="app.delegatedEmpty">Aucune délégation pour l'instant.</p></div>
+        </div>
       </div>
     </div>
   </div>
@@ -518,7 +524,8 @@
       'app.browseHelptext': 'Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.',
       'app.delegateHelptext': 'C\'est ici, et seulement ici, qu\'une vraie délégation part de ton wallet — jamais pendant le parcours large.',
       'app.shortlistEmptyHint': 'Aucun favori pour l\'instant.<br>Reviens à "Parcourir" pour en mettre de côté.',
-      'app.delegatedTitle': 'Délégation actuelle',
+      'app.delegatedTitle': 'Historique des délégations',
+      'app.delegatedBadgePast': 'Historique',
       'app.delegatedEmpty': 'Aucune délégation pour l\'instant.',
       'app.browseGuidance': 'Sélectionne tes validateurs préférés en les mettant en favoris (⭐).',
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
@@ -617,7 +624,8 @@
       'app.browseHelptext': 'Setting aside costs nothing and delegates nothing — it just adds the validator to your favorites to compare before choosing.',
       'app.delegateHelptext': 'This is the only place a real delegation leaves your wallet — never while browsing.',
       'app.shortlistEmptyHint': 'No favorites yet.<br>Go back to "Browse" to set some aside.',
-      'app.delegatedTitle': 'Current delegation',
+      'app.delegatedTitle': 'Delegation history',
+      'app.delegatedBadgePast': 'Past',
       'app.delegatedEmpty': 'No delegation yet.',
       'app.browseGuidance': 'Select your favorite validators by starring them (⭐).',
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
@@ -1691,6 +1699,25 @@
   var shortlistCardStack = $('shortlistCardStack'), delegateBtn = $('delegateBtn'), removeBtn = $('removeBtn'), shortlistBackBtn = $('shortlistBackBtn'), shortlistNextBtn = $('shortlistNextBtn');
   var browseTabBtn = $('browseTabBtn'), shortlistTabBtn = $('shortlistTabBtn'), shortlistCountEl = $('shortlistCount');
   var browsePhase = $('browsePhase'), shortlistPhase = $('shortlistPhase');
+  var shortlistList = $('shortlistList');
+  function renderDelegationHistory(){
+    if (!delegated.length) return; // empty-state markup already in the DOM
+    shortlistList.innerHTML = '';
+    var currentAddr = lastStakerStatus && lastStakerStatus.found ? lastStakerStatus.delegation : null;
+    var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
+    // Most recent first; only the entry matching the real current
+    // delegation gets the "active" badge, everything else is past.
+    for (var i = delegated.length - 1; i >= 0; i--){
+      var v = delegated[i];
+      var isCurrent = currentAddr ? norm(v.address) === norm(currentAddr) : i === delegated.length - 1;
+      var item = document.createElement('div');
+      item.className = 'shortlist-item';
+      item.innerHTML = '<span>' + v.name + '</span><span class="badge' + (isCurrent ? '' : ' badge-past') + '">' +
+        (isCurrent ? t('app.delegatedBadge') : t('app.delegatedBadgePast')) + '</span>';
+      shortlistList.appendChild(item);
+    }
+  }
+
   // ---------- error modal (human message first, raw detail collapsible) ----------
   var errorModalOverlay = $('errorModalOverlay');
   function showErrorModal(humanMsg, techDetail){
@@ -1778,6 +1805,8 @@
     });
   }
   function renderStakerStatus(data){
+    updateActiveDelegationBanner(data);
+    renderDelegationHistory();
     if (!data || !data.found){
       myStakeBox.hidden = true;
       return;
@@ -1892,7 +1921,27 @@
   }
 
   var activeDelegationBanner = $('activeDelegationBanner');
-  function updateActiveDelegationBanner(){
+  function validatorNameForAddress(addr){
+    if (!addr) return '';
+    var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
+    var known = KNOWN_VALIDATORS[addr];
+    if (known) return known.name;
+    for (var i = 0; i < VALIDATORS.length; i++){
+      if (norm(VALIDATORS[i].address) === norm(addr)) return VALIDATORS[i].name;
+    }
+    return shortAddr(addr);
+  }
+  function updateActiveDelegationBanner(stakerData){
+    // Real on-chain state (from /api/v2/staker-status) takes priority —
+    // it's what's true even for a delegation made before this session.
+    // Session memory (delegated[]) is only a fallback for demo mode,
+    // where there's no real wallet/API to check.
+    var data = stakerData !== undefined ? stakerData : lastStakerStatus;
+    if (data && data.found && data.delegation){
+      $('activeDelegationText').textContent = t('app.activeDelegation').replace('{validator}', validatorNameForAddress(data.delegation));
+      activeDelegationBanner.hidden = false;
+      return;
+    }
     if (!delegated.length){ activeDelegationBanner.hidden = true; return; }
     var latest = delegated[delegated.length - 1];
     $('activeDelegationText').textContent = t('app.activeDelegation').replace('{validator}', latest.name);
@@ -1970,6 +2019,7 @@
 
     function onDelegated(isSwitch){
       delegated.push(v);
+      renderDelegationHistory();
       bookmarked.splice(shortIdx, 1);
       updateShortlistCount();
       burstConfetti(90);
