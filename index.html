@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <title>Validator Swipe</title>
@@ -1658,7 +1658,7 @@
       if (stored && SUPPORTED_LANGS.indexOf(stored) !== -1) return stored;
     } catch (e) {}
     var raw = window.nimiqPay && window.nimiqPay.language;
-    return SUPPORTED_LANGS.indexOf(raw) !== -1 ? raw : 'fr';
+    return SUPPORTED_LANGS.indexOf(raw) !== -1 ? raw : 'en';
   }
   var currentLang = detectLang();
   function getLang(){ return currentLang; }
