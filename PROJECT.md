@@ -48,15 +48,14 @@ contre NIM Drop). Déployée et vérifiée en prod sur les deux validateurs
 
 ## Ce qui reste à faire avant la deadline (18/09 23:59 UTC)
 
-1. **Dépôt public** : `nimiq-app-validatorswipe` doit passer en public sous licence MIT (exigence du
-   règlement). `LICENSE` (MIT) et `README.md` (pitch jury) déjà en place. Seul Julien bascule un
-   dépôt en public (règle d'équipe) — **à faire par lui avant soumission, pas encore fait**.
-2. **Formulaire de soumission** (portail Nimiq) : infos ci-dessus confirmées, restent à saisir dans
+- ~~Dépôt public~~ **Fait** — `nimiq-app-validatorswipe` est déjà public sous licence MIT (scan de
+  sécurité fait avant bascule, rien de confidentiel trouvé). Plus bloquant.
+1. **Formulaire de soumission** (portail Nimiq) : infos ci-dessus confirmées, restent à saisir dans
    le formulaire lui-même par Julien.
-3. **Décision en attente** : NIM Drop — bouton "Se connecter"/délégation réelle hors Nimiq Pay
+2. **Décision en attente** : NIM Drop — bouton "Se connecter"/délégation réelle hors Nimiq Pay
    possible aussi (via Hub) mais son flux d'envoi tourne en arrière-plan (incompatible avec le
    popup Hub tel quel) ; changement de flux nécessaire si Julien veut ça pour NIM Drop aussi. Sans
    incidence sur Validator Swipe (soumission officielle), à traiter seulement si le temps le permet.
-4. Vidéo de démo (optionnelle mais encouragée, contribue au score storytelling) — gérée par Julien.
-5. Repasse qualité 11 langues sur le dashboard principal — explicitement en dernier dans l'ordre de
+3. Vidéo de démo (optionnelle mais encouragée, contribue au score storytelling) — gérée par Julien.
+4. Repasse qualité 11 langues sur le dashboard principal — explicitement en dernier dans l'ordre de
    priorité de Julien, après les 4 mini apps ; pas encore commencée.
