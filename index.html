@@ -378,8 +378,6 @@
             <label for="stakeAmt2" data-i18n="app.stakeAmtLabel" style="color:var(--nimiq-gold); font-weight:700;">Montant à déléguer (NIM)</label>
             <input type="number" id="stakeAmt2" placeholder="1" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--nimiq-gold); font-weight:700; font-family:'Sora',sans-serif; font-size:.9rem;" />
             <p class="helptext" data-i18n="app.balanceHint" style="margin-top:6px;">Ce montant est pré-rempli avec ton solde disponible — vérifie-le avant de confirmer.</p>
-            <!-- TEMP DEBUG -- remove before final submission (tracking the Nimiq Pay native balance-prefill investigation) -->
-            <p id="tempDebugMsg" style="margin-top:6px; font-family:monospace; font-size:.7rem; color:#fff; background:#c0392b; padding:6px 8px; border-radius:8px; white-space:pre-wrap; word-break:break-all;">DEBUG: waiting for connection…</p>
           </div>
           <div class="swipe-actions">
             <button class="swipe-btn nav" id="shortlistBackBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
@@ -1947,47 +1945,28 @@
 
   // ---------- my stake (real on-chain state via NIMIQ-BACKEND RPC) ----------
   var myStakeBox = $('myStakeBox'), removeStakeBtn = $('removeStakeBtn');
-  // TEMP DEBUG -- remove before final submission
-  // Appends (doesn't replace) so the address line stays visible alongside
-  // later fetch/prefill lines instead of being overwritten by them.
-  var tempDebugLog = [];
-  function tempDebug(msg){
-    var el = $('tempDebugMsg');
-    tempDebugLog.push(msg);
-    if (el) el.textContent = 'DEBUG:\n' + tempDebugLog.join('\n');
-  }
   // Pre-fills the delegation amount field with the real wallet balance
   // (via /api/v2/staker-status's wallet_balance_luna) instead of a guess.
   // Only fills an EMPTY field: once the user has typed something, later
   // status refreshes (e.g. after a delegation) leave their input alone.
   function prefillStakeAmount(data){
     var input = $('stakeAmt2');
-    if (!input || input.value !== '') {
-      tempDebug('prefill skipped: input.value=' + JSON.stringify(input && input.value));
-      return;
-    }
-    if (!data || data.wallet_balance_luna == null) {
-      tempDebug('prefill skipped: wallet_balance_luna=' + JSON.stringify(data && data.wallet_balance_luna));
-      return;
-    }
+    if (!input || input.value !== '') return;
+    if (!data || data.wallet_balance_luna == null) return;
     var nim = Math.floor(data.wallet_balance_luna / 100000);
-    tempDebug('wallet_balance_luna=' + data.wallet_balance_luna + ' -> nim=' + nim);
     if (nim >= 1) input.value = String(nim);
   }
   var lastStakerStatus = null;
   function fetchStakerStatus(){
-    if (!state.myAddress) { tempDebug('fetchStakerStatus: no myAddress'); return; }
-    tempDebug('fetching staker-status for ' + state.myAddress + ' …');
+    if (!state.myAddress) return;
     fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
       if (!res.ok) throw new Error('staker-status failed: ' + res.status);
       return res.json();
     }).then(function(data){
       lastStakerStatus = data;
-      tempDebug('staker-status OK: ' + JSON.stringify(data));
       renderStakerStatus(data);
     }).catch(function(err){
       console.warn('Validator Swipe: could not load staker status.', err);
-      tempDebug('staker-status FETCH ERROR: ' + ((err && err.message) || String(err)));
     });
   }
   function renderStakerStatus(data){
@@ -2377,11 +2356,9 @@
         // no error logged.
         if (!Array.isArray(accounts)){
           console.warn('Validator Swipe: listAccounts did not return an array.', accounts);
-          tempDebug('listAccounts NOT an array: ' + JSON.stringify(accounts));
           return;
         }
         state.myAddress = accounts[0];
-        tempDebug('nimiqPay myAddress=' + JSON.stringify(state.myAddress));
         fetchStakerStatus();
       }).catch(function(err){
         console.warn('Validator Swipe: could not list accounts.', err);
@@ -2453,7 +2430,6 @@
       if (!chosen || !chosen.address) throw new Error('no address chosen');
       state.hub = hubApi;
       state.myAddress = chosen.address;
-      tempDebug('hub myAddress=' + JSON.stringify(state.myAddress));
       $('statusText').textContent = t('app.statusLive');
       $('statusPill').classList.add('live');
       $('retireBox').hidden = false;
