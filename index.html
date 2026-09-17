@@ -98,6 +98,10 @@
   .status-pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--text-faint); }
   .status-pill.live .dot{ background:var(--signal); box-shadow:0 0 0 3px color-mix(in srgb, var(--signal) 25%, transparent); }
   .status-pill.live{ color:var(--signal); }
+  .hub-connect-btn{ font-size:.65rem; font-weight:700; letter-spacing:.02em; padding:5px 10px; border-radius:999px; background:var(--nimiq-gold); border:none; color:#241c02; cursor:pointer; font-family:'Sora',sans-serif; }
+  .hub-connect-btn[hidden]{ display:none; }
+  .hub-connect-btn:hover{ opacity:.88; }
+  .hub-connect-btn:disabled{ opacity:.6; cursor:default; }
 
   .card-stack{ margin:6px 6px 0; }
   .v-card{
@@ -256,6 +260,7 @@
     *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@nimiq/hub-api@1.14.0/dist/standalone/HubApi.standalone.umd.js"></script>
 </head>
 <body>
 
@@ -288,6 +293,7 @@
         <div class="phone-app-bar">
           <span class="app-name">🛡️ Validator Swipe</span>
           <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Mode démo</span></span>
+          <button type="button" class="hub-connect-btn" id="hubConnectBtn" data-i18n="app.hubConnect" hidden>Se connecter</button>
           <div class="lang-dropdown" id="lang-dropdown">
             <button type="button" class="lang-dropdown-trigger" id="lang-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Choix de la langue">
               <span class="lang-flag-icon" id="lang-dropdown-current-flag"></span>
@@ -513,6 +519,10 @@
       'hero.stat3': 'Tes fonds restent à toi',
       'app.statusDemo': 'Wallet non détecté',
       'app.statusLive': 'Wallet détecté',
+      'app.hubConnect': 'Se connecter',
+      'app.hubConnecting': 'Connexion…',
+      'app.hubConnectError': 'La connexion au wallet a échoué.',
+      'app.removeStakeHubUnsupported': 'Cette étape n\'est pas encore disponible via Nimiq Hub — ouvre l\'app dans Nimiq Pay pour récupérer tes fonds.',
       'app.passAria': 'Passer',
       'app.delegateAria': 'Déléguer',
       'app.sampleDataNote': 'Les ~40 validateurs et leurs statistiques sont <b>réels</b>, mis à jour quotidiennement. Certaines métriques restent vides quand l\'historique est insuffisant — jamais devinées. Hors de Nimiq Pay, la délégation elle-même reste simulée.',
@@ -613,6 +623,10 @@
       'hero.stat3': 'Your funds stay yours',
       'app.statusDemo': 'Wallet not detected',
       'app.statusLive': 'Wallet detected',
+      'app.hubConnect': 'Connect',
+      'app.hubConnecting': 'Connecting…',
+      'app.hubConnectError': 'Wallet connection failed.',
+      'app.removeStakeHubUnsupported': 'This step isn\'t available via Nimiq Hub yet — open the app in Nimiq Pay to claim your funds.',
       'app.passAria': 'Pass',
       'app.delegateAria': 'Delegate',
       'app.sampleDataNote': 'All ~40 validators and their stats are <b>real</b>, refreshed daily. Some metrics stay blank when there isn\'t enough history yet — never guessed. Outside Nimiq Pay, the delegation itself stays simulated.',
@@ -1764,14 +1778,16 @@
   });
   retireConfirmBtn.addEventListener('click', function(){
     var amt = parseFloat($('retireAmt').value);
-    if (!(amt > 0) || !state.nimiq){
+    if (!(amt > 0) || !(state.nimiq || state.hub)){
       showErrorModal(t('app.retireInvalidAmount'), '');
       return;
     }
     retireConfirmBtn.disabled = true;
-    state.nimiq.sendRetireStakeTransaction({
-      retireStake: Math.round(amt * 100000)
-    }).then(function(){
+    var retireValueLuna = Math.round(amt * 100000);
+    var retireCall = state.nimiq
+      ? state.nimiq.sendRetireStakeTransaction({ retireStake: retireValueLuna })
+      : hubStakingTx('retire', { value: retireValueLuna });
+    retireCall.then(function(){
       showSuccessModal(t('app.retireSuccess'));
       retireForm.hidden = true;
       $('retireAmt').value = '';
@@ -1836,7 +1852,15 @@
     }
   }
   removeStakeBtn.addEventListener('click', function(){
-    if (!state.nimiq || !lastStakerStatus || !(lastStakerStatus.retired_balance_luna > 0)) return;
+    if (!lastStakerStatus || !(lastStakerStatus.retired_balance_luna > 0)) return;
+    if (!state.nimiq){
+      // sendRemoveStakeTransaction's sender is the staking contract itself,
+      // not the wallet — verifying the correct Hub/checkout() field mapping
+      // for that case needs more time than there was before the deadline,
+      // so it stays Nimiq-Pay-only rather than risk a wrong transaction.
+      showErrorModal(t('app.removeStakeHubUnsupported'), '');
+      return;
+    }
     removeStakeBtn.disabled = true;
     state.nimiq.sendRemoveStakeTransaction({
       value: lastStakerStatus.retired_balance_luna
@@ -2030,7 +2054,7 @@
       renderShortlistCard();
     }
 
-    if (state.nimiq && stakeNim > 0){
+    if ((state.nimiq || state.hub) && stakeNim > 0){
       // Real delegation: v.address is a real validator address (see
       // VALIDATORS above) — the only place in this app that fires it.
       delegateBtn.disabled = true;
@@ -2053,12 +2077,27 @@
         var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
         var isSwitch = hasExistingStaker && currentDelegation && norm(currentDelegation) !== norm(v.address);
         var call;
-        if (!hasExistingStaker){
-          call = state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
-        } else if (isSwitch){
-          call = state.nimiq.sendUpdateStakerTransaction({ newDelegation: v.address });
+        if (state.nimiq){
+          if (!hasExistingStaker){
+            call = state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
+          } else if (isSwitch){
+            call = state.nimiq.sendUpdateStakerTransaction({ newDelegation: v.address });
+          } else {
+            call = state.nimiq.sendStakeTransaction({ value: stakeValueLuna });
+          }
         } else {
-          call = state.nimiq.sendStakeTransaction({ value: stakeValueLuna });
+          // Outside Nimiq Pay, connected via Nimiq Hub instead (see
+          // hubConnectBtn) — same 3 operations, built locally with
+          // @nimiq/core's TransactionBuilder (verified field-for-field
+          // against its real type definitions, not guessed) and signed +
+          // relayed through hubApi.checkout().
+          if (!hasExistingStaker){
+            call = hubStakingTx('create', { delegation: v.address, value: stakeValueLuna });
+          } else if (isSwitch){
+            call = hubStakingTx('update', { delegation: v.address });
+          } else {
+            call = hubStakingTx('add', { value: stakeValueLuna });
+          }
         }
         call.then(function(){ onDelegated(isSwitch); }).catch(function(err){
           // Confirmed via real-device test: the confirm screen already shows
@@ -2145,9 +2184,14 @@
   requestAnimationFrame(tick);
 
   // ---------- real Nimiq Pay detection ----------
-  var state = { nimiq: null, myAddress: null };
+  var state = { nimiq: null, myAddress: null, hub: null };
   function tryConnectNimiqPay(){
-    if (!window.nimiqPay){ return; }
+    if (!window.nimiqPay){
+      // Not inside Nimiq Pay: offer the Nimiq Hub connect button instead
+      // (same dashboard-proven pattern — Keyguard popup via @nimiq/hub-api).
+      $('hubConnectBtn').hidden = false;
+      return;
+    }
     import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk/+esm').then(function(mod){
       return mod.init();
     }).then(function(nimiq){
@@ -2166,6 +2210,81 @@
     });
   }
   tryConnectNimiqPay();
+
+  // ---------- Nimiq Hub connect (outside Nimiq Pay) ----------
+  var NIMIQ_MAINNET_NETWORK_ID = 24;
+  var nimiqCoreLoad = null;
+  function loadNimiqCore(){
+    if (!nimiqCoreLoad){
+      nimiqCoreLoad = import('https://cdn.jsdelivr.net/npm/@nimiq/core@2.21.0/web/index.js').then(function(mod){
+        return mod.default().then(function(){ return mod; });
+      });
+    }
+    return nimiqCoreLoad;
+  }
+  function hubStakingTx(kind, opts){
+    // Builds the exact same staking transactions as the mini-app-sdk's
+    // sendNewStakerTransaction/sendStakeTransaction/sendUpdateStakerTransaction,
+    // but locally via @nimiq/core's TransactionBuilder (field names/values
+    // verified against its real .d.ts, not guessed), then signs + relays
+    // through Nimiq Hub's checkout() — the only Hub method that both signs
+    // and broadcasts. sendRemoveStakeTransaction has no Hub equivalent here
+    // yet (its sender is the staking contract itself, not the wallet —
+    // needs more verification than there was time for before the deadline);
+    // "Récupérer mes fonds" stays Nimiq-Pay-only for now.
+    return loadNimiqCore().then(function(Nimiq){
+      var sender = Nimiq.Address.fromUserFriendlyAddress(state.myAddress);
+      var tx;
+      if (kind === 'create'){
+        tx = Nimiq.TransactionBuilder.newCreateStaker(sender, Nimiq.Address.fromUserFriendlyAddress(opts.delegation), BigInt(opts.value), null, 0, NIMIQ_MAINNET_NETWORK_ID);
+      } else if (kind === 'add'){
+        tx = Nimiq.TransactionBuilder.newAddStake(sender, sender, BigInt(opts.value), null, 0, NIMIQ_MAINNET_NETWORK_ID);
+      } else if (kind === 'update'){
+        tx = Nimiq.TransactionBuilder.newUpdateStaker(sender, Nimiq.Address.fromUserFriendlyAddress(opts.delegation), false, null, 0, NIMIQ_MAINNET_NETWORK_ID);
+      } else if (kind === 'retire'){
+        tx = Nimiq.TransactionBuilder.newRetireStake(sender, BigInt(opts.value), null, 0, NIMIQ_MAINNET_NETWORK_ID);
+      } else {
+        return Promise.reject(new Error('Unsupported staking operation via Hub: ' + kind));
+      }
+      return state.hub.checkout({
+        appName: 'Validator Swipe',
+        sender: tx.sender.toUserFriendlyAddress(),
+        recipient: tx.recipient.toUserFriendlyAddress(),
+        recipientType: tx.recipientType,
+        value: Number(tx.value),
+        fee: Number(tx.fee),
+        extraData: tx.data,
+        flags: tx.flags,
+        validityDuration: 120
+      });
+    });
+  }
+  var hubConnectBtn = $('hubConnectBtn');
+  hubConnectBtn.addEventListener('click', function(){
+    if (typeof HubApi === 'undefined'){
+      showErrorModal(t('app.hubConnectError'), 'HubApi script unavailable');
+      return;
+    }
+    hubConnectBtn.disabled = true;
+    hubConnectBtn.textContent = t('app.hubConnecting');
+    var hubApi = new HubApi('https://hub.nimiq.com');
+    hubApi.chooseAddress({ appName: 'Validator Swipe' }).then(function(chosen){
+      if (!chosen || !chosen.address) throw new Error('no address chosen');
+      state.hub = hubApi;
+      state.myAddress = chosen.address;
+      $('statusText').textContent = t('app.statusLive');
+      $('statusPill').classList.add('live');
+      $('retireBox').hidden = false;
+      hubConnectBtn.hidden = true;
+      fetchStakerStatus();
+    }).catch(function(err){
+      console.warn('Validator Swipe: Hub connect failed.', err);
+      showErrorModal(t('app.hubConnectError'), (err && err.message) || String(err));
+    }).then(function(){
+      hubConnectBtn.disabled = false;
+      hubConnectBtn.textContent = t('app.hubConnect');
+    });
+  });
 })();
 </script>
 </body>
