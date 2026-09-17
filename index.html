@@ -102,6 +102,10 @@
   .hub-connect-btn[hidden]{ display:none; }
   .hub-connect-btn:hover{ opacity:.88; }
   .hub-connect-btn:disabled{ opacity:.6; cursor:default; }
+  .wallet-bar{ display:flex; align-items:center; gap:8px; padding:0 6px 12px; flex-wrap:wrap; }
+  .hub-disconnect-btn{ font-size:.65rem; font-weight:700; letter-spacing:.02em; padding:5px 10px; border-radius:999px; background:none; border:1.5px solid var(--border); color:var(--text-faint); cursor:pointer; font-family:'Sora',sans-serif; }
+  .hub-disconnect-btn[hidden]{ display:none; }
+  .hub-disconnect-btn:hover{ color:var(--text-dim); border-color:var(--text-faint); }
 
   .card-stack{ margin:6px 6px 0; }
   .v-card{
@@ -292,8 +296,6 @@
       <div class="phone">
         <div class="phone-app-bar">
           <span class="app-name">🛡️ Validator Swipe</span>
-          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Mode démo</span></span>
-          <button type="button" class="hub-connect-btn" id="hubConnectBtn" data-i18n="app.hubConnect" hidden>Se connecter</button>
           <div class="lang-dropdown" id="lang-dropdown">
             <button type="button" class="lang-dropdown-trigger" id="lang-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Choix de la langue">
               <span class="lang-flag-icon" id="lang-dropdown-current-flag"></span>
@@ -301,6 +303,12 @@
             </button>
             <ul class="lang-dropdown-menu" id="lang-dropdown-menu" role="listbox" hidden></ul>
           </div>
+        </div>
+
+        <div class="wallet-bar">
+          <span class="status-pill" id="statusPill"><span class="dot"></span><span id="statusText" data-i18n="app.statusDemo">Mode démo</span></span>
+          <button type="button" class="hub-connect-btn" id="hubConnectBtn" data-i18n="app.hubConnect" hidden>Se connecter</button>
+          <button type="button" class="hub-disconnect-btn" id="hubDisconnectBtn" data-i18n="app.hubDisconnect" hidden>Se déconnecter</button>
         </div>
 
         <div class="phase-tabs">
@@ -520,6 +528,7 @@
       'app.statusDemo': 'Wallet non détecté',
       'app.statusLive': 'Wallet détecté',
       'app.hubConnect': 'Se connecter',
+      'app.hubDisconnect': 'Se déconnecter',
       'app.hubConnecting': 'Connexion…',
       'app.hubConnectError': 'La connexion au wallet a échoué.',
       'app.removeStakeHubUnsupported': 'Cette étape n\'est pas encore disponible via Nimiq Hub — ouvre l\'app dans Nimiq Pay pour récupérer tes fonds.',
@@ -624,6 +633,7 @@
       'app.statusDemo': 'Wallet not detected',
       'app.statusLive': 'Wallet detected',
       'app.hubConnect': 'Connect',
+      'app.hubDisconnect': 'Disconnect',
       'app.hubConnecting': 'Connecting…',
       'app.hubConnectError': 'Wallet connection failed.',
       'app.removeStakeHubUnsupported': 'This step isn\'t available via Nimiq Hub yet — open the app in Nimiq Pay to claim your funds.',
@@ -803,6 +813,7 @@
       'app.removeStakeSuccess': '¡Fondos recuperados! Ya están de vuelta en tu monedero Nimiq Pay.',
       'app.browseGuidance': 'Selecciona tus validadores favoritos añadiéndolos a tus favoritos (⭐).',
       'app.hubConnect': 'Iniciar sesión',
+      'app.hubDisconnect': 'Cerrar sesión',
       'app.hubConnecting': 'Iniciando sesión…',
       'app.hubConnectError': 'No se ha podido conectar a la cartera.',
       'app.removeStakeHubUnsupported': 'Este paso aún no está disponible a través de Nimiq Hub: abre la aplicación en Nimiq Pay para recuperar tus fondos.',
@@ -907,6 +918,7 @@
       'app.removeStakeSuccess': '资金已追回！它们已返还至你的Nimiq Pay钱包中。',
       'app.browseGuidance': '通过将你喜欢的验证者添加到收藏夹（⭐）来选择它们。',
       'app.hubConnect': '登录',
+      'app.hubDisconnect': '退出登录',
       'app.hubConnecting': '正在登录……',
       'app.hubConnectError': '连接钱包失败。',
       'app.removeStakeHubUnsupported': '此步骤目前尚无法通过 Nimiq Hub 完成——请在 Nimiq Pay 中打开应用以提取资金。',
@@ -1011,6 +1023,7 @@
       'app.removeStakeSuccess': '資金が回収されました！Nimiq Payのウォレットに戻ってきました。',
       'app.browseGuidance': 'お気に入りのバリデーターを「お気に入り」（⭐）に登録して、選んでください。',
       'app.hubConnect': 'ログイン',
+      'app.hubDisconnect': 'ログアウト',
       'app.hubConnecting': 'ログイン中…',
       'app.hubConnectError': 'ウォレットへの接続に失敗しました。',
       'app.removeStakeHubUnsupported': 'この手順は、Nimiq Hubではまだ利用できません。Nimiq Payアプリを開いて、資金を引き出してください。',
@@ -1115,6 +1128,7 @@
       'app.removeStakeSuccess': '자금이 복구되었습니다! Nimiq Pay 지갑으로 다시 돌아왔습니다.',
       'app.browseGuidance': '마음에 드는 검증자를 즐겨찾기(⭐)로 추가하여 선택하세요.',
       'app.hubConnect': '로그인',
+      'app.hubDisconnect': '로그아웃',
       'app.hubConnecting': '로그인 중…',
       'app.hubConnectError': '지갑 연결에 실패했습니다.',
       'app.removeStakeHubUnsupported': '이 단계는 아직 Nimiq Hub에서 이용할 수 없습니다. Nimiq Pay 앱에서 앱을 열어 자금을 인출하세요.',
@@ -1219,6 +1233,7 @@
       'app.removeStakeSuccess': 'Geld zurückerhalten! Es befindet sich wieder in deiner Nimiq Pay-Wallet.',
       'app.browseGuidance': 'Wähle deine Lieblings-Validatoren aus, indem du sie als Favoriten markierst (⭐).',
       'app.hubConnect': 'Anmelden',
+      'app.hubDisconnect': 'Abmelden',
       'app.hubConnecting': 'Anmelden…',
       'app.hubConnectError': 'Die Verbindung zur Wallet ist fehlgeschlagen.',
       'app.removeStakeHubUnsupported': 'Dieser Schritt ist über den Nimiq Hub noch nicht verfügbar – öffne die App in Nimiq Pay, um dein Guthaben abzurufen.',
@@ -1323,6 +1338,7 @@
       'app.removeStakeSuccess': 'Fundos recuperados! Já estão de volta à tua carteira Nimiq Pay.',
       'app.browseGuidance': 'Seleciona os teus validadores preferidos, adicionando-os aos favoritos (⭐).',
       'app.hubConnect': 'Iniciar sessão',
+      'app.hubDisconnect': 'Sair',
       'app.hubConnecting': 'A ligar…',
       'app.hubConnectError': 'A ligação à carteira falhou.',
       'app.removeStakeHubUnsupported': 'Esta etapa ainda não está disponível através do Nimiq Hub — abre a aplicação no Nimiq Pay para levantar os teus fundos.',
@@ -1427,6 +1443,7 @@
       'app.removeStakeSuccess': 'Средства возвращены! Они снова находятся в твоём кошельке Nimiq Pay.',
       'app.browseGuidance': 'Выбери своих любимых валидаторов, добавив их в избранное (⭐).',
       'app.hubConnect': 'Войти',
+      'app.hubDisconnect': 'Выйти из системы',
       'app.hubConnecting': 'Вход…',
       'app.hubConnectError': 'Подключение к кошельку не удалось.',
       'app.removeStakeHubUnsupported': 'Этот этап пока недоступен через Nimiq Hub — откройте приложение в Nimiq Pay, чтобы получить свои средства.',
@@ -1531,6 +1548,7 @@
       'app.removeStakeSuccess': 'Para geri alındı! Nimiq Pay cüzdanına geri aktarıldı.',
       'app.browseGuidance': 'En sevdiğin doğrulayıcıları favorilere ekleyerek (⭐) seç.',
       'app.hubConnect': 'Giriş yap',
+      'app.hubDisconnect': 'Oturumu kapat',
       'app.hubConnecting': 'Giriş…',
       'app.hubConnectError': 'Cüzdana bağlanılamadı.',
       'app.removeStakeHubUnsupported': 'Bu adım henüz Nimiq Hub üzerinden kullanılamıyor — paranı almak için Nimiq Pay uygulamasını aç.',
@@ -1635,6 +1653,7 @@
       'app.removeStakeSuccess': 'تم استرداد الأموال! لقد عادت إلى محفظة Nimiq Pay الخاصة بك.',
       'app.browseGuidance': 'اختر المدققين المفضلين لديك عن طريق إضافتهم إلى قائمة المفضلة (⭐).',
       'app.hubConnect': 'تسجيل الدخول',
+      'app.hubDisconnect': 'تسجيل الخروج',
       'app.hubConnecting': 'تسجيل الدخول…',
       'app.hubConnectError': 'فشل الاتصال بالمحفظة.',
       'app.removeStakeHubUnsupported': 'هذه الخطوة غير متاحة بعد عبر Nimiq Hub — افتح التطبيق في Nimiq Pay لاسترداد أموالك.',
@@ -2420,6 +2439,7 @@
       $('statusPill').classList.add('live');
       $('retireBox').hidden = false;
       hubConnectBtn.hidden = true;
+      hubDisconnectBtn.hidden = false;
       fetchStakerStatus();
     }).catch(function(err){
       console.warn('Validator Swipe: Hub connect failed.', err);
@@ -2428,6 +2448,23 @@
       hubConnectBtn.disabled = false;
       hubConnectBtn.textContent = t('app.hubConnect');
     });
+  });
+
+  var hubDisconnectBtn = $('hubDisconnectBtn');
+  hubDisconnectBtn.addEventListener('click', function(){
+    // Hub-only: switch wallet without a full page reload. Nimiq Pay's own
+    // connection (state.nimiq) is never touched here — inside Nimiq Pay
+    // there's nothing to disconnect from, this button never shows there.
+    state.hub = null;
+    state.myAddress = null;
+    lastStakerStatus = null;
+    $('statusText').textContent = t('app.statusDemo');
+    $('statusPill').classList.remove('live');
+    $('retireBox').hidden = true;
+    myStakeBox.hidden = true;
+    activeDelegationBanner.hidden = true;
+    hubDisconnectBtn.hidden = true;
+    hubConnectBtn.hidden = false;
   });
 })();
 </script>
