@@ -2349,7 +2349,16 @@
       $('statusPill').classList.add('live');
       $('retireBox').hidden = false;
       nimiq.listAccounts().then(function(accounts){
-        state.myAddress = accounts && accounts[0];
+        // listAccounts() can RESOLVE (not reject) with an ErrorResponse
+        // object instead of a string[] (see mini-app-sdk's provider.d.ts) --
+        // guard against that shape instead of silently reading accounts[0]
+        // off an object, which would leave state.myAddress undefined with
+        // no error logged.
+        if (!Array.isArray(accounts)){
+          console.warn('Validator Swipe: listAccounts did not return an array.', accounts);
+          return;
+        }
+        state.myAddress = accounts[0];
         fetchStakerStatus();
       }).catch(function(err){
         console.warn('Validator Swipe: could not list accounts.', err);
