@@ -42,4 +42,5 @@ actually run Nimiq validators, for people who want to pick one.
 
 ---
 
-Built for the Nimiq Mini Apps Competition, Cycle II (Aug 24 – Sep 18, 2026).
+Built by **@Ju'Team** (Ju & Claude) for the Nimiq Mini Apps Competition, Cycle II
+(Aug 24 – Sep 18, 2026). Contact: ju@nimiq-ju.fr · [@julien59247787](https://x.com/julien59247787)
