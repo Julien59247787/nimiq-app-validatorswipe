@@ -1948,9 +1948,13 @@
   // ---------- my stake (real on-chain state via NIMIQ-BACKEND RPC) ----------
   var myStakeBox = $('myStakeBox'), removeStakeBtn = $('removeStakeBtn');
   // TEMP DEBUG -- remove before final submission
+  // Appends (doesn't replace) so the address line stays visible alongside
+  // later fetch/prefill lines instead of being overwritten by them.
+  var tempDebugLog = [];
   function tempDebug(msg){
     var el = $('tempDebugMsg');
-    if (el) el.textContent = 'DEBUG: ' + msg;
+    tempDebugLog.push(msg);
+    if (el) el.textContent = 'DEBUG:\n' + tempDebugLog.join('\n');
   }
   // Pre-fills the delegation amount field with the real wallet balance
   // (via /api/v2/staker-status's wallet_balance_luna) instead of a guess.
