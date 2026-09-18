@@ -1759,11 +1759,11 @@
   // guessed figure.
   var KNOWN_VALIDATORS = {
     "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT": {
-      name: "nodenimiq1.nimiq-ju.fr",
+      name: "NODENIMIQ1.NIMIQ-JU.FR by @Ju",
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
     },
     "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D": {
-      name: "nodenimiq2.nimiq-ju.fr",
+      name: "NODENIMIQ2.NIMIQ-JU.FR by @Ju",
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
     }
   };
@@ -1771,10 +1771,10 @@
   // Fallback used only if /api/v2/validators-list can't be reached (e.g.
   // previewing this file outside the validators' hosting).
   var FALLBACK_VALIDATORS = [
-    { name: "nodenimiq1.nimiq-ju.fr", isKnown: true, address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
+    { name: "NODENIMIQ1.NIMIQ-JU.FR by @Ju", isKnown: true, address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
       availability: 99.77, reward: 11.71, staked: "1.09M NIM",
       desc: KNOWN_VALIDATORS["NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT"].desc },
-    { name: "nodenimiq2.nimiq-ju.fr", isKnown: true, address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
+    { name: "NODENIMIQ2.NIMIQ-JU.FR by @Ju", isKnown: true, address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
       availability: 99.48, reward: 11.71, staked: "467.93K NIM",
       desc: KNOWN_VALIDATORS["NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D"].desc }
   ];
@@ -1798,11 +1798,11 @@
       if (!list.length) return;
       VALIDATORS = list.map(function(v){
         var known = KNOWN_VALIDATORS[v.address];
-        // Prefer a published validator name from the API (v.name) once
-        // NIMIQ-BACKEND exposes it — falls back to the address short form
-        // until then. Our 2 known nodes still use their hardcoded name.
+        // Prefer the name published live by the API (v.name), so a change
+        // on-chain shows up automatically — hardcoded name is only a
+        // fallback if the API hasn't published one yet.
         return {
-          name: known ? known.name : (v.name || shortAddr(v.address)),
+          name: v.name || (known ? known.name : shortAddr(v.address)),
           isKnown: !!known,
           address: v.address,
           availability: v.availability != null ? v.availability * 100 : null,
