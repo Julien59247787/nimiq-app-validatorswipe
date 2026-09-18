@@ -119,6 +119,7 @@
     background:var(--surface-2); border:1px solid var(--border); border-radius:18px;
     padding:16px; display:flex; flex-direction:column; box-shadow:var(--shadow-sm);
     transition: transform .3s ease, opacity .3s ease;
+    min-height: var(--card-min-height, auto);
   }
   .v-card.leaving-right{ transform: translateX(140%) rotate(18deg); opacity:0; }
   .v-card.leaving-left{ transform: translateX(-140%) rotate(-18deg); opacity:0; }
@@ -2303,9 +2304,37 @@
     onDelegated();
   });
 
+  // Our own nodes' uppercase name ("NODENIMIQ1.NIMIQ-JU.FR by @Ju") plus
+  // their description wraps to the tallest card the app ever shows. Measure
+  // that height once (off-screen probe, real DOM/CSS/fonts) and lock every
+  // card to it, so swiping to a shorter-named validator doesn't shrink the
+  // card and shift the action buttons below it.
+  function calibrateCardHeight(){
+    var probe = document.createElement('div');
+    probe.style.cssText = 'position:absolute; visibility:hidden; pointer-events:none; left:-9999px; top:0;';
+    probe.style.width = cardStack.getBoundingClientRect().width + 'px';
+    document.body.appendChild(probe);
+    var tallest = 0;
+    [FALLBACK_VALIDATORS[0], FALLBACK_VALIDATORS[1]].forEach(function(v){
+      var card = document.createElement('div');
+      card.className = 'v-card';
+      card.innerHTML = cardHtml(v);
+      probe.appendChild(card);
+      tallest = Math.max(tallest, card.offsetHeight);
+      probe.removeChild(card);
+    });
+    document.body.removeChild(probe);
+    if (tallest > 0){
+      cardStack.style.setProperty('--card-min-height', tallest + 'px');
+      shortlistCardStack.style.setProperty('--card-min-height', tallest + 'px');
+    }
+  }
+
   setupLangSwitch();
   applyStaticTranslations();
   renderCard();
+  calibrateCardHeight();
+  window.addEventListener('resize', calibrateCardHeight);
   loadValidatorsList();
 
   // ---------- confetti ----------
