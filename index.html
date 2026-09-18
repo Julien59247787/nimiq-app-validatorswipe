@@ -1815,16 +1815,15 @@
         };
       });
       // Fixed order so browsing is stable and predictable run to run:
-      // validators with at least one stat first (alphabetical among
-      // themselves), then validators with no stats at all (alphabetical
-      // among themselves) — presentation order only, no data changed
-      // or hidden.
-      function hasAnyStat(v){
-        return v.availability != null || v.reliability != null || v.reward != null || v.fee != null;
+      // primarily by number of available stats (uptime/reliability/
+      // reward — 3 down to 0), best first, then alphabetical within
+      // each tier — presentation order only, no data changed or hidden.
+      function statCount(v){
+        return (v.availability != null ? 1 : 0) + (v.reliability != null ? 1 : 0) + (v.reward != null ? 1 : 0);
       }
       VALIDATORS = VALIDATORS.slice().sort(function(a, b){
-        var aHas = hasAnyStat(a), bHas = hasAnyStat(b);
-        if (aHas !== bHas) return aHas ? -1 : 1;
+        var diff = statCount(b) - statCount(a);
+        if (diff !== 0) return diff;
         return a.name.localeCompare(b.name);
       });
       idx = 0;
