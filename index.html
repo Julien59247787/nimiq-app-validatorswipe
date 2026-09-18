@@ -2069,16 +2069,17 @@
 
   function renderCard(){
     cardStack.innerHTML = '';
+    // Endless ribbon: wraps both ways (forward past the last card already
+    // looped to the first — back now loops the same way to the last).
     if (idx >= VALIDATORS.length) idx = 0;
-    if (idx < 0) idx = 0;
+    if (idx < 0) idx = VALIDATORS.length - 1;
     var v = VALIDATORS[idx];
     var card = document.createElement('div');
     card.className = 'v-card';
     card.id = 'currentCard';
     card.innerHTML = cardHtml(v);
     cardStack.appendChild(card);
-    passBtn.disabled = false; shortlistBtn.disabled = false;
-    backBtn.disabled = idx === 0;
+    passBtn.disabled = false; shortlistBtn.disabled = false; backBtn.disabled = false;
   }
 
   function renderShortlistCard(){
@@ -2155,7 +2156,6 @@
   }
 
   backBtn.addEventListener('click', function(){
-    if (idx === 0) return;
     var card = $('currentCard');
     if (card) card.classList.add('leaving-right');
     setTimeout(function(){
