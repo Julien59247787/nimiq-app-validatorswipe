@@ -2156,8 +2156,12 @@
 
   backBtn.addEventListener('click', function(){
     if (idx === 0) return;
-    idx--;
-    renderCard();
+    var card = $('currentCard');
+    if (card) card.classList.add('leaving-right');
+    setTimeout(function(){
+      idx--;
+      renderCard();
+    }, 260);
   });
 
   passBtn.addEventListener('click', function(){ advanceCard(); });
