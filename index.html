@@ -2060,6 +2060,13 @@
     errorModalOverlay.hidden = false;
   }
   function closeErrorModal(){ errorModalOverlay.hidden = true; }
+  $('errorModalOkBtn').addEventListener('click', closeErrorModal);
+  errorModalOverlay.addEventListener('click', function(ev){
+    if (ev.target === errorModalOverlay) closeErrorModal();
+  });
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && !errorModalOverlay.hidden) closeErrorModal();
+  });
   // The SDK's send*Transaction() promises can RESOLVE with an ErrorResponse
   // object instead of rejecting (see mini-app-sdk's provider.d.ts): treat
   // that as a failure, never as a success.
