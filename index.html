@@ -2183,9 +2183,11 @@
   // reflects the change (or a time cap), and every read re-renders all the
   // views at once (renderStakerStatus). The app never claims a state the chain
   // does not show: on timeout it simply keeps the last real state.
-  // Poll schedule after a real action: every POLL_FAST_MS until POLL_FAST_UNTIL_MS, then every
-  // POLL_SLOW_MS, up to a TOTAL cap of POLL_MAX_MS (about 13 requests at most).
-  var POLL_FAST_MS = 3000, POLL_FAST_UNTIL_MS = 30000, POLL_SLOW_MS = 10000, POLL_MAX_MS = 60000;
+  // Poll schedule after a real action, from measured inclusion delays (block time about 1 s, a
+  // staking transaction is included 0-3 blocks after sending; one outlier of about 2 minutes was
+  // seen): first read POLL_FIRST_MS after the wallet returns, then every POLL_FAST_MS until
+  // POLL_FAST_UNTIL_MS, then every POLL_SLOW_MS, up to a TOTAL cap of POLL_MAX_MS (about 18 requests).
+  var POLL_FIRST_MS = 1800, POLL_FAST_MS = 2000, POLL_FAST_UNTIL_MS = 20000, POLL_SLOW_MS = 5000, POLL_MAX_MS = 60000;
   function pollDelay(elapsed){ return elapsed < POLL_FAST_UNTIL_MS ? POLL_FAST_MS : POLL_SLOW_MS; }
   var statusPoll = null;
   function makeExpect(kind, address){
@@ -2232,7 +2234,7 @@
         poll.timer = setTimeout(tick, pollDelay(Date.now() - poll.startedAt));
       });
     }
-    tick();
+    poll.timer = setTimeout(tick, POLL_FIRST_MS);
   }
   // Also refresh when the app comes back to the foreground or a message is dismissed.
   function refreshStatusSoon(){

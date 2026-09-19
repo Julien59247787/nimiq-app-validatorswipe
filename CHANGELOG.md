@@ -17,9 +17,11 @@ releases yet; entries are grouped by date and reconstructed from the git history
 - The displayed staking state stayed stale after a confirmed delegation, switch, add, retire or claim:
   the app re-read the on-chain state once, immediately, but a transaction is only mined some seconds
   later, so the old delegation, stake and card modes stayed on screen until a reload. After every
-  real action the app now re-reads `staker-status` every 3 seconds for 30 seconds, then every 10
-  seconds, up to a total cap of 60 seconds (about 13 requests at most; the values are named
-  constants), paused while the app is hidden, never in parallel, retrying at the next tick if a
+  real action the app now re-reads `staker-status` 1.8 seconds after the wallet returns, then every
+  2 seconds until 20 seconds, then every 5 seconds, up to a total cap of 60 seconds (about 18
+  requests at most, none afterwards; the values are named constants, chosen from measured
+  inclusion delays: about 1 s per block, staking transactions included 0-3 blocks after sending, with
+  rare outliers of about 2 minutes), paused while the app is hidden, never in parallel, retrying at the next tick if a
   request fails, until the chain reflects the change. Each read updates the delegation banner, the
   stake block, the delegation history and the Add/Switch mode of the cards together, and a short
   notice (translated in 11 languages) tells the user the network is still confirming. It also
