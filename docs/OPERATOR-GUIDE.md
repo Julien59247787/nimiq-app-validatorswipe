@@ -487,7 +487,8 @@ domain. Point it to an image hosted on your own domain (1200×630 recommended) a
 ### c) Footer credits and links
 
 At the end of `<body>`, the `credit-footer` block contains the original authors' credit, a
-community link and a mascot image; the matching texts are the `footer.*` keys in the `T`
+community link, a "Report a bug" link (to this project's GitHub issues), and a mascot image
+(`tux-nimiq-96.png`) that links to the original operator's dashboard; the matching texts are the `footer.*` keys in the `T`
 dictionary. Replace or remove them (remember to keep or delete the keys consistently in all
 11 languages — see [I18N.md](I18N.md)). The MIT license requires you to keep the copyright
 notice in [LICENSE](../LICENSE).

@@ -257,7 +257,8 @@
   .credit-discord-link:hover{ transform:translateY(-1px) scale(1.04); background:#5865F2; color:#fff; }
   .credit-bug-link{ display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:5px 4px; color:var(--text-faint); font-size:12px; font-weight:600; text-decoration:underline; text-underline-offset:2px; }
   .credit-bug-link:hover, .credit-bug-link:focus-visible{ color:var(--text); }
-  .credit-mascot{ display:block; width:24px; height:24px; max-width:24px; object-fit:contain; opacity:.85; border-radius:6px; transition:transform .15s, opacity .15s; }
+  .credit-mascot-link{ display:inline-flex; align-items:center; justify-content:center; padding:8px; margin:-8px; }
+  .credit-mascot{ display:block; width:28px; height:28px; max-width:28px; object-fit:contain; opacity:.85; transition:transform .15s, opacity .15s; }
   .credit-mascot:hover{ transform:translateY(-1px) scale(1.06); opacity:1; }
   @media (max-width:640px){
     .credit-footer{ flex-direction:column; gap:.3rem; padding:16px 12px; }
@@ -516,7 +517,7 @@
   <a class="credit-discord-link" href="https://discord.gg/96gHeaZYRH" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le serveur Discord de @Ju" data-i18n-aria="footer.discordAria" title="Rejoindre le serveur Discord" data-i18n-title="footer.discordTitle">Discord ↗</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Report a bug</a>
-  <img class="credit-mascot" src="tux-nimiq.png" alt="Mascotte @Ju &amp; Nimiq" title="@Ju &amp; Nimiq" width="24" height="24" loading="lazy" decoding="async">
+  <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Open the validators dashboard" data-i18n-aria="footer.mascotLink" title="Open the validators dashboard" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
 <div class="success-modal-overlay" id="successModalOverlay" hidden>
@@ -652,6 +653,7 @@
       'footer.by': 'par',
       'footer.joinMe': 'Rejoins-moi sur',
       'footer.reportBug': 'Signaler un bug',
+      'footer.mascotLink': 'Ouvrir le tableau de bord des validateurs',
       'footer.discordAria': 'Rejoindre le serveur Discord de @Ju',
       'footer.discordTitle': 'Rejoindre le serveur Discord'
     },
@@ -762,6 +764,7 @@
       'footer.by': 'by',
       'footer.joinMe': 'Join me on',
       'footer.reportBug': 'Report a bug',
+      'footer.mascotLink': 'Open the validators dashboard',
       'footer.discordAria': 'Join @Ju\'s Discord server',
       'footer.discordTitle': 'Join the Discord server'
     },
@@ -843,6 +846,7 @@
       'footer.by': 'por',
       'footer.joinMe': 'Sígueme en',
       'footer.reportBug': 'Informar de un error',
+      'footer.mascotLink': 'Abrir el panel de control de los validadores',
       'footer.discordAria': 'Unirse al servidor de Discord de @Ju',
       'footer.discordTitle': 'Unirse al servidor de Discord',
       'app.retireToggle': 'Retirar mi apuesta',
@@ -953,6 +957,7 @@
       'footer.by': '作者：',
       'footer.joinMe': '在以下平台关注我：',
       'footer.reportBug': '报告错误',
+      'footer.mascotLink': '打开验证者仪表盘',
       'footer.discordAria': '加入 @Ju 的 Discord 服务器',
       'footer.discordTitle': '加入 Discord 服务器',
       'app.retireToggle': '提取我的质押金',
@@ -1063,6 +1068,7 @@
       'footer.by': '著者：',
       'footer.joinMe': 'ぜひ、こちらで私とつながってください',
       'footer.reportBug': 'バグを報告する',
+      'footer.mascotLink': 'バリデーターのダッシュボードを開く',
       'footer.discordAria': '@JuのDiscordサーバーに参加する',
       'footer.discordTitle': 'Discordサーバーに参加する',
       'app.retireToggle': 'ステークを引き出す',
@@ -1173,6 +1179,7 @@
       'footer.by': '작성자:',
       'footer.joinMe': '나와 함께해 주세요',
       'footer.reportBug': '버그 신고하기',
+      'footer.mascotLink': '검증자 대시보드 열기',
       'footer.discordAria': '@Ju의 Discord 서버에 가입하기',
       'footer.discordTitle': 'Discord 서버에 가입하기',
       'app.retireToggle': '내 스테이크 회수하기',
@@ -1283,6 +1290,7 @@
       'footer.by': 'von',
       'footer.joinMe': 'Besuche mich auf',
       'footer.reportBug': 'Einen Fehler melden',
+      'footer.mascotLink': 'Das Validatoren-Dashboard öffnen',
       'footer.discordAria': 'Dem Discord-Server von @Ju beitreten',
       'footer.discordTitle': 'Dem Discord-Server beitreten',
       'app.retireToggle': 'Meinen Einsatz abheben',
@@ -1393,6 +1401,7 @@
       'footer.by': 'por',
       'footer.joinMe': 'Junta-te a mim no',
       'footer.reportBug': 'Comunicar um erro',
+      'footer.mascotLink': 'Abrir o painel de controlo dos validadores',
       'footer.discordAria': 'Entrar no servidor do Discord do @Ju',
       'footer.discordTitle': 'Entrar no servidor do Discord',
       'app.retireToggle': 'Retirar a minha participação',
@@ -1503,6 +1512,7 @@
       'footer.by': 'автор:',
       'footer.joinMe': 'Присоединяйся ко мне на',
       'footer.reportBug': 'Сообщить об ошибке',
+      'footer.mascotLink': 'Открыть панель управления валидаторами',
       'footer.discordAria': 'Присоединиться к серверу Discord @Ju',
       'footer.discordTitle': 'Присоединиться к серверу Discord',
       'app.retireToggle': 'Изъять мой стейк',
@@ -1613,6 +1623,7 @@
       'footer.by': 'tarafından',
       'footer.joinMe': 'Bana katıl',
       'footer.reportBug': 'Bir hata bildir',
+      'footer.mascotLink': 'Validatör kontrol panelini aç',
       'footer.discordAria': '@Ju’nun Discord sunucusuna katıl',
       'footer.discordTitle': 'Discord sunucusuna katılmak',
       'app.retireToggle': 'Hisse payımı çekmek',
@@ -1723,6 +1734,7 @@
       'footer.by': 'بقلم',
       'footer.joinMe': 'انضم إليّ على',
       'footer.reportBug': 'الإبلاغ عن خطأ',
+      'footer.mascotLink': 'افتح لوحة معلومات المُصدِّقين',
       'footer.discordAria': 'الانضمام إلى خادم Discord الخاص بـ @Ju',
       'footer.discordTitle': 'الانضمام إلى خادم Discord',
       'app.retireToggle': 'سحب رهنتي',

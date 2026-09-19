@@ -7,6 +7,9 @@ releases yet; entries are grouped by date and reconstructed from the git history
 ## Unreleased
 
 ### Added
+- The footer mascot is now a link (44 px tap area, translated label) to the operator's public
+  dashboard, and uses a light 96 px image (`tux-nimiq-96.png`, about 15 KB instead of 98 KB, sharp
+  hexagon on a transparent background). The old `tux-nimiq.png` stays in place.
 - A discreet "Report a bug" link in the footer (translated in all 11 languages) opening the GitHub
   bug-report form; the bug template now asks not to share the full wallet address.
 
