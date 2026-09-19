@@ -31,6 +31,12 @@ Inside a single IIFE-style script block:
 - **Data layer** — `loadValidatorsList()` fetches the validator list and normalizes it
   (fractions → percentages, `luna` → NIM, missing metrics stay `null` and are shown as `—`).
   Cards are sorted by number of available metrics (best first), then alphabetically.
+- **Fresh on-chain view** — after every real transaction the app re-reads `/api/v2/staker-status`
+  (first read 1.8 s after the wallet returns, every 2 s until 20 s, then every 5 s, capped at 60 s,
+  single de-duplicated chain, paused while hidden) until the chain reflects the action; every read
+  re-renders the delegation banner, stake block, history and Add/Switch mode of the cards together,
+  and only the Delegate button is locked meanwhile. An unreadable status before delegating is
+  retried twice, then refused (nothing is sent).
 - **State** — a small `state` object: `{ nimiq, hub, myAddress }` (Nimiq Pay provider, Nimiq
   Hub client, connected address), plus `lastStakerStatus` (the latest on-chain snapshot).
 - **Two phases** — *Browse* (pass / set aside; never sends a transaction) and *My favorites*

@@ -264,7 +264,10 @@ page: the first read **1.8 seconds after the wallet returns, then every 2 second
 every 5 seconds, up to a total cap of 60 seconds** (about 18 requests per action per user, none
 afterwards), paused while the page is
 hidden, and throttled to one request per 2 seconds when the page returns to the foreground or a
-message is dismissed. If a poll request fails (for example a `503`), the app simply retries at the
+message is dismissed. Per action that is at most about 18 polling requests, plus one check just
+before sending and one re-read when the success message is closed; none afterwards. The schedule
+is defined by the constants `POLL_FIRST_MS`, `POLL_FAST_MS`, `POLL_FAST_UNTIL_MS`, `POLL_SLOW_MS`
+and `POLL_MAX_MS` in `index.html` (changing them changes the inline script, hence its CSP hash). If a poll request fails (for example a `503`), the app simply retries at the
 next tick.
 
 There is **no server-side cache** and the response is `Cache-Control: no-store`, so every read
