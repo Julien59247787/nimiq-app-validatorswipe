@@ -161,8 +161,8 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
   usually included about 2 blocks after it is sent (a rare outlier can take about 2 minutes). The
   app keeps checking for up to 60 seconds. The transaction history shown by a wallet app may lag
   behind the chain by up to a minute; the app reads the chain itself.
-- **View re-framing is tuned for Nimiq Pay's in-app browser; elsewhere it is neutral.** It runs automatically only when
-  the host reports its top bar height; otherwise only a tap on the app title re-frames (see the known limitations).
+- **View re-framing is tuned for Nimiq Pay's in-app browser; elsewhere it is neutral.** It only acts when
+  the host reports its top bar height; otherwise nothing scrolls (see the known limitations).
 - **Reliability is capped at 100 %.** The statistics source can publish a value above 100 % for some validators;
   the API caps it at 100 % (a fraction between 0 and 1) and the app shows it as provided.
 

@@ -97,9 +97,9 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Changed**
 - Automatic re-framing and the host top bar compensation apply only inside Nimiq Pay, and only when the WebView reports
-  the bar height (`env(safe-area-inset-top)`); otherwise nothing moves automatically and only a tap on the app title
-  re-frames, with a 64 px clearance so the title cannot end up under the host bar. Elsewhere it is neutral (the title
-  and the tabs keep working) (`33c28c6`, `4c42fa5`).
+  the bar height (`env(safe-area-inset-top)`, 51 CSS px measured on the test phone), which then places the card at that
+  inset plus the side margin; when the height is unknown nothing scrolls, and a tap on the app title only closes the
+  language menu and re-selects the current tab. Elsewhere it is neutral (`33c28c6`, `4c42fa5`, `6805e70`).
 - Switching between Browse and My favorites re-frames the view like the other triggers; the re-framing target
   also subtracts the height of a host top bar that overlays the page when the WebView reports it through
   `env(safe-area-inset-top)` (`8f5dab1`).
