@@ -96,6 +96,8 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   transparent background, `tux-nimiq-96.png` (`61c2137`, `3d92cbb`).
 
 **Changed**
+- Automatic re-framing and the host top bar compensation apply only inside Nimiq Pay; elsewhere they are neutral
+  (the app title and the tabs keep working) (`33c28c6`).
 - Switching between Browse and My favorites re-frames the view like the other triggers; the re-framing target
   also subtracts the height of a host top bar that overlays the page when the WebView reports it through
   `env(safe-area-inset-top)` (`8f5dab1`).
