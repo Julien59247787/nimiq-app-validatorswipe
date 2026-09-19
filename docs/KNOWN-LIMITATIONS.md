@@ -49,10 +49,10 @@ confirmed within about 2 seconds. The cause is not established (host or network 
 transaction hash or an error from the SDK and cannot see the host's pending state). What the app does about it: a
 single write lock keeps every button that sends a transaction disabled until the chain reflects the previous
 action; after 15 seconds it says the confirmation is taking longer than usual, after 60 seconds it shows "Still
-not confirmed. The network may be slow, or the transaction may not have been sent. Check Nimiq Pay if it stays this
-way.", keeps the buttons disabled, re-reads the chain every 15 seconds for up to 10 minutes, and offers a manual "Not
-sent? Unlock" button (never automatic, because of the risk of a duplicate action). Check the transaction in Nimiq Pay
-before unlocking.
+not confirmed. The network may be slow, or the transaction may not have been sent. Wait a little longer, or unlock to
+try again.", keeps the buttons disabled, re-reads the chain every 15 seconds for up to 10 minutes, and offers a manual "Not
+sent? Unlock" button (never automatic, because of the risk of a duplicate action). If it stays this way, check the transaction in Nimiq Pay before unlocking; reloading the app re-reads the chain but
+does not lift the lock by itself.
 
 ## Create stake from a swap contract (HTLC): merged contracts fail
 

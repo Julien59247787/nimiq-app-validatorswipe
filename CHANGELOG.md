@@ -23,8 +23,9 @@ work is available in the Git history.
   only when the chain reflects the action, when the page that owns it gets an error or a cancellation, when the wallet
   changes, or through an explicit "Not sent? Unlock" button. The waiting message is progressive: "Waiting for the
   network to confirm your transaction…" for 15 seconds, "This is taking a bit longer than usual…" up to 60 seconds
-  (`82858ad`), then "Still not confirmed. The network may be slow, or the transaction may not have been sent. Check Nimiq
-  Pay if it stays this way. Reloading the app re-reads the chain." (`82858ad`): the buttons stay disabled, the chain
+  (`82858ad`), then "Still not confirmed. The network may be slow, or the transaction may not have been sent. Wait a
+  little longer, or unlock to try again." (`089e2c1`). The "Not sent? Unlock" button is Nimiq orange with dark text so that
+  it cannot be missed (`089e2c1`). While not confirmed the buttons stay disabled, the chain
   is re-read every 15 seconds for up to 10 minutes, and the user is never locked in for good. Previously only the
   Delegate button was locked (`7855fa6`).
 - The delegation history records an action only once the chain reflects it, instead of when the wallet returned;
