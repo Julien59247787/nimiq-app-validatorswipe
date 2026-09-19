@@ -108,7 +108,7 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Fixed**
 - In the delegation history, the "Delegated" badge appears on a single row: the most recent entry for the
-  validator that is the current on-chain delegation; every other entry shows "Past" (`HASH`).
+  validator that is the current on-chain delegation; every other entry shows "Past" (`49c85e0`).
 - An error object *resolved* by the wallet SDK is treated as a failure instead of a success (`c9f8aad`).
 - The displayed staking state no longer stays stale after a confirmed transaction (`d4f15e3`).
 - The validator card no longer takes an oversized height after a resize while the other tab is shown (`8651b46`).
