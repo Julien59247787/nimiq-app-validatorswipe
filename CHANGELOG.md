@@ -201,6 +201,10 @@ Ideas that would make the app easier to reuse and harden. None of these are impl
   pre-filled when the main-account balance reads 0.
 - Automated tests and a CI check for i18n key parity and script syntax.
 
+**Interface**
+- Delegation history: when the same validator was delegated to several times in a session, the
+  "Delegated" badge shows on every row of that validator; only the most recent one should carry it.
+
 **Internationalization**
 - Native-speaker review of the machine-translated languages.
 - Right-to-left layout (`dir="rtl"`) for Arabic.

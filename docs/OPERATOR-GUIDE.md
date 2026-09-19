@@ -177,17 +177,23 @@ Semantics to keep exactly right:
   pre-fills from this value when it is ≥ 1 NIM). **`0` does not mean "no funds"**: the app
   never blocks staking on it, because the wallet can use funds held in a swap contract itself.
 - No staker → `found:false` and all staker fields `null`; `wallet_balance_luna` is still reported.
-- If the node RPC itself fails or times out → the same explicit-null response
-  (`found:false`, nulls) rather than a 500. (Trade-off: the UI cannot tell "not a staker"
-  from "node down".)
+- If the node RPC itself fails or times out → prefer an HTTP `503` (or another non-2xx status)
+  over a `found:false` answer: the app treats an unreadable status as "do not send anything" (it
+  retries twice, then shows "Couldn't read your staking state"), whereas a `found:false` returned
+  because the node was down would be believed, and the app would attempt a *create staker* for a
+  wallet that may already stake. (The reference backend currently answers with the explicit-null
+  `found:false` in that case, so the UI cannot tell "not a staker" from "node down"; a 503 is
+  the safer contract.)
 - No caching: this is a live, per-request passthrough.
 
 > **Critical dependency.** Before sending a delegation, the app calls this endpoint to decide
 > between *create staker*, *add stake* and *update staker (switch validator)*. If the call
-> fails, the app **assumes "no existing staker"** and attempts *create staker* — which the
-> network rejects for a wallet that already has a staker. A backend that returns
-> `found:false` for real stakers therefore breaks adding stake and switching validator.
-> Implement this endpoint faithfully or not at all.
+> fails (non-2xx status, timeout, or a response without a boolean `found`), the app retries twice
+> quickly and then **refuses to send anything**, showing "Couldn't read your staking state — try
+> again in a moment." (it never assumes "no existing staker"). But a backend that answers
+> `found:false` for a real staker is believed: the app then attempts *create staker*, which the
+> network rejects for a wallet that already has a staker, and adding stake or switching validator
+> break. Implement this endpoint faithfully or not at all.
 
 Not consumed by the app but useful: `GET /api/health` → `200`, for monitoring and deploy checks.
 
@@ -245,10 +251,40 @@ Whatever source you choose:
   Expose `cache_updated_at` (= `max(updated_at)`) so freshness is visible.
 - `validators-list` reads only from the cache: fast, no external call per request.
 
-### 2.4 Rate limiting
+### 2.4 Rate limiting and load
 
-`staker-status` triggers two RPC calls per request. Put a per-IP rate limit at the reverse
-proxy (a small burst, a low sustained rate) and keep the node RPC bound to localhost.
+`staker-status` triggers two RPC calls per request (about 1 ms each on a local node), so protect it
+at the reverse proxy and keep the node RPC bound to localhost.
+
+**How the app calls `staker-status` (capacity planning).** One read when a wallet connects, one
+just before a delegation (with up to two quick retries if it fails), and, after every real
+transaction, a re-read until the chain reflects it — because a transaction only shows up on chain
+a few seconds after the wallet confirms it. That follow-up is a single, de-duplicated chain per
+page: the first read **1.8 seconds after the wallet returns, then every 2 seconds until 20 seconds, then
+every 5 seconds, up to a total cap of 60 seconds** (about 18 requests per action per user, none
+afterwards), paused while the page is
+hidden, and throttled to one request per 2 seconds when the page returns to the foreground or a
+message is dismissed. If a poll request fails (for example a `503`), the app simply retries at the
+next tick.
+
+There is **no server-side cache** and the response is `Cache-Control: no-store`, so every read
+reflects the node's current head (an effective TTL of zero). Do **not** put a cache in front of
+this endpoint, or the app would keep showing the old state after a confirmation.
+
+**Measured inclusion delays** (mainnet, staking transactions): the block time is about 1 second and
+a staking transaction is included a median of about 2 blocks (at most about 3) after it is sent,
+with rare outliers of about 2 minutes. The 60-second cap therefore leaves a wide margin for normal
+cases while still bounding the load for the outliers.
+
+**Rate limiting.** There is no request-*rate* limit on these endpoints in the reference
+deployment. What the reverse proxy enforces is a per-IP cap on **concurrent** requests: up to 20
+simultaneous requests per IP are served normally, and the excess gets a clean `503 Service
+Unavailable` (measured: 5 of 25 and 20 of 40 when holding that many connections open), with no
+socket errors and the service unaffected afterwards. It is a concurrency cap, not a rate: at a
+typical 10-20 ms per request, 20 concurrent slots correspond to on the order of a thousand
+requests per second, far above what per-user polling generates. If all your public traffic reaches
+the origin through a single reverse-proxy address, remember that a per-IP cap is then shared by
+all your visitors — size it accordingly, or key the limit on the forwarded client address.
 
 ---
 

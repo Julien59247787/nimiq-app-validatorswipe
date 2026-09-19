@@ -89,7 +89,7 @@ Their schemas, data sources and operational requirements are specified in the
 | Situation | Behavior |
 |---|---|
 | Validator list unavailable | A visible error box; the page keeps working with two built-in example validators |
-| Staker status unavailable | Staking actions fall back to "create staker"; status widgets stay hidden |
+| Staker status unavailable (HTTP error, timeout, bad response) | Before delegating: two quick retries, then "Couldn't read your staking state" and nothing is sent; status widgets stay as last read |
 | No wallet connected | Demo mode: browsing works, simulated delegation is clearly labeled as demo |
 | `listAccounts()` returns an error object | Logged, the app stays disconnected (no crash) |
 | Main-account balance reads 0 | Informational notice, no amount pre-fill; staking is **not** blocked (Nimiq Pay can use funds held in a swap contract) |
