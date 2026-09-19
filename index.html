@@ -1868,6 +1868,7 @@
         if (!li) return;
         setLang(li.dataset.lang);
         applyStaticTranslations();
+        refreshDynamicI18n();
         renderCard();
         renderShortlistCard();
         updateActiveDelegationBanner();
@@ -1885,6 +1886,16 @@
 
   function t(key){
     return (T[currentLang] && T[currentLang][key]) || T.fr[key] || key;
+  }
+
+  // Texts that applyStaticTranslations() rewrites from their data-i18n key but that depend on runtime state:
+  // the connection pill, the Hub connect label while connecting, and the delegation history badges.
+  function refreshDynamicI18n(){
+    try {
+      $('statusText').textContent = (state.nimiq || state.hub) ? t('app.statusLive') : t('app.statusDemo');
+      if (hubConnecting) $('hubConnectBtn').textContent = t('app.hubConnecting');
+      renderDelegationHistory();
+    } catch (e) {}
   }
 
   function applyStaticTranslations(){
@@ -2248,8 +2259,8 @@
     });
   })();
   // Re-frame the view along the user journey: after a tap on the star or the shield, and when a success/error
-  // message closes, bring the useful area (delegation banner, waiting notice, active stake, validator card)
-  // into view. Never while typing (keyboard open), never right after a manual scroll (< 1 s), never while the
+  // message closes, align the top of the central card (the app header under the host bar) with the top of the
+  // screen, whatever is displayed below it. Never while typing (keyboard open), never right after a manual scroll (< 1 s), never while the
   // keyboard restoration is pending (it keeps priority), one gentle move per action, instant with
   // prefers-reduced-motion, and nothing if the area is hidden. Purely cosmetic: any doubt = do nothing.
   var lastUserScrollAt = 0, reframeTimer = null;
@@ -2257,21 +2268,9 @@
     window.addEventListener(ev, function(){ lastUserScrollAt = Date.now(); }, { passive: true });
   });
   function reframeArea(){
-    var ids = ['activeDelegationBanner', 'pendingNote', 'myStakeBox'], top = null, i, el;
-    for (i = 0; i < ids.length && !top; i++){
-      el = $(ids[i]);
-      if (el && !el.hidden && el.offsetParent !== null) top = el;
-    }
-    var cards = document.querySelectorAll('#browsePhase .v-card, #currentShortlistCard');
-    var card = null;
-    for (i = 0; i < cards.length; i++){ if (cards[i].offsetParent !== null){ card = cards[i]; break; } }
-    if (!top) top = card;
-    if (!top) return null;
-    var bottomEl = card || top;
-    var y = window.scrollY, t = top.getBoundingClientRect().top + y, b = bottomEl.getBoundingClientRect().bottom + y;
-    var vh = window.innerHeight || document.documentElement.clientHeight, h = b - t;
-    var target = h < vh * 0.8 ? t - (vh - h) / 2 : t - 12;
-    return Math.max(0, Math.round(target));
+    var phone = document.querySelector('.demo-stage .phone');
+    if (!phone || phone.offsetParent === null) return null;
+    return Math.max(0, Math.round(phone.getBoundingClientRect().top + window.scrollY - 12));
   }
   function reframeSoon(delay){
     clearTimeout(reframeTimer);
