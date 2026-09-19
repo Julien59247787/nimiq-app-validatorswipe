@@ -270,6 +270,10 @@ is defined by the constants `POLL_FIRST_MS`, `POLL_FAST_MS`, `POLL_FAST_UNTIL_MS
 and `POLL_MAX_MS` in `index.html` (changing them changes the inline script, hence its CSP hash). If a poll request fails (for example a `503`), the app simply retries at the
 next tick.
 
+If the page is reloaded while an action is pending (for example by the host app or a
+pull-to-refresh), it resumes the same polling for the remaining time (up to 60 seconds after the send), so
+a reload does not add requests beyond that budget.
+
 There is **no server-side cache** and the response is `Cache-Control: no-store`, so every read
 reflects the node's current head (an effective TTL of zero). Do **not** put a cache in front of
 this endpoint, or the app would keep showing the old state after a confirmation.

@@ -2081,9 +2081,9 @@
   // (synthetic or re-dispatched click events bypass it, and a second page instance has its own DOM), so:
   // (1) a synchronous in-memory lock is taken BEFORE any promise, with a watchdog so it can never stay stuck;
   // (2) the same action key (kind|validator|amount) is ignored for DEDUPE_MS, in this instance and, through
-  //     localStorage (shared by same-origin pages of the same WebView), across instances. Fail-open: if
+  //     localStorage (shared by same-origin pages of the same WebView, and surviving a page reload). Fail-open: if
   //     localStorage is blocked, only the in-memory checks apply. A failed/cancelled action clears its key.
-  var DEDUPE_MS = 20000, LOCK_GRACE_MS = 400, LOCK_WATCHDOG_MS = 90000, SHARED_KEY = 'vs:lastActions';
+  var DEDUPE_MS = 30000, LOCK_GRACE_MS = 400, LOCK_WATCHDOG_MS = 90000, SHARED_KEY = 'vs:lastActions';
   var instanceId = Math.random().toString(36).slice(2) + Date.now().toString(36);
   var actionLockUntil = 0, recentActions = {};
   // Recent actions of ALL instances of the app, as a short list [{key, ts, id}] in localStorage (a single
@@ -2106,8 +2106,8 @@
     recentActions[key] = now;
     shared.push({ key: key, ts: now, id: instanceId });
     writeShared(shared);
-    var done = false;
-    return function release(sent){
+    var done = false, marked = false;
+    var release = function(sent){
       if (done) return;
       done = true;
       // short grace only after a real send (late duplicate events of the same tap; the same action is also
@@ -2116,8 +2116,12 @@
       if (!sent){
         delete recentActions[key];
         writeShared(readShared(Date.now()).filter(function(x){ return !(x.id === instanceId && x.key === key); }));
+        if (marked) clearPending();
       }
     };
+    // called right before the wallet request: records the pending action so it survives a page reload
+    release.mark = function(expect, amount){ marked = true; markPending(expect, amount); };
+    return release;
   }
 
   // ---------- success modal (stays open until the user closes it) ----------
@@ -2159,10 +2163,11 @@
       showErrorModal(t('app.retireInvalidAmount'), '');
       return;
     }
-    var releaseAction = beginAction('retire|' + amt);
+    var releaseAction = beginAction('retire|' + state.myAddress + '|' + amt);
     if (!releaseAction) return;
     retireConfirmBtn.disabled = true;
     var retireExpect = makeExpect('retire');
+    releaseAction.mark(retireExpect, amt);
     var retireValueLuna = Math.round(amt * 100000);
     var retireCall = state.nimiq
       ? state.nimiq.sendRetireStakeTransaction({ retireStake: retireValueLuna })
@@ -2254,6 +2259,39 @@
       prevPending: (s.inactive_balance_luna || 0) + (s.retired_balance_luna || 0),
       prevRetired: s.retired_balance_luna || 0 };
   }
+  // ---------- pending action that survives a page reload ----------
+  // A reload destroys the page's JS state while the wallet dialog / the transaction may still be in flight.
+  // The pending action is kept in sessionStorage AND localStorage (each independent, fail-open); when the page
+  // reloads within POLL_MAX_MS of the send, the waiting state is restored and the poll resumed until the chain
+  // reflects the action or startedAt + POLL_MAX_MS. It is cleared on confirmation, at the cap, and on any
+  // error or cancellation. Only the Delegate button is ever locked by it.
+  var PENDING_KEY = 'vs:pending';
+  function storePending(p){
+    var s = JSON.stringify(p);
+    try { sessionStorage.setItem(PENDING_KEY, s); } catch (e) {}
+    try { localStorage.setItem(PENDING_KEY, s); } catch (e) {}
+  }
+  function clearPending(){
+    try { sessionStorage.removeItem(PENDING_KEY); } catch (e) {}
+    try { localStorage.removeItem(PENDING_KEY); } catch (e) {}
+  }
+  function readPending(){
+    var raw = null;
+    try { raw = sessionStorage.getItem(PENDING_KEY); } catch (e) {}
+    if (!raw){ try { raw = localStorage.getItem(PENDING_KEY); } catch (e) {} }
+    if (!raw) return null;
+    try { var p = JSON.parse(raw); return (p && p.kind && p.startedAt && p.addr) ? p : null; } catch (e) { return null; }
+  }
+  function markPending(expect, amount){
+    storePending({ kind: expect.kind, address: expect.address, prevActive: expect.prevActive, prevPending: expect.prevPending,
+      prevRetired: expect.prevRetired, amount: amount || 0, addr: state.myAddress, startedAt: Date.now() });
+  }
+  function resumePending(){
+    var p = readPending();
+    if (!p) return;
+    if (p.addr !== state.myAddress || Date.now() - p.startedAt >= POLL_MAX_MS){ clearPending(); return; }
+    pollStakerStatus({ kind: p.kind, address: p.address, prevActive: p.prevActive, prevPending: p.prevPending, prevRetired: p.prevRetired }, p.startedAt);
+  }
   function expectReflected(data, e){
     if (!data) return false;
     var same = function(a, b){ return (a || '').replace(/\s+/g, '') === (b || '').replace(/\s+/g, ''); };
@@ -2276,22 +2314,22 @@
     if (statusPoll){ clearTimeout(statusPoll.timer); statusPoll = null; }
     setPendingNote(false);
   }
-  function pollStakerStatus(expect){
+  function pollStakerStatus(expect, resumedAt){
     stopStatusPoll();
-    var poll = { expect: expect, startedAt: Date.now(), timer: null };
+    var poll = { expect: expect, startedAt: resumedAt || Date.now(), timer: null };
     statusPoll = poll;
     setPendingNote(true);
     function tick(){
       if (statusPoll !== poll) return;
-      if (Date.now() - poll.startedAt > POLL_MAX_MS){ stopStatusPoll(); return; }
+      if (Date.now() - poll.startedAt > POLL_MAX_MS){ stopStatusPoll(); clearPending(); return; }
       if (document.hidden){ poll.timer = setTimeout(tick, pollDelay(Date.now() - poll.startedAt)); return; }
       fetchStakerStatus().then(function(data){
         if (statusPoll !== poll) return;
-        if (expectReflected(data, poll.expect)){ stopStatusPoll(); return; }
+        if (expectReflected(data, poll.expect)){ stopStatusPoll(); clearPending(); return; }
         poll.timer = setTimeout(tick, pollDelay(Date.now() - poll.startedAt));
       });
     }
-    poll.timer = setTimeout(tick, POLL_FIRST_MS);
+    poll.timer = setTimeout(tick, resumedAt ? 800 : POLL_FIRST_MS);
   }
   // Also refresh when the app comes back to the foreground or a message is dismissed.
   function refreshStatusSoon(){
@@ -2361,10 +2399,11 @@
       showErrorModal(t('app.removeStakeHubUnsupported'), '');
       return;
     }
-    var releaseAction = beginAction('remove|' + lastStakerStatus.retired_balance_luna);
+    var releaseAction = beginAction('remove|' + state.myAddress + '|' + lastStakerStatus.retired_balance_luna);
     if (!releaseAction) return;
     removeStakeBtn.disabled = true;
     var removeExpect = makeExpect('remove');
+    releaseAction.mark(removeExpect, lastStakerStatus.retired_balance_luna);
     state.nimiq.sendRemoveStakeTransaction({
       value: lastStakerStatus.retired_balance_luna
     }).then(function(res){
@@ -2592,7 +2631,7 @@
       // for a stake that never happened (real incident, 2026-09-19).
       // Real delegation: v.address is a real validator address (see
       // VALIDATORS above) — the only place in this app that fires it.
-      var releaseAction = beginAction('delegate|' + v.address + '|' + (stakeNim > 0 ? stakeNim : 0));
+      var releaseAction = beginAction('delegate|' + state.myAddress + '|' + v.address + '|' + (stakeNim > 0 ? stakeNim : 0));
       if (!releaseAction) return;
       delegateBtn.disabled = true;
       var stakeValueLuna = Math.round(stakeNim * 100000);
@@ -2630,6 +2669,7 @@
         // rejects a genuinely unfunded attempt (see the error handling below).
         var call;
         var expect = makeExpect(isSwitch ? 'update' : (hasExistingStaker ? 'add' : 'create'), v.address);
+        releaseAction.mark(expect, stakeNim);
         if (state.nimiq){
           if (!hasExistingStaker){
             call = state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
@@ -2831,6 +2871,7 @@
         }
         state.myAddress = accounts[0];
         fetchStakerStatus();
+        resumePending();
       }).catch(function(err){
         console.warn('Validator Swipe: could not list accounts.', err);
       });
@@ -2929,6 +2970,7 @@
     state.myAddress = null;
     lastStakerStatus = null;
     stopStatusPoll();
+    clearPending();
     $('statusText').textContent = t('app.statusDemo');
     $('statusPill').classList.remove('live');
     $('retireBox').hidden = true;

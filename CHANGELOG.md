@@ -18,10 +18,16 @@ releases yet; entries are grouped by date and reconstructed from the git history
   taken before any promise in the delegate, retire and claim handlers (the button's `disabled` attribute
   alone did not stop synthetic or re-dispatched click events, which could send two transactions); it is
   released on success, error, cancellation or unreadable status, and expires on its own after 90 seconds.
-  The same action (kind, validator, amount) is also ignored for 20 seconds, in the same page and across
-  pages of the app open at the same time (recent actions are shared through `localStorage`; if it is
-  blocked only the in-memory checks apply). A failed or cancelled action can be retried immediately.
-  A discreet message (translated in 11 languages) is shown when a duplicate is refused.
+  The same action (wallet, kind, validator, amount) is also ignored for 30 seconds, in the same page, in
+  other pages of the app open at the same time and after a page reload (recent actions are kept in
+  `localStorage`; if it is blocked only the in-memory checks apply). A failed or cancelled action can be
+  retried immediately. A discreet message (translated in 11 languages) is shown when a duplicate is refused.
+- A pending action survives a page reload: right before each wallet request the app records it in
+  `sessionStorage` and `localStorage`. If the page is reloaded less than 60 seconds later (host refresh,
+  pull-to-refresh), the "waiting for the network to confirm" notice is restored, the Delegate button stays
+  locked and the polling resumes until the chain reflects the action or 60 seconds after the send. The
+  record is cleared on confirmation, at the cap, and on any error or cancellation; retire and claim are
+  never locked by it.
 - Connection: the Nimiq Pay SDK is initialised once per page and `listAccounts()` is called once; the
   Nimiq Hub connect button ignores a second click while connecting.
 

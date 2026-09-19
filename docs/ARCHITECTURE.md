@@ -110,9 +110,12 @@ Their schemas, data sources and operational requirements are specified in the
 - Errors from the wallet SDK are translated to a human message; the raw SDK message is kept
   in a collapsible technical detail for debugging.
 - Every real action (delegate, retire, claim) passes a duplicate-submit guard: a synchronous lock taken
-  before any promise, plus a 20-second "same action" key shared between open pages of the app through
-  `localStorage` (fail-open if storage is blocked). One tap therefore produces one wallet request; a
-  failed or cancelled action can be retried at once.
+  before any promise, plus a 30-second "same action" key kept in `localStorage` (shared between open pages
+  of the app and surviving a reload; fail-open if storage is blocked). One tap therefore produces one
+  wallet request; a failed or cancelled action can be retried at once. The pending action is also
+  recorded in `sessionStorage` and `localStorage`, so after a page reload (less than 60 s after the send)
+  the waiting state and the polling are restored and only the Delegate button stays locked until the
+  chain reflects the action.
 - The wallet SDK can *resolve* with an error object instead of rejecting; that is treated as
   a failure (never as a success) for delegate, retire and claim.
 - The app never blocks staking on a 0 main-account balance: funds held in a swap contract are
