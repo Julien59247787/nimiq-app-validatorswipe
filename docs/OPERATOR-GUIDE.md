@@ -96,7 +96,7 @@ Response `200`:
   "count": 39,
   "validators": [
     {
-      "address": "NQ05 U1RF QJNH JCS1 RDQX 4M3Y 60KR K6CN 5LKC",
+      "address": "NQ07 0000 0000 0000 0000 0000 0000 0000 0000",
       "stake_luna": 68518027016612,
       "availability": 0.99999,
       "dominance": 0.99,
@@ -125,8 +125,9 @@ invented). The UI renders `null` as "—". Returning `0` would display "0 % yiel
 
 Front-end behavior worth knowing:
 
-- If the request fails, or `validators` is empty, the app falls back to a hard-coded two-entry
-  list and shows a "could not load the full list" note (see §6).
+- If the request fails (network error, non-2xx status, invalid JSON), the app keeps a hard-coded
+  two-entry list and shows a "could not load the full list" note (see §6). If the request succeeds
+  but `validators` is empty, the same two entries stay in place **silently, with no note**.
 - `name` from the API wins over any hard-coded name. If `name` is `null`, the UI shows a
   shortened address.
 - Ordering is done client-side (by number of available stats, then name); you don't need to sort.
@@ -437,7 +438,7 @@ You can satisfy the contract with much less:
 
 Degradation if you skip pieces:
 
-- No / failed `validators-list` → only the two hard-coded entries appear, with a notice.
+- Failed `validators-list` → only the two hard-coded entries appear, with a notice; an empty list → the same two entries, silently.
 - All stats `null` → cards show "—" (honest, but less useful).
 - `wallet_balance_luna: null` → no amount pre-fill (the user types it); `0` → the "funds may be settling" hint.
 - Wrong or absent `staker-status` → existing stakers cannot reliably add stake or switch (see §1.2).
@@ -596,7 +597,7 @@ at once.
 | Symptom | Likely cause |
 |---|---|
 | Blank page / nothing works, CSP errors in console | Hash of the inline script does not match the header (file changed, or line endings differ) |
-| Only two validators shown, "could not load the full list" | `validators-list` unreachable, wrong path, or returned an empty list |
+| Only two validators shown, "could not load the full list" | `validators-list` unreachable, wrong path, or returned an empty list (in that case no error note is shown) |
 | Staking transaction fails only outside Nimiq Pay | `'wasm-unsafe-eval'` or `connect-src https://cdn.jsdelivr.net` missing from the CSP |
 | Delegating a second time fails | `staker-status` reports `found:false` for an existing staker (see §1.2) |
 | All validator stats show "—" | The stats source changed or is unreachable; check the daily job and `cache_updated_at` |

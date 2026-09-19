@@ -13,7 +13,8 @@ Validator Swipe never holds, sees, or transmits a private key, seed phrase or pa
 - **Delegation keeps funds under the user's control.** Staking on Nimiq does not transfer
   ownership of the funds to the validator.
 - **No accounts, no cookies, no analytics.** The only value persisted in the browser is
-  the chosen interface language (`localStorage`).
+  the chosen interface language (`localStorage`). Note that the page loads fonts and libraries
+  from third-party CDNs (Google Fonts, jsDelivr), which necessarily see the visitor's IP address.
 - **Read-only backend.** The backend endpoints the app calls (`/api/v2/validators-list`,
   `/api/v2/staker-status`) are public, read-only lookups of on-chain data. The wallet
   address is sent to `staker-status` to read that account's public on-chain state — an
@@ -37,9 +38,9 @@ Only the latest commit on the default branch is supported.
 
 Please **do not open a public issue** for security problems.
 
-1. Preferred: use GitHub's **private vulnerability reporting** ("Security" tab →
-   "Report a vulnerability") on this repository.
-2. Alternatively, email **admin@nimiq-ju.fr** with the subject `Validator Swipe security`.
+1. Email **admin@nimiq-ju.fr** with the subject `Validator Swipe security`.
+2. Or, when it is enabled for this repository, use GitHub's **private vulnerability reporting**
+   ("Security" tab → "Report a vulnerability").
 
 Please include a description, reproduction steps, and the potential impact. You can
 expect an acknowledgement within a few days. We ask for reasonable time to fix an issue

@@ -27,7 +27,7 @@ Licensed under [MIT](LICENSE).
 ## Features
 
 - **Every active validator, real data.** Uptime, reliability, reward rate, delegation
-  fee and total stake for all active validators (~40 on mainnet), not a curated
+  fee and total stake for all active validators (39 at the time of writing), not a curated
   shortlist. Missing metrics are shown as `—`, never guessed.
 - **Two-phase flow.** *Browse* (skip / set aside — free, no transaction) then
   *My favorites* (the only place a transaction can be sent). Nothing is ever delegated
@@ -80,6 +80,11 @@ server does not provide. The app degrades gracefully (built-in example validator
 demo mode). To get the full experience, deploy it with the backend described in the
 [Operator Guide](docs/OPERATOR-GUIDE.md).
 
+Good to know when running from a clone: the "Watch the demo video" button links to a
+`demo.mp4` that is not part of the repository (it is a dead link locally), and the
+`og:image` link-preview URL points at the original deployment. Both are covered in the
+[Operator Guide](docs/OPERATOR-GUIDE.md#6-customizing-for-your-own-validators).
+
 ## Architecture in 10 lines
 
 1. One self-contained `index.html` (HTML + CSS + vanilla JS, no build step).
@@ -92,8 +97,9 @@ demo mode). To get the full experience, deploy it with the backend described in 
    spendable balance, so the UI always reflects the chain rather than local guesses.
 6. Both endpoints are served by your own backend, next to a Nimiq node — see the Operator Guide.
 7. All user-visible text lives in one `T` dictionary (11 languages, same keys everywhere).
-8. No cookies, no tracking, no analytics; the only persisted value is the chosen language
-   (`localStorage`).
+8. No cookies, no analytics; the only persisted value is the chosen language (`localStorage`).
+   Fonts and libraries are loaded from third-party CDNs (Google Fonts, jsDelivr), which
+   necessarily see the visitor's IP address.
 9. A strict Content-Security-Policy is expected; the inline script is allowed by hash.
 10. Details: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 

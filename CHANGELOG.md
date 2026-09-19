@@ -100,7 +100,7 @@ releases yet; entries are grouped by date and reconstructed from the git history
 ## 2026-09-13 — Full validator list and two-phase flow
 
 ### Added
-- The complete list of active validators (~40) instead of two, with real uptime,
+- The complete list of active validators (39 at the time of writing) instead of two, with real uptime,
   reliability, reward rate and fee.
 - Browse-then-decide flow: *Browse* (set aside, free) and *My favorites* (delegate).
 - MIT license and a first README.
