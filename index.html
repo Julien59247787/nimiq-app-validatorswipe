@@ -2212,9 +2212,11 @@
   // on focus, before the keyboard resizes the viewport, and put back after it closes. Nothing is done while
   // typing, if there is no visualViewport, if the user scrolled by hand after the focus, or if the page was
   // hidden meanwhile. Purely cosmetic: any doubt = do nothing.
+  var scrollCoord = { kbPending: function(){ return false; } };
   (function(){
     var input = $('stakeAmt2'), vv = window.visualViewport, saved = null, timer = null;
     if (!input || !vv) return;
+    scrollCoord.kbPending = function(){ return !!(saved && saved.shrunk); };
     function restoreSoon(ms){
       clearTimeout(timer);
       timer = setTimeout(function(){
@@ -2243,6 +2245,56 @@
       if (document.hidden){ clearTimeout(timer); saved = null; }
     });
   })();
+  // Re-frame the view along the user journey: after a tap on the star or the shield, and when a success/error
+  // message closes, bring the useful area (delegation banner, waiting notice, active stake, validator card)
+  // into view. Never while typing (keyboard open), never right after a manual scroll (< 1 s), never while the
+  // keyboard restoration is pending (it keeps priority), one gentle move per action, instant with
+  // prefers-reduced-motion, and nothing if the area is hidden. Purely cosmetic: any doubt = do nothing.
+  var lastUserScrollAt = 0, reframeTimer = null;
+  ['touchmove', 'wheel'].forEach(function(ev){
+    window.addEventListener(ev, function(){ lastUserScrollAt = Date.now(); }, { passive: true });
+  });
+  function reframeArea(){
+    var ids = ['activeDelegationBanner', 'pendingNote', 'myStakeBox'], top = null, i, el;
+    for (i = 0; i < ids.length && !top; i++){
+      el = $(ids[i]);
+      if (el && !el.hidden && el.offsetParent !== null) top = el;
+    }
+    var cards = document.querySelectorAll('#browsePhase .v-card, #currentShortlistCard');
+    var card = null;
+    for (i = 0; i < cards.length; i++){ if (cards[i].offsetParent !== null){ card = cards[i]; break; } }
+    if (!top) top = card;
+    if (!top) return null;
+    var bottomEl = card || top;
+    var y = window.scrollY, t = top.getBoundingClientRect().top + y, b = bottomEl.getBoundingClientRect().bottom + y;
+    var vh = window.innerHeight || document.documentElement.clientHeight, h = b - t;
+    var target = h < vh * 0.8 ? t - (vh - h) / 2 : t - 12;
+    return Math.max(0, Math.round(target));
+  }
+  function reframeSoon(delay){
+    clearTimeout(reframeTimer);
+    reframeTimer = setTimeout(function(){
+      try {
+        if (document.hidden || Date.now() - lastUserScrollAt < 1000 || scrollCoord.kbPending()) return;
+        var ae = document.activeElement;
+        if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
+        var target = reframeArea();
+        if (target === null || Math.abs(target - window.scrollY) < 8) return;
+        var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: target, behavior: calm ? 'instant' : 'smooth' });
+      } catch (e) {}
+    }, delay);
+  }
+  ['shortlistBtn', 'removeBtn', 'delegateBtn'].forEach(function(id){
+    var b = $(id);
+    if (b) b.addEventListener('click', function(){ reframeSoon(id === 'delegateBtn' ? 150 : 250); });
+  });
+  if (window.MutationObserver){
+    [$('successModalOverlay'), $('errorModalOverlay')].forEach(function(ov){
+      if (!ov) return;
+      new MutationObserver(function(){ if (ov.hidden) reframeSoon(200); }).observe(ov, { attributes: true, attributeFilter: ['hidden'] });
+    });
+  }
   var lastStakerStatus = null;
   var statusInFlight = null, lastStatusFetchAt = 0;
   function fetchStakerStatus(){
