@@ -2295,6 +2295,7 @@
   // 0 = not compensated: the real value depends on the host and must come from on-device measurements.
   var HOST_TOP_OVERLAY_PX = 0;
   function hostTopInset(){
+    if (!window.nimiqPay) return 0;   // only Nimiq Pay's WebView is compensated; neutral elsewhere
     try {
       var probe = document.createElement('div');
       probe.style.cssText = 'position:absolute;left:0;top:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top)';
@@ -2303,7 +2304,7 @@
       document.body.removeChild(probe);
       if (inset > 0) return inset;
     } catch (e) {}
-    return window.nimiqPay ? HOST_TOP_OVERLAY_PX : 0;
+    return HOST_TOP_OVERLAY_PX;
   }
   function reframeArea(){
     var phone = document.querySelector('.demo-stage .phone');
@@ -2317,6 +2318,7 @@
     reframeTimer = setTimeout(function(){
       try {
         if (document.hidden || (!force && Date.now() - lastUserScrollAt < 1000) || scrollCoord.kbPending()) return;
+        if (!force && !window.nimiqPay) return;   // automatic re-framing is tuned for Nimiq Pay; an explicit tap on the title always works
         var ae = document.activeElement;
         if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
         var target = reframeArea();
