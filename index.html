@@ -101,6 +101,9 @@
   .lang-dropdown-menu li.active{ background:var(--surface-2); color:var(--violet-strong); }
   @media (max-width:640px){ .lang-dropdown-menu{ right:-8px; } }
   .phone-app-bar .app-name{ font-family:'Fraunces',serif; font-weight:700; font-size:1.02rem; }
+  #appTitle{ cursor:pointer; border-radius:6px; }
+  #appTitle:hover{ opacity:.85; }
+  #appTitle:focus-visible{ outline:2px solid var(--nimiq-gold); outline-offset:3px; }
   .status-pill{ font-size:.65rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:5px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--border); color:var(--text-faint); display:flex; align-items:center; gap:5px; }
   .status-pill .dot{ width:6px; height:6px; border-radius:50%; background:var(--text-faint); }
   .status-pill.live .dot{ background:var(--signal); box-shadow:0 0 0 3px color-mix(in srgb, var(--signal) 25%, transparent); }
@@ -319,7 +322,7 @@
     <div class="demo-stage" id="demo">
       <div class="phone">
         <div class="phone-app-bar">
-          <span class="app-name">🛡️ Validator Swipe</span>
+          <span class="app-name" id="appTitle" role="button" tabindex="0" data-i18n-aria="app.titleAria" aria-label="Back to the top of the app">🛡️ Validator Swipe</span>
           <div class="lang-dropdown" id="lang-dropdown">
             <button type="button" class="lang-dropdown-trigger" id="lang-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Choix de la langue">
               <span class="lang-flag-icon" id="lang-dropdown-current-flag"></span>
@@ -597,6 +600,7 @@
       'app.statusUnreadable': 'Impossible de lire l\'état de ton stake — réessaie dans un instant.',
       'app.duplicateIgnored': 'Cette action vient d\'être envoyée — patiente quelques secondes, le temps que le réseau la confirme.',
       'app.amountHintNoMainBalance': 'Ton solde disponible s\'affiche dans Nimiq Pay. Indique le montant à déléguer.',
+      'app.titleAria': 'Revenir en haut de l\'application',
       'app.delegateAmountRequired': 'Indique un montant à déléguer avant de valider.',
       'app.stakeAmtPlaceholder': 'Indique ici la quantité de NIM à staker',
       'app.demoModeSuccess': '🧪 Mode démo — rien n\'a été envoyé. Voici à quoi ressemblerait une délégation réussie vers {validator}.',
@@ -711,6 +715,7 @@
       'app.statusUnreadable': 'Couldn\'t read your staking state — try again in a moment.',
       'app.duplicateIgnored': 'This action was just sent — please wait a few seconds for the network to confirm it.',
       'app.amountHintNoMainBalance': 'Your available balance is shown in Nimiq Pay. Enter the amount to stake.',
+      'app.titleAria': 'Back to the top of the app',
       'app.delegateAmountRequired': 'Enter an amount to delegate before confirming.',
       'app.stakeAmtPlaceholder': 'Enter the amount of NIM to stake here',
       'app.demoModeSuccess': '🧪 Demo mode — nothing was sent. This is what a successful delegation to {validator} would look like.',
@@ -815,6 +820,7 @@
       'app.statusUnreadable': 'No se ha podido leer tu estado de staking. Inténtalo de nuevo dentro de un momento.',
       'app.duplicateIgnored': 'Esta acción se acaba de enviar; espera unos segundos a que la red la confirme.',
       'app.amountHintNoMainBalance': 'Tu saldo disponible aparece en Nimiq Pay. Indica el importe a delegar.',
+      'app.titleAria': 'Volver al inicio de la aplicación',
       'app.delegateAmountRequired': 'Indica un importe a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aquí la cantidad de NIM a hacer staking',
       'app.demoModeSuccess': '🧪 Modo demo — no se ha enviado nada. Así se vería una delegación exitosa a {validator}.',
@@ -929,6 +935,7 @@
       'app.statusUnreadable': '无法读取你的质押状态——请稍后再试。',
       'app.duplicateIgnored': '该操作已发送——请等待几秒钟，等待网络确认。',
       'app.amountHintNoMainBalance': '您的可用余额显示在 Nimiq Pay 中。请输入授权金额。',
+      'app.titleAria': '返回应用顶部',
       'app.delegateAmountRequired': '请在确认前输入要委托的金额。',
       'app.stakeAmtPlaceholder': '请在此输入要质押的NIM数量',
       'app.demoModeSuccess': '🧪 演示模式——未发送任何内容。这是成功委托给 {validator} 时的样子。',
@@ -1043,6 +1050,7 @@
       'app.statusUnreadable': 'ステーキングの状態を読み取れませんでした。しばらくしてからもう一度お試しください。',
       'app.duplicateIgnored': 'この操作は送信されました。ネットワークによる確認が完了するまで、数秒お待ちください。',
       'app.amountHintNoMainBalance': '利用可能な残高はNimiq Payに表示されます。委任する金額を入力してください。',
+      'app.titleAria': 'アプリの上部に戻る',
       'app.delegateAmountRequired': '確定する前に委任する金額を入力してください。',
       'app.stakeAmtPlaceholder': 'ステークするNIMの数量をここに入力',
       'app.demoModeSuccess': '🧪 デモモード — 何も送信されていません。{validator} への委任が成功した場合はこのように表示されます。',
@@ -1157,6 +1165,7 @@
       'app.statusUnreadable': '스테이킹 상태를 읽을 수 없습니다. 잠시 후 다시 시도해 주세요.',
       'app.duplicateIgnored': '이 작업이 방금 전송되었습니다. 네트워크에서 확인하는 데 몇 초 정도 걸리니 잠시 기다려 주세요.',
       'app.amountHintNoMainBalance': '사용 가능한 잔액은 Nimiq Pay에 표시됩니다. 위임할 금액을 입력하세요.',
+      'app.titleAria': '앱 상단으로 돌아가기',
       'app.delegateAmountRequired': '확인하기 전에 위임할 금액을 입력하세요.',
       'app.stakeAmtPlaceholder': '스테이킹할 NIM 수량을 여기에 입력하세요',
       'app.demoModeSuccess': '🧪 데모 모드 — 아무것도 전송되지 않았습니다. {validator}에게 위임이 성공했을 때의 모습입니다.',
@@ -1271,6 +1280,7 @@
       'app.statusUnreadable': 'Dein Staking-Status konnte nicht gelesen werden – versuche es in einem Moment erneut.',
       'app.duplicateIgnored': 'Diese Aktion wurde soeben gesendet – bitte warte einige Sekunden, bis das Netzwerk sie bestätigt hat.',
       'app.amountHintNoMainBalance': 'Dein verfügbares Guthaben wird in Nimiq Pay angezeigt. Gib den zu delegierenden Betrag ein.',
+      'app.titleAria': 'Zurück zum Anfang der App',
       'app.delegateAmountRequired': 'Gib einen zu delegierenden Betrag ein, bevor du bestätigst.',
       'app.stakeAmtPlaceholder': 'Gib hier die zu stakende NIM-Menge ein',
       'app.demoModeSuccess': '🧪 Demomodus — es wurde nichts gesendet. So sähe eine erfolgreiche Delegation an {validator} aus.',
@@ -1385,6 +1395,7 @@
       'app.statusUnreadable': 'Não foi possível ler o teu estado de staking — tenta novamente daqui a pouco.',
       'app.duplicateIgnored': 'Esta ação acabou de ser enviada — espera alguns segundos até que a rede a confirme.',
       'app.amountHintNoMainBalance': 'O teu saldo disponível aparece no Nimiq Pay. Indica o montante a delegar.',
+      'app.titleAria': 'Voltar ao topo da aplicação',
       'app.delegateAmountRequired': 'Indica um valor a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aqui a quantidade de NIM a fazer stake',
       'app.demoModeSuccess': '🧪 Modo demo — nada foi enviado. É assim que ficaria uma delegação bem-sucedida a {validator}.',
@@ -1499,6 +1510,7 @@
       'app.statusUnreadable': 'Не удалось определить состояние твоего стейкинга — попробуй ещё раз через некоторое время.',
       'app.duplicateIgnored': 'Это действие только что отправлено — подожди несколько секунд, пока сеть его подтвердит.',
       'app.amountHintNoMainBalance': 'Твой доступный баланс отображается в Nimiq Pay. Укажи сумму для делегирования.',
+      'app.titleAria': 'Вернуться к началу приложения',
       'app.delegateAmountRequired': 'Укажи сумму делегирования перед подтверждением.',
       'app.stakeAmtPlaceholder': 'Укажи здесь количество NIM для стейкинга',
       'app.demoModeSuccess': '🧪 Демо-режим — ничего не отправлено. Вот как выглядела бы успешная делегация валидатору {validator}.',
@@ -1613,6 +1625,7 @@
       'app.statusUnreadable': 'Stake durumun okunamadı — birazdan tekrar dene.',
       'app.duplicateIgnored': 'Bu işlem az önce gönderildi — ağın bunu onaylaması için birkaç saniye bekle.',
       'app.amountHintNoMainBalance': 'Kullanılabilir bakiyen Nimiq Pay\'de gösterilir. Devredilecek tutarı gir.',
+      'app.titleAria': 'Uygulamanın en üstüne dön',
       'app.delegateAmountRequired': 'Onaylamadan önce delege edilecek bir miktar girin.',
       'app.stakeAmtPlaceholder': 'Stake edilecek NIM miktarını buraya girin',
       'app.demoModeSuccess': '🧪 Demo modu — hiçbir şey gönderilmedi. {validator} adresine başarılı bir delegasyon böyle görünür.',
@@ -1727,6 +1740,7 @@
       'app.statusUnreadable': 'تعذر قراءة حالة المشاركة الخاصة بك — حاول مرة أخرى بعد قليل.',
       'app.duplicateIgnored': 'تم إرسال هذا الإجراء للتو — يرجى الانتظار بضع ثوانٍ حتى تقوم الشبكة بتأكيده.',
       'app.amountHintNoMainBalance': 'يظهر رصيدك المتاح في Nimiq Pay. أدخل المبلغ المراد تفويضه.',
+      'app.titleAria': 'العودة إلى أعلى التطبيق',
       'app.delegateAmountRequired': 'أدخل مبلغًا للتفويض قبل التأكيد.',
       'app.stakeAmtPlaceholder': 'أدخل هنا كمية NIM المراد إيداعها',
       'app.demoModeSuccess': '🧪 وضع تجريبي — لم يتم إرسال أي شيء. هكذا سيبدو التفويض الناجح إلى {validator}.',
@@ -2234,9 +2248,11 @@
   // on focus, before the keyboard resizes the viewport, and put back after it closes. Nothing is done while
   // typing, if there is no visualViewport, if the user scrolled by hand after the focus, or if the page was
   // hidden meanwhile. Purely cosmetic: any doubt = do nothing.
+  var scrollCoord = { kbPending: function(){ return false; } };
   (function(){
     var input = $('stakeAmt2'), vv = window.visualViewport, saved = null, timer = null;
     if (!input || !vv) return;
+    scrollCoord.kbPending = function(){ return !!(saved && saved.shrunk); };
     function restoreSoon(ms){
       clearTimeout(timer);
       timer = setTimeout(function(){
@@ -2265,6 +2281,84 @@
       if (document.hidden){ clearTimeout(timer); saved = null; }
     });
   })();
+  // Safe re-centring on explicit gestures only: tap on Browse, on My favorites, or on the app title. It puts the
+  // central card just under the host's top bar, using the bar height reported by env(safe-area-inset-top)
+  // (unknown or 0 = nothing moves). Safety condition: it never pushes the row of buttons (back / pass / star /
+  // next) below the safe line (view height minus the space taken by the Android navigation bar). Never while
+  // typing, right after a manual scroll (< 1 s, except the title tap), while the keyboard restoration is pending,
+  // or when the page is hidden. One absolute scrollTo per gesture, so no oscillation. Purely cosmetic.
+  var SIDE_SMALL_MARGIN_PX = 8;
+  var lastUserScrollAt = 0, recentreTimer = null;
+  ['touchmove', 'wheel'].forEach(function(ev){
+    window.addEventListener(ev, function(){ lastUserScrollAt = Date.now(); }, { passive: true });
+  });
+  function envInset(side){
+    if (!window.nimiqPay) return 0;
+    try {
+      var probe = document.createElement('div');
+      probe.style.cssText = 'position:absolute;left:0;top:0;height:0;visibility:hidden;padding-' + side + ':env(safe-area-inset-' + side + ')';
+      document.body.appendChild(probe);
+      var v = parseFloat(getComputedStyle(probe).getPropertyValue('padding-' + side)) || 0;
+      document.body.removeChild(probe);
+      return v > 0 ? v : 0;
+    } catch (e) { return 0; }
+  }
+  function bottomReserve(){
+    var inset = envInset('bottom');
+    if (inset > 0) return inset;
+    var gap = (window.screen && screen.height ? screen.height : 0) - window.innerHeight;
+    return gap > 0 && gap < 120 ? gap : 0;
+  }
+  function recentreTarget(){
+    var top = envInset('top');
+    if (!top) return null;
+    var phone = document.querySelector('.demo-stage .phone');
+    if (!phone || phone.offsetParent === null) return null;
+    var target = Math.max(0, Math.round(phone.getBoundingClientRect().top + window.scrollY - (top + SIDE_SMALL_MARGIN_PX)));
+    var rows = document.querySelectorAll('#browsePhase .swipe-actions, #shortlistPhase .swipe-actions'), row = null, i;
+    for (i = 0; i < rows.length; i++){ if (rows[i].offsetParent !== null){ row = rows[i]; break; } }
+    if (row){
+      var rowBottomDoc = row.getBoundingClientRect().bottom + window.scrollY;
+      var newBottom = rowBottomDoc - target, curBottom = rowBottomDoc - window.scrollY;
+      if (newBottom > window.innerHeight - bottomReserve() && newBottom > curBottom) return null;   // would sink the buttons: do nothing
+    }
+    return target;
+  }
+  function recentreSoon(delay, force){
+    clearTimeout(recentreTimer);
+    recentreTimer = setTimeout(function(){
+      try {
+        if (document.hidden || (!force && Date.now() - lastUserScrollAt < 1000) || scrollCoord.kbPending()) return;
+        var ae = document.activeElement;
+        if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
+        var target = recentreTarget();
+        if (target === null || Math.abs(target - window.scrollY) < 8) return;
+        var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: target, behavior: calm ? 'instant' : 'smooth' });
+      } catch (e) {}
+    }, delay);
+  }
+  ['browseTabBtn', 'shortlistTabBtn'].forEach(function(id){
+    $(id).addEventListener('click', function(){ recentreSoon(250); });
+  });
+  var appTitle = $('appTitle');
+  function titleTap(){
+    if (!$('successModalOverlay').hidden || !$('errorModalOverlay').hidden) return;
+    try { closeLangDropdown(); } catch (e) {}
+    if (!envInset('top')){
+      // host bar height unknown: no scroll; just re-select the CURRENT tab
+      $($('browseTabBtn').classList.contains('active') ? 'browseTabBtn' : 'shortlistTabBtn').click();
+      return;
+    }
+    if (!$('browseTabBtn').classList.contains('active')) $('browseTabBtn').click();
+    recentreSoon(120, true);
+  }
+  if (appTitle){
+    appTitle.addEventListener('click', titleTap);
+    appTitle.addEventListener('keydown', function(ev){
+      if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); titleTap(); }
+    });
+  }
   var lastStakerStatus = null;
   var statusInFlight = null, lastStatusFetchAt = 0;
   function fetchStakerStatus(){
