@@ -93,6 +93,8 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   transparent background, `tux-nimiq-96.png` (`61c2137`, `3d92cbb`).
 
 **Changed**
+- The re-framing after the star, the shield and a closing message now always aligns the top of the central card (the
+  app header under the host bar) with the top of the screen, whatever is displayed below it (`1118aef`).
 - Reliability is now capped at 100 % by the API (contract: a fraction between 0 and 1).
 - Add and Create stake are no longer blocked when the main-account balance reads 0: funds held in a
   swap contract can be used by the wallet when staking (`c9f8aad`).
@@ -106,6 +108,8 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   (`d4f15e3`, `c2c4cb7`, `ee243c9`).
 
 **Fixed**
+- The connection pill no longer goes back to "Wallet not detected" after a language change with a wallet
+  connected; the Hub "connecting" label and the delegation history badges are also kept translated (`1118aef`).
 - In the delegation history, the "Delegated" badge appears on a single row: the most recent entry for the
   validator that is the current on-chain delegation; every other entry shows "Past" (`49c85e0`).
 - An error object *resolved* by the wallet SDK is treated as a failure instead of a success (`c9f8aad`).

@@ -38,7 +38,7 @@ Inside a single IIFE-style script block:
   and only the Delegate button is locked meanwhile. An unreadable status before delegating is
   retried twice, then refused (nothing is sent).
 - **View re-framing** — after a tap on the star or the shield, and when a success/error message closes, the page
-  scrolls gently so the delegation banner, waiting notice, active stake and card are visible (skipped while
+  scrolls gently so the top of the central card (the app header) sits at the top of the screen (skipped while
   typing, within 1 s of a manual scroll, while the keyboard restoration is pending, or when hidden; instant
   with `prefers-reduced-motion`).
 - **Scroll restoration** — when the on-screen keyboard closes after typing an amount, the page returns

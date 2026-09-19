@@ -41,7 +41,7 @@ Licensed under [MIT](LICENSE).
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
 - **Follows the user journey.** After the star or the shield, and when a message closes, the view is gently
-  re-framed on the useful area; after typing an amount, the page returns to where it was when the keyboard closes.
+  re-framed on the central card; after typing an amount, the page returns to where it was when the keyboard closes.
 - **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send
   the same action twice (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
 - **Runs inside Nimiq Pay *and* in a regular browser.** Inside Nimiq Pay it uses the
