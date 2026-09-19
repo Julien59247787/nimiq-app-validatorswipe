@@ -24,3 +24,7 @@ Thumbs.db
 *.pem
 *.key
 secrets/
+
+# Local app icon/thumbnail exports (not part of the app)
+app-icon-*.png
+app-thumbnail-*.png
