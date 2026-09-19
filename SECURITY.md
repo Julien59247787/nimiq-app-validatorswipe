@@ -39,7 +39,7 @@ Please **do not open a public issue** for security problems.
 
 1. Preferred: use GitHub's **private vulnerability reporting** ("Security" tab →
    "Report a vulnerability") on this repository.
-2. Alternatively, email **ju@nimiq-ju.fr** with the subject `Validator Swipe security`.
+2. Alternatively, email **admin@nimiq-ju.fr** with the subject `Validator Swipe security`.
 
 Please include a description, reproduction steps, and the potential impact. You can
 expect an acknowledgement within a few days. We ask for reasonable time to fix an issue
