@@ -40,6 +40,9 @@ that case — see the *Unreleased* section of the [changelog](../CHANGELOG.md#un
   swap contract, have not been re-tested end to end on a device.
 - **Machine translations.** Languages other than French and English are machine-generated and
   not all reviewed by native speakers ([I18N.md](I18N.md)).
+- **View re-framing** is tuned for Nimiq Pay's in-app browser; elsewhere it is neutral (no automatic re-framing).
+- **Nimiq Hub.** Connection through Nimiq Hub (browser or hardware wallet such as Ledger) is implemented, but has not been
+  tested end to end on mobile browsers or with a hardware wallet in this release.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
 - **Third-party CDNs.** Libraries and fonts are loaded from CDNs (jsDelivr, Google Fonts), so
   the page depends on their availability and they see visitors' IP addresses.

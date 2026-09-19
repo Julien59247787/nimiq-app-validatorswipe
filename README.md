@@ -40,13 +40,14 @@ Licensed under [MIT](LICENSE).
   then **claim** the funds after the network waiting period.
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
-- **Follows the user journey.** After the star or the shield, and when a message closes, the view is gently
+- **Follows the user journey.** After the star or the shield, when switching tabs and when a message closes, the view is gently
   re-framed on the central card; after typing an amount, the page returns to where it was when the keyboard closes.
+  Tapping the app title puts the app back in its nominal position.
 - **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send
   the same action twice (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
 - **Runs inside Nimiq Pay *and* in a regular browser.** Inside Nimiq Pay it uses the
-  Mini App SDK. Outside, a "Connect" button uses the Nimiq Hub, so the app can be
-  tried and used with a real wallet in any browser.
+  Mini App SDK. Outside, a "Connect" button uses the Nimiq Hub (implemented; see
+  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) for what has been tested).
 - **Non-custodial by design.** The app never sees a private key: every transaction is
   signed in Nimiq Pay or the Nimiq Hub. See [SECURITY.md](SECURITY.md).
 - **Honest demo mode.** With no wallet connected the app stays browsable, and any
@@ -160,6 +161,8 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
   usually included about 2 blocks after it is sent (a rare outlier can take about 2 minutes). The
   app keeps checking for up to 60 seconds. The transaction history shown by a wallet app may lag
   behind the chain by up to a minute; the app reads the chain itself.
+- **View re-framing is tuned for Nimiq Pay's in-app browser; elsewhere it is neutral.** Outside Nimiq Pay the
+  automatic re-framing does nothing (the app title and the tabs still work).
 - **Reliability is capped at 100 %.** The statistics source can publish a value above 100 % for some validators;
   the API caps it at 100 % (a fraction between 0 and 1) and the app shows it as provided.
 

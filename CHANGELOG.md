@@ -74,6 +74,9 @@ submission (PR #238 of the competition's submissions repository) was merged on 2
 All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Added**
+- The app title (shield and name) is a button that puts the app back in its nominal position: Browse tab,
+  language menu closed, view re-framed; keyboard accessible, translated label in 11 languages, no effect while a
+  message dialog is open (`6115654`).
 - After a tap on the star or the shield, and when a success or error message closes, the view is gently
   re-framed so the "currently delegating" banner, the waiting notice, the Active stake block and the
   validator card are visible. Nothing moves while typing, within a second of a manual scroll, while the
@@ -93,6 +96,13 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   transparent background, `tux-nimiq-96.png` (`61c2137`, `3d92cbb`).
 
 **Changed**
+- Automatic re-framing and the host top bar compensation apply only inside Nimiq Pay; elsewhere they are neutral
+  (the app title and the tabs keep working) (`33c28c6`).
+- Switching between Browse and My favorites re-frames the view like the other triggers; the re-framing target
+  also subtracts the height of a host top bar that overlays the page when the WebView reports it through
+  `env(safe-area-inset-top)` (`8f5dab1`).
+- The re-framing margin above the central card equals the real space between the card and the screen edges
+  (measured at run time) instead of a fixed value (`6115654`).
 - The re-framing after the star, the shield and a closing message now always aligns the top of the central card (the
   app header under the host bar) with the top of the screen, whatever is displayed below it (`1118aef`).
 - Reliability is now capped at 100 % by the API (contract: a fraction between 0 and 1).
