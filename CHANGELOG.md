@@ -223,6 +223,12 @@ Ideas that would make the app easier to reuse and harden. None of these are impl
 - Automated tests and a CI check for i18n key parity and script syntax.
 
 **Interface**
+- Re-frame the view after an action (confirmation, error, closing a modal) and when the on-screen keyboard
+  closes, so the "currently delegating" banner, the waiting notice, the Active stake block and the card are
+  visible instead of leaving the page half-scrolled with the app title cut off. Idea: `scrollIntoView` with
+  `block: 'start'` or `'center'` and a margin, taking `visualViewport` into account, without jank or
+  interference with the keyboard (the page shifting up while the keyboard is open in the amount field is
+  normal browser behavior). To be tested on a real phone before any release.
 - The mascot image no longer has a rounded border; a `border-radius` could be reintroduced if a rounded look is wanted.
 - The "status unreadable" message could distinguish the case where no wallet address is available yet.
 - The pending-confirmation banner is driven by the status polling; it could also follow the transaction directly.
