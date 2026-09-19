@@ -662,6 +662,40 @@
     });
   })();
 
+  // Re-framing trace (test only): one "reframe:trace" line per re-framing request with the metrics needed to
+  // understand how the host's top bar behaves (scroll before/after, computed target, card position after,
+  // safe-area inset, viewport heights/offsets), so the compensation can be chosen from real numbers.
+  var vsRF = { lastTarget: null };
+  function vsMetrics(){
+    var vv = window.visualViewport, ph = document.querySelector('.demo-stage .phone'), safe = 'n/a';
+    try {
+      var pr = document.createElement('div');
+      pr.style.cssText = 'position:absolute;left:0;top:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top)';
+      document.body.appendChild(pr); safe = parseFloat(getComputedStyle(pr).paddingTop) || 0; document.body.removeChild(pr);
+    } catch (e) {}
+    return {
+      scrollY: Math.round(window.scrollY), innerH: window.innerHeight, clientH: document.documentElement.clientHeight,
+      cardTop: ph ? Math.round(ph.getBoundingClientRect().top) : null, safeTop: safe,
+      vv: vv ? { h: Math.round(vv.height), offTop: Math.round(vv.offsetTop), pageTop: Math.round(vv.pageTop), scale: vv.scale } : null,
+      screenH: screen.height, availH: screen.availHeight, outerH: window.outerHeight
+    };
+  }
+  var vsReframeArea = reframeArea, vsReframeSoon = reframeSoon;
+  reframeArea = function(){ var r = vsReframeArea(); vsRF.lastTarget = r; return r; };
+  reframeSoon = function(delay, force){
+    var before = vsMetrics(), trigger = vsLastInput;
+    vsReframeSoon(delay, force);
+    setTimeout(function(){
+      var after = vsMetrics();
+      vsLog('reframe:trace', JSON.stringify({
+        trigger: trigger, force: !!force, nimiqPay: !!window.nimiqPay, yBefore: before.scrollY, target: vsRF.lastTarget,
+        yAfter: after.scrollY, cardTopAfter: after.cardTop, safeTop: after.safeTop, innerHBefore: before.innerH, innerHAfter: after.innerH,
+        hostBarMoved: before.innerH !== after.innerH, clientH: after.clientH, vv: after.vv, screenH: after.screenH, availH: after.availH, outerH: after.outerH
+      }));
+      vsRF.lastTarget = null;
+    }, delay + 800);
+  };
+
   // ---------- i18n ----------
   var SUPPORTED_LANGS = ['fr', 'en', 'es', 'zh', 'ja', 'ko', 'de', 'pt', 'ru', 'tr', 'ar'];
   var T = {
