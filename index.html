@@ -729,7 +729,17 @@
   // the current tab exactly like a tap on that tab (same click path: setPhase, calibrateCardHeight...), to see whether
   // the host browser re-places the card by itself. Default mode: the title tap behaves as in the app (64 px clearance).
   var vsNatural = /(^|[#&?])natural/.test(location.hash + location.search);
+  var vsNaturalDemo = vsNatural && /(^|[#&?])demo/.test(location.hash + location.search);
   var vsSuppressReframe = false, vsReframeSoonInner = reframeSoon;
+  document.addEventListener('click', function(ev){
+    if (!vsNaturalDemo || !ev.target || !ev.target.closest || !ev.target.closest('a[href="#demo"]')) return;
+    setTimeout(function(){
+      var tab = document.getElementById('browseTabBtn').classList.contains('active') ? 'browseTabBtn' : 'shortlistTabBtn';
+      vsSuppressReframe = true; setTimeout(function(){ vsSuppressReframe = false; }, 1500);
+      vsLog('natural:demo-then-tab', tab);
+      document.getElementById(tab).click();
+    }, 900);
+  }, true);
   vsLog("mode", vsNatural ? "natural" : "default");
   reframeSoon = function(delay, force){ if (vsSuppressReframe) { vsLog('reframe:suppressed', 'natural'); return; } vsReframeSoonInner(delay, force); };
   function vsUa(){
@@ -752,10 +762,18 @@
     var t = ev.target && ev.target.closest ? ev.target.closest('a[href="#demo"], #browseTabBtn, #shortlistTabBtn, #appTitle, #shortlistBtn, #removeBtn, #delegateBtn') : null;
     if (!t) return;
     var step = t.id || ('link:' + t.getAttribute('href'));
-    var before = vsPosMetrics(), series = {};
+    var before = vsPosMetrics(), series = {}, samples = [];
+    var range = Math.max(1, before.scrollH - before.innerH), ratio = before.scrollY / range;
+    var startBand = ratio < 0.33 ? 'top' : (ratio < 0.66 ? 'middle' : 'bottom');
     [100, 400, 800].forEach(function(ms){ setTimeout(function(){ series['y' + ms] = Math.round(window.scrollY); }, ms); });
+    var sampler = setInterval(function(){ samples.push(Math.round(window.scrollY)); }, 50);
+    setTimeout(function(){ clearInterval(sampler); }, 820);
     setTimeout(function(){
-      vsLog('pos:snapshot', JSON.stringify({ step: step, mode: vsNatural ? 'natural' : 'default', ua: vsUa(), before: before, series: series, after: vsPosMetrics(), css: vsCssFlags() }));
+      // direction changes of scrollY over the first 800 ms (a change of sense more than once = bounce)
+      var dirs = 0, last = 0, prev = before.scrollY;
+      samples.forEach(function(y){ var d = y - prev; if (d !== 0){ var s = d > 0 ? 1 : -1; if (last !== 0 && s !== last) dirs++; last = s; prev = y; } });
+      vsLog('pos:snapshot', JSON.stringify({ step: step, mode: vsNatural ? (vsNaturalDemo ? 'natural+demo' : 'natural') : 'default', startBand: startBand, ua: vsUa(), before: before, series: series,
+        bounce: dirs > 1, directionChanges: dirs, samples: samples.filter(function(_, i){ return i % 2 === 0; }).slice(0, 17), after: vsPosMetrics(), css: vsCssFlags() }));
     }, 850);
   }, true);
 
