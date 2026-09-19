@@ -28,6 +28,9 @@ releases yet; entries are grouped by date and reconstructed from the git history
   locked and the polling resumes until the chain reflects the action or 60 seconds after the send. The
   record is cleared on confirmation, at the cap, and on any error or cancellation; retire and claim are
   never locked by it.
+- Local storage now holds, besides the chosen language, the in-flight action `vs:pending` and the short
+  list of recent actions `vs:lastActions` (wallet address included, local only, never transmitted; see the
+  README and SECURITY.md).
 - Connection: the Nimiq Pay SDK is initialised once per page and `listAccounts()` is called once; the
   Nimiq Hub connect button ignores a second click while connecting.
 
@@ -220,6 +223,9 @@ Ideas that would make the app easier to reuse and harden. None of these are impl
 - Automated tests and a CI check for i18n key parity and script syntax.
 
 **Interface**
+- The mascot image no longer has a rounded border; a `border-radius` could be reintroduced if a rounded look is wanted.
+- The "status unreadable" message could distinguish the case where no wallet address is available yet.
+- The pending-confirmation banner is driven by the status polling; it could also follow the transaction directly.
 - Delegation history: when the same validator was delegated to several times in a session, the
   "Delegated" badge shows on every row of that validator; only the most recent one should carry it.
 

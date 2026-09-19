@@ -116,6 +116,9 @@ Their schemas, data sources and operational requirements are specified in the
   recorded in `sessionStorage` and `localStorage`, so after a page reload (less than 60 s after the send)
   the waiting state and the polling are restored and only the Delegate button stays locked until the
   chain reflects the action.
+- **Local storage summary.** `nimiq-miniapp-lang` (language), `vs:pending` (action in flight, session + local,
+  cleared on confirmation or after 60 s) and `vs:lastActions` (up to 8 recent actions for the 30 s duplicate
+  check; contains the wallet address). All local to the browser, never sent anywhere, no cookies.
 - The wallet SDK can *resolve* with an error object instead of rejecting; that is treated as
   a failure (never as a success) for delegate, retire and claim.
 - The app never blocks staking on a 0 main-account balance: funds held in a swap contract are
