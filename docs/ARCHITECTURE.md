@@ -37,13 +37,6 @@ Inside a single IIFE-style script block:
   re-renders the delegation banner, stake block, history and Add/Switch mode of the cards together,
   and only the Delegate button is locked meanwhile. An unreadable status before delegating is
   retried twice, then refused (nothing is sent).
-- **View re-framing** — after a tap on the star or the shield, and when a success/error message closes, the page
-  scrolls gently so the top of the central card (the app header) sits at the top of the screen (skipped while
-  typing, within 1 s of a manual scroll, while the keyboard restoration is pending, or when hidden; instant
-  with `prefers-reduced-motion`).
-  Automatic re-framing runs only inside Nimiq Pay and only when the WebView reports the host bar height
-  (`env(safe-area-inset-top)`); otherwise nothing scrolls (a tap on the app title only closes the language menu and re-selects the current tab), and elsewhere it is neutral.
-  The margin above the card equals the real side margin; when the host reports a top bar overlaying the page (`env(safe-area-inset-top)`) it is added to the margin; tapping the app title (a button) returns to the Browse tab and re-frames the view.
 - **Scroll restoration** — when the on-screen keyboard closes after typing an amount, the page returns
   to the scroll position it had when the field got focus (nothing happens while typing, after a manual
   scroll, or without `visualViewport`).

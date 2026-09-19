@@ -40,7 +40,11 @@ that case — see the *Unreleased* section of the [changelog](../CHANGELOG.md#un
   swap contract, have not been re-tested end to end on a device.
 - **Machine translations.** Languages other than French and English are machine-generated and
   not all reviewed by native speakers ([I18N.md](I18N.md)).
-- **View re-framing.** Measured: `env(safe-area-inset-top)` reported by Nimiq Pay's WebView (51 CSS px on the test phone: Android 16, WebView/Chrome 152, device pixel ratio 2), read again at every re-framing; the card is then placed at that inset plus the side margin (65 CSS px from the top of the view there). Assumed: nothing; when the WebView does not report the inset, nothing scrolls and a tap on the app title only closes the language menu and re-selects the current tab. Not verified on other devices or Nimiq Pay versions. Elsewhere (desktop, mobile browsers, Nimiq Hub) it is neutral.
+- **Scroll position and the host bar.** The app does not scroll the page itself, except to restore the position after the
+  on-screen keyboard closes. Inside Nimiq Pay the host's browser bar can overlay the top of the page (a top inset of 51 CSS px
+  was reported by `env(safe-area-inset-top)` on the test phone: Android 16, WebView/Chrome 152, device pixel ratio 2), and the
+  browser itself may nudge the card into view after a tab tap. The app does not compensate for this; the placement can differ on
+  other devices or Nimiq Pay versions.
 - **Nimiq Hub.** Connection through Nimiq Hub (browser or hardware wallet such as Ledger) is implemented, but has not been
   tested end to end on mobile browsers or with a hardware wallet in this release.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
