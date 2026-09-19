@@ -6,6 +6,10 @@ releases yet; entries are grouped by date and reconstructed from the git history
 
 ## 2026-09-18 — Competition submission, final polish
 
+### Documentation
+- Full documentation set: expanded README with screenshots, architecture, i18n and operator
+  guides, known limitations, contributing, security and community files.
+
 ### Added
 - Link to the recorded demo video in the hero section.
 - "Funds pending" hint: when a connected wallet reports a spendable balance of exactly 0

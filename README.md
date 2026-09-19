@@ -15,11 +15,13 @@ Licensed under [MIT](LICENSE).
 ## Table of contents
 
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [How staking works here](#how-staking-works-here)
 - [Quick start](#quick-start)
 - [Architecture in 10 lines](#architecture-in-10-lines)
 - [Running your own instance](#running-your-own-instance)
 - [Documentation](#documentation)
+- [Known limitation](#known-limitation-funds-received-in-nimiq-pay)
 - [Project status](#project-status)
 - [Contributing & security](#contributing--security)
 - [License](#license)
@@ -45,6 +47,20 @@ Licensed under [MIT](LICENSE).
 - **11 languages** (fr, en, es, zh, ja, ko, de, pt, ru, tr, ar), English by default.
   See [docs/I18N.md](docs/I18N.md).
 - **Single static file.** No build step, no bundler, no framework — one `index.html`.
+
+## Screenshots
+
+Captured on a phone with the live app (English interface). The validator names shown are
+public validators; no wallet address is visible.
+
+| | |
+|---|---|
+| ![Landing page: headline "Pick your validator with a swipe, delegate with a tap", with the "See the validators", "Who pays for what?" and "Watch the demo video" buttons](docs/images/01-landing-page.png) | ![Browse tab: wallet detected, banner "You're currently delegating to…", active stake of 130 NIM with "Retire my stake" and "Claim my funds" buttons, and a validator card showing uptime, reliability, reward rate, staked amount and fee](docs/images/02-browse-active-stake.png) |
+| **1. Landing page.** The mini app's entry page: what it does, plus buttons to jump to the validators, to the "who pays for what" explanation, and to the demo video. | **2. Browse tab.** A wallet is detected; the gold banner shows the current on-chain delegation, "My stake" shows the active stake with the *Retire* and *Claim* buttons, and the card shows real uptime, reliability, reward rate, total stake and fee. Below: back / pass / set aside (star) / next. |
+| ![My favorites tab: a favorited validator card and an empty "Amount to delegate (NIM)" field with the placeholder "Enter the amount of NIM to stake here"](docs/images/03-favorites-delegate-amount.png) | ![My favorites tab with the amount field pre-filled with the wallet's available balance, and the hint "This amount is pre-filled with your available balance — double-check it before confirming."](docs/images/04-delegate-amount-prefilled.png) |
+| **3. My favorites — delegate.** The only place a transaction can be sent. With no balance information the amount field shows an explicit placeholder instead of a guessed value. | **4. Pre-filled amount.** When the wallet's spendable balance is known, the amount is pre-filled with it (editable), with a reminder to double-check before confirming. |
+| ![Retire flow: "Amount to retire (NIM)" pre-filled with the active stake, an explanation that the funds return after the current network epoch ends, and a "Confirm withdrawal" button](docs/images/05-retire-stake.png) | |
+| **5. Retire stake.** The amount is pre-filled with the active stake; the text explains that funds return to the wallet once the current network epoch has ended, after which they can be claimed. | |
 
 ## How staking works here
 
@@ -117,9 +133,22 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | [docs/OPERATOR-GUIDE.md](docs/OPERATOR-GUIDE.md) | Deploy and operate the mini app on your own nodes |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
+| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including temporarily unspendable funds after a top-up |
 | [CHANGELOG.md](CHANGELOG.md) | History of changes, plus ideas for future improvements |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [SECURITY.md](SECURITY.md) | Security model and how to report a vulnerability |
+
+## Known limitation: funds received in Nimiq Pay
+
+Funds that reach a wallet through an exchange/swap flow (for example a top-up inside Nimiq
+Pay) can be temporarily locked in a swap contract (HTLC) run by the exchange partner. Until
+they are released, the wallet's **spendable balance reads 0** — this is not a bug in the app.
+
+- Creating a first stake or adding funds needs spendable funds, so it waits for the balance.
+- **Switching validator** and **retiring** an already-active stake need no new funds and keep working.
+- The app shows a non-blocking "funds may still be settling" notice in that case.
+
+Details and other limitations: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
 
 ## Project status
 
