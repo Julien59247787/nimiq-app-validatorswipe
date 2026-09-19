@@ -109,6 +109,10 @@ Their schemas, data sources and operational requirements are specified in the
   (`active_balance_luna`). Both remain editable.
 - Errors from the wallet SDK are translated to a human message; the raw SDK message is kept
   in a collapsible technical detail for debugging.
+- Every real action (delegate, retire, claim) passes a duplicate-submit guard: a synchronous lock taken
+  before any promise, plus a 20-second "same action" key shared between open pages of the app through
+  `localStorage` (fail-open if storage is blocked). One tap therefore produces one wallet request; a
+  failed or cancelled action can be retried at once.
 - The wallet SDK can *resolve* with an error object instead of rejecting; that is treated as
   a failure (never as a success) for delegate, retire and claim.
 - The app never blocks staking on a 0 main-account balance: funds held in a swap contract are

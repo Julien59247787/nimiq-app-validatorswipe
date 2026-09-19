@@ -13,6 +13,18 @@ releases yet; entries are grouped by date and reconstructed from the git history
 - A discreet "Report a bug" link in the footer (translated in all 11 languages) opening the GitHub
   bug-report form; the bug template now asks not to share the full wallet address.
 
+### Hardened
+- Duplicate-submit guard: one tap now produces one wallet request. A synchronous in-memory lock is
+  taken before any promise in the delegate, retire and claim handlers (the button's `disabled` attribute
+  alone did not stop synthetic or re-dispatched click events, which could send two transactions); it is
+  released on success, error, cancellation or unreadable status, and expires on its own after 90 seconds.
+  The same action (kind, validator, amount) is also ignored for 20 seconds, in the same page and across
+  pages of the app open at the same time (recent actions are shared through `localStorage`; if it is
+  blocked only the in-memory checks apply). A failed or cancelled action can be retried immediately.
+  A discreet message (translated in 11 languages) is shown when a duplicate is refused.
+- Connection: the Nimiq Pay SDK is initialised once per page and `listAccounts()` is called once; the
+  Nimiq Hub connect button ignores a second click while connecting.
+
 ### Fixed
 - The displayed staking state stayed stale after a confirmed delegation, switch, add, retire or claim:
   the app re-read the on-chain state once, immediately, but a transaction is only mined some seconds
