@@ -4,6 +4,18 @@ All notable changes to Validator Swipe are documented here. The format is loosel
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The project has no tagged
 releases yet; entries are grouped by date and reconstructed from the git history.
 
+## Unreleased
+
+### Fixed
+- Adding or creating a stake is no longer blocked when the main-account balance reads 0. A
+  real-device test showed Nimiq Pay accepting an Add Stake with funds held in a swap contract
+  (HTLC), so the guard refused a flow that works. The "funds pending" notice is now purely
+  informational (reworded in all 11 languages).
+- An error object *resolved* by the wallet SDK (instead of a rejection) is now treated as a
+  failure for delegate, retire and claim, instead of showing a false success.
+- The "pre-filled with your available balance" hint only appears when the amount was actually
+  pre-filled, and disappears once you edit it.
+
 ## 2026-09-18 — Competition submission, final polish
 
 ### Documentation
@@ -13,9 +25,8 @@ releases yet; entries are grouped by date and reconstructed from the git history
 ### Added
 - Link to the recorded demo video in the hero section.
 - "Funds pending" hint: when a connected wallet reports a spendable balance of exactly 0
-  (typically funds still settling after a top-up), the app explains it instead of failing
-  with a confusing wallet error. Adding new stake is blocked in that case; switching an
-  already-active stake to another validator is not, since it needs no new funds.
+  (typically funds held in a swap contract after a top-up), the app explains it. In this
+  release it also blocked adding new stake; that block was removed afterwards (see *Unreleased*).
 - Retire-amount field is pre-filled with the real active stake and styled like the
   delegation amount field.
 - Endless ribbon browsing in both tabs (Browse and My favorites), in both directions; the
@@ -139,8 +150,8 @@ Ideas that would make the app easier to reuse and harden. None of these are impl
   `@nimiq/core`, fonts) instead of loading them from CDNs, and pin the Mini App SDK version
   (it is currently unpinned).
 - Claiming retired funds through the Nimiq Hub path (currently Nimiq Pay only).
-- Detect funds still settling through a pending HTLC precisely, rather than the current
-  "balance is exactly 0" heuristic.
+- Read funds held in swap contracts (HTLC) on-chain, so the delegation amount can be
+  pre-filled when the main-account balance reads 0.
 - Automated tests and a CI check for i18n key parity and script syntax.
 
 **Internationalization**

@@ -37,7 +37,7 @@ Inside a single IIFE-style script block:
   (the only place staking actions can be triggered).
 - **i18n** — a `T` dictionary with 11 languages; see [I18N.md](I18N.md).
 - **Feedback** — custom success/error modals (human message first, technical detail
-  collapsed), a permanent "active delegation" banner, and a "funds pending" hint when the
+  collapsed), a permanent "active delegation" banner, and an informational notice when the
   connected wallet has no spendable balance.
 
 ### 2. Wallet connection (two paths)
@@ -92,7 +92,7 @@ Their schemas, data sources and operational requirements are specified in the
 | Staker status unavailable | Staking actions fall back to "create staker"; status widgets stay hidden |
 | No wallet connected | Demo mode: browsing works, simulated delegation is clearly labeled as demo |
 | `listAccounts()` returns an error object | Logged, the app stays disconnected (no crash) |
-| Wallet balance is 0 | "Funds pending" hint; adding new stake is blocked, switching validator is not |
+| Main-account balance reads 0 | Informational notice, no amount pre-fill; staking is **not** blocked (Nimiq Pay can use funds held in a swap contract) |
 
 ### 6. Safety rules encoded in the UI
 
@@ -103,6 +103,10 @@ Their schemas, data sources and operational requirements are specified in the
   (`active_balance_luna`). Both remain editable.
 - Errors from the wallet SDK are translated to a human message; the raw SDK message is kept
   in a collapsible technical detail for debugging.
+- The wallet SDK can *resolve* with an error object instead of rejecting; that is treated as
+  a failure (never as a success) for delegate, retire and claim.
+- The app never blocks staking on a 0 main-account balance: funds held in a swap contract are
+  invisible to it but usable by the wallet ([KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md)).
 
 ## Hard-coded, operator-specific bits
 

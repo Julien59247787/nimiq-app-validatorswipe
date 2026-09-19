@@ -171,10 +171,11 @@ Response `200` (always 200 for a well-formed address, even if it never staked):
 Semantics to keep exactly right:
 
 - `wallet_balance_luna` is **not** the staked balance. It is the basic-account balance only.
-  Funds locked in a contract (e.g. a swap HTLC still settling) do **not** appear here — a
-  freshly topped-up wallet can legitimately read `0`. The UI then shows a non-blocking
-  "funds may still be settling" hint, and pre-fills the delegation amount from this value
-  only when it is ≥ 1 NIM.
+  Funds held in a swap contract (e.g. an HTLC after a top-up) do **not** appear here — a
+  freshly topped-up wallet can legitimately read `0` while its wallet app shows the funds.
+  The UI then shows an informational notice and does not pre-fill the amount (it only
+  pre-fills from this value when it is ≥ 1 NIM). **`0` does not mean "no funds"**: the app
+  never blocks staking on it, because the wallet can use funds held in a swap contract itself.
 - No staker → `found:false` and all staker fields `null`; `wallet_balance_luna` is still reported.
 - If the node RPC itself fails or times out → the same explicit-null response
   (`found:false`, nulls) rather than a 500. (Trade-off: the UI cannot tell "not a staker"
@@ -438,7 +439,7 @@ Degradation if you skip pieces:
 
 - Failed `validators-list` → only the two hard-coded entries appear, with a notice; an empty list → the same two entries, silently.
 - All stats `null` → cards show "—" (honest, but less useful).
-- `wallet_balance_luna: null` → no amount pre-fill (the user types it); `0` → the "funds may be settling" hint.
+- `wallet_balance_luna: null` → no amount pre-fill (the user types it); `0` → an informational notice (staking is not blocked).
 - Wrong or absent `staker-status` → existing stakers cannot reliably add stake or switch (see §1.2).
 
 A static-file variant is viable for `validators-list`: a cron job writes the JSON to disk and
@@ -561,7 +562,7 @@ Notes:
   `hub.nimiq.com`, capture it (e.g. with `report-uri`) and add only what the report shows rather
   than widening the policy pre-emptively.
 - Test wallet flows with small amounts. A wallet whose balance is temporarily locked in a swap
-  contract legitimately reads `wallet_balance_luna: 0` (§1.2) — that is not a backend bug.
+  contract legitimately reads `wallet_balance_luna: 0` (§1.2) — that is not a backend bug, and staking can still work.
 
 Quick commands:
 
@@ -600,4 +601,4 @@ at once.
 | Delegating a second time fails | `staker-status` reports `found:false` for an existing staker (see §1.2) |
 | All validator stats show "—" | The stats source changed or is unreachable; check the daily job and `cache_updated_at` |
 | Video downloads instead of playing | Missing `video/mp4` MIME mapping (§3.3) |
-| Amount field never pre-fills | `wallet_balance_luna` is `null`, `0`, or below 1 NIM (the "funds may be settling" hint appears for `0`) |
+| Amount field never pre-fills | `wallet_balance_luna` is `null`, `0`, or below 1 NIM (an informational notice appears for `0`) |

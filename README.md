@@ -21,7 +21,7 @@ Licensed under [MIT](LICENSE).
 - [Architecture in 10 lines](#architecture-in-10-lines)
 - [Running your own instance](#running-your-own-instance)
 - [Documentation](#documentation)
-- [Known limitation](#known-limitation-funds-received-in-nimiq-pay)
+- [Good to know: balance after a top-up](#good-to-know-balance-after-a-top-up)
 - [Project status](#project-status)
 - [Contributing & security](#contributing--security)
 - [License](#license)
@@ -133,20 +133,18 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | [docs/OPERATOR-GUIDE.md](docs/OPERATOR-GUIDE.md) | Deploy and operate the mini app on your own nodes |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
-| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including temporarily unspendable funds after a top-up |
+| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including the balance shown after a top-up |
 | [CHANGELOG.md](CHANGELOG.md) | History of changes, plus ideas for future improvements |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [SECURITY.md](SECURITY.md) | Security model and how to report a vulnerability |
 
-## Known limitation: funds received in Nimiq Pay
+## Good to know: balance after a top-up
 
-Funds that reach a wallet through an exchange/swap flow (for example a top-up inside Nimiq
-Pay) can be temporarily locked in a swap contract (HTLC) run by the exchange partner. Until
-they are released, the wallet's **spendable balance reads 0** — this is not a bug in the app.
-
-- Creating a first stake or adding funds needs spendable funds, so it waits for the balance.
-- **Switching validator** and **retiring** an already-active stake need no new funds and keep working.
-- The app shows a non-blocking "funds may still be settling" notice in that case.
+Funds received through an exchange/swap flow (for example a top-up inside Nimiq Pay) are
+held in a swap contract by design, so the wallet's **main-account balance can read 0** in the
+app while Nimiq Pay shows the funds. The app can't read that amount (so it doesn't pre-fill
+it), but it does not block staking: a real-device test showed Nimiq Pay accepting an Add
+Stake in that situation.
 
 Details and other limitations: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
 

@@ -1,45 +1,34 @@
 # Known limitations
 
-## Funds received in Nimiq Pay may be temporarily unspendable
+## The main-account balance can read 0 while Nimiq Pay shows funds
 
 **Symptom.** A wallet that has just been topped up (for example by buying NIM inside Nimiq
-Pay) shows a spendable balance of **0** in Validator Swipe, even though the funds are visible
-in the wallet.
+Pay) shows a balance of **0** in Validator Swipe (no pre-filled amount, and an informational
+notice), even though Nimiq Pay displays the funds.
 
-**Why.** Funds received through an exchange/swap flow can be held for a while inside a swap
-contract (an HTLC, *hash time-locked contract*) operated by the exchange partner, before they
-land in the wallet's basic account. While they sit in that contract they are not part of the
-account's spendable balance. This is a property of how the swap works, not a bug in Validator
-Swipe. Nimiq describes the mechanism in its article *"What ACTUALLY happens when you swap in
-the Nimiq Wallet"*.
+**Why.** Funds received through an exchange/swap flow are held in a swap contract (an HTLC,
+*hash time-locked contract*) — the mechanism Nimiq Pay uses on purpose — before they reach the
+wallet's basic account. The app can only read the **basic-account balance**
+(`wallet_balance_luna` from the backend, see the
+[Operator Guide](OPERATOR-GUIDE.md#12-get-apiv2staker-statusaddressnq-address)), so funds
+sitting in a swap contract do not appear in it. Nimiq describes the swap mechanism in its
+article *"What ACTUALLY happens when you swap in the Nimiq Wallet"*.
 
-The app reads the **basic-account balance** only (`wallet_balance_luna` from the backend, see
-the [Operator Guide](OPERATOR-GUIDE.md#12-get-apiv2staker-statusaddressnq-address)). Funds locked
-in a contract do not appear there until they are released.
+**Staking still works.** A real-device test showed Nimiq Pay accepting an **Add Stake**
+transaction while the basic-account balance read 0 and the funds were held in a swap
+contract: Nimiq Pay uses those funds itself. For that reason the app does **not** block
+staking when the balance reads 0. *Create stake* (a first stake) and the other actions were
+not separately tested with such funds; if the wallet cannot fund a transaction, it rejects it
+and the app shows the wallet's error message.
 
-**What still works and what doesn't**
+**What the app does when the balance reads 0**
 
-| Action | Needs new spendable funds? | While the balance reads 0 |
-|---|---|---|
-| Browse validators, set favorites aside | No | Works |
-| Switch validator for an existing stake (*update staker*) | No — it moves the existing stake | Works |
-| Retire an already-active stake | No | Works |
-| Claim funds after the waiting period (*remove stake*) | No | Works |
-| Create a first stake | **Yes** | Blocked |
-| Add funds to an existing stake | **Yes** | Blocked |
+- It does not pre-fill the delegation amount (it cannot know the real amount): type it yourself.
+- It shows a dismissible informational notice explaining the situation.
+- It never blocks browsing, staking, switching validator, retiring or claiming.
 
-**What the app does.** When a connected wallet reports a spendable balance of exactly 0, the
-app shows a non-blocking "funds may still be settling" notice, does not pre-fill the
-delegation amount, and stops actions that need new funds before the wallet can reject them
-with a confusing error. It never claims to know the cause for sure: a balance of 0 can also
-simply mean an empty wallet.
-
-**What to do.** Wait for the swap to complete and the funds to reach the wallet, then reload
-the app. Moving an already-active stake to another validator, and retiring it, are possible
-in the meantime.
-
-**Possible improvement.** Detect funds still locked in a swap contract precisely, instead of
-the "balance is exactly 0" heuristic — see *Future improvements* in the
+**Possible improvement.** Read swap-contract balances on-chain so the amount can be
+pre-filled in that case — see *Future improvements* in the
 [changelog](../CHANGELOG.md#future-improvements).
 
 ## Other limitations
