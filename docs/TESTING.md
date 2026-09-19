@@ -29,7 +29,7 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] The connection pill shows "Wallet detected" when a wallet is connected and "Wallet not detected" otherwise, before and after a language change.
 
 **Delegation** (My favorites; small amounts)
-- [ ] First Create with a wallet whose funds come from a single transfer (a wallet funded by merged transfers can fail at Create, see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail)).
+- [ ] First Create with a wallet whose funds come from a single transfer (a wallet funded by merged transfers can fail at Create, on an emulator and on a phone, see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail)).
 - [ ] No staker yet: amount required, *create staker* is sent, success message stays until dismissed, the waiting line appears and disappears once the chain reflects the transaction, the active delegation banner and history update.
 - [ ] Staker exists, same validator: *add stake*.
 - [ ] Staker exists, other validator: the amount field is replaced by the switch note; *update staker* is sent without an amount.

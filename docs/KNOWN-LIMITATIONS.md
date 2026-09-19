@@ -54,9 +54,9 @@ continue" button. Check the transaction in Nimiq Pay before continuing.
 
 ## Create stake from a swap contract (HTLC): merged contracts fail
 
-Observed in our tests (Android 13 emulator, Nimiq Pay, Nimiq Pay version unknown, mainnet, real funds; dates
-2026-09-16 to 2026-09-20). The wallet held its funds in a swap contract (HTLC) and a first stake (**Create stake**)
-was sent from the app:
+Observed in our tests (Android 13 emulator and Android 16 phone, Nimiq Pay v2.19.1 on both, mainnet, real funds;
+dates 2026-09-16 to 2026-09-20). The wallet held its funds in a swap contract (HTLC) and a first stake
+(**Create stake**) was sent from the app:
 
 | Contract funding the wallet | Amount sent | Result |
 |---|---|---|
@@ -64,15 +64,21 @@ was sent from the app:
 | 200 NIM received in a single transfer | 100 NIM (partial spend) | Passes (19 Sep) |
 | 520.16415 NIM built from several transfers merged by Nimiq Pay | 50, 5 and 1 NIM, two validators, on the production page, a build without locks, the exact 16 Sep version and after a full restart | **Fails** |
 | 30.00000 NIM built from two transfers (20 then 10; Nimiq Pay returned the old contract and created a larger one) | 30 NIM (all of it) | **Fails** |
+| 20.00000 NIM built from two transfers of 10 NIM sent about four minutes apart (new wallet, Android 16 phone, Nimiq Pay v2.19.1) | 20 NIM (all of it) | **Fails** (nothing on the chain, no staker) |
 
 The error is always the raw message "Failed to send payment transaction: Transaction invalidated during
 transaction" (code -32603), and no transaction reaches the chain. **Add stake** worked from a contract of the
 same kind.
 
 **Conclusion (cautious).** In these tests only contracts produced by merging several transfers fail at Create
-(the amount, the decimals and a partial spend are ruled out). The cause on the Nimiq Pay side is not established
-and should be confirmed with the host team. **Workaround observed twice (not a guarantee):** withdraw the funds to
+(the amount, the decimals and a partial spend are ruled out), and the failure is **not specific to the emulator**:
+it was reproduced on a real Android 16 phone with the same Nimiq Pay version. On the phone, Nimiq Pay also raised a
+native notification carrying the same text, so the error is emitted by the host, not by the app. The cause on the
+Nimiq Pay side is not established and should be confirmed with the host team. **Workaround observed twice (not a guarantee):** withdraw the funds to
 another address and send them back in a single transfer before the first Create.
+
+Nimiq Pay refuses to send funds to the wallet's own address ("You can not use this address"), so the funds cannot
+be consolidated by sending them to oneself from the wallet.
 
 The app reports the failure as "Nimiq Pay rejected the transaction" and keeps the raw detail; it does not
 describe it as a stake conflict.

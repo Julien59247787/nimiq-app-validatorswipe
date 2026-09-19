@@ -28,7 +28,8 @@ work is available in the Git history.
 - Create stake fails ("Transaction invalidated during transaction", nothing on the chain) when the wallet's funds
   sit in a swap contract built by merging several transfers; it passes from a contract created by a single
   transfer, in full or partially, and Add stake works from a merged contract. Observed in our tests on an Android 13
-  emulator, Nimiq Pay version unknown; the cause on the host side is not established. See
+  emulator and an Android 16 phone, Nimiq Pay v2.19.1 on both (the host also raises a native notification with the
+  same text); the cause on the host side is not established. See
   [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail).
 
 ### Ideas
