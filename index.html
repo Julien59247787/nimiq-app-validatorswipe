@@ -696,6 +696,46 @@
     }, delay + 800);
   };
 
+  // Position snapshots (test only): one "pos:snapshot" line per step of the user journey (native anchor scroll to
+  // the demo, Browse tab, My favorites tab, app title, star), with the card position, scroll, viewport and safe-area
+  // metrics BEFORE the step and scrollY 100 / 400 / 800 ms AFTER it, to tell a native scroll / scroll anchoring apart
+  // from the app's own re-framing.
+  function vsPosMetrics(){
+    var vv = window.visualViewport, ph = document.querySelector('.demo-stage .phone'), safe = 'n/a';
+    try {
+      var pr = document.createElement('div');
+      pr.style.cssText = 'position:absolute;left:0;top:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top)';
+      document.body.appendChild(pr); safe = parseFloat(getComputedStyle(pr).paddingTop) || 0; document.body.removeChild(pr);
+    } catch (e) {}
+    var r = ph ? ph.getBoundingClientRect() : null, de = document.documentElement;
+    return {
+      scrollY: Math.round(window.scrollY), cardTop: r ? Math.round(r.top) : null, cardDocTop: r ? Math.round(r.top + window.scrollY) : null,
+      safeTop: safe, innerH: window.innerHeight, clientH: de.clientHeight, scrollH: de.scrollHeight,
+      vv: vv ? { h: Math.round(vv.height), offTop: Math.round(vv.offsetTop), pageTop: Math.round(vv.pageTop) } : null
+    };
+  }
+  function vsCssFlags(){
+    var out = {};
+    try {
+      out.htmlScrollBehavior = getComputedStyle(document.documentElement).scrollBehavior;
+      out.htmlOverflowAnchor = getComputedStyle(document.documentElement).overflowAnchor;
+      out.bodyOverflowAnchor = getComputedStyle(document.body).overflowAnchor;
+      var ph = document.querySelector('.demo-stage .phone'); if (ph) out.phoneOverflowAnchor = getComputedStyle(ph).overflowAnchor;
+      var st = document.querySelector('.demo-stage'); if (st) { out.stagePaddingTop = getComputedStyle(st).paddingTop; out.stageDocTop = Math.round(st.getBoundingClientRect().top + window.scrollY); }
+    } catch (e) {}
+    return out;
+  }
+  document.addEventListener('click', function(ev){
+    var t = ev.target && ev.target.closest ? ev.target.closest('a[href="#demo"], #browseTabBtn, #shortlistTabBtn, #appTitle, #shortlistBtn, #removeBtn, #delegateBtn') : null;
+    if (!t) return;
+    var step = t.id || ('link:' + t.getAttribute('href'));
+    var before = vsPosMetrics(), series = {};
+    [100, 400, 800].forEach(function(ms){ setTimeout(function(){ series['y' + ms] = Math.round(window.scrollY); }, ms); });
+    setTimeout(function(){
+      vsLog('pos:snapshot', JSON.stringify({ step: step, before: before, series: series, after: vsPosMetrics(), css: vsCssFlags() }));
+    }, 850);
+  }, true);
+
   // ---------- i18n ----------
   var SUPPORTED_LANGS = ['fr', 'en', 'es', 'zh', 'ja', 'ko', 'de', 'pt', 'ru', 'tr', 'ar'];
   var T = {
