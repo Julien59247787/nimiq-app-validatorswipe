@@ -2550,14 +2550,12 @@
     clearPending(true);
     if (mine && expect && expect.msgKey) announceConfirmed(expect);
   }
-  // The success message, the confetti and the removal of the favorite come only now, when the chain shows the action
-  // (the wallet answering "success" to the request is not a confirmation).
+  // The success message and the confetti come only now, when the chain shows the action (the wallet answering
+  // "success" to the request is not a confirmation). The favorites are never touched by an action: a validator
+  // leaves My favorites only when the user removes its star. The card is redrawn because its mode may have changed
+  // (a Create makes the same validator's card an Add).
   function announceConfirmed(expect){
     if (/^(create|add|update)$/.test(expect.kind)){
-      for (var i = bookmarked.length - 1; i >= 0; i--){
-        if ((bookmarked[i].address || '').replace(/\s+/g, '') === (expect.address || '').replace(/\s+/g, '')) bookmarked.splice(i, 1);
-      }
-      updateShortlistCount();
       renderShortlistCard();
       burstConfetti(90);
     }
@@ -2852,7 +2850,7 @@
 
     function onDelegated(isSwitch, isDemo, expect){
       // A real action is NOT announced here: the wallet answering "success" is not a confirmation. History row,
-      // favorite removal, success message and confetti come when the chain reflects it (confirmReflected).
+      // success message and confetti come when the chain reflects it (confirmReflected).
       if (!isDemo){
         pollStakerStatus(expect);
         renderShortlistCard();
@@ -2861,8 +2859,6 @@
       // No wallet connected: nothing real was sent — clearly labeled as a demo, no confetti.
       delegated.push(v);
       renderDelegationHistory();
-      bookmarked.splice(shortIdx, 1);
-      updateShortlistCount();
       showSuccessModal(t(isSwitch ? 'app.demoModeSwitchSuccess' : 'app.demoModeSuccess').replace('{validator}', v.name));
       renderShortlistCard();
     }
