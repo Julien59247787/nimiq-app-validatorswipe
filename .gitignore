@@ -1,0 +1,26 @@
+# Local demo recordings and raw media (large; host them on your web server instead)
+demo/
+*.mp4
+*.mov
+*.mkv
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Local scratch and backups
+*.bak
+*.orig
+*.tmp
+*.node1
+*.node2
+
+# Secrets and local configuration — never commit these
+.env
+.env.*
+*.pem
+*.key
+secrets/
