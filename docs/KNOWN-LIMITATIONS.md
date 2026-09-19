@@ -23,7 +23,7 @@ was verified on a real device. Create Stake (a first stake) with such funds has 
 to end.
 
 **Possible improvement.** Read swap-contract balances on-chain so the amount can be pre-filled in
-that case — see the *Unreleased (toward 1.1.0)* section of the [changelog](../CHANGELOG.md#unreleased-toward-110).
+that case — see the *Unreleased* section of the [changelog](../CHANGELOG.md#unreleased).
 
 ## Other limitations
 

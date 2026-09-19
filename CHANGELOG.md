@@ -6,10 +6,9 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [Unreleased] (toward 1.1.0)
+## [Unreleased]
 
-Improvements under consideration for the next release, with no commitment on a date. None of
-these is implemented yet.
+Ideas with no commitment on a date or a version. None of these is implemented yet.
 
 **Configurability (for other operators)**
 - Move `KNOWN_VALIDATORS` / `FALLBACK_VALIDATORS` out of `index.html` into an external
@@ -36,11 +35,6 @@ these is implemented yet.
 - Automated tests and a CI check for i18n key parity and script syntax.
 
 **Interface**
-- Re-frame the view after an action (confirmation, error, closing a modal), so the "currently
-  delegating" banner, the waiting notice, the Active stake block and the card are visible instead
-  of leaving the page half-scrolled with the app title cut off. Idea: `scrollIntoView` with
-  `block: 'start'` or `'center'` and a margin, taking `visualViewport` into account, without jank
-  or interference with the keyboard. To be tested on a real phone before any release.
 - The mascot image has no rounded border; a `border-radius` could be added if a rounded look is wanted.
 - The "status unreadable" message could distinguish the case where no wallet address is available yet.
 - The pending-confirmation notice is driven by the status polling; it could also follow the transaction directly.
@@ -84,6 +78,11 @@ submission (PR #238 of the competition's submissions repository) was merged on 2
 All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Added**
+- After a tap on the star or the shield, and when a success or error message closes, the view is gently
+  re-framed so the "currently delegating" banner, the waiting notice, the Active stake block and the
+  validator card are visible. Nothing moves while typing, within a second of a manual scroll, while the
+  keyboard restoration is pending, or when the area is hidden; with `prefers-reduced-motion` the move
+  is instant (`0c9a477`).
 - One discreet hint under the "Amount to delegate" field, shown only for a connected wallet whose
   main account reads 0, when the amount is not pre-filled and the card is in Add/Create mode
   (`11146f5`). It replaces the large notice and its "OK, got it" button (11 languages).

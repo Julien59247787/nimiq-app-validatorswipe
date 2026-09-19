@@ -40,6 +40,8 @@ Licensed under [MIT](LICENSE).
   then **claim** the funds after the network waiting period.
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
+- **Follows the user journey.** After the star or the shield, and when a message closes, the view is gently
+  re-framed on the useful area; after typing an amount, the page returns to where it was when the keyboard closes.
 - **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send
   the same action twice (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
 - **Runs inside Nimiq Pay *and* in a regular browser.** Inside Nimiq Pay it uses the
@@ -143,7 +145,7 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
 | [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including a main-account balance of 0 |
-| [CHANGELOG.md](CHANGELOG.md) | History since the first publication (1.0.0) and the batch planned for 1.1.0 |
+| [CHANGELOG.md](CHANGELOG.md) | History since the first publication (1.0.0) and ideas without a date |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [SECURITY.md](SECURITY.md) | Security model and how to report a vulnerability |
 
