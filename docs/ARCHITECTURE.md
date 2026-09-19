@@ -41,7 +41,8 @@ Inside a single IIFE-style script block:
   scrolls gently so the top of the central card (the app header) sits at the top of the screen (skipped while
   typing, within 1 s of a manual scroll, while the keyboard restoration is pending, or when hidden; instant
   with `prefers-reduced-motion`).
-  Automatic re-framing is tuned for Nimiq Pay's in-app browser and neutral elsewhere.
+  Automatic re-framing runs only inside Nimiq Pay and only when the WebView reports the host bar height
+  (`env(safe-area-inset-top)`); otherwise a tap on the app title re-frames with a 64 px clearance, and elsewhere it is neutral.
   The margin above the card equals the real side margin; when the host reports a top bar overlaying the page (`env(safe-area-inset-top)`) it is added to the margin; tapping the app title (a button) returns to the Browse tab and re-frames the view.
 - **Scroll restoration** — when the on-screen keyboard closes after typing an amount, the page returns
   to the scroll position it had when the field got focus (nothing happens while typing, after a manual
