@@ -452,6 +452,13 @@ Put the printed `sha256-…` value in the `script-src` directive.
   round-robin DNS.
 - Each node needs access to a Nimiq node RPC (its own or a shared internal one) and its own
   copy of the cache (or a shared database).
+- Conditional requests: web servers derive the `ETag` of a static file from more than its
+  modification time (inode and size can take part), so two identical files on two nodes can
+  carry different `ETag` values. Behind a round-robin, a conditional request that lands on the
+  other node then gets a full `200` instead of a `304`: harmless, just not optimal.
+- Step-by-step procedure for reloading a node without dropping connections (one node at a time,
+  hash checks, double CSP hash during the transition, drain before restarting the API, rollback):
+  see [HOT-DEPLOY.md](HOT-DEPLOY.md).
 
 ### 3.6 Rolling deployment and high availability
 

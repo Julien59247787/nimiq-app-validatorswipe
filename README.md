@@ -143,6 +143,7 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | Document | Purpose |
 |---|---|
 | [docs/OPERATOR-GUIDE.md](docs/OPERATOR-GUIDE.md) | Deploy and operate the mini app on your own nodes |
+| [docs/HOT-DEPLOY.md](docs/HOT-DEPLOY.md) | Runbook: reload a node without dropping connections, two-node setups |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
 | [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | What has been verified on a real device, known limitations, candidate work |
