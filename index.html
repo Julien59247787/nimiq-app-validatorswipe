@@ -202,6 +202,11 @@
 
   .active-delegation-banner{ display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, var(--nimiq-gold) 14%, transparent); border:1px solid var(--nimiq-gold); color:var(--nimiq-gold); font-weight:700; font-size:.85rem; }
   .active-delegation-banner[hidden]{ display:none; }
+  /* 'Waiting for the network to confirm...' notice: must be clearly noticeable (bold, framed, animated hourglass) */
+  #pendingNote{ display:flex; align-items:center; justify-content:center; gap:10px; margin:8px 6px 0; padding:10px 14px; text-align:center; font-size:.95rem; font-weight:700; line-height:1.4; color:var(--signal-strong); background:color-mix(in srgb, var(--nimiq-gold) 12%, transparent); border:1px solid color-mix(in srgb, var(--nimiq-gold) 55%, transparent); border-radius:12px; }
+  #pendingNote::before{ content:"\23F3"; flex:0 0 auto; font-size:1.25em; line-height:1; animation:pending-flip 2s ease-in-out infinite; }
+  @keyframes pending-flip{ 0%,40%{ transform:rotate(0deg); } 60%,100%{ transform:rotate(180deg); } }
+  @media (prefers-reduced-motion: reduce){ #pendingNote::before{ animation:none; } }
   #pendingNote[hidden]{ display:none; }
   .active-delegation-icon{ font-size:1rem; }
   .funds-pending-banner{ display:flex; align-items:flex-start; gap:8px; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, #f7a53d 14%, transparent); border:1px solid #f7a53d; color:#f7a53d; font-size:.8rem; line-height:1.4; }
@@ -344,7 +349,7 @@
           <span class="active-delegation-icon" aria-hidden="true">🛡️</span>
           <span id="activeDelegationText"></span>
         </div>
-        <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" style="margin:8px 6px 0; text-align:center; color:var(--nimiq-gold);" hidden>Waiting for the network to confirm your transaction…</p>
+        <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" hidden>Waiting for the network to confirm your transaction…</p>
 
         <div class="funds-pending-banner" id="fundsPendingBanner" hidden>
           <span class="funds-pending-icon" aria-hidden="true">⏳</span>
