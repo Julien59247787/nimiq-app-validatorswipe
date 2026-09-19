@@ -725,6 +725,29 @@
     } catch (e) {}
     return out;
   }
+  // MODE natural (#debug&natural or ?natural=1): a tap on the app title calls no scrollTo/scrollIntoView; it re-selects
+  // the current tab exactly like a tap on that tab (same click path: setPhase, calibrateCardHeight...), to see whether
+  // the host browser re-places the card by itself. Default mode: the title tap behaves as in the app (64 px clearance).
+  var vsNatural = /(^|[#&?])natural/.test(location.hash + location.search);
+  var vsSuppressReframe = false, vsReframeSoonInner = reframeSoon;
+  vsLog("mode", vsNatural ? "natural" : "default");
+  reframeSoon = function(delay, force){ if (vsSuppressReframe) { vsLog('reframe:suppressed', 'natural'); return; } vsReframeSoonInner(delay, force); };
+  function vsUa(){
+    var ua = navigator.userAgent || '', m = ua.match(/(Chrome|Chromium)\/([\d.]+)/), v = ua.match(/Version\/([\d.]+)/), a = ua.match(/Android ([\d.]+)/);
+    return { chrome: m ? m[2] : null, versionTok: v ? v[1] : null, wv: /; wv\)/.test(ua), android: a ? a[1] : null };
+  }
+  var vsTitleEl = document.getElementById('appTitle');
+  if (vsTitleEl) vsTitleEl.addEventListener('click', function(ev){
+    if (!vsNatural) return;
+    ev.stopImmediatePropagation();
+    var so = document.getElementById('successModalOverlay'), eo = document.getElementById('errorModalOverlay');
+    if ((so && !so.hidden) || (eo && !eo.hidden)) return;
+    try { closeLangDropdown(); } catch (e) {}
+    var tab = document.getElementById('browseTabBtn').classList.contains('active') ? 'browseTabBtn' : 'shortlistTabBtn';
+    vsSuppressReframe = true; setTimeout(function(){ vsSuppressReframe = false; }, 1500);
+    vsLog('natural:title-as-tab', tab);
+    document.getElementById(tab).click();
+  }, true);
   document.addEventListener('click', function(ev){
     var t = ev.target && ev.target.closest ? ev.target.closest('a[href="#demo"], #browseTabBtn, #shortlistTabBtn, #appTitle, #shortlistBtn, #removeBtn, #delegateBtn') : null;
     if (!t) return;
@@ -732,7 +755,7 @@
     var before = vsPosMetrics(), series = {};
     [100, 400, 800].forEach(function(ms){ setTimeout(function(){ series['y' + ms] = Math.round(window.scrollY); }, ms); });
     setTimeout(function(){
-      vsLog('pos:snapshot', JSON.stringify({ step: step, before: before, series: series, after: vsPosMetrics(), css: vsCssFlags() }));
+      vsLog('pos:snapshot', JSON.stringify({ step: step, mode: vsNatural ? 'natural' : 'default', ua: vsUa(), before: before, series: series, after: vsPosMetrics(), css: vsCssFlags() }));
     }, 850);
   }, true);
 
