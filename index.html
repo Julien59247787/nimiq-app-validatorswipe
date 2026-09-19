@@ -2284,14 +2284,12 @@
   // Safe re-centring on explicit gestures only: tap on Browse, on My favorites, or on the app title. It puts the
   // central card just under the host's top bar, using the bar height reported by env(safe-area-inset-top)
   // (unknown or 0 = nothing moves). Safety condition: it never pushes the row of buttons (back / pass / star /
-  // next) below the safe line (view height minus the space taken by the Android navigation bar). Never while
-  // typing, right after a manual scroll (< 1 s, except the title tap), while the keyboard restoration is pending,
-  // or when the page is hidden. One absolute scrollTo per gesture, so no oscillation. Purely cosmetic.
+  // next) below the safe line (view height minus the space taken by the Android navigation bar). A tap is an
+  // explicit gesture, so a recent manual scroll does not block it: the move waits until the page has stopped
+  // scrolling (momentum included) and is skipped if it never settles. Never while typing, while the keyboard
+  // restoration is pending, or when the page is hidden. One absolute scrollTo per gesture, so no oscillation.
   var SIDE_SMALL_MARGIN_PX = 8;
-  var lastUserScrollAt = 0, recentreTimer = null;
-  ['touchmove', 'wheel'].forEach(function(ev){
-    window.addEventListener(ev, function(){ lastUserScrollAt = Date.now(); }, { passive: true });
-  });
+  var recentreTimer = null;
   function envInset(side){
     if (!window.nimiqPay) return 0;
     try {
@@ -2324,18 +2322,32 @@
     }
     return target;
   }
-  function recentreSoon(delay, force){
+  function recentreNow(){
+    try {
+      if (document.hidden || scrollCoord.kbPending()) return;
+      var ae = document.activeElement;
+      if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
+      var target = recentreTarget();
+      if (target === null || Math.abs(target - window.scrollY) < 8) return;
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: target, behavior: calm ? 'instant' : 'smooth' });
+    } catch (e) {}
+  }
+  // Waits for the page to stop scrolling (2 identical readings 50 ms apart, at most 800 ms), then re-centres once.
+  function recentreSoon(delay){
     clearTimeout(recentreTimer);
     recentreTimer = setTimeout(function(){
-      try {
-        if (document.hidden || (!force && Date.now() - lastUserScrollAt < 1000) || scrollCoord.kbPending()) return;
-        var ae = document.activeElement;
-        if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
-        var target = recentreTarget();
-        if (target === null || Math.abs(target - window.scrollY) < 8) return;
-        var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({ top: target, behavior: calm ? 'instant' : 'smooth' });
-      } catch (e) {}
+      var last = window.scrollY, stable = 0, waited = 0;
+      (function poll(){
+        recentreTimer = setTimeout(function(){
+          waited += 50;
+          var y = window.scrollY;
+          stable = (y === last) ? stable + 1 : 0;
+          last = y;
+          if (stable >= 2) recentreNow();
+          else if (waited < 800) poll();
+        }, 50);
+      })();
     }, delay);
   }
   ['browseTabBtn', 'shortlistTabBtn'].forEach(function(id){
@@ -2351,7 +2363,7 @@
       return;
     }
     if (!$('browseTabBtn').classList.contains('active')) $('browseTabBtn').click();
-    recentreSoon(120, true);
+    recentreSoon(120);
   }
   if (appTitle){
     appTitle.addEventListener('click', titleTap);
