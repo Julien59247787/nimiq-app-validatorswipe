@@ -17,13 +17,21 @@ releases yet; entries are grouped by date and reconstructed from the git history
 - The displayed staking state stayed stale after a confirmed delegation, switch, add, retire or claim:
   the app re-read the on-chain state once, immediately, but a transaction is only mined some seconds
   later, so the old delegation, stake and card modes stayed on screen until a reload. After every
-  real action the app now re-reads `staker-status` every 6 seconds (for at most 150 seconds, paused
-  while the app is hidden, never in parallel) until the chain reflects the change, and each read
-  updates the delegation banner, the stake block, the delegation history and the Add/Switch mode of
-  the cards together. A short notice (translated in 11 languages) tells the user the network is
-  still confirming. It also re-reads when the app returns to the foreground and when a success
-  message is dismissed. The app never shows a state the chain does not confirm: on timeout it keeps
-  the last real state.
+  real action the app now re-reads `staker-status` every 3 seconds for 30 seconds, then every 10
+  seconds, up to a total cap of 60 seconds (about 13 requests at most; the values are named
+  constants), paused while the app is hidden, never in parallel, retrying at the next tick if a
+  request fails, until the chain reflects the change. Each read updates the delegation banner, the
+  stake block, the delegation history and the Add/Switch mode of the cards together, and a short
+  notice (translated in 11 languages) tells the user the network is still confirming. It also
+  re-reads when the app returns to the foreground and when a success message is dismissed. The app
+  never shows a state the chain does not confirm: at the cap it keeps the last real state.
+- While a confirmation is pending, only the Delegate button is disabled (browsing, favorites, retire
+  and claim stay available): the displayed state is stale, so the Add/Switch mode could be wrong.
+  It is re-enabled as soon as the chain confirms, or at the cap. Rapid double clicks send one
+  transaction.
+- If the staking state cannot be read when delegating (HTTP error, timeout, unexpected response),
+  the app no longer assumes "no staker" (which made a Create fail for an existing staker): it retries
+  twice quickly, then shows a clear message (11 languages) and sends nothing.
 - On narrow phones (about 360-450 px) the "Technical integration" section was wider than the screen
   (its grid column was sized by long unbreakable function names, and the checklist items were
   laid out as flex rows), so the code block and the right end of the list were cut off and one
