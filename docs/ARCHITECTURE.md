@@ -127,8 +127,9 @@ Their schemas, data sources and operational requirements are specified in the
   60 s) then "not confirmed" (buttons still disabled, chain re-read every 15 s for up to 10 minutes). The lock is
   lifted only by the chain reflecting the action, by an error of the page that owns the record, by a wallet
   change, or by the explicit "I checked in Nimiq Pay, continue" button. After a reload the record is adopted and
-  the polling resumes. The delegation history, the success message, the confetti and the removal of the favorite all
-  happen only once the chain reflects the action (the wallet answering "success" is not a confirmation).
+  the polling resumes. The delegation history, the success message and the confetti happen only once the chain
+  reflects the action (the wallet answering "success" is not a confirmation). Actions never remove a validator from
+  My favorites; only the user's star does.
 - **Local storage summary.** `nimiq-miniapp-lang` (language), `vs:pending` (action in flight, session + local,
   cleared on confirmation or after 60 s) and `vs:lastActions` (up to 8 recent actions for the 30 s duplicate
   check; contains the wallet address). All local to the browser, never sent anywhere, no cookies.

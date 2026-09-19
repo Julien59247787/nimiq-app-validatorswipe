@@ -20,11 +20,13 @@ work is available in the Git history.
   Delegate button was locked (`7855fa6`).
 - The delegation history records an action only once the chain reflects it, instead of when the wallet returned;
   an action that never reaches the chain no longer leaves a row or a "Delegated" badge (`7855fa6`).
-- The success message ("Delegated!", "Switched!", retire, claim), the confetti and the removal of the validator from
-  the favorites no longer happen when the wallet answers "success" to the request: they happen only once the chain
-  reflects the action (the wallet can answer "success" for a transaction that never reaches the chain). Until then
-  only the persistent waiting message is shown; a delegation that is never reflected leaves the favorite in place
+- The success message ("Delegated!", "Switched!", retire, claim) and the confetti no longer appear when the wallet
+  answers "success" to the request: they appear only once the chain reflects the action (the wallet can answer
+  "success" for a transaction that never reaches the chain). Until then only the persistent waiting message is shown
   (`2781943`).
+- An action no longer removes the validator from My favorites, neither when it is sent nor when it is confirmed
+  (including in demo mode): a validator leaves the favorites only when the user removes its star, so adding stake
+  later does not require selecting it again in Browse (`eb092e0`).
 - Disabled buttons ("Claim my funds", "Confirm withdrawal", other `.btn` buttons) now look disabled (`2781943`).
 - The error "Transaction invalidated during transaction" no longer claims a conflict with a stake in progress: the
   message now says Nimiq Pay rejected the transaction, with the raw detail kept (`7855fa6`).
