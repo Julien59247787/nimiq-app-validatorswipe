@@ -2024,7 +2024,7 @@
       return res.json();
     }).then(function(data){
       var list = (data && data.validators) || [];
-      if (!list.length) return;
+      if (!list.length){ applyStoredFavorites(true); return; }
       VALIDATORS = list.map(function(v){
         var known = KNOWN_VALIDATORS[v.address];
         // Prefer the name published live by the API (v.name), so a change
@@ -2056,6 +2056,8 @@
       });
       idx = 0;
       renderCard();
+      favListComplete = true;
+      applyStoredFavorites(true);
     }).catch(function(err){
       console.warn('Validator Swipe: could not load the full validator list, staying on the 2 known nodes.', err);
       var box = $('validatorsListError');
@@ -2065,6 +2067,7 @@
         $('validatorsListErrorTech').textContent = t('app.delegateFailedDetail') + ' ' + detail;
         box.style.display = 'block';
       }
+      applyStoredFavorites(true);
     });
   }
 
@@ -2075,6 +2078,57 @@
   var idx = 0;
   var shortIdx = 0;
   var bookmarked = [];
+
+  // ---------- favorites that survive closing / reloading the app ----------
+  // Only the PUBLIC addresses of the favorite validators are stored (localStorage, key vs:favorites, in order, at most
+  // FAV_MAX): never the wallet address, never a name or a metric. They are display preferences, not tied to a wallet.
+  // Any storage problem (blocked, full, unreadable, corrupted JSON) falls back to memory without any message.
+  var FAV_KEY = 'vs:favorites', FAV_MAX = 50, favMemory = null, favListComplete = false;
+  function readFavorites(){
+    var raw = null;
+    try { raw = localStorage.getItem(FAV_KEY); } catch (e) { return favMemory ? favMemory.slice() : []; }
+    if (raw === null) return favMemory ? favMemory.slice() : [];
+    try {
+      var a = JSON.parse(raw);
+      if (!Array.isArray(a)) return [];
+      return a.filter(function(s, i){ return typeof s === 'string' && s.length > 0 && s.length <= 60 && a.indexOf(s) === i; }).slice(0, FAV_MAX);
+    } catch (e) { return []; }
+  }
+  // Order of the stored list is kept. While the validator list is NOT complete (API failure, fallback list), stored
+  // addresses that cannot be resolved are kept as they are, so a failure never makes favorites disappear; with a
+  // complete list, addresses that no longer exist are dropped.
+  function persistFavorites(){
+    var current = bookmarked.map(function(b){ return b.address; });
+    var out = [];
+    readFavorites().forEach(function(a){
+      var known = VALIDATORS.some(function(v){ return v.address === a; });
+      if (current.indexOf(a) >= 0 || (!favListComplete && !known)) out.push(a);
+    });
+    current.forEach(function(a){ if (out.indexOf(a) < 0) out.push(a); });
+    out = out.slice(0, FAV_MAX);
+    favMemory = out;
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(out)); } catch (e) {}
+  }
+  // Stored addresses -> validator objects of the current list (unknown ones are ignored, not deleted). With `merge`,
+  // favorites already added during the loading are kept after the stored ones (no duplicate).
+  function applyStoredFavorites(merge){
+    var byAddr = {};
+    VALIDATORS.forEach(function(v){ byAddr[v.address] = v; });
+    var merged = [];
+    readFavorites().forEach(function(a){
+      if (byAddr[a] && !merged.some(function(x){ return x.address === a; })) merged.push(byAddr[a]);
+    });
+    if (merge){
+      bookmarked.forEach(function(b){
+        if (!merged.some(function(x){ return x.address === b.address; })) merged.push(byAddr[b.address] || b);
+      });
+    }
+    bookmarked = merged;
+    updateShortlistCount();
+    syncDelegateBtn();
+    renderShortlistCard();
+  }
+  window.addEventListener('storage', function(ev){ if (ev.key === FAV_KEY) applyStoredFavorites(false); });
   var delegated = [];
   var $ = function(id){ return document.getElementById(id); };
   var cardStack = $('cardStack'), passBtn = $('passBtn'), shortlistBtn = $('shortlistBtn'), backBtn = $('backBtn'), nextBtn = $('nextBtn');
@@ -2828,6 +2882,7 @@
     if (!bookmarked.some(function(b){ return b.address === v.address; })){
       bookmarked.push(v);
       updateShortlistCount();
+      persistFavorites();
     }
     var card = $('currentCard');
     if (card) card.classList.add('leaving-right');
@@ -2851,6 +2906,7 @@
     if (!bookmarked.length) return;
     bookmarked.splice(shortIdx, 1);
     updateShortlistCount();
+    persistFavorites();
     renderShortlistCard();
   });
 
