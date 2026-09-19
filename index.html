@@ -2003,16 +2003,12 @@
 
   // ---------- success modal (stays until closed or auto-dismisses) ----------
   var successModalOverlay = $('successModalOverlay');
-  var successModalTimer = null;
   function showSuccessModal(message){
     $('successModalHuman').textContent = message;
     successModalOverlay.hidden = false;
-    clearTimeout(successModalTimer);
-    successModalTimer = setTimeout(closeSuccessModal, 6000);
   }
   function closeSuccessModal(){
     successModalOverlay.hidden = true;
-    clearTimeout(successModalTimer);
   }
   $('successModalOkBtn').addEventListener('click', closeSuccessModal);
   successModalOverlay.addEventListener('click', function(ev){

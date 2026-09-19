@@ -15,6 +15,9 @@ releases yet; entries are grouped by date and reconstructed from the git history
   failure for delegate, retire and claim, instead of showing a false success.
 - The "pre-filled with your available balance" hint only appears when the amount was actually
   pre-filled, and disappears once you edit it.
+- The success message no longer closes by itself after 6 seconds: it stays until the user
+  dismisses it with "OK" (like error messages).
+- Full-width buttons (the "OK" of the message dialogs, "Confirm withdrawal") now center their label.
 
 ## 2026-09-18 — Competition submission, final polish
 
