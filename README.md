@@ -40,7 +40,7 @@ Licensed under [MIT](LICENSE).
   then **claim** the funds after the network waiting period.
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
-- **Follows the user journey.** After the star or the shield, and when a message closes, the view is gently
+- **Follows the user journey.** After the star or the shield, when switching tabs and when a message closes, the view is gently
   re-framed on the central card; after typing an amount, the page returns to where it was when the keyboard closes.
   Tapping the app title puts the app back in its nominal position.
 - **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send

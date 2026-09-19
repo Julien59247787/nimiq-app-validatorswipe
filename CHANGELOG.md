@@ -96,6 +96,9 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   transparent background, `tux-nimiq-96.png` (`61c2137`, `3d92cbb`).
 
 **Changed**
+- Switching between Browse and My favorites re-frames the view like the other triggers; the re-framing target
+  also subtracts the height of a host top bar that overlays the page when the WebView reports it through
+  `env(safe-area-inset-top)` (`8f5dab1`).
 - The re-framing margin above the central card equals the real space between the card and the screen edges
   (measured at run time) instead of a fixed value (`6115654`).
 - The re-framing after the star, the shield and a closing message now always aligns the top of the central card (the
