@@ -2293,11 +2293,9 @@
   // Height hidden at the top of the page by the host's bar (Nimiq Pay's in-app browser bar). A web page cannot
   // measure a native bar that overlays it, so:
   //  - known: env(safe-area-inset-top), when Nimiq Pay's WebView reports it (> 0): used for every re-framing;
-  //  - unknown: no AUTOMATIC re-framing at all (worst case = nothing moves); only an explicit tap on the app title
-  //    re-frames, using HOST_TOP_FALLBACK_PX, the largest plausible bar height, so the title can never end up
-  //    under the bar (at worst a few extra pixels above the card);
+  //  - unknown (0): no re-framing at all (worst case = nothing moves); a tap on the app title only closes the
+  //    language menu and re-selects the current tab;
   //  - outside Nimiq Pay: no compensation (0), automatic re-framing disabled.
-  var HOST_TOP_FALLBACK_PX = 64;
   function hostTopKnown(){
     if (!window.nimiqPay) return 0;
     try {
@@ -2311,7 +2309,7 @@
   }
   function hostTopInset(){
     if (!window.nimiqPay) return 0;
-    return hostTopKnown() || HOST_TOP_FALLBACK_PX;
+    return hostTopKnown();
   }
   function reframeArea(){
     var phone = document.querySelector('.demo-stage .phone');
@@ -2340,6 +2338,11 @@
   function goNominal(){
     if (!$('successModalOverlay').hidden || !$('errorModalOverlay').hidden) return;
     try { closeLangDropdown(); } catch (e) {}
+    if (!hostTopKnown()){
+      // host bar height unknown: no scroll; just re-select the CURRENT tab (never switch tabs behind the user's back)
+      $($('browseTabBtn').classList.contains('active') ? 'browseTabBtn' : 'shortlistTabBtn').click();
+      return;
+    }
     if (!$('browseTabBtn').classList.contains('active')) $('browseTabBtn').click();
     reframeSoon(120, true);
   }
