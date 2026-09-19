@@ -213,32 +213,30 @@ Notes:
 
 ### 2.2 Per-validator stats (uptime / reliability / fee / name)
 
-The node RPC gives stake per validator but not the scoring statistics. The reference
-implementation obtains them from the public **NimiqHub** validator pages, which embed a JSON
-blob in the page payload (`scoreAvailability`, `scoreDominance`, `scoreReliability`, `fee`,
-`name`). Before copying that approach:
+The node RPC gives stake per validator but not the scoring statistics. Obtain them from a
+**public source of validator statistics** you are comfortable relying on — for example a
+public Nimiq validators API or explorer. The contract only cares about the resulting fields
+(`availability`, `dominance`, `reliability`, `fee`, `name`); how you fill them is up to you.
+Whatever source you choose:
 
-- It is HTML scraping of a page whose structure you don't control. If the markup changes,
-  parsing silently yields `null` (the contract handles that safely, but the stats disappear).
-  Monitor for "everything became null".
-- Be polite: refresh **once a day**, one request per validator, spaced several seconds apart
-  (about 3.5 s), and check the site's `robots.txt` and terms yourself. Never scrape on user
-  requests — always serve from your own cache.
+- Prefer a documented API over parsing web pages. If you must parse a page whose structure you
+  don't control, a markup change will silently yield `null` (the contract handles that safely,
+  but the stats disappear) — monitor for "everything became null".
+- Be polite to the source: refresh **once a day**, one request per validator, spaced several
+  seconds apart, and check its terms of use. Never call it on user requests — always serve from
+  your own cache.
 - Only validators with enough established history have scores and a fee; newer ones legitimately
   have `null` everywhere. `reward_rate` is `null` for exactly the same validators (it needs `fee`).
-- `reward_rate` is **computed**, not scraped: the protocol reward formula from the official
+- `reward_rate` is **computed**, not fetched: the protocol reward formula from the official
   `@nimiq/utils` package (`calculateStakingRewards`, with `stakedSupplyRatio` = total staked /
   PoS supply from `posSupplyAt`), evaluated for 100,000 NIM over 365 days with that
   validator's `fee` and **auto-restake = false** (conservative, comparable across validators).
   The staked-supply ratio is computed once per run (network-wide), clamped to [0.01, 0.99].
 
-You may use any other public source you are comfortable with; the contract only cares about
-the resulting fields.
-
 ### 2.3 Cache and refresh
 
 - Table (SQLite in the reference; any store works):
-  `validators_hub_cache(address PK, stake_luna, availability, dominance, reliability,
+  `validators_cache(address PK, stake_luna, availability, dominance, reliability,
   reward_rate, fee, name, updated_at)`.
 - A daily job: `getActiveValidators` → fetch scores for each validator → upsert → delete rows
   for validators no longer active.
@@ -422,7 +420,7 @@ Put the printed `sha256-…` value in the `script-src` directive.
   the daily job is negligible load.
 - Minimal monitoring: `/api/health` returns 200; alert if `cache_updated_at` is older than
   ~36 h; alert if `validators-list` returns `count: 0` or if all stats become `null` (the
-  scraper broke); alert on node consensus loss.
+  stats source broke); alert on node consensus loss.
 
 ---
 
@@ -597,7 +595,7 @@ at once.
 | Symptom | Likely cause |
 |---|---|
 | Blank page / nothing works, CSP errors in console | Hash of the inline script does not match the header (file changed, or line endings differ) |
-| Only two validators shown, "could not load the full list" | `validators-list` unreachable, wrong path, or returned an empty list (in that case no error note is shown) |
+| Only two validators shown | `validators-list` unreachable or wrong path (a "could not load the full list" note is shown), **or** it returned an empty list (no note is shown) |
 | Staking transaction fails only outside Nimiq Pay | `'wasm-unsafe-eval'` or `connect-src https://cdn.jsdelivr.net` missing from the CSP |
 | Delegating a second time fails | `staker-status` reports `found:false` for an existing staker (see §1.2) |
 | All validator stats show "—" | The stats source changed or is unreachable; check the daily job and `cache_updated_at` |
