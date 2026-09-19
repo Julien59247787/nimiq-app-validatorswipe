@@ -23,6 +23,7 @@ Licensed under [MIT](LICENSE).
 - [Documentation](#documentation)
 - [Good to know: balance after a top-up](#good-to-know-balance-after-a-top-up)
 - [Project status](#project-status)
+- [Reporting a bug](#reporting-a-bug)
 - [Contributing & security](#contributing--security)
 - [License](#license)
 
@@ -154,6 +155,13 @@ Submitted to the Nimiq Mini Apps Competition (Cycle II). The complete real staki
 cycle (create / add / switch / retire / claim) has been tested on a real device with
 real funds. Some translations are machine-generated and have not been reviewed by
 native speakers — corrections are welcome (see [docs/I18N.md](docs/I18N.md)).
+
+## Reporting a bug
+
+Found a problem? Use the **Report a bug** link in the app's footer, or [open an issue](https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose)
+with the bug template. Please include where you ran the app, which action failed and the error
+message (with its technical detail), and **never** share private keys, seed phrases, passwords or
+your full wallet address. Security vulnerabilities go through [SECURITY.md](SECURITY.md) instead.
 
 ## Contributing & security
 

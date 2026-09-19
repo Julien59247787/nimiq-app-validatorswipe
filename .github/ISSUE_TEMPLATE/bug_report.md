@@ -6,7 +6,7 @@ labels: bug
 ---
 
 > **Security issue?** Do not open a public issue — see [SECURITY.md](../../SECURITY.md).
-> **Never paste private keys, seed phrases or passwords.**
+> **Never paste private keys, seed phrases, passwords or your full wallet address.** If an address helps, share only the first and last few characters (e.g. `NQ07 …4XYZ`).
 
 ## What happened
 

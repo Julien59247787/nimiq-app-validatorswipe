@@ -6,6 +6,10 @@ releases yet; entries are grouped by date and reconstructed from the git history
 
 ## Unreleased
 
+### Added
+- A discreet "Report a bug" link in the footer (translated in all 11 languages) opening the GitHub
+  bug-report form; the bug template now asks not to share the full wallet address.
+
 ### Fixed
 - Adding or creating a stake is no longer blocked when the main-account balance reads 0. A
   real-device test showed Nimiq Pay accepting an Add Stake with funds held in a swap contract

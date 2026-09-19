@@ -255,12 +255,15 @@
   .credit-author-fr{ display:inline-block; font-weight:900; letter-spacing:.015em; background:linear-gradient(90deg,#0055A4 0%,#0055A4 33.333%,#FFFFFF 33.333%,#FFFFFF 66.666%,#EF4135 66.666%,#EF4135 100%); -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent; filter:drop-shadow(0 0 1px rgba(12,18,38,.5)); }
   .credit-discord-link{ display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:5px 12px; border-radius:999px; border:1.5px solid #5865F2; color:#5865F2; font-weight:700; font-size:.76rem; text-decoration:none; transition:transform .15s, opacity .15s, background-color .15s; }
   .credit-discord-link:hover{ transform:translateY(-1px) scale(1.04); background:#5865F2; color:#fff; }
+  .credit-bug-link{ display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:5px 4px; color:var(--text-faint); font-size:12px; font-weight:600; text-decoration:underline; text-underline-offset:2px; }
+  .credit-bug-link:hover, .credit-bug-link:focus-visible{ color:var(--text); }
   .credit-mascot{ display:block; width:24px; height:24px; max-width:24px; object-fit:contain; opacity:.85; border-radius:6px; transition:transform .15s, opacity .15s; }
   .credit-mascot:hover{ transform:translateY(-1px) scale(1.06); opacity:1; }
   @media (max-width:640px){
     .credit-footer{ flex-direction:column; gap:.3rem; padding:16px 12px; }
     .credit-separator{ display:none; }
     .credit-discord-link{ min-height:44px; padding:8px 16px; }
+    .credit-bug-link{ min-height:44px; padding:8px 16px; }
     /* On a real phone (incl. inside Nimiq Pay) there's no desktop "device
        mockup" to frame — the .phone block IS the whole usable screen, so
        let it use (nearly) the full viewport width instead of the 360px
@@ -511,6 +514,8 @@
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <span data-i18n="footer.joinMe">Join me on</span>
   <a class="credit-discord-link" href="https://discord.gg/96gHeaZYRH" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le serveur Discord de @Ju" data-i18n-aria="footer.discordAria" title="Rejoindre le serveur Discord" data-i18n-title="footer.discordTitle">Discord ↗</a>
+  <span class="credit-separator" aria-hidden="true">&middot;</span>
+  <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Report a bug</a>
   <img class="credit-mascot" src="tux-nimiq.png" alt="Mascotte @Ju &amp; Nimiq" title="@Ju &amp; Nimiq" width="24" height="24" loading="lazy" decoding="async">
 </div>
 
@@ -646,6 +651,7 @@
       'footer.loveAria': 'amour',
       'footer.by': 'par',
       'footer.joinMe': 'Rejoins-moi sur',
+      'footer.reportBug': 'Signaler un bug',
       'footer.discordAria': 'Rejoindre le serveur Discord de @Ju',
       'footer.discordTitle': 'Rejoindre le serveur Discord'
     },
@@ -755,6 +761,7 @@
       'footer.loveAria': 'love',
       'footer.by': 'by',
       'footer.joinMe': 'Join me on',
+      'footer.reportBug': 'Report a bug',
       'footer.discordAria': 'Join @Ju\'s Discord server',
       'footer.discordTitle': 'Join the Discord server'
     },
@@ -835,6 +842,7 @@
       'footer.loveAria': 'amor',
       'footer.by': 'por',
       'footer.joinMe': 'Sígueme en',
+      'footer.reportBug': 'Informar de un error',
       'footer.discordAria': 'Unirse al servidor de Discord de @Ju',
       'footer.discordTitle': 'Unirse al servidor de Discord',
       'app.retireToggle': 'Retirar mi apuesta',
@@ -944,6 +952,7 @@
       'footer.loveAria': '爱',
       'footer.by': '作者：',
       'footer.joinMe': '在以下平台关注我：',
+      'footer.reportBug': '报告错误',
       'footer.discordAria': '加入 @Ju 的 Discord 服务器',
       'footer.discordTitle': '加入 Discord 服务器',
       'app.retireToggle': '提取我的质押金',
@@ -1053,6 +1062,7 @@
       'footer.loveAria': '愛',
       'footer.by': '著者：',
       'footer.joinMe': 'ぜひ、こちらで私とつながってください',
+      'footer.reportBug': 'バグを報告する',
       'footer.discordAria': '@JuのDiscordサーバーに参加する',
       'footer.discordTitle': 'Discordサーバーに参加する',
       'app.retireToggle': 'ステークを引き出す',
@@ -1162,6 +1172,7 @@
       'footer.loveAria': '사랑',
       'footer.by': '작성자:',
       'footer.joinMe': '나와 함께해 주세요',
+      'footer.reportBug': '버그 신고하기',
       'footer.discordAria': '@Ju의 Discord 서버에 가입하기',
       'footer.discordTitle': 'Discord 서버에 가입하기',
       'app.retireToggle': '내 스테이크 회수하기',
@@ -1271,6 +1282,7 @@
       'footer.loveAria': 'Liebe',
       'footer.by': 'von',
       'footer.joinMe': 'Besuche mich auf',
+      'footer.reportBug': 'Einen Fehler melden',
       'footer.discordAria': 'Dem Discord-Server von @Ju beitreten',
       'footer.discordTitle': 'Dem Discord-Server beitreten',
       'app.retireToggle': 'Meinen Einsatz abheben',
@@ -1380,6 +1392,7 @@
       'footer.loveAria': 'amor',
       'footer.by': 'por',
       'footer.joinMe': 'Junta-te a mim no',
+      'footer.reportBug': 'Comunicar um erro',
       'footer.discordAria': 'Entrar no servidor do Discord do @Ju',
       'footer.discordTitle': 'Entrar no servidor do Discord',
       'app.retireToggle': 'Retirar a minha participação',
@@ -1489,6 +1502,7 @@
       'footer.loveAria': 'любовь',
       'footer.by': 'автор:',
       'footer.joinMe': 'Присоединяйся ко мне на',
+      'footer.reportBug': 'Сообщить об ошибке',
       'footer.discordAria': 'Присоединиться к серверу Discord @Ju',
       'footer.discordTitle': 'Присоединиться к серверу Discord',
       'app.retireToggle': 'Изъять мой стейк',
@@ -1598,6 +1612,7 @@
       'footer.loveAria': 'aşk',
       'footer.by': 'tarafından',
       'footer.joinMe': 'Bana katıl',
+      'footer.reportBug': 'Bir hata bildir',
       'footer.discordAria': '@Ju’nun Discord sunucusuna katıl',
       'footer.discordTitle': 'Discord sunucusuna katılmak',
       'app.retireToggle': 'Hisse payımı çekmek',
@@ -1707,6 +1722,7 @@
       'footer.loveAria': 'الحب',
       'footer.by': 'بقلم',
       'footer.joinMe': 'انضم إليّ على',
+      'footer.reportBug': 'الإبلاغ عن خطأ',
       'footer.discordAria': 'الانضمام إلى خادم Discord الخاص بـ @Ju',
       'footer.discordTitle': 'الانضمام إلى خادم Discord',
       'app.retireToggle': 'سحب رهنتي',
@@ -2001,7 +2017,7 @@
     if (ev.key === 'Escape' && !errorModalOverlay.hidden) closeErrorModal();
   });
 
-  // ---------- success modal (stays until closed or auto-dismisses) ----------
+  // ---------- success modal (stays open until the user closes it) ----------
   var successModalOverlay = $('successModalOverlay');
   function showSuccessModal(message){
     $('successModalHuman').textContent = message;
