@@ -138,5 +138,8 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Documentation**
 - Full documentation set: README with screenshots, architecture, i18n and operator guides, known
-  limitations, contributing, security and community files (`8ea8be5` to `33a8e5d`), then updated to
-  describe the released behavior.
+  limitations, contributing, security and community files (`8ea8be5` to `33a8e5d`).
+- Brought up to date with the released behavior: `docs/KNOWN-LIMITATIONS.md` rewritten with a
+  verification-status table for 1.0.0 and the Nimiq Pay measurements; new `docs/TESTING.md` (manual test
+  plan) and `docs/HOT-DEPLOY.md` (runbook for reloading a node without dropping connections);
+  README, architecture and operator guide aligned; storage and privacy statements corrected.
