@@ -45,7 +45,8 @@ Licensed under [MIT](LICENSE).
 - **Comfortable typing.** After typing an amount, the page returns to where it was when the keyboard closes.
 - **One write at a time.** Duplicate taps, double connections and page reloads cannot send the same action twice,
   and while a transaction is waiting for the chain every button that sends a transaction stays disabled, across
-  reloads and open pages, with a clear "Not confirmed yet" state if the chain never reflects it
+  reloads and open pages, with a clear "Not confirmed yet" state if the chain never reflects it. Success is shown
+  only once the chain reflects the action, never on the wallet's answer alone
   (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
 - **Runs inside Nimiq Pay *and* in a regular browser.** Inside Nimiq Pay it uses the
   Mini App SDK. Outside, a "Connect" button uses the Nimiq Hub (implemented; see

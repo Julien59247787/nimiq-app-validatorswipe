@@ -45,6 +45,8 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] Pending that never reaches the chain: after 60 s the message becomes "Not confirmed yet — check Nimiq Pay before trying again", the three buttons stay disabled, and "I checked in Nimiq Pay, continue" lifts the lock.
 - [ ] Two open pages: the lock is seen by both; lifting it in one lifts it in the other.
 - [ ] The delegation history gets a row only after the chain reflects the action.
+- [ ] The success message, the confetti and the removal of the favorite appear only once the chain reflects the action; a wallet "success" that never reaches the chain shows none of them and keeps the favorite.
+- [ ] Disabled buttons (Claim, Confirm withdrawal, Delegate) look disabled while an action is pending.
 
 **Retire and claim**
 - [ ] Open "Retire my stake": the amount is pre-filled with the active stake; confirm; the stake shows as retiring; claim becomes available after the epoch ends and is sent from Nimiq Pay.
