@@ -229,6 +229,12 @@ Ideas that would make the app easier to reuse and harden. None of these are impl
   `block: 'start'` or `'center'` and a margin, taking `visualViewport` into account, without jank or
   interference with the keyboard (the page shifting up while the keyboard is open in the amount field is
   normal browser behavior). To be tested on a real phone before any release.
+- When the on-screen keyboard closes (end of typing in the amount field), the page does not return to its
+  previous scroll position. Idea: remember the scroll position when the amount field gets focus and restore
+  it smoothly on blur or when `visualViewport` returns to full height. To be tested on a real phone.
+- Planned for a small 1.1 release together with the re-framing above: align the static fallback text of the
+  funds-pending banner in the HTML (it still carries the older wording, invisible in normal use because the
+  translation dictionary replaces it) with the current dictionary text.
 - The mascot image no longer has a rounded border; a `border-radius` could be reintroduced if a rounded look is wanted.
 - The "status unreadable" message could distinguish the case where no wallet address is available yet.
 - The pending-confirmation banner is driven by the status polling; it could also follow the transaction directly.
