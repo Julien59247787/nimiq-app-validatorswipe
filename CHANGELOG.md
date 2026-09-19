@@ -10,6 +10,13 @@ work is available in the Git history.
 
 Ideas with no commitment on a date or a version. None of these is implemented yet.
 
+**Candidate work for a patch release**
+- Obtain the height of Nimiq Pay's top bar from the host team to calibrate the re-centring, instead of relying on
+  `env(safe-area-inset-top)` being reported.
+- Pin the Mini App SDK version.
+- Operator note: with several nodes answering in turn, per-node `ETag` values differ, so conditional requests
+  (`304`) do not hit; see the [Operator Guide](docs/OPERATOR-GUIDE.md).
+
 **Configurability (for other operators)**
 - Move `KNOWN_VALIDATORS` / `FALLBACK_VALIDATORS` out of `index.html` into an external
   configuration file or served endpoint, so an operator can list their own validators without
@@ -25,8 +32,7 @@ Ideas with no commitment on a date or a version. None of these is implemented ye
 
 **Robustness**
 - Self-host the third-party libraries (`@nimiq/mini-app-sdk`, `@nimiq/hub-api`,
-  `@nimiq/core`, fonts) instead of loading them from CDNs, and pin the Mini App SDK version
-  (it is currently unpinned).
+  `@nimiq/core`, fonts) instead of loading them from CDNs.
 - Claiming retired funds through the Nimiq Hub path (currently Nimiq Pay only).
 - Read funds held in swap contracts (HTLC) on-chain, so the delegation amount can be
   pre-filled when the main-account balance reads 0.

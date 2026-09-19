@@ -104,7 +104,7 @@ Their schemas, data sources and operational requirements are specified in the
 | Staker status unavailable (HTTP error, timeout, bad response) | Before delegating: two quick retries, then "Couldn't read your staking state" and nothing is sent; status widgets stay as last read |
 | No wallet connected | Demo mode: browsing works, simulated delegation is clearly labeled as demo |
 | `listAccounts()` returns an error object | Logged, the app stays disconnected (no crash) |
-| Main-account balance reads 0 | Informational notice, no amount pre-fill; staking is **not** blocked (Nimiq Pay can use funds held in a swap contract) |
+| Main-account balance reads 0 | One-line hint under the amount field, no amount pre-fill; staking is **not** blocked (Nimiq Pay can use funds held in a swap contract) |
 
 ### 6. Safety rules encoded in the UI
 
@@ -129,6 +129,11 @@ Their schemas, data sources and operational requirements are specified in the
   a failure (never as a success) for delegate, retire and claim.
 - The app never blocks staking on a 0 main-account balance: funds held in a swap contract are
   invisible to it but usable by the wallet ([KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md)).
+
+## Testing
+
+There is no automated suite; the manual test plan and the record of what has been verified on a real device are in
+[TESTING.md](TESTING.md) and [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#verification-status-version-100).
 
 ## Hard-coded, operator-specific bits
 

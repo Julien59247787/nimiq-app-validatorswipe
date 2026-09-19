@@ -173,7 +173,7 @@ Semantics to keep exactly right:
 - `wallet_balance_luna` is **not** the staked balance. It is the basic-account balance only.
   Funds held in a swap contract (e.g. an HTLC after a top-up) do **not** appear here — a
   freshly topped-up wallet can legitimately read `0` while its wallet app shows the funds.
-  The UI then shows an informational notice and does not pre-fill the amount (it only
+  The UI then shows a one-line hint under the amount field and does not pre-fill the amount (it only
   pre-fills from this value when it is ≥ 1 NIM). **`0` does not mean "no funds"**: the app
   never blocks staking on it, because the wallet can use funds held in a swap contract itself.
 - No staker → `found:false` and all staker fields `null`; `wallet_balance_luna` is still reported.
@@ -504,7 +504,7 @@ Degradation if you skip pieces:
 
 - Failed `validators-list` → only the two hard-coded entries appear, with a notice; an empty list → the same two entries, silently.
 - All stats `null` → cards show "—" (honest, but less useful).
-- `wallet_balance_luna: null` → no amount pre-fill (the user types it); `0` → an informational notice (staking is not blocked).
+- `wallet_balance_luna: null` → no amount pre-fill (the user types it); `0` → a one-line hint under the amount field (staking is not blocked).
 - Wrong or absent `staker-status` → existing stakers cannot reliably add stake or switch (see §1.2).
 
 A static-file variant is viable for `validators-list`: a cron job writes the JSON to disk and
@@ -667,4 +667,4 @@ at once.
 | Delegating a second time fails | `staker-status` reports `found:false` for an existing staker (see §1.2) |
 | All validator stats show "—" | The stats source changed or is unreachable; check the daily job and `cache_updated_at` |
 | Video downloads instead of playing | Missing `video/mp4` MIME mapping (§3.3) |
-| Amount field never pre-fills | `wallet_balance_luna` is `null`, `0`, or below 1 NIM (an informational notice appears for `0`) |
+| Amount field never pre-fills | `wallet_balance_luna` is `null`, `0`, or below 1 NIM (a one-line hint appears under the field for `0`) |

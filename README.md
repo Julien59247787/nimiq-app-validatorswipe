@@ -145,7 +145,8 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | [docs/OPERATOR-GUIDE.md](docs/OPERATOR-GUIDE.md) | Deploy and operate the mini app on your own nodes |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
-| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including a main-account balance of 0 |
+| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | What has been verified on a real device, known limitations, candidate work |
+| [docs/TESTING.md](docs/TESTING.md) | Manual test plan run before a release |
 | [CHANGELOG.md](CHANGELOG.md) | History since the first publication (1.0.0) and ideas without a date |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [SECURITY.md](SECURITY.md) | Security model and how to report a vulnerability |
@@ -167,13 +168,16 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 ## Project status
 
 **Version 1.0.0** is the first publication: the version submitted to the Nimiq Mini Apps Competition
-(Cycle II) on 2026-09-18. Later changes are listed under "Changes since the competition submission"
-in the [CHANGELOG](CHANGELOG.md). The complete real staking cycle (create / add / switch / retire /
-claim) was verified on a real device with real funds; Add Stake was re-checked on a phone with a
-recent build, while Create Stake with funds held in a swap contract and retire / claim with the
-latest builds have not been tested end to end on a device. Some
-translations are machine-generated and have not been reviewed by native speakers — corrections are
-welcome (see [docs/I18N.md](docs/I18N.md)).
+(Cycle II) on 2026-09-18 (tag `competition-submission`). Every later change is listed under
+"Changes since the competition submission" in the [CHANGELOG](CHANGELOG.md).
+
+What has been verified, on one Android phone in Nimiq Pay with real funds: browsing, favorites, **Add stake**
+and **Switch validator** (on-chain), error handling and duplicate-tap protection. Not tested end to end:
+**Create stake** with funds held in a swap contract, retire / claim with the final build, and the Nimiq Hub path on
+mobile browsers or with a hardware wallet. The details, with the environment, are in
+[docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#verification-status-version-100). Some translations
+are machine-generated and have not been reviewed by native speakers — corrections are welcome (see
+[docs/I18N.md](docs/I18N.md)).
 
 ## Reporting a bug
 

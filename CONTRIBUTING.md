@@ -63,6 +63,7 @@ To test wallet flows:
      changed together.
    - **Layout:** check a narrow (phone-sized) viewport and the desktop layout, light and dark.
    - **No leaks:** no secrets, no internal hostnames/IPs, no personal data.
+   - **Manual test plan:** run the relevant parts of [docs/TESTING.md](docs/TESTING.md).
 4. Open the pull request using the template and describe how you tested it.
 
 ### Commit messages
