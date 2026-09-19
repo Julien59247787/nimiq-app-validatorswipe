@@ -36,8 +36,6 @@ that case — see the *Unreleased* section of the [changelog](../CHANGELOG.md#un
   after it is sent, with rare outliers of about 2 minutes; the app keeps checking for up to 60 seconds
   and then keeps the last state it could confirm. The transaction history of a wallet app may lag behind
   the chain by up to a minute.
-- **Reliability above 100 %.** The reliability figure comes from the operator's statistics source and can
-  exceed 100 % for some validators (7 of 39 in one measurement); the app shows it as provided.
 - **Real-device coverage.** Retire and claim with the latest builds, and Create Stake with funds held in a
   swap contract, have not been re-tested end to end on a device.
 - **Machine translations.** Languages other than French and English are machine-generated and

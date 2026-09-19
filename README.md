@@ -160,8 +160,8 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
   usually included about 2 blocks after it is sent (a rare outlier can take about 2 minutes). The
   app keeps checking for up to 60 seconds. The transaction history shown by a wallet app may lag
   behind the chain by up to a minute; the app reads the chain itself.
-- **Reliability can exceed 100 %.** The figure comes from the operator's statistics source and can be
-  above 100 % for some validators; the app shows it as provided.
+- **Reliability is capped at 100 %.** The statistics source can publish a value above 100 % for some validators;
+  the API caps it at 100 % (a fraction between 0 and 1) and the app shows it as provided.
 
 ## Project status
 

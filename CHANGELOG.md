@@ -22,8 +22,6 @@ Ideas with no commitment on a date or a version. None of these is implemented ye
 - Publish a clean, secret-free reference implementation of the two endpoints and the daily
   refresh job (currently only specified by contract in the
   [Operator Guide](docs/OPERATOR-GUIDE.md)).
-- Cap the reliability figure at 100 % on the API side, if decided (the figure comes from the
-  statistics source and can exceed 100 % for a few validators).
 
 **Robustness**
 - Self-host the third-party libraries (`@nimiq/mini-app-sdk`, `@nimiq/hub-api`,
@@ -95,6 +93,7 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   transparent background, `tux-nimiq-96.png` (`61c2137`, `3d92cbb`).
 
 **Changed**
+- Reliability is now capped at 100 % by the API (contract: a fraction between 0 and 1).
 - Add and Create stake are no longer blocked when the main-account balance reads 0: funds held in a
   swap contract can be used by the wallet when staking (`c9f8aad`).
 - Switching validator no longer asks for an amount (it moves the whole stake); the amount is only

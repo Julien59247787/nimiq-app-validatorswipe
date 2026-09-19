@@ -115,7 +115,7 @@ Response `200`:
 | `stake_luna` | integer | total stake, luna | never null |
 | `availability` | number\|null | fraction 0..1 (the UI multiplies by 100) | source publishes no score |
 | `dominance` | number\|null | fraction 0..1 | same. Returned by the reference backend but **currently ignored by the UI** (optional) |
-| `reliability` | number\|null | fraction 0..1 (a *different* metric from availability) | same |
+| `reliability` | number\|null | fraction 0..1, `null` if unavailable, capped at 1 by the reference backend (the source can publish a value above 1); a *different* metric from availability | same |
 | `reward_rate` | number\|null | theoretical yearly, net-of-fee yield as a fraction (0.11 = 11 %) | fee unknown |
 | `fee` | number\|null | validator commission, fraction 0..1 | source publishes no fee |
 | `name` | string\|null | validator's self-published display name | not published |
