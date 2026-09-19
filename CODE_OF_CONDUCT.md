@@ -27,7 +27,7 @@ Maintainers may edit, remove or reject comments, commits, issues and pull reques
 do not follow this Code of Conduct, and may temporarily or permanently ban contributors
 for behavior they judge inappropriate.
 
-Report concerns to **admin@nimiq-ju.fr**. Reports are handled confidentially.
+Report concerns to **ju@nimiq-ju.fr**. Reports are handled confidentially.
 
 ## Attribution
 

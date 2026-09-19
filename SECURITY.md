@@ -38,7 +38,7 @@ Only the latest commit on the default branch is supported.
 
 Please **do not open a public issue** for security problems.
 
-1. Email **admin@nimiq-ju.fr** with the subject `Validator Swipe security`.
+1. Email **ju@nimiq-ju.fr** with the subject `Validator Swipe security`.
 2. Or, when it is enabled for this repository, use GitHub's **private vulnerability reporting**
    ("Security" tab → "Report a vulnerability").
 
