@@ -396,11 +396,12 @@
         <!-- SHORTLIST PHASE -->
         <div id="shortlistPhase" style="display:none;">
           <div class="card-stack" id="shortlistCardStack"></div>
-          <div class="field" style="margin:12px 6px 0;">
+          <div class="field" id="stakeField" style="margin:12px 6px 0;">
             <label for="stakeAmt2" data-i18n="app.stakeAmtLabel" style="color:var(--nimiq-gold); font-weight:700;">Montant à déléguer (NIM)</label>
             <input type="number" id="stakeAmt2" data-i18n-placeholder="app.stakeAmtPlaceholder" placeholder="Enter the amount of NIM to stake here" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--nimiq-gold); font-weight:700; font-family:'Sora',sans-serif; font-size:.9rem;" />
             <p class="helptext" id="balanceHint" data-i18n="app.balanceHint" style="margin-top:6px;" hidden>Ce montant est pré-rempli avec ton solde disponible — vérifie-le avant de confirmer.</p>
           </div>
+          <p class="helptext" id="switchNote" data-i18n="app.switchNote" style="margin:12px 6px 0; color:var(--nimiq-gold); font-weight:700;" hidden>Switching validator moves your whole existing stake to this validator — no new NIM needed.</p>
           <div class="swipe-actions">
             <button class="swipe-btn nav" id="shortlistBackBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
             <button class="swipe-btn star" id="removeBtn" data-i18n-aria="app.removeAria" aria-label="Retirer des favoris">⭐</button>
@@ -594,6 +595,7 @@
       'app.delegatedBadge': '🛡️ Délégué',
       'app.fee': 'Frais',
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
+      'app.switchNote': 'Changer de validateur déplace tout ton stake existant vers ce validateur — aucun nouveau NIM n\'est nécessaire.',
       'app.delegateAmountRequired': 'Indique un montant à déléguer avant de valider.',
       'app.stakeAmtPlaceholder': 'Indique ici la quantité de NIM à staker',
       'app.demoModeSuccess': '🧪 Mode démo — rien n\'a été envoyé. Voici à quoi ressemblerait une délégation réussie vers {validator}.',
@@ -705,6 +707,7 @@
       'app.delegatedBadge': '🛡️ Delegated',
       'app.fee': 'Fee',
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
+      'app.switchNote': 'Switching validator moves your whole existing stake to this validator — no new NIM needed.',
       'app.delegateAmountRequired': 'Enter an amount to delegate before confirming.',
       'app.stakeAmtPlaceholder': 'Enter the amount of NIM to stake here',
       'app.demoModeSuccess': '🧪 Demo mode — nothing was sent. This is what a successful delegation to {validator} would look like.',
@@ -806,6 +809,7 @@
       'app.delegatedBadge': '🛡️ Delegado',
       'app.fee': 'Gastos',
       'app.delegateFailed': 'La delegación ha fallado o se ha cancelado; vuelve a intentarlo.',
+      'app.switchNote': 'Al cambiar de validador, todo tu stake actual pasa a este validador; no hace falta ningún NIM nuevo.',
       'app.delegateAmountRequired': 'Indica un importe a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aquí la cantidad de NIM a hacer staking',
       'app.demoModeSuccess': '🧪 Modo demo — no se ha enviado nada. Así se vería una delegación exitosa a {validator}.',
@@ -917,6 +921,7 @@
       'app.delegatedBadge': '🛡️ 代表',
       'app.fee': '费用',
       'app.delegateFailed': '该任务失败或已被取消——请重试。',
+      'app.switchNote': '切换验证者会将你现有的全部质押转移到该验证者——无需新的 NIM。',
       'app.delegateAmountRequired': '请在确认前输入要委托的金额。',
       'app.stakeAmtPlaceholder': '请在此输入要质押的NIM数量',
       'app.demoModeSuccess': '🧪 演示模式——未发送任何内容。这是成功委托给 {validator} 时的样子。',
@@ -1028,6 +1033,7 @@
       'app.delegatedBadge': '🛡️ 代表',
       'app.fee': '費用',
       'app.delegateFailed': '送信に失敗したか、キャンセルされました。もう一度お試しください。',
+      'app.switchNote': 'バリデーターを切り替えると、既存のステーク全体がこのバリデーターに移行されます。新たなNIMは必要ありません。',
       'app.delegateAmountRequired': '確定する前に委任する金額を入力してください。',
       'app.stakeAmtPlaceholder': 'ステークするNIMの数量をここに入力',
       'app.demoModeSuccess': '🧪 デモモード — 何も送信されていません。{validator} への委任が成功した場合はこのように表示されます。',
@@ -1139,6 +1145,7 @@
       'app.delegatedBadge': '🛡️ 대표',
       'app.fee': '비용',
       'app.delegateFailed': '전송에 실패했거나 취소되었습니다. 다시 시도해 주세요.',
+      'app.switchNote': '검증자를 변경하면 기존 스테이크 전체가 이 검증자로 이전되며, 새 NIM은 필요하지 않습니다.',
       'app.delegateAmountRequired': '확인하기 전에 위임할 금액을 입력하세요.',
       'app.stakeAmtPlaceholder': '스테이킹할 NIM 수량을 여기에 입력하세요',
       'app.demoModeSuccess': '🧪 데모 모드 — 아무것도 전송되지 않았습니다. {validator}에게 위임이 성공했을 때의 모습입니다.',
@@ -1250,6 +1257,7 @@
       'app.delegatedBadge': '🛡️ Beauftragter',
       'app.fee': 'Kosten',
       'app.delegateFailed': 'Die Delegation ist fehlgeschlagen oder wurde abgebrochen – versuche es erneut.',
+      'app.switchNote': 'Beim Wechsel des Validators wird dein gesamter bestehender Stake auf diesen Validator übertragen – du brauchst keine neuen NIM.',
       'app.delegateAmountRequired': 'Gib einen zu delegierenden Betrag ein, bevor du bestätigst.',
       'app.stakeAmtPlaceholder': 'Gib hier die zu stakende NIM-Menge ein',
       'app.demoModeSuccess': '🧪 Demomodus — es wurde nichts gesendet. So sähe eine erfolgreiche Delegation an {validator} aus.',
@@ -1361,6 +1369,7 @@
       'app.delegatedBadge': '🛡️ Delegado',
       'app.fee': 'Despesas',
       'app.delegateFailed': 'A delegação falhou ou foi cancelada — tenta novamente.',
+      'app.switchNote': 'Mudar de validador transfere todo o teu stake atual para este validador — não são precisos novos NIM.',
       'app.delegateAmountRequired': 'Indica um valor a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aqui a quantidade de NIM a fazer stake',
       'app.demoModeSuccess': '🧪 Modo demo — nada foi enviado. É assim que ficaria uma delegação bem-sucedida a {validator}.',
@@ -1472,6 +1481,7 @@
       'app.delegatedBadge': '🛡️ Делегат',
       'app.fee': 'Расходы',
       'app.delegateFailed': 'Передача не удалась или была отменена — попробуй ещё раз.',
+      'app.switchNote': 'При смене валидатора весь твой текущий стейк переносится на этого валидатора — новые NIM не нужны.',
       'app.delegateAmountRequired': 'Укажи сумму делегирования перед подтверждением.',
       'app.stakeAmtPlaceholder': 'Укажи здесь количество NIM для стейкинга',
       'app.demoModeSuccess': '🧪 Демо-режим — ничего не отправлено. Вот как выглядела бы успешная делегация валидатору {validator}.',
@@ -1583,6 +1593,7 @@
       'app.delegatedBadge': '🛡️ Temsilci',
       'app.fee': 'Masraflar',
       'app.delegateFailed': 'Aktarım başarısız oldu veya iptal edildi — lütfen tekrar deneyin.',
+      'app.switchNote': 'Validatör değiştirmek, mevcut stake\'inin tamamını bu validatöre taşır — yeni NIM gerekmez.',
       'app.delegateAmountRequired': 'Onaylamadan önce delege edilecek bir miktar girin.',
       'app.stakeAmtPlaceholder': 'Stake edilecek NIM miktarını buraya girin',
       'app.demoModeSuccess': '🧪 Demo modu — hiçbir şey gönderilmedi. {validator} adresine başarılı bir delegasyon böyle görünür.',
@@ -1694,6 +1705,7 @@
       'app.delegatedBadge': '🛡️ مندوب',
       'app.fee': 'الرسوم',
       'app.delegateFailed': 'فشلت عملية الإرسال أو تم إلغاؤها — يرجى إعادة المحاولة.',
+      'app.switchNote': 'يؤدي التبديل إلى المُصدِّق إلى نقل كامل حصتك الحالية إلى هذا المُصدِّق — ولا حاجة إلى NIM جديد.',
       'app.delegateAmountRequired': 'أدخل مبلغًا للتفويض قبل التأكيد.',
       'app.stakeAmtPlaceholder': 'أدخل هنا كمية NIM المراد إيداعها',
       'app.demoModeSuccess': '🧪 وضع تجريبي — لم يتم إرسال أي شيء. هكذا سيبدو التفويض الناجح إلى {validator}.',
@@ -2149,6 +2161,7 @@
     updateFundsPendingBanner(data);
     renderDelegationHistory();
     prefillStakeAmount(data);
+    updateSwitchUi();
     if (!data || !data.found){
       myStakeBox.hidden = true;
       return;
@@ -2247,12 +2260,23 @@
     passBtn.disabled = false; shortlistBtn.disabled = false; backBtn.disabled = false;
   }
 
+  // A favorite that differs from the current on-chain delegation is a SWITCH
+  // (update staker): it moves the whole existing stake and needs no new NIM,
+  // so the amount field is replaced by an explanation.
+  function sameAddr(a, b){ return (a || '').replace(/\s+/g, '') === (b || '').replace(/\s+/g, ''); }
+  function updateSwitchUi(){
+    var v = bookmarked[shortIdx];
+    var isSwitchNow = !!(v && lastStakerStatus && lastStakerStatus.found && lastStakerStatus.delegation && !sameAddr(lastStakerStatus.delegation, v.address));
+    $('stakeField').hidden = isSwitchNow;
+    $('switchNote').hidden = !isSwitchNow;
+  }
   function renderShortlistCard(){
     shortlistCardStack.innerHTML = '';
     if (!bookmarked.length){
       shortlistCardStack.innerHTML = '<div class="v-card" style="align-items:center; justify-content:center; text-align:center;">' +
         '<p style="color:var(--text-dim); font-size:.9rem;">' + t('app.shortlistEmptyHint') + '</p></div>';
       delegateBtn.disabled = true; removeBtn.disabled = true; shortlistBackBtn.disabled = true; shortlistNextBtn.disabled = true;
+      updateSwitchUi();
       return;
     }
     // Endless ribbon here too, same as the browse tab.
@@ -2266,6 +2290,7 @@
     shortlistCardStack.appendChild(card);
     delegateBtn.disabled = false; removeBtn.disabled = false;
     shortlistBackBtn.disabled = false; shortlistNextBtn.disabled = false;
+    updateSwitchUi();
   }
 
   function updateShortlistCount(){
@@ -2401,10 +2426,6 @@
       // validation error — previously it silently fell through to the
       // demo's "fake success" path, showing a success modal + confetti
       // for a stake that never happened (real incident, 2026-09-19).
-      if (!(stakeNim > 0)){
-        showErrorModal(t('app.delegateAmountRequired'), '');
-        return;
-      }
       // Real delegation: v.address is a real validator address (see
       // VALIDATORS above) — the only place in this app that fires it.
       delegateBtn.disabled = true;
@@ -2426,6 +2447,14 @@
         // also add the amount typed in the form.
         var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
         var isSwitch = hasExistingStaker && currentDelegation && norm(currentDelegation) !== norm(v.address);
+        // Only Create / Add stake need an amount of NIM. A switch (update staker)
+        // sends no value. If the staker status is unknown (isSwitch undetermined)
+        // an amount is required, so a Create can never go out without one.
+        if (!isSwitch && !(stakeNim > 0)){
+          showErrorModal(t('app.delegateAmountRequired'), '');
+          delegateBtn.disabled = false;
+          return;
+        }
         // No spendable-balance guard here on purpose: wallet_balance_luna only
         // covers the basic account, while Nimiq Pay can also use funds held in
         // a swap contract (HTLC) when staking. A real-device test showed an

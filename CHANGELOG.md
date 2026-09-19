@@ -14,6 +14,12 @@ releases yet; entries are grouped by date and reconstructed from the git history
   bug-report form; the bug template now asks not to share the full wallet address.
 
 ### Fixed
+- Switching validator no longer asks for an amount. The "Enter an amount to delegate" check ran
+  before the app knew whether the action was a switch (update staker, which moves the whole existing
+  stake and sends no value). It now only applies to Create / Add stake, and never lets a Create
+  go out without an amount, including when the staker status could not be read. When the selected
+  favorite differs from the current delegation, the amount field is replaced by a short explanation
+  (translated in all 11 languages).
 - The validator card could become huge (almost screen-high, with a large empty area) after a
   resize while the other tab was open, typically after staking from My favorites and going back
   to Browse. The card-height calibration measured a hidden (zero-width) container, wrapped the text
