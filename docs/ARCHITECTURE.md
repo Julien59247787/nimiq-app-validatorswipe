@@ -126,7 +126,8 @@ Their schemas, data sources and operational requirements are specified in the
   unavailable, with an in-memory copy as a last resort). States: waiting (until the chain reflects the action or
   60 s) then "not confirmed" (buttons still disabled, chain re-read every 15 s for up to 10 minutes). The lock is
   lifted only by the chain reflecting the action, by an error of the page that owns the record, by a wallet
-  change, or by the explicit "I checked in Nimiq Pay, continue" button. After a reload the record is adopted and
+  change, or by the explicit "Not sent? Unlock" button (a manual unlock, never automatic, because of the risk of a duplicate Add or Retire).
+  The waiting message is progressive: waiting (0-15 s), "taking longer than usual" (15-60 s), then "still not confirmed". After a reload the record is adopted and
   the polling resumes. The delegation history, the success message and the confetti happen only once the chain
   reflects the action (the wallet answering "success" is not a confirmation). Actions never remove a validator from
   My favorites; only the user's star does.

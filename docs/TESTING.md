@@ -42,7 +42,8 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] Double tap / triple tap on Delegate: one wallet request.
 - [ ] Reload the page while a transaction is pending: the waiting message and the lock on Delegate, Confirm withdrawal and Claim come back, then clear when the chain reflects the action.
 - [ ] While an action is pending, Delegate, Confirm withdrawal and Claim are all disabled; browsing, tabs and languages stay usable.
-- [ ] Pending that never reaches the chain: after 60 s the message becomes "Not confirmed yet — check Nimiq Pay before trying again", the three buttons stay disabled, and "I checked in Nimiq Pay, continue" lifts the lock.
+- [ ] Progressive messages: "Waiting for the network to confirm your transaction…" for 15 s, then "This is taking a bit longer than usual…" up to 60 s.
+- [ ] Pending that never reaches the chain: after 60 s the message becomes "Still not confirmed. The network may be slow, or the transaction may not have been sent. Check Nimiq Pay if it stays this way. Reloading the app re-reads the chain.", the three buttons stay disabled, and "Not sent? Unlock" lifts the lock (manual only).
 - [ ] Two open pages: the lock is seen by both; lifting it in one lifts it in the other.
 - [ ] The delegation history gets a row only after the chain reflects the action.
 - [ ] The success message and the confetti appear only once the chain reflects the action; a wallet "success" that never reaches the chain shows none of them.
