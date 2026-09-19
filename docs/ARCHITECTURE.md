@@ -131,9 +131,16 @@ Their schemas, data sources and operational requirements are specified in the
   the polling resumes. The delegation history, the success message and the confetti happen only once the chain
   reflects the action (the wallet answering "success" is not a confirmation). Actions never remove a validator from
   My favorites; only the user's star does.
-- **Local storage summary.** `nimiq-miniapp-lang` (language), `vs:pending` (action in flight, session + local,
-  cleared on confirmation or after 60 s) and `vs:lastActions` (up to 8 recent actions for the 30 s duplicate
-  check; contains the wallet address). All local to the browser, never sent anywhere, no cookies.
+- **Local storage summary.** `nimiq-miniapp-lang` (language), `vs:pending` (action in flight, session + local, the
+  write lock: cleared when the chain reflects the action, on an error of the owning page, on a wallet change or by
+  the explicit unlock button), `vs:lastActions` (up to 8 recent actions for the 30 s duplicate check; contains the
+  wallet address) and `vs:favorites` (favorite validators: public addresses only, in order, at most 50; never the
+  wallet address). All local to the browser, never sent anywhere, no cookies.
+- **Favorites.** `bookmarked` is rehydrated from `vs:favorites` once the validator list has loaded (addresses that
+  no longer exist are ignored; nothing is purged while the list is only the built-in fallback, so an API failure
+  never loses favorites), written after each star or removal, and kept in sync between open pages through the
+  `storage` event. Any storage problem falls back to memory without a message. Favorites are display preferences:
+  independent of the wallet, kept in demo mode, and never modified by an action.
 - The wallet SDK can *resolve* with an error object instead of rejecting; that is treated as
   a failure (never as a success) for delegate, retire and claim.
 - The app never blocks staking on a 0 main-account balance: funds held in a swap contract are

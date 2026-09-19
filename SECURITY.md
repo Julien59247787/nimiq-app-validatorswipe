@@ -14,9 +14,10 @@ Validator Swipe never holds, sees, or transmits a private key, seed phrase or pa
   ownership of the funds to the validator.
 - **No accounts, no cookies, no analytics.** Nothing is sent to a third party. The browser keeps
   only local values: the chosen interface language (`localStorage`), the action in flight `vs:pending`
-  (cleared on confirmation or after 60 s) and a short list of recent actions `vs:lastActions` used to
-  ignore duplicate taps (30 s, up to 8 entries, contains the wallet address, never transmitted, removed by
-  clearing the site data). Note that the page loads fonts and libraries
+  (cleared when the chain reflects the action, on an error of the page that owns it, or by the explicit unlock
+  button), a short list of recent actions `vs:lastActions` used to ignore duplicate taps (30 s, up to 8 entries,
+  contains the wallet address, never transmitted) and the favorite validators `vs:favorites` (public validator
+  addresses only, never the wallet address); all removed by clearing the site data. Note that the page loads fonts and libraries
   from third-party CDNs (Google Fonts, jsDelivr), which necessarily see the visitor's IP address.
 - **Read-only backend.** The backend endpoints the app calls (`/api/v2/validators-list`,
   `/api/v2/staker-status`) are public, read-only lookups of on-chain data. The wallet

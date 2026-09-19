@@ -36,6 +36,12 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] Main-account balance 0 with funds in Nimiq Pay: the one-line hint appears under the amount field; staking is not blocked.
 - [ ] Amount pre-filled from the balance: the "pre-filled" hint shows and disappears when the amount is edited.
 
+**Favorites**
+- [ ] Star a validator, reload the app: it is still in My favorites and the counter is right; remove it with the star button, reload: it is gone.
+- [ ] Favorites survive closing the app and are the same in a second open page (star in one, the other updates).
+- [ ] With the validator API unavailable (fallback list), favorites of unknown validators are kept in the stored list, not lost.
+- [ ] With storage blocked or corrupted, the app still works (favorites for the session only), without an error message.
+
 **Errors and safety**
 - [ ] Cancel or reject in the wallet: an error message with a collapsible technical detail; OK, a tap outside and Escape close it; the Delegate button works again at once.
 - [ ] A staking state that cannot be read (stop the backend): the app retries, then refuses and sends nothing.

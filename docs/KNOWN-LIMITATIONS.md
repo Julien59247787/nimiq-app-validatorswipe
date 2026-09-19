@@ -116,9 +116,13 @@ describe it as a stake conflict.
 - **Statistics coverage.** Uptime, reliability, reward rate and fee depend on the operator's data
   source; validators without enough history show "—" for missing values. Reliability is capped at
   100 % by the reference API.
-- **Local storage.** The app keeps the chosen language, the action in flight and a short list of
-  recent actions (with the wallet address) in the browser only; see the
-  [Architecture](ARCHITECTURE.md#6-safety-rules-encoded-in-the-ui) summary.
+- **Local storage.** The app keeps the chosen language, the action in flight, a short list of
+  recent actions (with the wallet address) and the favorite validators (public addresses only) in the browser
+  only; see the [Architecture](ARCHITECTURE.md#6-safety-rules-encoded-in-the-ui) summary.
+- **Favorites on a shared device.** Favorites are stored per browser and are not tied to a wallet: on a shared
+  device the next user of the same browser sees the same favorite validators (no identity, no wallet address).
+  They are lost if the host app or the user clears the storage (the WebView of a host app may do so), and they are
+  not synchronized between devices.
 
 ## Candidate work for a patch release (no commitment)
 

@@ -8,6 +8,13 @@ work is available in the Git history.
 
 ## [Unreleased]
 
+### Added
+
+- Favorites survive closing and reloading the app: the public addresses of the favorite validators are kept in
+  `localStorage` (`vs:favorites`, in order, at most 50, never the wallet address), restored once the validator list
+  has loaded, kept in sync between open pages, and never purged while the list is only the built-in fallback.
+  Independent of the wallet and kept in demo mode (`37eadec`).
+
 ### Fixed
 
 - **One blockchain write at a time.** A single lock now covers create, add, switch, retire and claim: it is recorded

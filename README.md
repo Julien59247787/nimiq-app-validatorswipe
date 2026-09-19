@@ -126,9 +126,11 @@ Good to know when running from a clone: the "Watch the demo video" button links 
 7. All user-visible text lives in one `T` dictionary (11 languages, same keys everywhere).
 8. No cookies, no analytics, and nothing is sent to a third party. Storage is local to the browser only:
    the chosen language (`localStorage`); the action currently in flight, `vs:pending` (`sessionStorage` and
-   `localStorage`, cleared on confirmation or after 60 s); and a short list of the last actions, `vs:lastActions`,
-   used to ignore duplicate taps (30 s window, up to 8 entries, contains the wallet address, never transmitted;
-   overwritten later, or removed by clearing the site data).
+   `localStorage`, cleared when the chain reflects the action, on an error of the page that owns it, or by the
+   explicit unlock button); a short list of the last actions, `vs:lastActions`, used to ignore duplicate taps
+   (30 s window, up to 8 entries, contains the wallet address, never transmitted; overwritten later); and the
+   favorite validators, `vs:favorites` (public validator addresses only, in order, at most 50, never the wallet
+   address). All of it can be removed by clearing the site data.
    Fonts and libraries are loaded from third-party CDNs (Google Fonts, jsDelivr), which
    necessarily see the visitor's IP address.
 9. A strict Content-Security-Policy is expected; the inline script is allowed by hash.
