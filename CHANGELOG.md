@@ -109,7 +109,7 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Fixed**
 - The connection pill no longer goes back to "Wallet not detected" after a language change with a wallet
-  connected; the Hub "connecting" label and the delegation history badges are also kept translated (`1118aef`).
+  connected; the Hub "connecting" label and the delegation history badges are also kept translated (`1118aef`). The pill is now derived from the real connection state and refreshed whenever the staking state renders or a pending action resumes (`4662161`).
 - In the delegation history, the "Delegated" badge appears on a single row: the most recent entry for the
   validator that is the current on-chain delegation; every other entry shows "Past" (`49c85e0`).
 - An error object *resolved* by the wallet SDK is treated as a failure instead of a success (`c9f8aad`).
