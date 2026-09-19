@@ -541,6 +541,124 @@
 (function(){
   "use strict";
 
+  // ---------- TEST-ONLY diagnostic journal (branch test/diag-pill, never merged, never in production) ----------
+  // Records who writes the connection pill and what happens around a send. Nothing is displayed unless the URL
+  // contains #debug (or the app title is tapped 5 times); no address or secret is ever logged.
+  var vsDiag = window.__vs = { log: [], pillWrites: [], probed: false };
+  function vsStamp(){ return new Date().toISOString().slice(11, 23); }
+  function vsState(){
+    var s = null;
+    try { s = { nimiq: !!state.nimiq, addr: !!state.myAddress, hub: !!state.hub }; } catch (e) { s = 'n/a'; }
+    return { st: s, nimiqPay: !!window.nimiqPay, winNimiq: !!window.nimiq, hidden: document.hidden };
+  }
+  function vsLog(ev, extra){
+    var row = { t: vsStamp(), ev: ev, x: extra === undefined ? '' : extra, s: vsState() };
+    vsDiag.log.push(row); if (vsDiag.log.length > 300) vsDiag.log.shift();
+    try { console.info('[vs]', JSON.stringify(row)); } catch (e) {}
+    vsPanelRefresh();
+  }
+  var vsLastInput = '';
+  ['click', 'keydown', 'touchend'].forEach(function(type){
+    document.addEventListener(type, function(ev){
+      var t = ev.target || {};
+      vsLastInput = type + ':' + (type === 'keydown' ? ev.key : ((t.id || t.className || t.tagName || '') + '').toString().slice(0, 40));
+    }, true);
+  });
+  ['visibilitychange', 'pageshow', 'pagehide', 'freeze', 'resume', 'popstate', 'storage', 'focus', 'blur', 'online', 'offline'].forEach(function(type){
+    (type === 'visibilitychange' ? document : window).addEventListener(type, function(){ vsLog('event:' + type); });
+  });
+  vsLog('script-start');
+  window.addEventListener('load', function(){ vsLog('load'); });
+  function vsWatchPill(){
+    var st = document.getElementById('statusText'), pill = document.getElementById('statusPill');
+    if (!st || !pill) return;
+    ['textContent', 'innerHTML'].forEach(function(p){
+      var desc = Object.getOwnPropertyDescriptor(Element.prototype, p) || Object.getOwnPropertyDescriptor(Node.prototype, p);
+      if (!desc || !desc.set) return;
+      Object.defineProperty(st, p, {
+        configurable: true,
+        get: function(){ return desc.get.call(st); },
+        set: function(v){
+          var row = { t: vsStamp(), how: p, v: String(v).slice(0, 40), stack: (new Error().stack || '').split('\n').slice(2, 5).map(function(l){ return l.trim().slice(0, 90); }) };
+          vsDiag.pillWrites.push(row); if (vsDiag.pillWrites.length > 100) vsDiag.pillWrites.shift();
+          vsLog('pill-write', row.v + ' <- ' + row.stack[0]);
+          desc.set.call(st, v);
+        }
+      });
+    });
+    var wasLive = pill.classList.contains('live');
+    var mo = new MutationObserver(function(recs){
+      var nowLive = pill.classList.contains('live');
+      if (nowLive !== wasLive){ wasLive = nowLive; vsLog('pill-live-changed', nowLive); }
+      recs.forEach(function(r){ if (r.type === 'childList') vsLog('pill-dom-childList', (r.target.id || r.target.className || r.target.tagName) + ''); });
+    });
+    var el = pill;
+    while (el && el !== document.documentElement){ mo.observe(el, { attributes: el === pill, attributeFilter: el === pill ? ['class'] : undefined, childList: true }); el = el.parentNode; }
+  }
+  vsWatchPill();
+  (function(){
+    var ov = document.getElementById('errorModalOverlay');
+    if (ov) new MutationObserver(function(){ vsLog(ov.hidden ? 'errorModal:closed' : 'errorModal:opened', 'input=' + vsLastInput); }).observe(ov, { attributes: true, attributeFilter: ['hidden'] });
+    var so = document.getElementById('successModalOverlay');
+    if (so) new MutationObserver(function(){ vsLog(so.hidden ? 'successModal:closed' : 'successModal:opened', 'input=' + vsLastInput); }).observe(so, { attributes: true, attributeFilter: ['hidden'] });
+  })();
+  function vsProbeProvider(nimiq){
+    if (vsDiag.probed) return; vsDiag.probed = true;
+    try {
+      var keys = 0; try { keys = Object.keys(window.nimiq || {}).length; } catch (e) {}
+      vsLog('probe:provider', 'winNimiqKeys=' + keys + ' sdkIsSame=' + (nimiq === state.nimiq));
+      var p = nimiq.listAccounts();
+      Promise.resolve(p).then(function(r){
+        vsLog('probe:listAccounts', Array.isArray(r) ? 'array[' + r.length + ']' : (typeof r) + (r && r.error ? ' error:' + String(r.error.code || r.error.message || '').slice(0, 40) : ''));
+      }, function(e){ vsLog('probe:listAccounts-rejected', String(e && e.message || e).slice(0, 80)); });
+    } catch (e) { vsLog('probe:threw', String(e && e.message || e).slice(0, 80)); }
+  }
+  function vsWrapProvider(nimiq){
+    Object.keys(nimiq).forEach(function(k){
+      if (!/^send/.test(k) || typeof nimiq[k] !== 'function') return;
+      var orig = nimiq[k];
+      nimiq[k] = function(){
+        vsLog('send:start', k);
+        var r;
+        try { r = orig.apply(this, arguments); } catch (e) { vsLog('send:threw', k + ' ' + String(e && e.message || e).slice(0, 120)); throw e; }
+        return Promise.resolve(r).then(function(res){
+          vsLog('send:resolved', k + (res && res.error ? ' ErrorResponse:' + String(res.error.message || res.error.code || '').slice(0, 100) : ' ok'));
+          if (res && res.error) vsProbeProvider(nimiq);
+          return res;
+        }, function(err){
+          vsLog('send:rejected', k + ' ' + String((err && err.message) || err).slice(0, 140));
+          vsProbeProvider(nimiq);
+          throw err;
+        });
+      };
+    });
+  }
+  var vsPanel = null;
+  function vsPanelRefresh(){
+    if (!vsPanel) return;
+    var lines = vsDiag.log.slice(-30).map(function(r){ return r.t + ' ' + r.ev + (r.x !== '' ? ' ' + r.x : '') + ' ' + JSON.stringify(r.s); });
+    vsPanel.firstChild.textContent = lines.join('\n');
+  }
+  function vsPanelOpen(){
+    if (vsPanel) return;
+    vsPanel = document.createElement('div');
+    vsPanel.style.cssText = 'position:fixed;left:0;right:0;bottom:0;max-height:45vh;overflow:auto;background:#000c;color:#9f9;font:10px/1.3 monospace;z-index:99999;padding:4px;';
+    var pre = document.createElement('pre'); pre.style.cssText = 'margin:0;white-space:pre-wrap;user-select:all;'; vsPanel.appendChild(pre);
+    var b = document.createElement('button'); b.textContent = 'Copy'; b.style.cssText = 'position:sticky;bottom:0;';
+    b.addEventListener('click', function(){ try { navigator.clipboard.writeText(vsPanel.firstChild.textContent); } catch (e) {} });
+    vsPanel.appendChild(b); document.body.appendChild(vsPanel); vsPanelRefresh();
+  }
+  if (/(^|[#&?])debug\b/.test(location.hash + location.search)) document.addEventListener('DOMContentLoaded', vsPanelOpen), setTimeout(vsPanelOpen, 500);
+  (function(){
+    var n = 0, timer = null;
+    document.addEventListener('click', function(ev){
+      var t = ev.target && ev.target.closest && ev.target.closest('.app-name, .brand');
+      if (!t) return;
+      n++; clearTimeout(timer); timer = setTimeout(function(){ n = 0; }, 3000);
+      if (n >= 5) vsPanelOpen();
+    });
+  })();
+
   // ---------- i18n ----------
   var SUPPORTED_LANGS = ['fr', 'en', 'es', 'zh', 'ja', 'ko', 'de', 'pt', 'ru', 'tr', 'ar'];
   var T = {
@@ -2930,6 +3048,7 @@
       return mod.init();
     }).then(function(nimiq){
       state.nimiq = nimiq;
+      vsLog('sdk-connected'); vsWrapProvider(nimiq);
       $('statusText').textContent = t('app.statusLive');
       $('statusPill').classList.add('live');
       $('retireBox').hidden = false;
