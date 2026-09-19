@@ -52,14 +52,30 @@ action; after 60 seconds it shows "Not confirmed yet — check Nimiq Pay before 
 disabled, re-reads the chain every 15 seconds for up to 10 minutes, and offers an explicit "I checked in Nimiq Pay,
 continue" button. Check the transaction in Nimiq Pay before continuing.
 
-## Create stake from a merged swap contract
+## Create stake from a swap contract (HTLC): merged contracts fail
 
-Create stake was observed to fail with the raw message "Failed to send payment transaction: Transaction
-invalidated during transaction" when the wallet's balance came from one swap contract of 520.16 NIM, even for a small
-amount, whereas it succeeded with two contracts of 100 NIM and with a partial use of a 200 NIM contract. Hypotheses
-not yet verified: a merged contract, or the number of decimals of the contract amount. No transaction was recorded
-on the chain. The app no longer describes this error as a stake conflict; it reports that Nimiq Pay rejected the
-transaction and keeps the raw detail.
+Observed in our tests (Android 13 emulator, Nimiq Pay, Nimiq Pay version unknown, mainnet, real funds; dates
+2026-09-16 to 2026-09-20). The wallet held its funds in a swap contract (HTLC) and a first stake (**Create stake**)
+was sent from the app:
+
+| Contract funding the wallet | Amount sent | Result |
+|---|---|---|
+| 100 NIM received in a single transfer | 100 NIM (all of it) | Passes (phone, 16 Sep; emulator, 19 Sep) |
+| 200 NIM received in a single transfer | 100 NIM (partial spend) | Passes (19 Sep) |
+| 520.16415 NIM built from several transfers merged by Nimiq Pay | 50, 5 and 1 NIM, two validators, on the production page, a build without locks, the exact 16 Sep version and after a full restart | **Fails** |
+| 30.00000 NIM built from two transfers (20 then 10; Nimiq Pay returned the old contract and created a larger one) | 30 NIM (all of it) | **Fails** |
+
+The error is always the raw message "Failed to send payment transaction: Transaction invalidated during
+transaction" (code -32603), and no transaction reaches the chain. **Add stake** worked from a contract of the
+same kind.
+
+**Conclusion (cautious).** In these tests only contracts produced by merging several transfers fail at Create
+(the amount, the decimals and a partial spend are ruled out). The cause on the Nimiq Pay side is not established
+and should be confirmed with the host team. **Workaround observed twice (not a guarantee):** withdraw the funds to
+another address and send them back in a single transfer before the first Create.
+
+The app reports the failure as "Nimiq Pay rejected the transaction" and keeps the raw detail; it does not
+describe it as a stake conflict.
 
 ## Nimiq Pay measurements and host behavior
 

@@ -23,6 +23,14 @@ work is available in the Git history.
 - The error "Transaction invalidated during transaction" no longer claims a conflict with a stake in progress: the
   message now says Nimiq Pay rejected the transaction, with the raw detail kept (`7855fa6`).
 
+### Known limitation
+
+- Create stake fails ("Transaction invalidated during transaction", nothing on the chain) when the wallet's funds
+  sit in a swap contract built by merging several transfers; it passes from a contract created by a single
+  transfer, in full or partially, and Add stake works from a merged contract. Observed in our tests on an Android 13
+  emulator, Nimiq Pay version unknown; the cause on the host side is not established. See
+  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail).
+
 ### Ideas
 
 Ideas with no commitment on a date or a version. None of these is implemented yet.
