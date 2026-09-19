@@ -274,6 +274,10 @@ If the page is reloaded while an action is pending (for example by the host app 
 pull-to-refresh), it resumes the same polling for the remaining time (up to 60 seconds after the send), so
 a reload does not add requests beyond that budget.
 
+When two pages of the app are open at the same time (same origin), only the most recently loaded one
+sends transactions; the older one shows a notice and stays passive, so the
+server does not see duplicated activity from it.
+
 There is **no server-side cache** and the response is `Cache-Control: no-store`, so every read
 reflects the node's current head (an effective TTL of zero). Do **not** put a cache in front of
 this endpoint, or the app would keep showing the old state after a confirmation.

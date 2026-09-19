@@ -28,6 +28,14 @@ releases yet; entries are grouped by date and reconstructed from the git history
   locked and the polling resumes until the chain reflects the action or 60 seconds after the send. The
   record is cleared on confirmation, at the cap, and on any error or cancellation; retire and claim are
   never locked by it.
+- Last loaded page wins: when the host leaves two pages of the app alive at once, only the most recently
+  loaded one can send. Each page writes a small lease (`vs:active`, an id and a timestamp) to `localStorage`
+  and refreshes it every 2 seconds; a page that sees another id becomes passive: Delegate, Retire and Claim
+  are disabled, a translated notice (11 languages) asks to continue in the other window, and it neither
+  sends nor calls `listAccounts`. A passive page takes over again only when the user comes back to it and
+  the other page has not refreshed the lease for 9 seconds, so nothing stays blocked. Fail-open: if
+  `localStorage` is unavailable or errors, the app behaves as before. The cross-page duplicate check stays
+  as a safety net.
 - Connection: the Nimiq Pay SDK is initialised once per page and `listAccounts()` is called once; the
   Nimiq Hub connect button ignores a second click while connecting.
 

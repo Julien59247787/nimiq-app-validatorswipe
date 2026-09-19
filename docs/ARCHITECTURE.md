@@ -116,6 +116,10 @@ Their schemas, data sources and operational requirements are specified in the
   recorded in `sessionStorage` and `localStorage`, so after a page reload (less than 60 s after the send)
   the waiting state and the polling are restored and only the Delegate button stays locked until the
   chain reflects the action.
+- **Several open pages.** If the host keeps two pages of the app alive, the most recently loaded one is the
+  only one allowed to send (shared `vs:active` lease in `localStorage`, refreshed every 2 s); the other
+  becomes passive, with its actions disabled, and takes over again only when the user returns to it after
+  the active page has been silent for 9 s. Fail-open if storage is blocked.
 - The wallet SDK can *resolve* with an error object instead of rejecting; that is treated as
   a failure (never as a success) for delegate, retire and claim.
 - The app never blocks staking on a 0 main-account balance: funds held in a swap contract are

@@ -203,6 +203,10 @@
   .active-delegation-banner{ display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, var(--nimiq-gold) 14%, transparent); border:1px solid var(--nimiq-gold); color:var(--nimiq-gold); font-weight:700; font-size:.85rem; }
   .active-delegation-banner[hidden]{ display:none; }
   /* 'Waiting for the network to confirm...' notice: must be clearly noticeable (bold, framed, animated hourglass) */
+  #passiveNote{ display:flex; align-items:center; justify-content:center; margin:8px 6px 0; padding:10px 14px; text-align:center; font-size:.9rem; font-weight:700; line-height:1.4; color:var(--text); background:var(--surface-2); border:1px solid var(--border); border-radius:12px; }
+  #passiveNote[hidden]{ display:none; }
+  /* passive page (the app is open in another window): actions are visibly unavailable */
+  .vs-passive #delegateBtn, .vs-passive #retireToggleBtn, .vs-passive #retireConfirmBtn, .vs-passive #removeStakeBtn{ opacity:.35; pointer-events:none; }
   #pendingNote{ display:flex; align-items:center; justify-content:center; gap:10px; margin:8px 6px 0; padding:10px 14px; text-align:center; font-size:.95rem; font-weight:700; line-height:1.4; color:var(--signal-strong); background:color-mix(in srgb, var(--nimiq-gold) 12%, transparent); border:1px solid color-mix(in srgb, var(--nimiq-gold) 55%, transparent); border-radius:12px; }
   #pendingNote::before{ content:"\23F3"; flex:0 0 auto; font-size:1.25em; line-height:1; animation:pending-flip 2s ease-in-out infinite; }
   @keyframes pending-flip{ 0%,40%{ transform:rotate(0deg); } 60%,100%{ transform:rotate(180deg); } }
@@ -350,6 +354,7 @@
           <span id="activeDelegationText"></span>
         </div>
         <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" hidden>Waiting for the network to confirm your transaction…</p>
+        <p class="helptext" id="passiveNote" data-i18n="app.passiveInstance" hidden>This page is open in another window. Continue there.</p>
 
         <div class="funds-pending-banner" id="fundsPendingBanner" hidden>
           <span class="funds-pending-icon" aria-hidden="true">⏳</span>
@@ -608,6 +613,7 @@
       'app.pendingConfirm': 'En attente de la confirmation de ta transaction par le réseau…',
       'app.statusUnreadable': 'Impossible de lire l\'état de ton stake — réessaie dans un instant.',
       'app.duplicateIgnored': 'Cette action vient d\'être envoyée — patiente quelques secondes, le temps que le réseau la confirme.',
+      'app.passiveInstance': 'Cette page est ouverte dans une autre fenêtre. Continue là-bas.',
       'app.delegateAmountRequired': 'Indique un montant à déléguer avant de valider.',
       'app.stakeAmtPlaceholder': 'Indique ici la quantité de NIM à staker',
       'app.demoModeSuccess': '🧪 Mode démo — rien n\'a été envoyé. Voici à quoi ressemblerait une délégation réussie vers {validator}.',
@@ -723,6 +729,7 @@
       'app.pendingConfirm': 'Waiting for the network to confirm your transaction…',
       'app.statusUnreadable': 'Couldn\'t read your staking state — try again in a moment.',
       'app.duplicateIgnored': 'This action was just sent — please wait a few seconds for the network to confirm it.',
+      'app.passiveInstance': 'This page is open in another window. Continue there.',
       'app.delegateAmountRequired': 'Enter an amount to delegate before confirming.',
       'app.stakeAmtPlaceholder': 'Enter the amount of NIM to stake here',
       'app.demoModeSuccess': '🧪 Demo mode — nothing was sent. This is what a successful delegation to {validator} would look like.',
@@ -828,6 +835,7 @@
       'app.pendingConfirm': 'Esperando a que la red confirme tu transacción…',
       'app.statusUnreadable': 'No se ha podido leer tu estado de staking. Inténtalo de nuevo dentro de un momento.',
       'app.duplicateIgnored': 'Esta acción se acaba de enviar; espera unos segundos a que la red la confirme.',
+      'app.passiveInstance': 'Esta página se ha abierto en otra ventana. Continúa allí.',
       'app.delegateAmountRequired': 'Indica un importe a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aquí la cantidad de NIM a hacer staking',
       'app.demoModeSuccess': '🧪 Modo demo — no se ha enviado nada. Así se vería una delegación exitosa a {validator}.',
@@ -943,6 +951,7 @@
       'app.pendingConfirm': '正在等待网络确认你的交易……',
       'app.statusUnreadable': '无法读取你的质押状态——请稍后再试。',
       'app.duplicateIgnored': '该操作已发送——请等待几秒钟，等待网络确认。',
+      'app.passiveInstance': '该页面已在另一个窗口中打开。请在该窗口中继续操作。',
       'app.delegateAmountRequired': '请在确认前输入要委托的金额。',
       'app.stakeAmtPlaceholder': '请在此输入要质押的NIM数量',
       'app.demoModeSuccess': '🧪 演示模式——未发送任何内容。这是成功委托给 {validator} 时的样子。',
@@ -1058,6 +1067,7 @@
       'app.pendingConfirm': 'ネットワークによる取引の確認を待っています…',
       'app.statusUnreadable': 'ステーキングの状態を読み取れませんでした。しばらくしてからもう一度お試しください。',
       'app.duplicateIgnored': 'この操作は送信されました。ネットワークによる確認が完了するまで、数秒お待ちください。',
+      'app.passiveInstance': 'このページは別のウィンドウで開かれています。そちらで操作を続けてください。',
       'app.delegateAmountRequired': '確定する前に委任する金額を入力してください。',
       'app.stakeAmtPlaceholder': 'ステークするNIMの数量をここに入力',
       'app.demoModeSuccess': '🧪 デモモード — 何も送信されていません。{validator} への委任が成功した場合はこのように表示されます。',
@@ -1173,6 +1183,7 @@
       'app.pendingConfirm': '네트워크에서 거래를 확인하기를 기다리고 있습니다…',
       'app.statusUnreadable': '스테이킹 상태를 읽을 수 없습니다. 잠시 후 다시 시도해 주세요.',
       'app.duplicateIgnored': '이 작업이 방금 전송되었습니다. 네트워크에서 확인하는 데 몇 초 정도 걸리니 잠시 기다려 주세요.',
+      'app.passiveInstance': '이 페이지는 다른 창에서 열려 있습니다. 해당 창에서 계속 진행하세요.',
       'app.delegateAmountRequired': '확인하기 전에 위임할 금액을 입력하세요.',
       'app.stakeAmtPlaceholder': '스테이킹할 NIM 수량을 여기에 입력하세요',
       'app.demoModeSuccess': '🧪 데모 모드 — 아무것도 전송되지 않았습니다. {validator}에게 위임이 성공했을 때의 모습입니다.',
@@ -1288,6 +1299,7 @@
       'app.pendingConfirm': 'Wir warten darauf, dass das Netzwerk deine Transaktion bestätigt…',
       'app.statusUnreadable': 'Dein Staking-Status konnte nicht gelesen werden – versuche es in einem Moment erneut.',
       'app.duplicateIgnored': 'Diese Aktion wurde soeben gesendet – bitte warte einige Sekunden, bis das Netzwerk sie bestätigt hat.',
+      'app.passiveInstance': 'Diese Seite ist in einem anderen Fenster geöffnet. Fahre dort fort.',
       'app.delegateAmountRequired': 'Gib einen zu delegierenden Betrag ein, bevor du bestätigst.',
       'app.stakeAmtPlaceholder': 'Gib hier die zu stakende NIM-Menge ein',
       'app.demoModeSuccess': '🧪 Demomodus — es wurde nichts gesendet. So sähe eine erfolgreiche Delegation an {validator} aus.',
@@ -1403,6 +1415,7 @@
       'app.pendingConfirm': 'A aguardar que a rede confirme a tua transação…',
       'app.statusUnreadable': 'Não foi possível ler o teu estado de staking — tenta novamente daqui a pouco.',
       'app.duplicateIgnored': 'Esta ação acabou de ser enviada — espera alguns segundos até que a rede a confirme.',
+      'app.passiveInstance': 'Esta página está aberta noutra janela. Continua por lá.',
       'app.delegateAmountRequired': 'Indica um valor a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aqui a quantidade de NIM a fazer stake',
       'app.demoModeSuccess': '🧪 Modo demo — nada foi enviado. É assim que ficaria uma delegação bem-sucedida a {validator}.',
@@ -1518,6 +1531,7 @@
       'app.pendingConfirm': 'Ожидание подтверждения транзакции со стороны сети…',
       'app.statusUnreadable': 'Не удалось определить состояние твоего стейкинга — попробуй ещё раз через некоторое время.',
       'app.duplicateIgnored': 'Это действие только что отправлено — подожди несколько секунд, пока сеть его подтвердит.',
+      'app.passiveInstance': 'Эта страница открыта в другом окне. Продолжи там.',
       'app.delegateAmountRequired': 'Укажи сумму делегирования перед подтверждением.',
       'app.stakeAmtPlaceholder': 'Укажи здесь количество NIM для стейкинга',
       'app.demoModeSuccess': '🧪 Демо-режим — ничего не отправлено. Вот как выглядела бы успешная делегация валидатору {validator}.',
@@ -1633,6 +1647,7 @@
       'app.pendingConfirm': 'Ağın işlemini onaylaması bekleniyor…',
       'app.statusUnreadable': 'Stake durumun okunamadı — birazdan tekrar dene.',
       'app.duplicateIgnored': 'Bu işlem az önce gönderildi — ağın bunu onaylaması için birkaç saniye bekle.',
+      'app.passiveInstance': 'Bu sayfa başka bir pencerede açık. Oradan devam et.',
       'app.delegateAmountRequired': 'Onaylamadan önce delege edilecek bir miktar girin.',
       'app.stakeAmtPlaceholder': 'Stake edilecek NIM miktarını buraya girin',
       'app.demoModeSuccess': '🧪 Demo modu — hiçbir şey gönderilmedi. {validator} adresine başarılı bir delegasyon böyle görünür.',
@@ -1748,6 +1763,7 @@
       'app.pendingConfirm': 'في انتظار تأكيد الشبكة لمعاملتك…',
       'app.statusUnreadable': 'تعذر قراءة حالة المشاركة الخاصة بك — حاول مرة أخرى بعد قليل.',
       'app.duplicateIgnored': 'تم إرسال هذا الإجراء للتو — يرجى الانتظار بضع ثوانٍ حتى تقوم الشبكة بتأكيده.',
+      'app.passiveInstance': 'هذه الصفحة مفتوحة في نافذة أخرى. تابع هناك.',
       'app.delegateAmountRequired': 'أدخل مبلغًا للتفويض قبل التأكيد.',
       'app.stakeAmtPlaceholder': 'أدخل هنا كمية NIM المراد إيداعها',
       'app.demoModeSuccess': '🧪 وضع تجريبي — لم يتم إرسال أي شيء. هكذا سيبدو التفويض الناجح إلى {validator}.',
@@ -2124,6 +2140,48 @@
     return release;
   }
 
+  // ---------- last loaded page wins (shared lease) ----------
+  // The host can leave two pages of the app alive at once (two loads a few seconds apart were seen in the server
+  // logs), each with its own JS state, so each would keep its own button unlocked. Every page writes
+  // vs:active = {id, ts} to localStorage when it loads and beats every ACTIVE_BEAT_MS; a page that sees another
+  // id becomes PASSIVE (actions disabled, explanatory note, no send). A passive page re-arms itself only when the
+  // user comes back to it AND the active page has not beaten for ACTIVE_STALE_MS, so nothing stays blocked for good.
+  // Fail-open: no localStorage, any error or doubt = normal behavior.
+  var ACTIVE_KEY = 'vs:active', ACTIVE_BEAT_MS = 2000, ACTIVE_STALE_MS = 9000;
+  var passive = false, leaseTimer = null;
+  function readActive(){
+    try { var a = JSON.parse(localStorage.getItem(ACTIVE_KEY) || 'null'); return (a && a.id && a.ts) ? a : null; } catch (e) { return null; }
+  }
+  function writeActive(){ try { localStorage.setItem(ACTIVE_KEY, JSON.stringify({ id: instanceId, ts: Date.now() })); return true; } catch (e) { return false; } }
+  function setPassive(on){
+    if (passive === on) return;
+    passive = on;
+    document.documentElement.classList.toggle('vs-passive', on);
+    $('passiveNote').hidden = !on;
+    syncDelegateBtn();
+  }
+  function takeLease(){ if (writeActive()) setPassive(false); }
+  function checkLease(){
+    var a = readActive();
+    if (a && a.id !== instanceId && Date.now() - a.ts < ACTIVE_STALE_MS) setPassive(true);
+    else if (!passive) writeActive();                // active page: beat
+  }
+  function rearmIfStale(){
+    if (!passive) return;
+    var a = readActive();
+    if (!a || a.id === instanceId || Date.now() - a.ts >= ACTIVE_STALE_MS) takeLease();   // the other page is gone: take over
+  }
+  function initLease(){
+    if (!writeActive()) return;                       // storage unavailable: behave as before
+    window.addEventListener('storage', function(ev){
+      if (ev.key !== ACTIVE_KEY || !ev.newValue) return;
+      try { var a = JSON.parse(ev.newValue); if (a && a.id && a.id !== instanceId) setPassive(true); } catch (e) {}
+    });
+    leaseTimer = setInterval(checkLease, ACTIVE_BEAT_MS);
+    document.addEventListener('visibilitychange', function(){ if (!document.hidden) rearmIfStale(); });
+    window.addEventListener('focus', rearmIfStale);
+  }
+
   // ---------- success modal (stays open until the user closes it) ----------
   var successModalOverlay = $('successModalOverlay');
   function showSuccessModal(message){
@@ -2145,6 +2203,7 @@
   // ---------- retire stake (step 1 of unstake — see app.retireHint) ----------
   var retireToggleBtn = $('retireToggleBtn'), retireForm = $('retireForm'), retireConfirmBtn = $('retireConfirmBtn');
   retireToggleBtn.addEventListener('click', function(){
+    if (passive) return;
     retireForm.hidden = !retireForm.hidden;
     // Unlike the delegation amount (wallet_balance_luna, the base-account
     // balance -- can lag behind a pending deposit), active_balance_luna is
@@ -2158,6 +2217,7 @@
     }
   });
   retireConfirmBtn.addEventListener('click', function(){
+    if (passive) return;
     var amt = parseFloat($('retireAmt').value);
     if (!(amt > 0) || !(state.nimiq || state.hub)){
       showErrorModal(t('app.retireInvalidAmount'), '');
@@ -2304,7 +2364,7 @@
   // While the notice is shown the displayed state is stale (Add vs Switch could be wrong: an Add
   // reuses the delegation of the existing staker), so ONLY the Delegate button is locked.
   var delegateBlocked = false;
-  function syncDelegateBtn(){ delegateBtn.disabled = delegateBlocked || !bookmarked.length; }
+  function syncDelegateBtn(){ delegateBtn.disabled = delegateBlocked || passive || !bookmarked.length; }
   function setPendingNote(on){
     $('pendingNote').hidden = !on;
     delegateBlocked = !!on;
@@ -2390,6 +2450,7 @@
     }
   }
   removeStakeBtn.addEventListener('click', function(){
+    if (passive) return;
     if (!lastStakerStatus || !(lastStakerStatus.retired_balance_luna > 0)) return;
     if (!state.nimiq){
       // sendRemoveStakeTransaction's sender is the staking contract itself,
@@ -2596,7 +2657,7 @@
   });
 
   delegateBtn.addEventListener('click', function(){
-    if (!bookmarked.length || delegateBlocked) return;
+    if (!bookmarked.length || delegateBlocked || passive) return;
     var v = bookmarked[shortIdx];
     var stakeAmtInput = $('stakeAmt2');
     var stakeNim = parseFloat(stakeAmtInput.value);
@@ -2879,6 +2940,7 @@
       console.warn('Validator Swipe: Nimiq Pay SDK unavailable, staying in demo mode.', err);
     });
   }
+  initLease();
   tryConnectNimiqPay();
 
   // ---------- Nimiq Hub connect (outside Nimiq Pay) ----------
