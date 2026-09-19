@@ -14,6 +14,11 @@ releases yet; entries are grouped by date and reconstructed from the git history
   bug-report form; the bug template now asks not to share the full wallet address.
 
 ### Fixed
+- The validator card could become huge (almost screen-high, with a large empty area) after a
+  resize while the other tab was open, typically after staking from My favorites and going back
+  to Browse. The card-height calibration measured a hidden (zero-width) container, wrapped the text
+  one letter per line and locked an enormous minimum height. It now skips hidden containers,
+  recalibrates when a tab is shown again, and ignores implausible values.
 - Adding or creating a stake is no longer blocked when the main-account balance reads 0. A
   real-device test showed Nimiq Pay accepting an Add Stake with funds held in a swap contract
   (HTLC), so the guard refused a flow that works. The "funds pending" notice is now purely

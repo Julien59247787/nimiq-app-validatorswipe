@@ -2306,6 +2306,7 @@
     shortlistTabBtn.classList.toggle('active', !browsing);
     browsePhase.style.display = browsing ? 'block' : 'none';
     shortlistPhase.style.display = browsing ? 'none' : 'block';
+    calibrateCardHeight();
     if (!browsing) renderShortlistCard();
   }
   browseTabBtn.addEventListener('click', function(){ setPhase('browse'); });
@@ -2506,9 +2507,17 @@
   // card to it, so swiping to a shorter-named validator doesn't shrink the
   // card and shift the action buttons below it.
   function calibrateCardHeight(){
+    // Measure the width of whichever card stack is currently visible. A hidden
+    // stack (display:none, e.g. Browse while My favorites is open) reports a
+    // width of 0: probing at that width wraps the text one letter per line and
+    // locks an enormous min-height on every card (real bug on a phone, after a
+    // resize while the other tab was open). Skip the calibration in that case;
+    // setPhase() recalibrates when a tab becomes visible again.
+    var width = cardStack.getBoundingClientRect().width || shortlistCardStack.getBoundingClientRect().width;
+    if (!(width >= 200)) return;
     var probe = document.createElement('div');
     probe.style.cssText = 'position:absolute; visibility:hidden; pointer-events:none; left:-9999px; top:0;';
-    probe.style.width = cardStack.getBoundingClientRect().width + 'px';
+    probe.style.width = width + 'px';
     document.body.appendChild(probe);
     var tallest = 0;
     [FALLBACK_VALIDATORS[0], FALLBACK_VALIDATORS[1]].forEach(function(v){
@@ -2520,7 +2529,9 @@
       probe.removeChild(card);
     });
     document.body.removeChild(probe);
-    if (tallest > 0){
+    // Sanity bound: the tallest real card is a few hundred px; anything larger
+    // means the measurement went wrong, so keep the previous value.
+    if (tallest > 0 && tallest <= 640){
       cardStack.style.setProperty('--card-min-height', tallest + 'px');
       shortlistCardStack.style.setProperty('--card-min-height', tallest + 'px');
     }
