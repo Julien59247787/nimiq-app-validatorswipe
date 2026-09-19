@@ -2290,12 +2290,27 @@
   ['touchmove', 'wheel'].forEach(function(ev){
     window.addEventListener(ev, function(){ lastUserScrollAt = Date.now(); }, { passive: true });
   });
+  // Height of the host's top bar when it OVERLAYS the top of the page (in-app browser bar): read from
+  // env(safe-area-inset-top) when the WebView exposes it, otherwise HOST_TOP_OVERLAY_PX, used only inside Nimiq Pay.
+  // 0 = not compensated: the real value depends on the host and must come from on-device measurements.
+  var HOST_TOP_OVERLAY_PX = 0;
+  function hostTopInset(){
+    try {
+      var probe = document.createElement('div');
+      probe.style.cssText = 'position:absolute;left:0;top:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top)';
+      document.body.appendChild(probe);
+      var inset = parseFloat(getComputedStyle(probe).paddingTop) || 0;
+      document.body.removeChild(probe);
+      if (inset > 0) return inset;
+    } catch (e) {}
+    return window.nimiqPay ? HOST_TOP_OVERLAY_PX : 0;
+  }
   function reframeArea(){
     var phone = document.querySelector('.demo-stage .phone');
     if (!phone || phone.offsetParent === null) return null;
     var r = phone.getBoundingClientRect(), vw = document.documentElement.clientWidth || window.innerWidth;
     var side = Math.max(0, Math.round(Math.min(r.left, vw - r.right)));   // same space above as on the sides (also in RTL)
-    return Math.max(0, Math.round(r.top + window.scrollY - side));
+    return Math.max(0, Math.round(r.top + window.scrollY - side - hostTopInset()));
   }
   function reframeSoon(delay, force){
     clearTimeout(reframeTimer);
@@ -2326,7 +2341,7 @@
       if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); goNominal(); }
     });
   }
-  ['shortlistBtn', 'removeBtn', 'delegateBtn'].forEach(function(id){
+  ['shortlistBtn', 'removeBtn', 'delegateBtn', 'browseTabBtn', 'shortlistTabBtn'].forEach(function(id){
     var b = $(id);
     if (b) b.addEventListener('click', function(){ reframeSoon(id === 'delegateBtn' ? 150 : 250); });
   });
