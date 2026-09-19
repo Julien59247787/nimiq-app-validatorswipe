@@ -214,6 +214,9 @@
   @media (prefers-reduced-motion: reduce){ #pendingNote::before{ animation:none; } }
   #pendingNote[hidden]{ display:none; }
   #unlockBtn[hidden]{ display:none; }
+  /* draws the eye on purpose: the only button shown when an action stays unconfirmed (Nimiq orange, dark text, contrast about 7.5:1) */
+  #unlockBtn{ background:#fc8702; color:#1a1204; border:1.5px solid #c96a00; font-weight:700; }
+  #unlockBtn:hover, #unlockBtn:focus-visible{ background:#ff9a2e; color:#1a1204; border-color:#c96a00; }
   .active-delegation-icon{ font-size:1rem; }
   .my-stake-box{ margin:10px 6px 0; padding:12px 14px; border-radius:12px; background:var(--surface-2); border:1px solid var(--border); }
   .my-stake-box[hidden]{ display:none; }
@@ -351,7 +354,7 @@
           <span id="activeDelegationText"></span>
         </div>
         <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" hidden>Waiting for the network to confirm your transaction…</p>
-        <button type="button" class="btn btn-ghost" id="unlockBtn" data-i18n="app.unlockContinue" hidden style="margin:6px 6px 0; font-size:.8rem; padding:10px 14px;">Not sent? Unlock</button>
+        <button type="button" class="btn btn-ghost" id="unlockBtn" data-i18n="app.unlockContinue" hidden style="margin:8px 6px 0; font-size:.85rem; padding:12px 16px; min-height:44px;">Not sent? Unlock</button>
 
         <div class="my-stake-box" id="myStakeBox" hidden>
           <div class="my-stake-row" id="myStakeActiveRow" hidden>
@@ -612,8 +615,8 @@
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay a rejeté la transaction. Vérifie ton wallet et réessaie dans un instant.',
       'app.pendingSlow': 'Ça prend un peu plus de temps que d\'habitude…',
-      'app.notConfirmed': 'Toujours pas confirmé. Le réseau est peut-être lent, ou la transaction n\'a peut-être pas été envoyée. Vérifie dans Nimiq Pay si ça dure. Recharger l\'app relit la chaîne.',
-      'app.unlockContinue': 'Pas envoyé ? Débloquer',
+      'app.notConfirmed': 'Toujours pas confirmé. Le réseau est peut-être lent, ou la transaction n\'a peut-être pas été envoyée. Patiente encore un peu, ou débloque pour réessayer.',
+      'app.unlockContinue': 'Pas envoyé ? Débloquer',
       'app.delegateSuccess': 'Délégation réussie ! Tu délègues maintenant à {validator}.',
       'app.delegateSwitchSuccess': 'Basculé ! Ton stake existant délègue maintenant à {validator}.',
       'app.activeDelegation': 'Tu délègues actuellement à {validator}',
@@ -730,7 +733,7 @@
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay rejected the transaction. Check your wallet and try again in a moment.',
       'app.pendingSlow': 'This is taking a bit longer than usual…',
-      'app.notConfirmed': 'Still not confirmed. The network may be slow, or the transaction may not have been sent. Check Nimiq Pay if it stays this way. Reloading the app re-reads the chain.',
+      'app.notConfirmed': 'Still not confirmed. The network may be slow, or the transaction may not have been sent. Wait a little longer, or unlock to try again.',
       'app.unlockContinue': 'Not sent? Unlock',
       'app.delegateSuccess': 'Delegation successful! You\'re now delegating to {validator}.',
       'app.delegateSwitchSuccess': 'Switched! Your existing stake now delegates to {validator}.',
@@ -896,7 +899,7 @@
       'app.delegateFailedBalanceHint': 'Parece que tu monedero no tiene suficientes NIM disponibles para esta delegación; comprueba tu saldo en Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay ha rechazado la transacción. Comprueba tu monedero e inténtalo de nuevo en un momento.',
       'app.pendingSlow': 'Está tardando un poco más de lo habitual…',
-      'app.notConfirmed': 'Sigue sin confirmarse. Puede que la red vaya lenta o que la transacción no se haya enviado. Si sigue así, comprueba Nimiq Pay. Recargar la app vuelve a leer la cadena.',
+      'app.notConfirmed': 'Sigue sin confirmarse. Puede que la red vaya lenta o que la transacción no se haya enviado. Espera un poco más o desbloquea para volver a intentarlo.',
       'app.unlockContinue': '¿No se envió? Desbloquear',
       'app.delegateSuccess': '¡Delegación realizada con éxito! Ahora delegas en {validator}.',
       'app.delegateSwitchSuccess': '¡Cambiado! Tu participación actual ahora se delega a {validator}.',
@@ -1014,7 +1017,7 @@
       'app.delegateFailedBalanceHint': '看来你的钱包中可用的NIM不足以进行此次授权——请在Nimiq Pay中查看你的余额。',
       'app.delegateFailedRejected': 'Nimiq Pay 拒绝了该笔交易。请检查你的钱包，稍后再试。',
       'app.pendingSlow': '比平时花的时间稍长……',
-      'app.notConfirmed': '仍未确认。网络可能较慢，或者交易可能没有发出。如果一直如此，请查看 Nimiq Pay。重新加载应用会重新读取区块链。',
+      'app.notConfirmed': '仍未确认。网络可能较慢，或者交易可能没有发出。请再等一会儿，或解锁后重试。',
       'app.unlockContinue': '没发出？解锁',
       'app.delegateSuccess': '授权成功！现在，你已将权限授权给 {validator}。',
       'app.delegateSwitchSuccess': '已切换！您现有的质押资产现已委托给 {validator}。',
@@ -1132,7 +1135,7 @@
       'app.delegateFailedBalanceHint': 'この委任を行うには、ウォレット内のNIM残高が不足しているようです。Nimiq Payで残高を確認してください。',
       'app.delegateFailedRejected': 'Nimiq Payが取引を拒否しました。ウォレットを確認して、しばらくしてからもう一度お試しください。',
       'app.pendingSlow': '通常より少し時間がかかっています…',
-      'app.notConfirmed': 'まだ確認されていません。ネットワークが遅いか、取引が送信されていない可能性があります。このまま続く場合はNimiq Payを確認してください。アプリを再読み込みするとチェーンを再取得します。',
+      'app.notConfirmed': 'まだ確認されていません。ネットワークが遅いか、取引が送信されていない可能性があります。もう少し待つか、ロックを解除してやり直してください。',
       'app.unlockContinue': '送信されていない？ ロック解除',
       'app.delegateSuccess': '委任は成功しました！これからは{validator}に委任することになります。',
       'app.delegateSwitchSuccess': '切り替え完了！ 既存のステークは、{validator} に委任されるようになりました。',
@@ -1250,7 +1253,7 @@
       'app.delegateFailedBalanceHint': '이 위임에 필요한 NIM이 지갑에 충분하지 않은 것 같습니다. Nimiq Pay에서 잔액을 확인해 주세요.',
       'app.delegateFailedRejected': 'Nimiq Pay에서 거래를 거부했습니다. 지갑을 확인하고 잠시 후 다시 시도하세요.',
       'app.pendingSlow': '평소보다 조금 더 걸리고 있습니다…',
-      'app.notConfirmed': '아직 확인되지 않았습니다. 네트워크가 느리거나 거래가 전송되지 않았을 수 있습니다. 계속 이런 상태라면 Nimiq Pay를 확인하세요. 앱을 다시 불러오면 체인을 다시 읽습니다.',
+      'app.notConfirmed': '아직 확인되지 않았습니다. 네트워크가 느리거나 거래가 전송되지 않았을 수 있습니다. 조금 더 기다리거나 잠금을 해제하고 다시 시도하세요.',
       'app.unlockContinue': '전송되지 않았나요? 잠금 해제',
       'app.delegateSuccess': '위임이 성공적으로 완료되었습니다! 이제 {validator}에게 권한을 위임하게 됩니다.',
       'app.delegateSwitchSuccess': '전환 완료! 기존 스테이크가 이제 {validator}에게 위임됩니다.',
@@ -1368,7 +1371,7 @@
       'app.delegateFailedBalanceHint': 'Es scheint, als hättest du in deiner Wallet nicht genügend NIM für diese Delegation – überprüfe deinen Kontostand in Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay hat die Transaktion abgelehnt. Prüfe deine Wallet und versuche es gleich noch einmal.',
       'app.pendingSlow': 'Das dauert etwas länger als üblich …',
-      'app.notConfirmed': 'Immer noch nicht bestätigt. Das Netzwerk ist vielleicht langsam, oder die Transaktion wurde möglicherweise nicht gesendet. Prüfe Nimiq Pay, wenn es so bleibt. Beim Neuladen der App wird die Chain neu gelesen.',
+      'app.notConfirmed': 'Immer noch nicht bestätigt. Das Netzwerk ist vielleicht langsam, oder die Transaktion wurde möglicherweise nicht gesendet. Warte noch etwas oder entsperre, um es erneut zu versuchen.',
       'app.unlockContinue': 'Nicht gesendet? Entsperren',
       'app.delegateSuccess': 'Erfolgreiche Delegierung! Du delegierst nun an {validator}.',
       'app.delegateSwitchSuccess': 'Umgestellt! Dein bestehender Stake delegiert nun an {validator}.',
@@ -1486,7 +1489,7 @@
       'app.delegateFailedBalanceHint': 'Parece que a tua carteira não tem NIM suficiente disponível para esta delegação — verifica o teu saldo no Nimiq Pay.',
       'app.delegateFailedRejected': 'O Nimiq Pay rejeitou a transação. Verifica a tua carteira e tenta novamente daqui a pouco.',
       'app.pendingSlow': 'Está a demorar um pouco mais do que o habitual…',
-      'app.notConfirmed': 'Ainda não confirmado. A rede pode estar lenta ou a transação pode não ter sido enviada. Se continuar assim, verifica o Nimiq Pay. Recarregar a app volta a ler a blockchain.',
+      'app.notConfirmed': 'Ainda não confirmado. A rede pode estar lenta ou a transação pode não ter sido enviada. Espera mais um pouco ou desbloqueia para tentares novamente.',
       'app.unlockContinue': 'Não enviado? Desbloquear',
       'app.delegateSuccess': 'Delegação bem-sucedida! Agora estás a delegar ao {validator}.',
       'app.delegateSwitchSuccess': 'Convertido! A tua participação atual está agora delegada ao {validator}.',
@@ -1604,7 +1607,7 @@
       'app.delegateFailedBalanceHint': 'Похоже, в твоём кошельке недостаточно средств в NIM для этой делегации — проверь свой баланс в Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay отклонил транзакцию. Проверь свой кошелёк и попробуй ещё раз чуть позже.',
       'app.pendingSlow': 'Это занимает чуть больше времени, чем обычно…',
-      'app.notConfirmed': 'Всё ещё не подтверждено. Возможно, сеть работает медленно или транзакция не была отправлена. Если так и остаётся, проверь Nimiq Pay. Перезагрузка приложения заново считывает блокчейн.',
+      'app.notConfirmed': 'Всё ещё не подтверждено. Возможно, сеть работает медленно или транзакция не была отправлена. Подожди ещё немного или разблокируй, чтобы попробовать снова.',
       'app.unlockContinue': 'Не отправлено? Разблокировать',
       'app.delegateSuccess': 'Делегирование прошло успешно! Теперь ты делегируешь полномочия {validator}.',
       'app.delegateSwitchSuccess': 'Переключено! Ваш текущий стейк теперь делегирован {validator}.',
@@ -1722,7 +1725,7 @@
       'app.delegateFailedBalanceHint': 'Görünüşe göre cüzdanında bu delegasyon için yeterli NIM yok — Nimiq Pay\'de bakiyeni kontrol et.',
       'app.delegateFailedRejected': 'Nimiq Pay işlemi reddetti. Cüzdanını kontrol et ve biraz sonra tekrar dene.',
       'app.pendingSlow': 'Bu, normalden biraz daha uzun sürüyor…',
-      'app.notConfirmed': 'Hâlâ onaylanmadı. Ağ yavaş olabilir veya işlem gönderilmemiş olabilir. Böyle devam ederse Nimiq Pay\'i kontrol et. Uygulamayı yeniden yüklemek zinciri yeniden okur.',
+      'app.notConfirmed': 'Hâlâ onaylanmadı. Ağ yavaş olabilir veya işlem gönderilmemiş olabilir. Biraz daha bekle ya da yeniden denemek için kilidi aç.',
       'app.unlockContinue': 'Gönderilmedi mi? Kilidi aç',
       'app.delegateSuccess': 'Yetki devri başarıyla tamamlandı! Artık {validator}\'a yetki devrediyorsun.',
       'app.delegateSwitchSuccess': 'Geçiş yapıldı! Mevcut stake\'in artık {validator}\'a devredildi.',
@@ -1840,7 +1843,7 @@
       'app.delegateFailedBalanceHint': 'يبدو أن محفظتك لا تحتوي على رصيد كافٍ من NIM لإجراء عملية التفويض هذه — يرجى التحقق من رصيدك في Nimiq Pay.',
       'app.delegateFailedRejected': 'رفض Nimiq Pay هذه المعاملة. تحقق من محفظتك وأعد المحاولة بعد قليل.',
       'app.pendingSlow': 'يستغرق هذا وقتًا أطول قليلًا من المعتاد…',
-      'app.notConfirmed': 'لم يتم التأكيد بعد. قد تكون الشبكة بطيئة أو ربما لم تُرسل المعاملة. تحقق من Nimiq Pay إذا استمر الوضع. إعادة تحميل التطبيق تعيد قراءة السلسلة.',
+      'app.notConfirmed': 'لم يتم التأكيد بعد. قد تكون الشبكة بطيئة أو ربما لم تُرسل المعاملة. انتظر قليلًا أو ألغِ القفل للمحاولة مجددًا.',
       'app.unlockContinue': 'لم تُرسل؟ إلغاء القفل',
       'app.delegateSuccess': 'تفويض ناجح! أنت تفوض الآن إلى {validator}.',
       'app.delegateSwitchSuccess': 'تم التبديل! أصبح رصيدك الحالي موكلًا الآن إلى {validator}.',
