@@ -2290,21 +2290,28 @@
   ['touchmove', 'wheel'].forEach(function(ev){
     window.addEventListener(ev, function(){ lastUserScrollAt = Date.now(); }, { passive: true });
   });
-  // Height of the host's top bar when it OVERLAYS the top of the page (in-app browser bar): read from
-  // env(safe-area-inset-top) when the WebView exposes it, otherwise HOST_TOP_OVERLAY_PX, used only inside Nimiq Pay.
-  // 0 = not compensated: the real value depends on the host and must come from on-device measurements.
-  var HOST_TOP_OVERLAY_PX = 0;
-  function hostTopInset(){
-    if (!window.nimiqPay) return 0;   // only Nimiq Pay's WebView is compensated; neutral elsewhere
+  // Height hidden at the top of the page by the host's bar (Nimiq Pay's in-app browser bar). A web page cannot
+  // measure a native bar that overlays it, so:
+  //  - known: env(safe-area-inset-top), when Nimiq Pay's WebView reports it (> 0): used for every re-framing;
+  //  - unknown: no AUTOMATIC re-framing at all (worst case = nothing moves); only an explicit tap on the app title
+  //    re-frames, using HOST_TOP_FALLBACK_PX, the largest plausible bar height, so the title can never end up
+  //    under the bar (at worst a few extra pixels above the card);
+  //  - outside Nimiq Pay: no compensation (0), automatic re-framing disabled.
+  var HOST_TOP_FALLBACK_PX = 64;
+  function hostTopKnown(){
+    if (!window.nimiqPay) return 0;
     try {
       var probe = document.createElement('div');
       probe.style.cssText = 'position:absolute;left:0;top:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top)';
       document.body.appendChild(probe);
       var inset = parseFloat(getComputedStyle(probe).paddingTop) || 0;
       document.body.removeChild(probe);
-      if (inset > 0) return inset;
-    } catch (e) {}
-    return HOST_TOP_OVERLAY_PX;
+      return inset > 0 ? inset : 0;
+    } catch (e) { return 0; }
+  }
+  function hostTopInset(){
+    if (!window.nimiqPay) return 0;
+    return hostTopKnown() || HOST_TOP_FALLBACK_PX;
   }
   function reframeArea(){
     var phone = document.querySelector('.demo-stage .phone');
@@ -2318,7 +2325,7 @@
     reframeTimer = setTimeout(function(){
       try {
         if (document.hidden || (!force && Date.now() - lastUserScrollAt < 1000) || scrollCoord.kbPending()) return;
-        if (!force && !window.nimiqPay) return;   // automatic re-framing is tuned for Nimiq Pay; an explicit tap on the title always works
+        if (!force && !hostTopKnown()) return;   // automatic re-framing only when the host bar height is reported
         var ae = document.activeElement;
         if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;
         var target = reframeArea();
