@@ -351,7 +351,7 @@
           <span id="activeDelegationText"></span>
         </div>
         <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" hidden>Waiting for the network to confirm your transaction…</p>
-        <button type="button" class="btn btn-ghost" id="unlockBtn" data-i18n="app.unlockContinue" hidden style="margin:6px 6px 0; font-size:.8rem; padding:10px 14px;">I checked in Nimiq Pay, continue</button>
+        <button type="button" class="btn btn-ghost" id="unlockBtn" data-i18n="app.unlockContinue" hidden style="margin:6px 6px 0; font-size:.8rem; padding:10px 14px;">Not sent? Unlock</button>
 
         <div class="my-stake-box" id="myStakeBox" hidden>
           <div class="my-stake-row" id="myStakeActiveRow" hidden>
@@ -2462,7 +2462,7 @@
   //   idle -> waiting (until the chain reflects the action, or POLL_MAX_MS) -> not confirmed (record kept, buttons
   //   still disabled; the chain is re-read every UNCONFIRMED_POLL_MS for a while and the user has an explicit way out).
   // The lock is lifted only by: the chain reflecting the action (any page), an error or cancellation of the page that
-  // owns the record, a wallet change, or the explicit "I checked in Nimiq Pay, continue" button.
+  // owns the record, a wallet change, or the explicit "Not sent? Unlock" button.
   var PENDING_KEY = 'vs:pending', UNCONFIRMED_POLL_MS = 15000, UNCONFIRMED_POLL_UNTIL_MS = 600000, PENDING_SLOW_MS = 15000;
   var memPending = null, memOnly = false, lockTimer = null;
   function storePending(p){
