@@ -2,9 +2,75 @@
 
 All notable changes to Validator Swipe are documented here. The format is loosely based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). The project has no tagged
-releases yet; entries are grouped by date and reconstructed from the git history.
+releases yet; the current production version is 1.0.0. Older entries are grouped by date and
+reconstructed from the git history.
 
-## Unreleased
+## [Unreleased] (toward 1.1.0)
+
+Batch of improvements under consideration for the next release, with no commitment on a date. None of these
+is implemented yet.
+
+**Configurability (for other operators)**
+- Move `KNOWN_VALIDATORS` / `FALLBACK_VALIDATORS` out of `index.html` into an external
+  configuration file or served endpoint, so an operator can list their own validators without
+  editing the page — and without invalidating the CSP script hash.
+- Make the site URL, `og:image`, demo-video link, footer credits and contact links
+  configurable in one place (currently hard-coded to the original deployment).
+- Generate the CSP script hash automatically as part of a deployment script.
+
+**Backend**
+- Publish a clean, secret-free reference implementation of the two endpoints and the daily
+  refresh job (currently only specified by contract in the
+  [Operator Guide](docs/OPERATOR-GUIDE.md)).
+- Cap the reliability figure at 100 % on the API side, if decided.
+
+**Robustness**
+- Self-host the third-party libraries (`@nimiq/mini-app-sdk`, `@nimiq/hub-api`,
+  `@nimiq/core`, fonts) instead of loading them from CDNs, and pin the Mini App SDK version
+  (it is currently unpinned).
+- Claiming retired funds through the Nimiq Hub path (currently Nimiq Pay only).
+- Read funds held in swap contracts (HTLC) on-chain, so the delegation amount can be
+  pre-filled when the main-account balance reads 0.
+- Automated tests and a CI check for i18n key parity and script syntax.
+
+**Interface**
+- Re-frame the view after an action (confirmation, error, closing a modal) and when the on-screen keyboard
+  closes, so the "currently delegating" banner, the waiting notice, the Active stake block and the card are
+  visible instead of leaving the page half-scrolled with the app title cut off. Idea: `scrollIntoView` with
+  `block: 'start'` or `'center'` and a margin, taking `visualViewport` into account, without jank or
+  interference with the keyboard (the page shifting up while the keyboard is open in the amount field is
+  normal browser behavior). To be tested on a real phone before any release.
+- When the on-screen keyboard closes (end of typing in the amount field), the page does not return to its
+  previous scroll position. Idea: remember the scroll position when the amount field gets focus and restore
+  it smoothly on blur or when `visualViewport` returns to full height. To be tested on a real phone.
+- Planned for 1.1.0, together with the re-framing above: align the static fallback text of the
+  funds-pending banner in the HTML (it still carries the older wording, invisible in normal use because the
+  translation dictionary replaces it) with the current dictionary text.
+- The mascot image no longer has a rounded border; a `border-radius` could be reintroduced if a rounded look is wanted.
+- The "status unreadable" message could distinguish the case where no wallet address is available yet.
+- The pending-confirmation banner is driven by the status polling; it could also follow the transaction directly.
+- Delegation history: when the same validator was delegated to several times in a session, the
+  "Delegated" badge shows on every row of that validator; only the most recent one should carry it.
+
+**Internationalization**
+- Native-speaker review of the machine-translated languages.
+- Right-to-left layout (`dir="rtl"`) for Arabic.
+- Fallback to English instead of French when a key is missing, and refresh a code comment
+  that still mentions a French default.
+
+**Documentation**
+- Add screenshots and an animated demo to the README.
+
+---
+
+## [1.0.0] — 2026-09-19
+
+First production release (the version deployed on 2026-09-19). It delivers: Add and Create stake no longer blocked
+when the main-account balance is 0 (funds held in swap contracts); switching validator without an amount; the
+staking state refreshed after every transaction (on-chain re-read with a visible waiting line); duplicate-send
+guards (an action lock that survives a page reload, a 30-second duplicate check); a dismissible error modal;
+the SDK's `ErrorResponse` handled as a failure; the oversized validator card fixed; a home page without
+overflow on mobile; a "Report a bug" link; a light, cut-out, linked mascot; and up-to-date documentation.
 
 ### Added
 - The footer mascot is now a link (44 px tap area, translated label) to the operator's public
@@ -94,7 +160,7 @@ releases yet; entries are grouped by date and reconstructed from the git history
 - Link to the recorded demo video in the hero section.
 - "Funds pending" hint: when a connected wallet reports a spendable balance of exactly 0
   (typically funds held in a swap contract after a top-up), the app explains it. In this
-  release it also blocked adding new stake; that block was removed afterwards (see *Unreleased*).
+  release it also blocked adding new stake; that block was removed afterwards (see *1.0.0*).
 - Retire-amount field is pre-filled with the real active stake and styled like the
   delegation amount field.
 - Endless ribbon browsing in both tabs (Browse and My favorites), in both directions; the
@@ -193,59 +259,3 @@ releases yet; entries are grouped by date and reconstructed from the git history
 ### Added
 - First version of the mini app: validator cards, swipe interaction, French/English i18n,
   stake amount field, real delegation through the Nimiq Pay SDK.
-
----
-
-## Future improvements
-
-Ideas that would make the app easier to reuse and harden. None of these are implemented yet.
-
-**Configurability (for other operators)**
-- Move `KNOWN_VALIDATORS` / `FALLBACK_VALIDATORS` out of `index.html` into an external
-  configuration file or served endpoint, so an operator can list their own validators without
-  editing the page — and without invalidating the CSP script hash.
-- Make the site URL, `og:image`, demo-video link, footer credits and contact links
-  configurable in one place (currently hard-coded to the original deployment).
-- Generate the CSP script hash automatically as part of a deployment script.
-
-**Backend**
-- Publish a clean, secret-free reference implementation of the two endpoints and the daily
-  refresh job (currently only specified by contract in the
-  [Operator Guide](docs/OPERATOR-GUIDE.md)).
-
-**Robustness**
-- Self-host the third-party libraries (`@nimiq/mini-app-sdk`, `@nimiq/hub-api`,
-  `@nimiq/core`, fonts) instead of loading them from CDNs, and pin the Mini App SDK version
-  (it is currently unpinned).
-- Claiming retired funds through the Nimiq Hub path (currently Nimiq Pay only).
-- Read funds held in swap contracts (HTLC) on-chain, so the delegation amount can be
-  pre-filled when the main-account balance reads 0.
-- Automated tests and a CI check for i18n key parity and script syntax.
-
-**Interface**
-- Re-frame the view after an action (confirmation, error, closing a modal) and when the on-screen keyboard
-  closes, so the "currently delegating" banner, the waiting notice, the Active stake block and the card are
-  visible instead of leaving the page half-scrolled with the app title cut off. Idea: `scrollIntoView` with
-  `block: 'start'` or `'center'` and a margin, taking `visualViewport` into account, without jank or
-  interference with the keyboard (the page shifting up while the keyboard is open in the amount field is
-  normal browser behavior). To be tested on a real phone before any release.
-- When the on-screen keyboard closes (end of typing in the amount field), the page does not return to its
-  previous scroll position. Idea: remember the scroll position when the amount field gets focus and restore
-  it smoothly on blur or when `visualViewport` returns to full height. To be tested on a real phone.
-- Planned for a small 1.1 release together with the re-framing above: align the static fallback text of the
-  funds-pending banner in the HTML (it still carries the older wording, invisible in normal use because the
-  translation dictionary replaces it) with the current dictionary text.
-- The mascot image no longer has a rounded border; a `border-radius` could be reintroduced if a rounded look is wanted.
-- The "status unreadable" message could distinguish the case where no wallet address is available yet.
-- The pending-confirmation banner is driven by the status polling; it could also follow the transaction directly.
-- Delegation history: when the same validator was delegated to several times in a session, the
-  "Delegated" badge shows on every row of that validator; only the most recent one should carry it.
-
-**Internationalization**
-- Native-speaker review of the machine-translated languages.
-- Right-to-left layout (`dir="rtl"`) for Arabic.
-- Fallback to English instead of French when a key is missing, and refresh a code comment
-  that still mentions a French default.
-
-**Documentation**
-- Add screenshots and an animated demo to the README.

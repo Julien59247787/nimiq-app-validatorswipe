@@ -139,7 +139,7 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
 | [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including the balance shown after a top-up |
-| [CHANGELOG.md](CHANGELOG.md) | History of changes, plus ideas for future improvements |
+| [CHANGELOG.md](CHANGELOG.md) | History of changes (current version 1.0.0) and the batch planned for 1.1.0 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [SECURITY.md](SECURITY.md) | Security model and how to report a vulnerability |
 

@@ -28,8 +28,8 @@ and the app shows the wallet's error message.
 - It never blocks browsing, staking, switching validator, retiring or claiming.
 
 **Possible improvement.** Read swap-contract balances on-chain so the amount can be
-pre-filled in that case — see *Future improvements* in the
-[changelog](../CHANGELOG.md#future-improvements).
+pre-filled in that case — see the *Unreleased (toward 1.1.0)* section of the
+[changelog](../CHANGELOG.md#unreleased-toward-110).
 
 ## Other limitations
 
