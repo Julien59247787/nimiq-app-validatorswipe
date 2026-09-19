@@ -1,0 +1,134 @@
+# Architecture
+
+Validator Swipe is deliberately small: **one static `index.html`** (markup, CSS and vanilla
+JavaScript, no framework, no bundler, no build step) plus two read-only JSON endpoints
+provided by the operator's backend.
+
+```
+                ┌────────────────────────── browser / Nimiq Pay WebView ─────────────────────────┐
+                │                                                                                 │
+   user ───────►│  index.html  (UI, i18n dictionary, state, staking logic)                        │
+                │     │                       │                          │                        │
+                └─────┼───────────────────────┼──────────────────────────┼────────────────────────┘
+                      │ fetch (same origin)   │ inside Nimiq Pay         │ outside Nimiq Pay
+                      ▼                       ▼                          ▼
+        ┌───────────────────────┐   ┌──────────────────────┐   ┌───────────────────────────┐
+        │ Operator backend      │   │ @nimiq/mini-app-sdk  │   │ @nimiq/hub-api  (popup)   │
+        │  /api/v2/validators-  │   │ window.nimiqPay,     │   │ + @nimiq/core (builds the │
+        │        list           │   │ signs & sends txs    │   │ staking tx locally)       │
+        │  /api/v2/staker-status│   └──────────────────────┘   └───────────────────────────┘
+        └──────────┬────────────┘
+                   ▼
+          Nimiq full node (RPC)  ──►  Nimiq network
+```
+
+## Components
+
+### 1. The page (`index.html`)
+
+Inside a single IIFE-style script block:
+
+- **Data layer** — `loadValidatorsList()` fetches the validator list and normalizes it
+  (fractions → percentages, `luna` → NIM, missing metrics stay `null` and are shown as `—`).
+  Cards are sorted by number of available metrics (best first), then alphabetically.
+- **State** — a small `state` object: `{ nimiq, hub, myAddress }` (Nimiq Pay provider, Nimiq
+  Hub client, connected address), plus `lastStakerStatus` (the latest on-chain snapshot).
+- **Two phases** — *Browse* (pass / set aside; never sends a transaction) and *My favorites*
+  (the only place staking actions can be triggered).
+- **i18n** — a `T` dictionary with 11 languages; see [I18N.md](I18N.md).
+- **Feedback** — custom success/error modals (human message first, technical detail
+  collapsed), a permanent "active delegation" banner, and a "funds pending" hint when the
+  connected wallet has no spendable balance.
+
+### 2. Wallet connection (two paths)
+
+| | Inside Nimiq Pay | Outside Nimiq Pay (regular browser) |
+|---|---|---|
+| Detection | `window.nimiqPay` exists | it doesn't |
+| Library | `@nimiq/mini-app-sdk` (dynamic ES import from a CDN) | `@nimiq/hub-api` (script tag, pinned version) |
+| Get the address | `listAccounts()` | `chooseAddress()` popup → "Connect" button |
+| Send a transaction | `sendNewStakerTransaction`, `sendStakeTransaction`, `sendUpdateStakerTransaction`, `sendRetireStakeTransaction`, `sendRemoveStakeTransaction` | build with `@nimiq/core` `TransactionBuilder`, then `hub.checkout()` (signs **and** broadcasts) |
+| Disconnect | n/a | "Disconnect" button |
+
+`@nimiq/core` is loaded lazily (dynamic import, pinned version) only when a Hub staking
+transaction is needed, so the heavy WASM bundle is not downloaded otherwise.
+
+Known limitation: **claiming retired funds** (`remove stake`) is available inside Nimiq Pay
+only; on the Hub path the app shows an explanatory message.
+
+### 3. Choosing the right staking transaction
+
+Nimiq's staking contract allows **one staker per address**, so a naive "always create a
+staker" breaks on the second delegation. Before sending, the app reads
+`/api/v2/staker-status` and chooses:
+
+```
+no staker on chain                          → create staker  (delegation + value)
+staker exists, same validator picked        → add stake      (value)
+staker exists, different validator picked   → update staker  (new delegation; moves the
+                                              existing stake, does not add funds)
+```
+
+Unstaking is two steps: **retire** (choose an amount; funds become claimable after the
+network's waiting period, which is tied to the end of the current epoch) and then
+**claim / remove stake**.
+
+### 4. Backend contract
+
+The page only needs two endpoints, served from the **same origin** as the page
+(relative URLs, so no CORS configuration is required):
+
+- `GET /api/v2/validators-list?limit=200`
+- `GET /api/v2/staker-status?address=<user friendly address>`
+
+Their schemas, data sources and operational requirements are specified in the
+[Operator Guide](OPERATOR-GUIDE.md).
+
+### 5. Graceful degradation
+
+| Situation | Behavior |
+|---|---|
+| Validator list unavailable | A visible error box; the page keeps working with two built-in example validators |
+| Staker status unavailable | Staking actions fall back to "create staker"; status widgets stay hidden |
+| No wallet connected | Demo mode: browsing works, simulated delegation is clearly labeled as demo |
+| `listAccounts()` returns an error object | Logged, the app stays disconnected (no crash) |
+| Wallet balance is 0 | "Funds pending" hint; adding new stake is blocked, switching validator is not |
+
+### 6. Safety rules encoded in the UI
+
+- A connected wallet with an empty/zero amount **never** falls into the simulated demo path;
+  it shows a validation error instead.
+- The delegation amount field is pre-filled from the wallet's real spendable balance
+  (`wallet_balance_luna`) when known; the retire amount from the active stake
+  (`active_balance_luna`). Both remain editable.
+- Errors from the wallet SDK are translated to a human message; the raw SDK message is kept
+  in a collapsible technical detail for debugging.
+
+## Hard-coded, operator-specific bits
+
+A few things in `index.html` are tied to the original deployment and should be changed by
+whoever forks it. The exact steps are in the [Operator Guide](OPERATOR-GUIDE.md#6-customizing-for-your-own-validators):
+
+- `KNOWN_VALIDATORS` and `FALLBACK_VALIDATORS` (example validators highlighted/used as fallback),
+- the `og:image` absolute URL and the `demo.mp4` link,
+- footer credits and contact links.
+
+## Third-party runtime dependencies
+
+| Dependency | How it is loaded |
+|---|---|
+| `@nimiq/mini-app-sdk` | dynamic `import()` from jsDelivr (Nimiq Pay path only) |
+| `@nimiq/hub-api` 1.14.0 | `<script>` from jsDelivr |
+| `@nimiq/core` 2.21.0 | dynamic `import()` from jsDelivr, Hub path only |
+| `hub.nimiq.com` | popup opened by the Hub client |
+| Google Fonts | Fraunces, Sora, Space Mono (stylesheet + font files) |
+
+All of them must be allowed by your Content-Security-Policy — see the Operator Guide.
+A future improvement is to self-host these assets to remove the CDN dependency.
+
+## Performance notes
+
+- No build step and no framework: the page is one request plus fonts.
+- Card height is calibrated once at load (an off-screen probe measures the tallest card)
+  so the action buttons don't jump while swiping.
+- The browse ribbon loops endlessly in both directions.
