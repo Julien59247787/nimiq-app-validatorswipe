@@ -1890,9 +1890,18 @@
 
   // Texts that applyStaticTranslations() rewrites from their data-i18n key but that depend on runtime state:
   // the connection pill, the Hub connect label while connecting, and the delegation history badges.
+  // Single source of truth for the connection pill: connected as soon as a wallet is known (SDK, Hub or an
+  // address), demo otherwise. Idempotent; called after any re-translation and whenever the staking state renders.
+  function updateStatusPill(){
+    try {
+      var on = !!(state.nimiq || state.hub || state.myAddress);
+      $('statusText').textContent = on ? t('app.statusLive') : t('app.statusDemo');
+      $('statusPill').classList.toggle('live', on);
+    } catch (e) {}
+  }
   function refreshDynamicI18n(){
     try {
-      $('statusText').textContent = (state.nimiq || state.hub) ? t('app.statusLive') : t('app.statusDemo');
+      updateStatusPill();
       if (hubConnecting) $('hubConnectBtn').textContent = t('app.hubConnecting');
       renderDelegationHistory();
     } catch (e) {}
@@ -2368,6 +2377,7 @@
       prevRetired: expect.prevRetired, amount: amount || 0, addr: state.myAddress, startedAt: Date.now() });
   }
   function resumePending(){
+    updateStatusPill();
     var p = readPending();
     if (!p) return;
     if (p.addr !== state.myAddress || Date.now() - p.startedAt >= POLL_MAX_MS){ clearPending(); return; }
@@ -2420,6 +2430,7 @@
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) refreshStatusSoon(); });
   window.addEventListener('focus', refreshStatusSoon);
   function renderStakerStatus(data){
+    updateStatusPill();
     updateActiveDelegationBanner(data);
     renderDelegationHistory();
     prefillStakeAmount(data);
