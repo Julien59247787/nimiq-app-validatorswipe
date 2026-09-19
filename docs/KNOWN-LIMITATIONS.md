@@ -40,6 +40,27 @@ shows the one-line hint, and never blocks browsing, staking, switching validator
 claiming. If the wallet cannot fund a transaction it rejects it and the app shows the wallet's
 error message.
 
+## Transactions that stay "Pending" in Nimiq Pay
+
+Observed on two Android emulator wallets (Nimiq Pay in an emulator, mainnet, real funds): after a first stake was
+created and topped up, an *Update Staker* (switch) and a *Retire Stake* sent from the app stayed "Pending" in
+Nimiq Pay and were **not on the chain** eight minutes later, while the create and add transactions had been
+confirmed within about 2 seconds. The cause is not established (host or network side; the app only receives a
+transaction hash or an error from the SDK and cannot see the host's pending state). What the app does about it: a
+single write lock keeps every button that sends a transaction disabled until the chain reflects the previous
+action; after 60 seconds it shows "Not confirmed yet — check Nimiq Pay before trying again", keeps the buttons
+disabled, re-reads the chain every 15 seconds for up to 10 minutes, and offers an explicit "I checked in Nimiq Pay,
+continue" button. Check the transaction in Nimiq Pay before continuing.
+
+## Create stake from a merged swap contract
+
+Create stake was observed to fail with the raw message "Failed to send payment transaction: Transaction
+invalidated during transaction" when the wallet's balance came from one swap contract of 520.16 NIM, even for a small
+amount, whereas it succeeded with two contracts of 100 NIM and with a partial use of a 200 NIM contract. Hypotheses
+not yet verified: a merged contract, or the number of decimals of the contract amount. No transaction was recorded
+on the chain. The app no longer describes this error as a stake conflict; it reports that Nimiq Pay rejected the
+transaction and keeps the raw detail.
+
 ## Nimiq Pay measurements and host behavior
 
 - **Confirmation delay.** Blocks are about 1 second apart and a staking transaction is usually

@@ -8,6 +8,23 @@ work is available in the Git history.
 
 ## [Unreleased]
 
+### Fixed
+
+- **One blockchain write at a time.** A single lock now covers create, add, switch, retire and claim: it is recorded
+  before the wallet request (`vs:pending`), shared between open pages through `localStorage`, kept across reloads,
+  and disables every button that sends a transaction (browsing stays free) with a persistent message. It is lifted
+  only when the chain reflects the action, when the page that owns it gets an error or a cancellation, when the wallet
+  changes, or through an explicit "I checked in Nimiq Pay, continue" button. After 60 seconds without reflection
+  the state becomes "Not confirmed yet — check Nimiq Pay before trying again": the buttons stay disabled, the chain
+  is re-read every 15 seconds for up to 10 minutes, and the user is never locked in for good. Previously only the
+  Delegate button was locked (`7855fa6`).
+- The delegation history records an action only once the chain reflects it, instead of when the wallet returned;
+  an action that never reaches the chain no longer leaves a row or a "Delegated" badge (`7855fa6`).
+- The error "Transaction invalidated during transaction" no longer claims a conflict with a stake in progress: the
+  message now says Nimiq Pay rejected the transaction, with the raw detail kept (`7855fa6`).
+
+### Ideas
+
 Ideas with no commitment on a date or a version. None of these is implemented yet.
 
 **Candidate work for a patch release**

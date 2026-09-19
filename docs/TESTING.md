@@ -39,7 +39,11 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] Cancel or reject in the wallet: an error message with a collapsible technical detail; OK, a tap outside and Escape close it; the Delegate button works again at once.
 - [ ] A staking state that cannot be read (stop the backend): the app retries, then refuses and sends nothing.
 - [ ] Double tap / triple tap on Delegate: one wallet request.
-- [ ] Reload the page while a transaction is pending (less than 60 s): the waiting line and the Delegate lock come back, then clear.
+- [ ] Reload the page while a transaction is pending: the waiting message and the lock on Delegate, Confirm withdrawal and Claim come back, then clear when the chain reflects the action.
+- [ ] While an action is pending, Delegate, Confirm withdrawal and Claim are all disabled; browsing, tabs and languages stay usable.
+- [ ] Pending that never reaches the chain: after 60 s the message becomes "Not confirmed yet — check Nimiq Pay before trying again", the three buttons stay disabled, and "I checked in Nimiq Pay, continue" lifts the lock.
+- [ ] Two open pages: the lock is seen by both; lifting it in one lifts it in the other.
+- [ ] The delegation history gets a row only after the chain reflects the action.
 
 **Retire and claim**
 - [ ] Open "Retire my stake": the amount is pre-filled with the active stake; confirm; the stake shows as retiring; claim becomes available after the epoch ends and is sent from Nimiq Pay.

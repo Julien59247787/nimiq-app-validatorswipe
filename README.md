@@ -43,8 +43,10 @@ Licensed under [MIT](LICENSE).
 - **Tidy positioning.** In Nimiq Pay, a tap on Browse, My favorites or the app title re-centres the card under the host bar
   when the host reports its height, and never at the cost of hiding the card's buttons.
 - **Comfortable typing.** After typing an amount, the page returns to where it was when the keyboard closes.
-- **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send
-  the same action twice (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
+- **One write at a time.** Duplicate taps, double connections and page reloads cannot send the same action twice,
+  and while a transaction is waiting for the chain every button that sends a transaction stays disabled, across
+  reloads and open pages, with a clear "Not confirmed yet" state if the chain never reflects it
+  (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
 - **Runs inside Nimiq Pay *and* in a regular browser.** Inside Nimiq Pay it uses the
   Mini App SDK. Outside, a "Connect" button uses the Nimiq Hub (implemented; see
   [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) for what has been tested).
