@@ -21,7 +21,7 @@ Licensed under [MIT](LICENSE).
 - [Architecture in 10 lines](#architecture-in-10-lines)
 - [Running your own instance](#running-your-own-instance)
 - [Documentation](#documentation)
-- [Good to know: balance after a top-up](#good-to-know-balance-after-a-top-up)
+- [Good to know](#good-to-know)
 - [Project status](#project-status)
 - [Reporting a bug](#reporting-a-bug)
 - [Contributing & security](#contributing--security)
@@ -38,6 +38,10 @@ Licensed under [MIT](LICENSE).
 - **Complete staking lifecycle**, driven by the account's real on-chain state:
   create a staker, add to an existing stake, switch validator, **retire** a stake,
   then **claim** the funds after the network waiting period.
+- **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
+  until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
+- **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send
+  the same action twice (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).
 - **Runs inside Nimiq Pay *and* in a regular browser.** Inside Nimiq Pay it uses the
   Mini App SDK. Outside, a "Connect" button uses the Nimiq Hub, so the app can be
   tried and used with a real wallet in any browser.
@@ -59,7 +63,7 @@ public validators; no wallet address is visible.
 | ![Landing page: headline "Pick your validator with a swipe, delegate with a tap", with the "See the validators", "Who pays for what?" and "Watch the demo video" buttons](docs/images/01-landing-page.png) | ![Browse tab: wallet detected, banner "You're currently delegating to…", active stake of 130 NIM with "Retire my stake" and "Claim my funds" buttons, and a validator card showing uptime, reliability, reward rate, staked amount and fee](docs/images/02-browse-active-stake.png) |
 | **1. Landing page.** The mini app's entry page: what it does, plus buttons to jump to the validators, to the "who pays for what" explanation, and to the demo video. | **2. Browse tab.** A wallet is detected; the gold banner shows the current on-chain delegation, "My stake" shows the active stake with the *Retire* and *Claim* buttons, and the card shows real uptime, reliability, reward rate, total stake and fee. Below: back / pass / set aside (star) / next. |
 | ![My favorites tab: a favorited validator card and an empty "Amount to delegate (NIM)" field with the placeholder "Enter the amount of NIM to stake here"](docs/images/03-favorites-delegate-amount.png) | ![My favorites tab with the amount field pre-filled with the wallet's available balance, and the hint "This amount is pre-filled with your available balance — double-check it before confirming."](docs/images/04-delegate-amount-prefilled.png) |
-| **3. My favorites — delegate.** The only place a transaction can be sent. With no balance information the amount field shows an explicit placeholder instead of a guessed value. | **4. Pre-filled amount.** When the wallet's spendable balance is known, the amount is pre-filled with it (editable), with a reminder to double-check before confirming. |
+| **3. My favorites — delegate.** The only place a transaction can be sent. When the main-account balance reads 0 the amount field shows an explicit placeholder, and a one-line hint says the available balance is shown in Nimiq Pay. | **4. Pre-filled amount.** When the wallet's spendable balance is known, the amount is pre-filled with it (editable), with a reminder to double-check before confirming. |
 | ![Retire flow: "Amount to retire (NIM)" pre-filled with the active stake, an explanation that the funds return after the current network epoch ends, and a "Confirm withdrawal" button](docs/images/05-retire-stake.png) | |
 | **5. Retire stake.** The amount is pre-filled with the active stake; the text explains that funds return to the wallet once the current network epoch has ended, after which they can be claimed. | |
 
@@ -138,27 +142,35 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 | [docs/OPERATOR-GUIDE.md](docs/OPERATOR-GUIDE.md) | Deploy and operate the mini app on your own nodes |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the app is built and why |
 | [docs/I18N.md](docs/I18N.md) | Translations: structure, key parity, adding a language |
-| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including the balance shown after a top-up |
-| [CHANGELOG.md](CHANGELOG.md) | History of changes (current version 1.0.0) and the batch planned for 1.1.0 |
+| [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) | Known limitations, including a main-account balance of 0 |
+| [CHANGELOG.md](CHANGELOG.md) | History since the first publication (1.0.0) and the batch planned for 1.1.0 |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [SECURITY.md](SECURITY.md) | Security model and how to report a vulnerability |
 
-## Good to know: balance after a top-up
+## Good to know
 
-Funds received through an exchange/swap flow (for example a top-up inside Nimiq Pay) are
-held in a swap contract by design, so the wallet's **main-account balance can read 0** in the
-app while Nimiq Pay shows the funds. The app can't read that amount (so it doesn't pre-fill
-it), but it does not block staking: a real-device test showed Nimiq Pay accepting an Add
-Stake in that situation.
-
-Details and other limitations: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
+- **A balance of 0 in the app.** A wallet can show **0** on its main account while Nimiq Pay
+  shows funds: funds received through a swap (for example a top-up inside Nimiq Pay) sit in a swap
+  contract that Nimiq Pay can still use when staking. The app can only read the main-account
+  balance, so it does not pre-fill the amount and shows a one-line hint under the amount field; it
+  never blocks staking. Details: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
+- **Confirmation takes a few seconds.** Blocks are about 1 second apart and a staking transaction is
+  usually included about 2 blocks after it is sent (a rare outlier can take about 2 minutes). The
+  app keeps checking for up to 60 seconds. The transaction history shown by a wallet app may lag
+  behind the chain by up to a minute; the app reads the chain itself.
+- **Reliability can exceed 100 %.** The figure comes from the operator's statistics source and can be
+  above 100 % for some validators; the app shows it as provided.
 
 ## Project status
 
-Submitted to the Nimiq Mini Apps Competition (Cycle II). The complete real staking
-cycle (create / add / switch / retire / claim) has been tested on a real device with
-real funds. Some translations are machine-generated and have not been reviewed by
-native speakers — corrections are welcome (see [docs/I18N.md](docs/I18N.md)).
+**Version 1.0.0** is the first publication: the version submitted to the Nimiq Mini Apps Competition
+(Cycle II) on 2026-09-18. Later changes are listed under "Changes since the competition submission"
+in the [CHANGELOG](CHANGELOG.md). The complete real staking cycle (create / add / switch / retire /
+claim) was verified on a real device with real funds; Add Stake was re-checked on a phone with a
+recent build, while Create Stake with funds held in a swap contract and retire / claim with the
+latest builds have not been tested end to end on a device. Some
+translations are machine-generated and have not been reviewed by native speakers — corrections are
+welcome (see [docs/I18N.md](docs/I18N.md)).
 
 ## Reporting a bug
 

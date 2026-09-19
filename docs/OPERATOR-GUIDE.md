@@ -281,7 +281,9 @@ this endpoint, or the app would keep showing the old state after a confirmation.
 **Measured inclusion delays** (mainnet, staking transactions): the block time is about 1 second and
 a staking transaction is included a median of about 2 blocks (at most about 3) after it is sent,
 with rare outliers of about 2 minutes. The 60-second cap therefore leaves a wide margin for normal
-cases while still bounding the load for the outliers.
+cases while still bounding the load for the outliers. The transaction history shown by a wallet app
+can lag behind the chain by up to a minute; the app reads the chain, so a short difference between the
+two is expected.
 
 **Rate limiting.** There is no request-*rate* limit on these endpoints in the reference
 deployment. What the reverse proxy enforces is a per-IP cap on **concurrent** requests: up to 20
@@ -368,11 +370,13 @@ Per-IP rate limiting is not built into stock Caddy: use a plugin, or rate-limit 
 
 **Caching headers.** `/api/*` → `no-store` (the list is already cached server-side; the client
 must not add a second, stale layer). `index.html` → `no-cache` (or a short `max-age`) so a
-new deployment — and its new CSP hash — reaches visitors immediately. Large media
+new deployment — and its new CSP hash — reaches visitors immediately. Without a `Cache-Control` header on the HTML
+page, browsers apply heuristic caching that can keep an old copy for several hours, and a cached page whose script
+does not match the new CSP hash stops working. Large media
 (`demo.mp4`, images) may use a long `max-age`. If a CDN sits in front, it may add its own edge
 caching by file extension (`.ico`, `.png`…): purge after replacing such files.
 
-### 3.3 MIME types (real incident)
+### 3.3 MIME types
 
 If you host the demo video, make sure `.mp4` is served as `video/mp4` (and `.m4a` as
 `audio/mp4`). Some servers and config templates ship without these mappings and fall back to
@@ -448,6 +452,24 @@ Put the printed `sha256-…` value in the `script-src` directive.
   round-robin DNS.
 - Each node needs access to a Nimiq node RPC (its own or a shared internal one) and its own
   copy of the cache (or a shared database).
+
+### 3.6 Rolling deployment and high availability
+
+- **Deploy one node at a time.** Upload the resources first (images such as `tux-nimiq-96.png`), then the
+  page, then check the node before moving to the next one. Keep the nodes symmetrical (same files, same
+  configuration, same CSP hash).
+- **Reload the web server gracefully and validate the configuration first** (for example `caddy validate`
+  then `caddy reload`, or `nginx -t` then `nginx -s reload`), so a typo never takes a node down.
+- **Two hashes during a transition.** While two versions of the page can be served at once, list both
+  `sha256-…` values in `script-src` (the old and the new); remove the old one once every node serves the new page.
+- **Hash after normalizing line endings** (CRLF → LF) — see §3.4.
+- **Reverse proxy.** Use active health checks (for example `GET /api/health`) and passive ones (mark an
+  upstream down after repeated failures), and retry `GET` requests on the other upstream when one fails.
+- **Concurrency cap per IP.** A cap of about 20 concurrent requests per IP protects the backend (see §2.4). If
+  all traffic reaches the origin through a single proxy address, that cap is shared by every visitor: size it
+  accordingly or key it on the forwarded client address.
+- **API contract during failures.** When the node RPC is unreachable, answer `503` (not `found:false`), so the
+  app can tell "node down" from "not a staker" (see §1.2).
 
 ---
 

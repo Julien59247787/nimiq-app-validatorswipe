@@ -37,14 +37,17 @@ Inside a single IIFE-style script block:
   re-renders the delegation banner, stake block, history and Add/Switch mode of the cards together,
   and only the Delegate button is locked meanwhile. An unreadable status before delegating is
   retried twice, then refused (nothing is sent).
+- **Scroll restoration** — when the on-screen keyboard closes after typing an amount, the page returns
+  to the scroll position it had when the field got focus (nothing happens while typing, after a manual
+  scroll, or without `visualViewport`).
 - **State** — a small `state` object: `{ nimiq, hub, myAddress }` (Nimiq Pay provider, Nimiq
   Hub client, connected address), plus `lastStakerStatus` (the latest on-chain snapshot).
 - **Two phases** — *Browse* (pass / set aside; never sends a transaction) and *My favorites*
   (the only place staking actions can be triggered).
 - **i18n** — a `T` dictionary with 11 languages; see [I18N.md](I18N.md).
 - **Feedback** — custom success/error modals (human message first, technical detail
-  collapsed), a permanent "active delegation" banner, and an informational notice when the
-  connected wallet has no spendable balance.
+  collapsed), a permanent "active delegation" banner, and a one-line hint under the amount field when the
+  connected wallet's main account reads 0 (Add/Create mode, amount not pre-filled).
 
 ### 2. Wallet connection (two paths)
 

@@ -35,14 +35,14 @@ domain you control and recompute the CSP script hash after every change.
 
 ## Supported versions
 
-Only the latest commit on the default branch is supported.
+Only the latest release (1.0.0 or later) and the latest commit on the default branch are supported.
 
 ## Reporting a vulnerability
 
 Please **do not open a public issue** for security problems.
 
 1. Email **ju@nimiq-ju.fr** with the subject `Validator Swipe security`.
-2. Or, when it is enabled for this repository, use GitHub's **private vulnerability reporting**
+2. Or use GitHub's **private vulnerability reporting**
    ("Security" tab → "Report a vulnerability").
 
 Please include a description, reproduction steps, and the potential impact. You can

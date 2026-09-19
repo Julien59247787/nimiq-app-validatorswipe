@@ -2,34 +2,28 @@
 
 ## The main-account balance can read 0 while Nimiq Pay shows funds
 
-**Symptom.** A wallet that has just been topped up (for example by buying NIM inside Nimiq
-Pay) shows a balance of **0** in Validator Swipe (no pre-filled amount, and an informational
-notice), even though Nimiq Pay displays the funds.
+**What you see.** A wallet that has been topped up through a swap (for example by buying NIM
+inside Nimiq Pay) can show a balance of **0** in Validator Swipe: the amount field is not
+pre-filled and a one-line hint under it says that the available balance is shown in Nimiq Pay.
 
-**Why.** Funds received through an exchange/swap flow are held in a swap contract (an HTLC,
-*hash time-locked contract*) — the mechanism Nimiq Pay uses on purpose — before they reach the
-wallet's basic account. The app can only read the **basic-account balance**
-(`wallet_balance_luna` from the backend, see the
-[Operator Guide](OPERATOR-GUIDE.md#12-get-apiv2staker-statusaddressnq-address)), so funds
-sitting in a swap contract do not appear in it. Nimiq describes the swap mechanism in its
-article *"What ACTUALLY happens when you swap in the Nimiq Wallet"*.
+**Why.** Funds received through a swap are held in a swap contract (an HTLC, *hash time-locked
+contract*) — a mechanism Nimiq Pay uses on purpose — before they reach the wallet's basic account.
+The app can only read the **basic-account balance** (`wallet_balance_luna` from the backend, see
+the [Operator Guide](OPERATOR-GUIDE.md#12-get-apiv2staker-statusaddressnq-address)), so funds sitting
+in a swap contract do not appear in it. Nimiq Pay can nevertheless use them when staking. Nimiq
+describes the swap mechanism in its article *"What ACTUALLY happens when you swap in the Nimiq Wallet"*.
 
-**Staking still works.** A real-device test showed Nimiq Pay accepting an **Add Stake**
-transaction while the basic-account balance read 0 and the funds were held in a swap
-contract: Nimiq Pay uses those funds itself. For that reason the app does **not** block
-staking when the balance reads 0. *Create stake* (a first stake) and the other actions were
-not separately tested with such funds; if the wallet cannot fund a transaction, it rejects it
-and the app shows the wallet's error message.
+**What the app does when the balance reads 0.** It does not pre-fill the amount (it cannot know it:
+type it yourself), shows the one-line hint, and never blocks browsing, staking, switching validator,
+retiring or claiming. If the wallet cannot fund a transaction it rejects it and the app shows the
+wallet's error message.
 
-**What the app does when the balance reads 0**
+**What was tested.** Add Stake with a main-account balance of 0 and the funds held in a swap contract
+was verified on a real device. Create Stake (a first stake) with such funds has not been tested end
+to end.
 
-- It does not pre-fill the delegation amount (it cannot know the real amount): type it yourself.
-- It shows a dismissible informational notice explaining the situation.
-- It never blocks browsing, staking, switching validator, retiring or claiming.
-
-**Possible improvement.** Read swap-contract balances on-chain so the amount can be
-pre-filled in that case — see the *Unreleased (toward 1.1.0)* section of the
-[changelog](../CHANGELOG.md#unreleased-toward-110).
+**Possible improvement.** Read swap-contract balances on-chain so the amount can be pre-filled in
+that case — see the *Unreleased (toward 1.1.0)* section of the [changelog](../CHANGELOG.md#unreleased-toward-110).
 
 ## Other limitations
 
@@ -38,6 +32,14 @@ pre-filled in that case — see the *Unreleased (toward 1.1.0)* section of the
 - **Waiting period.** Unstaking is a two-step process: after *retire*, funds become claimable
   once the current network epoch has ended. This usually takes several hours, depending on when in the epoch you retire.
   The app deliberately gives no fixed duration.
+- **Confirmation delay.** A staking transaction is usually included about 2 blocks (about 2 seconds)
+  after it is sent, with rare outliers of about 2 minutes; the app keeps checking for up to 60 seconds
+  and then keeps the last state it could confirm. The transaction history of a wallet app may lag behind
+  the chain by up to a minute.
+- **Reliability above 100 %.** The reliability figure comes from the operator's statistics source and can
+  exceed 100 % for some validators (7 of 39 in one measurement); the app shows it as provided.
+- **Real-device coverage.** Retire and claim with the latest builds, and Create Stake with funds held in a
+  swap contract, have not been re-tested end to end on a device.
 - **Machine translations.** Languages other than French and English are machine-generated and
   not all reviewed by native speakers ([I18N.md](I18N.md)).
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
