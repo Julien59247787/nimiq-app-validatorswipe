@@ -11,7 +11,7 @@ contract (an HTLC, *hash time-locked contract*) operated by the exchange partner
 land in the wallet's basic account. While they sit in that contract they are not part of the
 account's spendable balance. This is a property of how the swap works, not a bug in Validator
 Swipe. Nimiq describes the mechanism in its article *"What ACTUALLY happens when you swap in
-the Nimiq Wallet"* (May 2021).
+the Nimiq Wallet"*.
 
 The app reads the **basic-account balance** only (`wallet_balance_luna` from the backend, see
 the [Operator Guide](OPERATOR-GUIDE.md#12-get-apiv2staker-statusaddressnq-address)). Funds locked
@@ -47,8 +47,8 @@ the "balance is exactly 0" heuristic — see *Future improvements* in the
 - **Claiming retired funds** (*remove stake*) is available inside Nimiq Pay only; on the
   Nimiq Hub path the app shows an explanatory message.
 - **Waiting period.** Unstaking is a two-step process: after *retire*, funds become claimable
-  once the current network epoch has ended. Depending on when you retire, that can be short or
-  take several hours. The app deliberately gives no fixed duration.
+  once the current network epoch has ended. This usually takes several hours, depending on when in the epoch you retire.
+  The app deliberately gives no fixed duration.
 - **Machine translations.** Languages other than French and English are machine-generated and
   not all reviewed by native speakers ([I18N.md](I18N.md)).
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
