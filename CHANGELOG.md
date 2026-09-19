@@ -14,6 +14,12 @@ releases yet; entries are grouped by date and reconstructed from the git history
   bug-report form; the bug template now asks not to share the full wallet address.
 
 ### Fixed
+- On narrow phones (about 360-450 px) the "Technical integration" section was wider than the screen
+  (its grid column was sized by long unbreakable function names, and the checklist items were
+  laid out as flex rows), so the code block and the right end of the list were cut off and one
+  column of text showed one word per line. The columns can now shrink, the list wraps normally, and
+  the code block keeps its own horizontal scroll.
+- The code sample comment was hard-coded in French on the English page; it is now in English.
 - Switching validator no longer asks for an amount. The "Enter an amount to delegate" check ran
   before the app knew whether the action was a switch (update staker, which moves the whole existing
   stake and sends no value). It now only applies to Create / Add stake, and never lets a Create

@@ -186,12 +186,14 @@
   .faq-item p b{ color:var(--text); }
 
   .tech{ display:grid; grid-template-columns:.95fr 1.05fr; gap:40px; align-items:center; }
+  .tech > *{ min-width:0; }
   @media (max-width:880px){ .tech{ grid-template-columns:1fr; } }
   .tech h2{ font-size:clamp(1.6rem,2.6vw,2.1rem); }
   .tech p{ color:var(--text-dim); margin-top:14px; }
   .tech ul{ margin:18px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px; }
-  .tech li{ display:flex; gap:10px; font-size:.9rem; color:var(--text-dim); }
-  .tech li::before{ content:"✓"; color:var(--signal-strong); font-weight:700; }
+  .tech li{ position:relative; padding-left:1.5em; font-size:.9rem; color:var(--text-dim); }
+  .tech li::before{ content:"✓"; position:absolute; left:0; color:var(--signal-strong); font-weight:700; }
+  .tech li code{ overflow-wrap:anywhere; }
   .code-panel{ background:#14161c; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; }
   pre.code{ margin:0; padding:20px; font-family:'SFMono-Regular',Consolas,monospace; font-size:.82rem; line-height:1.6; color:#e8eaf0; overflow-x:auto; }
   pre.code .k{ color:#9c8cf0; }
@@ -485,7 +487,7 @@
       </ul>
     </div>
     <div class="code-panel">
-      <pre class="code"><span class="c">// Déléguer sans jamais transférer ses fonds</span>
+      <pre class="code"><span class="c">// Delegate without ever transferring your funds</span>
 <span class="k">import</span> { init } <span class="k">from</span> <span class="s">'@nimiq/mini-app-sdk'</span>
 
 <span class="k">const</span> nimiq = <span class="k">await</span> init()
