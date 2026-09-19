@@ -40,7 +40,7 @@ that case — see the *Unreleased* section of the [changelog](../CHANGELOG.md#un
   swap contract, have not been re-tested end to end on a device.
 - **Machine translations.** Languages other than French and English are machine-generated and
   not all reviewed by native speakers ([I18N.md](I18N.md)).
-- **View re-framing** is tuned for Nimiq Pay's in-app browser; elsewhere it is neutral (no automatic re-framing).
+- **View re-framing.** Measured: nothing (a web page cannot measure the height of a native bar that overlays it). Used: `env(safe-area-inset-top)` when Nimiq Pay's WebView reports it. Assumed: without it, no automatic re-framing happens; only a tap on the app title re-frames, keeping a 64 px clearance (the largest plausible bar height, so the title is never hidden; the space above the card can be a few pixels larger than the side margins). Observed on one Android phone (Nimiq Pay WebView, device pixel ratio 2, host bar about 42-43 CSS px); not verified on other devices or Nimiq Pay versions. Elsewhere (desktop, mobile browsers, Nimiq Hub) it is neutral.
 - **Nimiq Hub.** Connection through Nimiq Hub (browser or hardware wallet such as Ledger) is implemented, but has not been
   tested end to end on mobile browsers or with a hardware wallet in this release.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
