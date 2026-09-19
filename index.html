@@ -2016,10 +2016,12 @@
     var currentAddr = lastStakerStatus && lastStakerStatus.found ? lastStakerStatus.delegation : null;
     var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
     // Most recent first; only the entry matching the real current
-    // delegation gets the "active" badge, everything else is past.
+    // delegation gets the "active" badge (the most recent one only), everything else is past.
+    var currentShown = false;
     for (var i = delegated.length - 1; i >= 0; i--){
       var v = delegated[i];
-      var isCurrent = currentAddr ? norm(v.address) === norm(currentAddr) : i === delegated.length - 1;
+      var isCurrent = currentAddr ? (!currentShown && norm(v.address) === norm(currentAddr)) : i === delegated.length - 1;
+      if (isCurrent && currentAddr) currentShown = true;
       var item = document.createElement('div');
       item.className = 'shortlist-item';
       item.innerHTML = '<span>' + v.name + '</span><span class="badge' + (isCurrent ? '' : ' badge-past') + '">' +

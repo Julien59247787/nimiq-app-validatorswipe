@@ -38,8 +38,6 @@ Ideas with no commitment on a date or a version. None of these is implemented ye
 - The mascot image has no rounded border; a `border-radius` could be added if a rounded look is wanted.
 - The "status unreadable" message could distinguish the case where no wallet address is available yet.
 - The pending-confirmation notice is driven by the status polling; it could also follow the transaction directly.
-- Delegation history: when the same validator was delegated to several times in a session, the
-  "Delegated" badge shows on every row of that validator; only the most recent one should carry it.
 
 **Internationalization**
 - Native-speaker review of the machine-translated languages.
@@ -109,6 +107,8 @@ All dated 2026-09-19 (Paris time). Commit references are short SHAs.
   (`d4f15e3`, `c2c4cb7`, `ee243c9`).
 
 **Fixed**
+- In the delegation history, the "Delegated" badge appears on a single row: the most recent entry for the
+  validator that is the current on-chain delegation; every other entry shows "Past" (`HASH`).
 - An error object *resolved* by the wallet SDK is treated as a failure instead of a success (`c9f8aad`).
 - The displayed staking state no longer stays stale after a confirmed transaction (`d4f15e3`).
 - The validator card no longer takes an oversized height after a resize while the other tab is shown (`8651b46`).
