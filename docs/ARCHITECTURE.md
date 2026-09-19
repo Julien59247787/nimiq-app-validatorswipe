@@ -37,6 +37,9 @@ Inside a single IIFE-style script block:
   re-renders the delegation banner, stake block, history and Add/Switch mode of the cards together,
   and only the Delegate button is locked meanwhile. An unreadable status before delegating is
   retried twice, then refused (nothing is sent).
+- **Safe re-centring** — on a tap on Browse, My favorites or the app title only, and only when the WebView reports a top inset
+  (`env(safe-area-inset-top)`): one absolute scroll placing the card at inset + 8 px, refused when it would sink the row of
+  buttons below the view height minus the bottom reserve (`env(safe-area-inset-bottom)` or the screen/viewport height gap).
 - **Scroll restoration** — when the on-screen keyboard closes after typing an amount, the page returns
   to the scroll position it had when the field got focus (nothing happens while typing, after a manual
   scroll, or without `visualViewport`).

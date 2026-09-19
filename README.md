@@ -40,6 +40,8 @@ Licensed under [MIT](LICENSE).
   then **claim** the funds after the network waiting period.
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
+- **Tidy positioning.** In Nimiq Pay, a tap on Browse, My favorites or the app title re-centres the card under the host bar
+  when the host reports its height, and never at the cost of hiding the card's buttons.
 - **Comfortable typing.** After typing an amount, the page returns to where it was when the keyboard closes.
 - **One tap, one transaction.** Duplicate taps, double connections and page reloads cannot send
   the same action twice (see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)).

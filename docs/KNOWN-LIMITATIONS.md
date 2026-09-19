@@ -40,8 +40,10 @@ that case — see the *Unreleased* section of the [changelog](../CHANGELOG.md#un
   swap contract, have not been re-tested end to end on a device.
 - **Machine translations.** Languages other than French and English are machine-generated and
   not all reviewed by native speakers ([I18N.md](I18N.md)).
-- **Scroll position and the host bar.** The app does not scroll the page itself, except to restore the position after the
-  on-screen keyboard closes. Inside Nimiq Pay the host's browser bar can overlay the top of the page (a top inset of 51 CSS px
+- **Scroll position and the host bar.** The app scrolls the page only to restore the position after the on-screen keyboard
+  closes and, on a tap on Browse, My favorites or the app title, to re-centre the card when the host reports its top inset
+  (refused when it would push the card's buttons under the Android navigation bar, so it may do nothing on small screens or with the
+  retire panel open). Inside Nimiq Pay the host's browser bar can overlay the top of the page (a top inset of 51 CSS px
   was reported by `env(safe-area-inset-top)` on the test phone: Android 16, WebView/Chrome 152, device pixel ratio 2), and the
   browser itself may nudge the card into view after a tab tap. The app does not compensate for this; the placement can differ on
   other devices or Nimiq Pay versions.

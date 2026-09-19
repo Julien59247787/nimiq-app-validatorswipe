@@ -74,6 +74,11 @@ submission (PR #238 of the competition's submissions repository) was merged on 2
 All dated 2026-09-19 (Paris time). Commit references are short SHAs.
 
 **Added**
+- Safe re-centring on explicit gestures: a tap on Browse, on My favorites or on the app title (now a button, with a
+  translated label in 11 languages) places the central card just under the host's top bar, using the height
+  reported by `env(safe-area-inset-top)` plus an 8 px margin. Nothing moves when the height is unknown, while typing,
+  right after a manual scroll or while the keyboard scroll restoration is pending, and it is refused when it would push the
+  row of back / pass / star / next buttons below the safe line (`dee7d2c`).
 - One discreet hint under the "Amount to delegate" field, shown only for a connected wallet whose
   main account reads 0, when the amount is not pre-filled and the card is in Add/Create mode
   (`11146f5`). It replaces the large notice and its "OK, got it" button (11 languages).
