@@ -395,7 +395,7 @@
           <div class="field" style="margin:12px 6px 0;">
             <label for="stakeAmt2" data-i18n="app.stakeAmtLabel" style="color:var(--nimiq-gold); font-weight:700;">Montant à déléguer (NIM)</label>
             <input type="number" id="stakeAmt2" data-i18n-placeholder="app.stakeAmtPlaceholder" placeholder="Enter the amount of NIM to stake here" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--nimiq-gold); font-weight:700; font-family:'Sora',sans-serif; font-size:.9rem;" />
-            <p class="helptext" data-i18n="app.balanceHint" style="margin-top:6px;">Ce montant est pré-rempli avec ton solde disponible — vérifie-le avant de confirmer.</p>
+            <p class="helptext" id="balanceHint" data-i18n="app.balanceHint" style="margin-top:6px;" hidden>Ce montant est pré-rempli avec ton solde disponible — vérifie-le avant de confirmer.</p>
           </div>
           <div class="swipe-actions">
             <button class="swipe-btn nav" id="shortlistBackBtn" data-i18n-aria="app.backAria" aria-label="Précédent">◀</button>
@@ -592,7 +592,7 @@
       'app.stakeAmtPlaceholder': 'Indique ici la quantité de NIM à staker',
       'app.demoModeSuccess': '🧪 Mode démo — rien n\'a été envoyé. Voici à quoi ressemblerait une délégation réussie vers {validator}.',
       'app.demoModeSwitchSuccess': '🧪 Mode démo — rien n\'a été envoyé. Voici à quoi ressemblerait un changement de stake vers {validator}.',
-      'app.fundsPendingWarning': 'On ne voit pas de solde disponible sur ce wallet pour le moment. Si tu viens d\'envoyer des fonds, ils sont peut-être encore en cours de traitement par le partenaire d\'échange de Nimiq — ça peut prendre un moment. Ajouter un nouveau stake ne fonctionnera pas tant qu\'ils ne sont pas arrivés, mais déplacer un stake déjà actif vers un autre validateur ne nécessite pas de nouveaux fonds et fonctionne quand même. Tu peux continuer à te promener dans l\'app dans tous les cas.',
+      'app.fundsPendingWarning': 'On ne voit pas de solde disponible sur le compte principal de ce wallet. Si tu viens de recharger, ces fonds sont peut-Ãªtre encore dans un contrat d\'Ã©change â Nimiq Pay peut les utiliser quand tu stakes, tu peux donc saisir un montant et essayer. Si la transaction Ã©choue, vÃ©rifie ton solde dans Nimiq Pay.',
       'app.fundsPendingDismiss': 'OK, compris',
       'app.delegateFailedBalanceHint': 'Il semble que ton wallet n\'a pas assez de NIM disponible pour cette délégation — vérifie ton solde dans Nimiq Pay.',
       'app.delegateFailedConflict': 'Il semble y avoir un conflit avec un stake déjà en cours sur ce wallet — réessaie dans quelques instants.',
@@ -701,7 +701,7 @@
       'app.stakeAmtPlaceholder': 'Enter the amount of NIM to stake here',
       'app.demoModeSuccess': '🧪 Demo mode — nothing was sent. This is what a successful delegation to {validator} would look like.',
       'app.demoModeSwitchSuccess': '🧪 Demo mode — nothing was sent. This is what switching your stake to {validator} would look like.',
-      'app.fundsPendingWarning': 'We don\'t see a spendable balance on this wallet right now. If you just sent funds, they may still be settling through Nimiq\'s exchange partner — this can take a while. Adding new stake won\'t work until they land, but moving an already-active stake to another validator doesn\'t need new funds and still works. Feel free to keep browsing either way.',
+      'app.fundsPendingWarning': 'We don\'t see a spendable balance on this wallet\'s main account. If you just topped up, those funds may still be in a swap contract â Nimiq Pay can use them when you stake, so you can still enter an amount and try. If the transaction fails, check your balance in Nimiq Pay.',
       'app.fundsPendingDismiss': 'OK, got it',
       'app.delegateFailedBalanceHint': 'It looks like your wallet doesn\'t have enough NIM available for this delegation — check your balance in Nimiq Pay.',
       'app.delegateFailedConflict': 'There seems to be a conflict with a stake already in progress on this wallet — try again in a moment.',
@@ -800,7 +800,7 @@
       'app.stakeAmtPlaceholder': 'Indica aquí la cantidad de NIM a hacer staking',
       'app.demoModeSuccess': '🧪 Modo demo — no se ha enviado nada. Así se vería una delegación exitosa a {validator}.',
       'app.demoModeSwitchSuccess': '🧪 Modo demo — no se ha enviado nada. Así se vería un cambio de tu stake a {validator}.',
-      'app.fundsPendingWarning': 'No vemos saldo disponible en este wallet en este momento. Si acabas de enviar fondos, puede que aún se estén liquidando a través del socio de intercambio de Nimiq — esto puede tardar un rato. Añadir nuevo stake no funcionará hasta que lleguen, pero mover un stake ya activo a otro validador no necesita fondos nuevos y sigue funcionando. Puedes seguir explorando la app en cualquier caso.',
+      'app.fundsPendingWarning': 'No se ve ningún saldo disponible en la cuenta principal de este monedero. Si acabas de recargar, es posible que esos fondos aún estén en un contrato de intercambio; Nimiq Pay puede utilizarlos cuando haces staking, así que puedes introducir una cantidad e intentarlo. Si la transacción falla, comprueba tu saldo en Nimiq Pay.',
       'app.fundsPendingDismiss': 'Vale, entendido',
       'how.eyebrow': '¿Cómo funciona?',
       'how.title': 'Comparar y, a continuación, delegar',
@@ -909,7 +909,7 @@
       'app.stakeAmtPlaceholder': '请在此输入要质押的NIM数量',
       'app.demoModeSuccess': '🧪 演示模式——未发送任何内容。这是成功委托给 {validator} 时的样子。',
       'app.demoModeSwitchSuccess': '🧪 演示模式——未发送任何内容。这是将质押切换到 {validator} 时的样子。',
-      'app.fundsPendingWarning': '目前我们没有在此钱包中看到可用余额。如果你刚发送了资金，它们可能仍在通过 Nimiq 的兑换合作方结算——这可能需要一些时间。在资金到账前无法添加新的质押，但将已经激活的质押转移到另一个验证者不需要新资金，仍然可以进行。无论如何你都可以继续浏览应用。',
+      'app.fundsPendingWarning': '该钱包的主账户中未显示可用余额。如果你刚充值，这些资金可能仍处于交易合约中——Nimiq Pay 在你进行质押时可以使用这些资金，因此你可以输入一个金额并尝试一下。 如果交易失败，请在 Nimiq Pay 中查看你的余额。',
       'app.fundsPendingDismiss': '好的，知道了',
       'how.eyebrow': '工作原理',
       'how.title': '先比较，再授权',
@@ -1018,7 +1018,7 @@
       'app.stakeAmtPlaceholder': 'ステークするNIMの数量をここに入力',
       'app.demoModeSuccess': '🧪 デモモード — 何も送信されていません。{validator} への委任が成功した場合はこのように表示されます。',
       'app.demoModeSwitchSuccess': '🧪 デモモード — 何も送信されていません。{validator} へのステーク切り替えが成功した場合はこのように表示されます。',
-      'app.fundsPendingWarning': '現在このウォレットに利用可能な残高が見当たりません。資金を送ったばかりの場合、Nimiqの交換パートナー経由でまだ決済処理中の可能性があります — しばらく時間がかかることがあります。資金が届くまで新しいステークの追加はできませんが、既にアクティブなステークを別のバリデーターに移動する操作は新しい資金を必要とせず、引き続き利用できます。いずれにせよアプリ内の閲覧は引き続きお楽しみいただけます。',
+      'app.fundsPendingWarning': 'このウォレットのメインアカウントには利用可能な残高が表示されていません。入金したばかりの場合は、その資金がまだ交換契約内にある可能性があります。Nimiq Payではステーキングの際にこの資金を使用できるため、金額を入力して試してみてください。 取引が失敗した場合は、Nimiq Payで残高を確認してください。',
       'app.fundsPendingDismiss': 'OK、了解しました',
       'how.eyebrow': '仕組み',
       'how.title': '比較してから、委任する',
@@ -1127,7 +1127,7 @@
       'app.stakeAmtPlaceholder': '스테이킹할 NIM 수량을 여기에 입력하세요',
       'app.demoModeSuccess': '🧪 데모 모드 — 아무것도 전송되지 않았습니다. {validator}에게 위임이 성공했을 때의 모습입니다.',
       'app.demoModeSwitchSuccess': '🧪 데모 모드 — 아무것도 전송되지 않았습니다. 스테이크를 {validator}로 전환했을 때의 모습입니다.',
-      'app.fundsPendingWarning': '현재 이 지갑에서 사용 가능한 잔액이 보이지 않습니다. 방금 자금을 보냈다면 Nimiq의 교환 파트너를 통해 아직 정산 중일 수 있습니다 — 시간이 걸릴 수 있습니다. 자금이 도착할 때까지 새 스테이크 추가는 작동하지 않지만, 이미 활성화된 스테이크를 다른 검증자로 이동하는 것은 새 자금이 필요 없어 계속 작동합니다. 어느 쪽이든 앱 탐색은 계속하셔도 됩니다.',
+      'app.fundsPendingWarning': '이 지갑의 주 계좌에는 사용 가능한 잔액이 표시되지 않습니다. 방금 입금하셨다면, 해당 자금이 아직 거래 계약에 묶여 있을 수 있습니다. Nimiq Pay는 스테이킹 시 이 자금을 사용할 수 있으므로, 금액을 입력하여 시도해 보세요. 거래가 실패하면 Nimiq Pay에서 잔액을 확인해 보세요.',
       'app.fundsPendingDismiss': '확인했습니다',
       'how.eyebrow': '어떻게 작동하나요?',
       'how.title': '비교한 뒤, 업무를 위임하기',
@@ -1236,7 +1236,7 @@
       'app.stakeAmtPlaceholder': 'Gib hier die zu stakende NIM-Menge ein',
       'app.demoModeSuccess': '🧪 Demomodus — es wurde nichts gesendet. So sähe eine erfolgreiche Delegation an {validator} aus.',
       'app.demoModeSwitchSuccess': '🧪 Demomodus — es wurde nichts gesendet. So sähe ein Wechsel deines Stakes zu {validator} aus.',
-      'app.fundsPendingWarning': 'Wir sehen derzeit kein verfügbares Guthaben in dieser Wallet. Falls du gerade Guthaben gesendet hast, wird es möglicherweise noch über den Tauschpartner von Nimiq abgewickelt — das kann eine Weile dauern. Neuen Stake hinzuzufügen funktioniert erst, wenn das Guthaben angekommen ist, aber einen bereits aktiven Stake zu einem anderen Validator zu verschieben braucht kein neues Guthaben und funktioniert weiterhin. Du kannst die App in jedem Fall gerne weiter erkunden.',
+      'app.fundsPendingWarning': 'Auf dem Hauptkonto dieser Wallet ist kein Guthaben sichtbar. Falls du gerade eine Einzahlung getätigt hast, befinden sich diese Beträge möglicherweise noch in einem Tauschvertrag – Nimiq Pay kann sie beim Staking verwenden, daher kannst du einen Betrag eingeben und es versuchen. Sollte die Transaktion fehlschlagen, überprüfe deinen Kontostand in Nimiq Pay.',
       'app.fundsPendingDismiss': 'OK, verstanden',
       'how.eyebrow': 'So funktioniert es',
       'how.title': 'Vergleichen und dann delegieren',
@@ -1345,7 +1345,7 @@
       'app.stakeAmtPlaceholder': 'Indica aqui a quantidade de NIM a fazer stake',
       'app.demoModeSuccess': '🧪 Modo demo — nada foi enviado. É assim que ficaria uma delegação bem-sucedida a {validator}.',
       'app.demoModeSwitchSuccess': '🧪 Modo demo — nada foi enviado. É assim que ficaria uma mudança do teu stake para {validator}.',
-      'app.fundsPendingWarning': 'Não vemos saldo disponível nesta wallet neste momento. Se acabaste de enviar fundos, podem ainda estar a ser processados através do parceiro de câmbio da Nimiq — isto pode demorar um pouco. Adicionar novo stake não vai funcionar até chegarem, mas mover um stake já ativo para outro validador não precisa de fundos novos e continua a funcionar. Podes continuar a explorar a app em qualquer dos casos.',
+      'app.fundsPendingWarning': 'Não se vê saldo disponível na conta principal desta carteira. Se acabaste de recarregar, esses fundos podem ainda estar num contrato de câmbio — o Nimiq Pay pode utilizá-los quando fazes staking, pelo que podes introduzir um montante e tentar. Se a transação falhar, verifica o teu saldo no Nimiq Pay.',
       'app.fundsPendingDismiss': 'OK, percebido',
       'how.eyebrow': 'Como funciona',
       'how.title': 'Comparar e, em seguida, delegar',
@@ -1454,7 +1454,7 @@
       'app.stakeAmtPlaceholder': 'Укажи здесь количество NIM для стейкинга',
       'app.demoModeSuccess': '🧪 Демо-режим — ничего не отправлено. Вот как выглядела бы успешная делегация валидатору {validator}.',
       'app.demoModeSwitchSuccess': '🧪 Демо-режим — ничего не отправлено. Вот как выглядела бы смена твоей ставки на {validator}.',
-      'app.fundsPendingWarning': 'Мы не видим доступного баланса в этом кошельке прямо сейчас. Если ты только что отправил(а) средства, они, возможно, ещё обрабатываются через партнёра Nimiq по обмену — это может занять некоторое время. Добавить новый стейк не получится, пока средства не поступят, но перенос уже активного стейка на другого валидатора не требует новых средств и по-прежнему работает. В любом случае ты можешь продолжать пользоваться приложением.',
+      'app.fundsPendingWarning': 'На главном счете этого кошелька не отображается доступный остаток. Если ты только что пополнил счет, эти средства, возможно, ещё находятся в обменном контракте — Nimiq Pay может использовать их при стейкинге, поэтому попробуй ввести сумму и повторить попытку. Если транзакция не прошла, проверьте свой баланс в Nimiq Pay.',
       'app.fundsPendingDismiss': 'ОК, понятно',
       'how.eyebrow': 'Как это работает',
       'how.title': 'Сравнить, а затем делегировать',
@@ -1563,7 +1563,7 @@
       'app.stakeAmtPlaceholder': 'Stake edilecek NIM miktarını buraya girin',
       'app.demoModeSuccess': '🧪 Demo modu — hiçbir şey gönderilmedi. {validator} adresine başarılı bir delegasyon böyle görünür.',
       'app.demoModeSwitchSuccess': '🧪 Demo modu — hiçbir şey gönderilmedi. Stake\'inizi {validator} adresine değiştirmek böyle görünür.',
-      'app.fundsPendingWarning': 'Şu anda bu cüzdanda kullanılabilir bir bakiye görmüyoruz. Az önce fon gönderdiyseniz, Nimiq\'in değişim ortağı üzerinden hâlâ işleniyor olabilir — bu biraz zaman alabilir. Fonlar ulaşana kadar yeni stake eklemek çalışmaz, ancak zaten aktif olan bir stake\'i başka bir validatöre taşımak yeni fon gerektirmez ve çalışmaya devam eder. Her iki durumda da uygulamada gezinmeye devam edebilirsiniz.',
+      'app.fundsPendingWarning': 'Bu cüzdanın ana hesabında kullanılabilir bakiye görünmüyor. Eğer yeni para yüklediysen, bu bakiye henüz bir takas sözleşmesinde olabilir — Nimiq Pay, stake yaparken bu bakiyeyi kullanabilir; bu nedenle bir tutar girip deneyebilirsin. İşlem başarısız olursa, Nimiq Pay\'deki bakiyenizi kontrol edin.',
       'app.fundsPendingDismiss': 'Tamam, anladım',
       'how.eyebrow': 'Nasıl çalışır?',
       'how.title': 'Karşılaştırın, ardından görevlendirin',
@@ -1672,7 +1672,7 @@
       'app.stakeAmtPlaceholder': 'أدخل هنا كمية NIM المراد إيداعها',
       'app.demoModeSuccess': '🧪 وضع تجريبي — لم يتم إرسال أي شيء. هكذا سيبدو التفويض الناجح إلى {validator}.',
       'app.demoModeSwitchSuccess': '🧪 وضع تجريبي — لم يتم إرسال أي شيء. هكذا سيبدو تحويل حصتك إلى {validator}.',
-      'app.fundsPendingWarning': 'لا نرى رصيدًا متاحًا في هذه المحفظة حاليًا. إذا كنت قد أرسلت أموالًا للتو، فقد تكون لا تزال قيد التسوية عبر شريك التبادل الخاص بـ Nimiq — قد يستغرق هذا بعض الوقت. لن تعمل إضافة إيداع جديد حتى تصل الأموال، لكن نقل إيداع نشط بالفعل إلى مُصدِّق آخر لا يتطلب أموالًا جديدة ولا يزال يعمل. يمكنك متابعة تصفح التطبيق في كل الأحوال.',
+      'app.fundsPendingWarning': 'لا يظهر أي رصيد متاح في الحساب الرئيسي لهذه المحفظة. إذا كنت قد قمت للتو بإضافة رصيد، فربما لا تزال هذه الأموال موجودة في عقد تداول — يمكن لـ Nimiq Pay استخدامها عند المشاركة في عملية الـ staking، لذا يمكنك إدخال مبلغ ما ومحاولة إجراء المعاملة. إذا فشلت المعاملة، فتحقق من رصيدك في Nimiq Pay.',
       'app.fundsPendingDismiss': 'حسنًا، مفهوم',
       'how.eyebrow': 'كيف يعمل',
       'how.title': 'المقارنة، ثم التفويض',
@@ -1978,6 +1978,21 @@
     errorModalOverlay.hidden = false;
   }
   function closeErrorModal(){ errorModalOverlay.hidden = true; }
+  // The SDK's send*Transaction() promises can RESOLVE with an ErrorResponse
+  // object instead of rejecting (see mini-app-sdk's provider.d.ts): treat
+  // that as a failure, never as a success.
+  function sdkCheck(res){
+    if (res && typeof res === 'object' && res.error) throw res;
+    return res;
+  }
+  function errDetail(err){
+    if (err && typeof err === 'object'){
+      if (err.message) return String(err.message);
+      if (err.error && err.error.message) return String(err.error.message);
+      try { return JSON.stringify(err); } catch (e) {}
+    }
+    return String(err);
+  }
   $('errorModalOkBtn').addEventListener('click', closeErrorModal);
   errorModalOverlay.addEventListener('click', function(ev){
     if (ev.target === errorModalOverlay) closeErrorModal();
@@ -2033,7 +2048,8 @@
     var retireCall = state.nimiq
       ? state.nimiq.sendRetireStakeTransaction({ retireStake: retireValueLuna })
       : hubStakingTx('retire', { value: retireValueLuna });
-    retireCall.then(function(){
+    retireCall.then(function(res){
+      sdkCheck(res);
       showSuccessModal(t('app.retireSuccess'));
       retireForm.hidden = true;
       $('retireAmt').value = '';
@@ -2041,7 +2057,7 @@
       fetchStakerStatus();
     }).catch(function(err){
       console.warn('Validator Swipe: retire stake failed.', err);
-      var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
+      var rawDetail = errDetail(err);
       var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail)
         ? t('app.delegateFailedBalanceHint')
         : /invalidated/i.test(rawDetail)
@@ -2063,8 +2079,16 @@
     if (!input || input.value !== '') return;
     if (!data || data.wallet_balance_luna == null) return;
     var nim = Math.floor(data.wallet_balance_luna / 100000);
-    if (nim >= 1) input.value = String(nim);
+    if (nim >= 1){
+      input.value = String(nim);
+      prefilledStakeValue = input.value;
+      $('balanceHint').hidden = false;
+    }
   }
+  var prefilledStakeValue = null;
+  $('stakeAmt2').addEventListener('input', function(){
+    $('balanceHint').hidden = (this.value !== prefilledStakeValue);
+  });
   var lastStakerStatus = null;
   function fetchStakerStatus(){
     if (!state.myAddress) return;
@@ -2141,13 +2165,14 @@
     removeStakeBtn.disabled = true;
     state.nimiq.sendRemoveStakeTransaction({
       value: lastStakerStatus.retired_balance_luna
-    }).then(function(){
+    }).then(function(res){
+      sdkCheck(res);
       showSuccessModal(t('app.removeStakeSuccess'));
       removeStakeBtn.disabled = false;
       fetchStakerStatus();
     }).catch(function(err){
       console.warn('Validator Swipe: remove stake failed.', err);
-      var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
+      var rawDetail = errDetail(err);
       var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail)
         ? t('app.delegateFailedBalanceHint')
         : /invalidated/i.test(rawDetail)
@@ -2376,19 +2401,12 @@
         // also add the amount typed in the form.
         var norm = function(a){ return (a || '').replace(/\s+/g, ''); };
         var isSwitch = hasExistingStaker && currentDelegation && norm(currentDelegation) !== norm(v.address);
-        // Cheap, honest check before even trying the network call: a known
-        // 0 basic-account balance means Create/Add Stake will fail anyway
-        // (see fundsPendingBanner above for why) — surface the same
-        // explanation instead of a confusing wallet-level error a few
-        // seconds later. Switching validator (UpdateStaker) re-targets the
-        // existing active stake and needs no new funds at all, so it's
-        // exempt from this check (real bug caught 2026-09-19: the earlier
-        // version of this guard blocked switches too).
-        if (!isSwitch && lastStakerStatus && lastStakerStatus.wallet_balance_luna === 0){
-          showErrorModal(t('app.fundsPendingWarning'), '');
-          delegateBtn.disabled = false;
-          return;
-        }
+        // No spendable-balance guard here on purpose: wallet_balance_luna only
+        // covers the basic account, while Nimiq Pay can also use funds held in
+        // a swap contract (HTLC) when staking. A real-device test showed an
+        // Add Stake accepted with wallet_balance_luna = 0 and funds in an HTLC,
+        // so blocking on 0 would refuse a flow that works. The wallet itself
+        // rejects a genuinely unfunded attempt (see the error handling below).
         var call;
         if (state.nimiq){
           if (!hasExistingStaker){
@@ -2412,7 +2430,7 @@
             call = hubStakingTx('add', { value: stakeValueLuna });
           }
         }
-        call.then(function(){ onDelegated(isSwitch); }).catch(function(err){
+        call.then(function(res){ sdkCheck(res); onDelegated(isSwitch); }).catch(function(err){
           // Confirmed via real-device test: the confirm screen already shows
           // the validator address correctly, so the failure happens inside
           // Nimiq Pay's own transaction build/sign step after confirmation —
@@ -2421,7 +2439,7 @@
           // "transaction already in progress" guard while it's still busy.
           // No auto-retry here; single clean attempt only.
           console.warn('Validator Swipe: delegation failed.', err);
-          var rawDetail = (err && (err.message || err.toString && err.toString())) || String(err);
+          var rawDetail = errDetail(err);
           // "expected instance of Address" has been confirmed (real-device
           // test, 2026-09-16) to actually mean "insufficient balance" in
           // Nimiq Pay's current build — the raw message is misleading to a
