@@ -202,6 +202,7 @@
 
   .active-delegation-banner{ display:flex; align-items:center; justify-content:center; gap:8px; text-align:center; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, var(--nimiq-gold) 14%, transparent); border:1px solid var(--nimiq-gold); color:var(--nimiq-gold); font-weight:700; font-size:.85rem; }
   .active-delegation-banner[hidden]{ display:none; }
+  #pendingNote[hidden]{ display:none; }
   .active-delegation-icon{ font-size:1rem; }
   .funds-pending-banner{ display:flex; align-items:flex-start; gap:8px; margin:10px 6px 0; padding:10px 14px; border-radius:12px; background:color-mix(in srgb, #f7a53d 14%, transparent); border:1px solid #f7a53d; color:#f7a53d; font-size:.8rem; line-height:1.4; }
   .funds-pending-banner[hidden]{ display:none; }
@@ -343,6 +344,7 @@
           <span class="active-delegation-icon" aria-hidden="true">🛡️</span>
           <span id="activeDelegationText"></span>
         </div>
+        <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" style="margin:8px 6px 0; text-align:center; color:var(--nimiq-gold);" hidden>Waiting for the network to confirm your transaction…</p>
 
         <div class="funds-pending-banner" id="fundsPendingBanner" hidden>
           <span class="funds-pending-icon" aria-hidden="true">⏳</span>
@@ -598,6 +600,7 @@
       'app.fee': 'Frais',
       'app.delegateFailed': 'La délégation a échoué ou a été annulée — réessaie.',
       'app.switchNote': 'Changer de validateur déplace tout ton stake existant vers ce validateur — aucun nouveau NIM n\'est nécessaire.',
+      'app.pendingConfirm': 'En attente de la confirmation de ta transaction par le réseau…',
       'app.delegateAmountRequired': 'Indique un montant à déléguer avant de valider.',
       'app.stakeAmtPlaceholder': 'Indique ici la quantité de NIM à staker',
       'app.demoModeSuccess': '🧪 Mode démo — rien n\'a été envoyé. Voici à quoi ressemblerait une délégation réussie vers {validator}.',
@@ -710,6 +713,7 @@
       'app.fee': 'Fee',
       'app.delegateFailed': 'The delegation failed or was cancelled — try again.',
       'app.switchNote': 'Switching validator moves your whole existing stake to this validator — no new NIM needed.',
+      'app.pendingConfirm': 'Waiting for the network to confirm your transaction…',
       'app.delegateAmountRequired': 'Enter an amount to delegate before confirming.',
       'app.stakeAmtPlaceholder': 'Enter the amount of NIM to stake here',
       'app.demoModeSuccess': '🧪 Demo mode — nothing was sent. This is what a successful delegation to {validator} would look like.',
@@ -812,6 +816,7 @@
       'app.fee': 'Gastos',
       'app.delegateFailed': 'La delegación ha fallado o se ha cancelado; vuelve a intentarlo.',
       'app.switchNote': 'Al cambiar de validador, todo tu stake actual pasa a este validador; no hace falta ningún NIM nuevo.',
+      'app.pendingConfirm': 'Esperando a que la red confirme tu transacción…',
       'app.delegateAmountRequired': 'Indica un importe a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aquí la cantidad de NIM a hacer staking',
       'app.demoModeSuccess': '🧪 Modo demo — no se ha enviado nada. Así se vería una delegación exitosa a {validator}.',
@@ -924,6 +929,7 @@
       'app.fee': '费用',
       'app.delegateFailed': '该任务失败或已被取消——请重试。',
       'app.switchNote': '切换验证者会将你现有的全部质押转移到该验证者——无需新的 NIM。',
+      'app.pendingConfirm': '正在等待网络确认你的交易……',
       'app.delegateAmountRequired': '请在确认前输入要委托的金额。',
       'app.stakeAmtPlaceholder': '请在此输入要质押的NIM数量',
       'app.demoModeSuccess': '🧪 演示模式——未发送任何内容。这是成功委托给 {validator} 时的样子。',
@@ -1036,6 +1042,7 @@
       'app.fee': '費用',
       'app.delegateFailed': '送信に失敗したか、キャンセルされました。もう一度お試しください。',
       'app.switchNote': 'バリデーターを切り替えると、既存のステーク全体がこのバリデーターに移行されます。新たなNIMは必要ありません。',
+      'app.pendingConfirm': 'ネットワークによる取引の確認を待っています…',
       'app.delegateAmountRequired': '確定する前に委任する金額を入力してください。',
       'app.stakeAmtPlaceholder': 'ステークするNIMの数量をここに入力',
       'app.demoModeSuccess': '🧪 デモモード — 何も送信されていません。{validator} への委任が成功した場合はこのように表示されます。',
@@ -1148,6 +1155,7 @@
       'app.fee': '비용',
       'app.delegateFailed': '전송에 실패했거나 취소되었습니다. 다시 시도해 주세요.',
       'app.switchNote': '검증자를 변경하면 기존 스테이크 전체가 이 검증자로 이전되며, 새 NIM은 필요하지 않습니다.',
+      'app.pendingConfirm': '네트워크에서 거래를 확인하기를 기다리고 있습니다…',
       'app.delegateAmountRequired': '확인하기 전에 위임할 금액을 입력하세요.',
       'app.stakeAmtPlaceholder': '스테이킹할 NIM 수량을 여기에 입력하세요',
       'app.demoModeSuccess': '🧪 데모 모드 — 아무것도 전송되지 않았습니다. {validator}에게 위임이 성공했을 때의 모습입니다.',
@@ -1260,6 +1268,7 @@
       'app.fee': 'Kosten',
       'app.delegateFailed': 'Die Delegation ist fehlgeschlagen oder wurde abgebrochen – versuche es erneut.',
       'app.switchNote': 'Beim Wechsel des Validators wird dein gesamter bestehender Stake auf diesen Validator übertragen – du brauchst keine neuen NIM.',
+      'app.pendingConfirm': 'Wir warten darauf, dass das Netzwerk deine Transaktion bestätigt…',
       'app.delegateAmountRequired': 'Gib einen zu delegierenden Betrag ein, bevor du bestätigst.',
       'app.stakeAmtPlaceholder': 'Gib hier die zu stakende NIM-Menge ein',
       'app.demoModeSuccess': '🧪 Demomodus — es wurde nichts gesendet. So sähe eine erfolgreiche Delegation an {validator} aus.',
@@ -1372,6 +1381,7 @@
       'app.fee': 'Despesas',
       'app.delegateFailed': 'A delegação falhou ou foi cancelada — tenta novamente.',
       'app.switchNote': 'Mudar de validador transfere todo o teu stake atual para este validador — não são precisos novos NIM.',
+      'app.pendingConfirm': 'A aguardar que a rede confirme a tua transação…',
       'app.delegateAmountRequired': 'Indica um valor a delegar antes de confirmar.',
       'app.stakeAmtPlaceholder': 'Indica aqui a quantidade de NIM a fazer stake',
       'app.demoModeSuccess': '🧪 Modo demo — nada foi enviado. É assim que ficaria uma delegação bem-sucedida a {validator}.',
@@ -1484,6 +1494,7 @@
       'app.fee': 'Расходы',
       'app.delegateFailed': 'Передача не удалась или была отменена — попробуй ещё раз.',
       'app.switchNote': 'При смене валидатора весь твой текущий стейк переносится на этого валидатора — новые NIM не нужны.',
+      'app.pendingConfirm': 'Ожидание подтверждения транзакции со стороны сети…',
       'app.delegateAmountRequired': 'Укажи сумму делегирования перед подтверждением.',
       'app.stakeAmtPlaceholder': 'Укажи здесь количество NIM для стейкинга',
       'app.demoModeSuccess': '🧪 Демо-режим — ничего не отправлено. Вот как выглядела бы успешная делегация валидатору {validator}.',
@@ -1596,6 +1607,7 @@
       'app.fee': 'Masraflar',
       'app.delegateFailed': 'Aktarım başarısız oldu veya iptal edildi — lütfen tekrar deneyin.',
       'app.switchNote': 'Validatör değiştirmek, mevcut stake\'inin tamamını bu validatöre taşır — yeni NIM gerekmez.',
+      'app.pendingConfirm': 'Ağın işlemini onaylaması bekleniyor…',
       'app.delegateAmountRequired': 'Onaylamadan önce delege edilecek bir miktar girin.',
       'app.stakeAmtPlaceholder': 'Stake edilecek NIM miktarını buraya girin',
       'app.demoModeSuccess': '🧪 Demo modu — hiçbir şey gönderilmedi. {validator} adresine başarılı bir delegasyon böyle görünür.',
@@ -1708,6 +1720,7 @@
       'app.fee': 'الرسوم',
       'app.delegateFailed': 'فشلت عملية الإرسال أو تم إلغاؤها — يرجى إعادة المحاولة.',
       'app.switchNote': 'يؤدي التبديل إلى المُصدِّق إلى نقل كامل حصتك الحالية إلى هذا المُصدِّق — ولا حاجة إلى NIM جديد.',
+      'app.pendingConfirm': 'في انتظار تأكيد الشبكة لمعاملتك…',
       'app.delegateAmountRequired': 'أدخل مبلغًا للتفويض قبل التأكيد.',
       'app.stakeAmtPlaceholder': 'أدخل هنا كمية NIM المراد إيداعها',
       'app.demoModeSuccess': '🧪 وضع تجريبي — لم يتم إرسال أي شيء. هكذا سيبدو التفويض الناجح إلى {validator}.',
@@ -2051,6 +2064,7 @@
   }
   function closeSuccessModal(){
     successModalOverlay.hidden = true;
+    refreshStatusSoon();
   }
   $('successModalOkBtn').addEventListener('click', closeSuccessModal);
   successModalOverlay.addEventListener('click', function(ev){
@@ -2082,6 +2096,7 @@
       return;
     }
     retireConfirmBtn.disabled = true;
+    var retireExpect = makeExpect('retire');
     var retireValueLuna = Math.round(amt * 100000);
     var retireCall = state.nimiq
       ? state.nimiq.sendRetireStakeTransaction({ retireStake: retireValueLuna })
@@ -2092,7 +2107,7 @@
       retireForm.hidden = true;
       $('retireAmt').value = '';
       retireConfirmBtn.disabled = false;
-      fetchStakerStatus();
+      pollStakerStatus(retireExpect);
     }).catch(function(err){
       console.warn('Validator Swipe: retire stake failed.', err);
       var rawDetail = errDetail(err);
@@ -2128,18 +2143,82 @@
     $('balanceHint').hidden = (this.value !== prefilledStakeValue);
   });
   var lastStakerStatus = null;
+  var statusInFlight = null, lastStatusFetchAt = 0;
   function fetchStakerStatus(){
-    if (!state.myAddress) return;
-    fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
+    if (!state.myAddress) return Promise.resolve(null);
+    if (statusInFlight) return statusInFlight;
+    lastStatusFetchAt = Date.now();
+    statusInFlight = fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
       if (!res.ok) throw new Error('staker-status failed: ' + res.status);
       return res.json();
     }).then(function(data){
       lastStakerStatus = data;
       renderStakerStatus(data);
+      return data;
     }).catch(function(err){
       console.warn('Validator Swipe: could not load staker status.', err);
+      return null;
+    }).then(function(data){
+      statusInFlight = null;
+      return data;
     });
+    return statusInFlight;
   }
+
+  // ---------- keep the on-chain view fresh after a real transaction ----------
+  // A transaction is only mined some seconds after the wallet confirms it, so
+  // one read right after would still show the OLD state. After every real
+  // action we re-read /api/v2/staker-status every few seconds until the chain
+  // reflects the change (or a time cap), and every read re-renders all the
+  // views at once (renderStakerStatus). The app never claims a state the chain
+  // does not show: on timeout it simply keeps the last real state.
+  var POLL_EVERY_MS = 6000, POLL_MAX_MS = 150000;
+  var statusPoll = null;
+  function makeExpect(kind, address){
+    var s = lastStakerStatus || {};
+    return { kind: kind, address: address || null,
+      prevActive: s.active_balance_luna || 0,
+      prevPending: (s.inactive_balance_luna || 0) + (s.retired_balance_luna || 0),
+      prevRetired: s.retired_balance_luna || 0 };
+  }
+  function expectReflected(data, e){
+    if (!data) return false;
+    var same = function(a, b){ return (a || '').replace(/\s+/g, '') === (b || '').replace(/\s+/g, ''); };
+    if (e.kind === 'create' || e.kind === 'update') return !!(data.found && data.delegation && same(data.delegation, e.address));
+    if (e.kind === 'add') return (data.active_balance_luna || 0) > e.prevActive;
+    if (e.kind === 'retire') return ((data.inactive_balance_luna || 0) + (data.retired_balance_luna || 0)) > e.prevPending || (data.active_balance_luna || 0) < e.prevActive;
+    if (e.kind === 'remove') return (data.retired_balance_luna || 0) < e.prevRetired;
+    return true;
+  }
+  function setPendingNote(on){ $('pendingNote').hidden = !on; }
+  function stopStatusPoll(){
+    if (statusPoll){ clearTimeout(statusPoll.timer); statusPoll = null; }
+    setPendingNote(false);
+  }
+  function pollStakerStatus(expect){
+    stopStatusPoll();
+    var poll = { expect: expect, startedAt: Date.now(), timer: null };
+    statusPoll = poll;
+    setPendingNote(true);
+    function tick(){
+      if (statusPoll !== poll) return;
+      if (Date.now() - poll.startedAt > POLL_MAX_MS){ stopStatusPoll(); return; }
+      if (document.hidden){ poll.timer = setTimeout(tick, POLL_EVERY_MS); return; }
+      fetchStakerStatus().then(function(data){
+        if (statusPoll !== poll) return;
+        if (expectReflected(data, poll.expect)){ stopStatusPoll(); return; }
+        poll.timer = setTimeout(tick, POLL_EVERY_MS);
+      });
+    }
+    tick();
+  }
+  // Also refresh when the app comes back to the foreground or a message is dismissed.
+  function refreshStatusSoon(){
+    if (!state.myAddress || Date.now() - lastStatusFetchAt < 2000) return;
+    fetchStakerStatus();
+  }
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) refreshStatusSoon(); });
+  window.addEventListener('focus', refreshStatusSoon);
   // Lightweight funds-pending warning: we can't do a full HTLC chain scan
   // (that's a bigger job, deferred), but a connected wallet reporting a
   // basic-account balance of exactly 0 is a cheap, honest signal that
@@ -2202,13 +2281,14 @@
       return;
     }
     removeStakeBtn.disabled = true;
+    var removeExpect = makeExpect('remove');
     state.nimiq.sendRemoveStakeTransaction({
       value: lastStakerStatus.retired_balance_luna
     }).then(function(res){
       sdkCheck(res);
       showSuccessModal(t('app.removeStakeSuccess'));
       removeStakeBtn.disabled = false;
-      fetchStakerStatus();
+      pollStakerStatus(removeExpect);
     }).catch(function(err){
       console.warn('Validator Swipe: remove stake failed.', err);
       var rawDetail = errDetail(err);
@@ -2398,7 +2478,7 @@
     var stakeNim = parseFloat(stakeAmtInput.value);
     var card = $('currentShortlistCard');
 
-    function onDelegated(isSwitch, isDemo){
+    function onDelegated(isSwitch, isDemo, expect){
       delegated.push(v);
       renderDelegationHistory();
       bookmarked.splice(shortIdx, 1);
@@ -2415,10 +2495,7 @@
         msg = t(isSwitch ? 'app.delegateSwitchSuccess' : 'app.delegateSuccess').replace('{validator}', v.name);
       }
       showSuccessModal(msg);
-      if (!isDemo){
-        updateActiveDelegationBanner();
-        fetchStakerStatus();
-      }
+      if (!isDemo) pollStakerStatus(expect);
       renderShortlistCard();
     }
 
@@ -2464,6 +2541,7 @@
         // so blocking on 0 would refuse a flow that works. The wallet itself
         // rejects a genuinely unfunded attempt (see the error handling below).
         var call;
+        var expect = makeExpect(isSwitch ? 'update' : (hasExistingStaker ? 'add' : 'create'), v.address);
         if (state.nimiq){
           if (!hasExistingStaker){
             call = state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
@@ -2486,7 +2564,7 @@
             call = hubStakingTx('add', { value: stakeValueLuna });
           }
         }
-        call.then(function(res){ sdkCheck(res); onDelegated(isSwitch); }).catch(function(err){
+        call.then(function(res){ sdkCheck(res); onDelegated(isSwitch, false, expect); }).catch(function(err){
           // Confirmed via real-device test: the confirm screen already shows
           // the validator address correctly, so the failure happens inside
           // Nimiq Pay's own transaction build/sign step after confirmation —
@@ -2730,6 +2808,7 @@
     state.hub = null;
     state.myAddress = null;
     lastStakerStatus = null;
+    stopStatusPoll();
     $('statusText').textContent = t('app.statusDemo');
     $('statusPill').classList.remove('live');
     $('retireBox').hidden = true;

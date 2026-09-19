@@ -14,6 +14,16 @@ releases yet; entries are grouped by date and reconstructed from the git history
   bug-report form; the bug template now asks not to share the full wallet address.
 
 ### Fixed
+- The displayed staking state stayed stale after a confirmed delegation, switch, add, retire or claim:
+  the app re-read the on-chain state once, immediately, but a transaction is only mined some seconds
+  later, so the old delegation, stake and card modes stayed on screen until a reload. After every
+  real action the app now re-reads `staker-status` every 6 seconds (for at most 150 seconds, paused
+  while the app is hidden, never in parallel) until the chain reflects the change, and each read
+  updates the delegation banner, the stake block, the delegation history and the Add/Switch mode of
+  the cards together. A short notice (translated in 11 languages) tells the user the network is
+  still confirming. It also re-reads when the app returns to the foreground and when a success
+  message is dismissed. The app never shows a state the chain does not confirm: on timeout it keeps
+  the last real state.
 - On narrow phones (about 360-450 px) the "Technical integration" section was wider than the screen
   (its grid column was sized by long unbreakable function names, and the checklist items were
   laid out as flex rows), so the code block and the right end of the list were cut off and one
