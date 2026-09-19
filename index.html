@@ -80,6 +80,8 @@
   .btn-primary{ background:linear-gradient(135deg, var(--violet) 0%, var(--violet-strong) 100%); color:#f5f2ff; box-shadow:var(--shadow-sm); }
   .btn-primary:hover{ box-shadow:var(--shadow); }
   .btn-ghost{ background:transparent; color:var(--text); border:1.5px solid var(--border); }
+  .btn:disabled{ opacity:.4; cursor:not-allowed; filter:grayscale(.4); }
+  #retireConfirmBtn:disabled, #removeStakeBtn:disabled{ pointer-events:none; }
   .btn-ghost:hover{ border-color:var(--signal); color:var(--signal-strong); }
   .stat-row{ display:flex; gap:28px; margin-top:38px; flex-wrap:wrap; }
   .stat b{ display:block; font-family:'Fraunces',serif; font-size:1.6rem; color:var(--signal-strong); }
@@ -2213,6 +2215,7 @@
     if (!releaseAction) return;
     retireConfirmBtn.disabled = true;
     var retireExpect = makeExpect('retire');
+    retireExpect.msgKey = 'app.retireSuccess';
     releaseAction.mark(retireExpect, amt);
     var retireValueLuna = Math.round(amt * 100000);
     var retireCall = state.nimiq
@@ -2221,7 +2224,6 @@
     retireCall.then(function(res){
       sdkCheck(res);
       releaseAction(true);
-      showSuccessModal(t('app.retireSuccess'));
       retireForm.hidden = true;
       $('retireAmt').value = '';
       retireConfirmBtn.disabled = false;
@@ -2481,12 +2483,12 @@
     applyLock();
   }
   function markPending(expect, amount){
-    storePending({ kind: expect.kind, address: expect.address, name: expect.name || '', prevActive: expect.prevActive,
+    storePending({ kind: expect.kind, address: expect.address, name: expect.name || '', msgKey: expect.msgKey || '', prevActive: expect.prevActive,
       prevPending: expect.prevPending, prevRetired: expect.prevRetired, amount: amount || 0, addr: state.myAddress,
       startedAt: Date.now(), id: instanceId });
   }
   function expectFromPending(p){
-    return { kind: p.kind, address: p.address, name: p.name || '', prevActive: p.prevActive, prevPending: p.prevPending, prevRetired: p.prevRetired };
+    return { kind: p.kind, address: p.address, name: p.name || '', msgKey: p.msgKey || '', prevActive: p.prevActive, prevPending: p.prevPending, prevRetired: p.prevRetired };
   }
   function lockState(){
     var p = readPending();
@@ -2540,11 +2542,26 @@
   // The chain reflects the action: it enters the delegation history (only now), the lock is lifted.
   function confirmReflected(expect){
     stopStatusPoll();
+    var mine = !!readPending();               // only the page that still finds the record announces the success
     if (expect && expect.name && /^(create|add|update)$/.test(expect.kind)){
       delegated.push({ name: expect.name, address: expect.address });
       renderDelegationHistory();
     }
     clearPending(true);
+    if (mine && expect && expect.msgKey) announceConfirmed(expect);
+  }
+  // The success message, the confetti and the removal of the favorite come only now, when the chain shows the action
+  // (the wallet answering "success" to the request is not a confirmation).
+  function announceConfirmed(expect){
+    if (/^(create|add|update)$/.test(expect.kind)){
+      for (var i = bookmarked.length - 1; i >= 0; i--){
+        if ((bookmarked[i].address || '').replace(/\s+/g, '') === (expect.address || '').replace(/\s+/g, '')) bookmarked.splice(i, 1);
+      }
+      updateShortlistCount();
+      renderShortlistCard();
+      burstConfetti(90);
+    }
+    if (errorModalOverlay.hidden) showSuccessModal(t(expect.msgKey).replace('{validator}', expect.name || ''));
   }
   function settleLockFromStatus(data){
     var p = readPending();
@@ -2634,13 +2651,13 @@
     if (!releaseAction) return;
     removeStakeBtn.disabled = true;
     var removeExpect = makeExpect('remove');
+    removeExpect.msgKey = 'app.removeStakeSuccess';
     releaseAction.mark(removeExpect, lastStakerStatus.retired_balance_luna);
     state.nimiq.sendRemoveStakeTransaction({
       value: lastStakerStatus.retired_balance_luna
     }).then(function(res){
       sdkCheck(res);
       releaseAction(true);
-      showSuccessModal(t('app.removeStakeSuccess'));
       removeStakeBtn.disabled = false;
       pollStakerStatus(removeExpect);
     }).catch(function(err){
@@ -2834,22 +2851,19 @@
     var card = $('currentShortlistCard');
 
     function onDelegated(isSwitch, isDemo, expect){
-      if (isDemo){ delegated.push(v); renderDelegationHistory(); }   // a real action enters the history only once the chain reflects it
+      // A real action is NOT announced here: the wallet answering "success" is not a confirmation. History row,
+      // favorite removal, success message and confetti come when the chain reflects it (confirmReflected).
+      if (!isDemo){
+        pollStakerStatus(expect);
+        renderShortlistCard();
+        return;
+      }
+      // No wallet connected: nothing real was sent — clearly labeled as a demo, no confetti.
+      delegated.push(v);
+      renderDelegationHistory();
       bookmarked.splice(shortIdx, 1);
       updateShortlistCount();
-      // No wallet connected: nothing real was sent — never phrase this as
-      // a real success (real incident, 2026-09-19: a demo run in a plain
-      // browser was mistaken for a real stake), and no confetti for
-      // something that didn't actually happen.
-      var msg;
-      if (isDemo){
-        msg = t(isSwitch ? 'app.demoModeSwitchSuccess' : 'app.demoModeSuccess').replace('{validator}', v.name);
-      } else {
-        burstConfetti(90);
-        msg = t(isSwitch ? 'app.delegateSwitchSuccess' : 'app.delegateSuccess').replace('{validator}', v.name);
-      }
-      showSuccessModal(msg);
-      if (!isDemo) pollStakerStatus(expect);
+      showSuccessModal(t(isSwitch ? 'app.demoModeSwitchSuccess' : 'app.demoModeSuccess').replace('{validator}', v.name));
       renderShortlistCard();
     }
 
@@ -2900,6 +2914,7 @@
         var call;
         var expect = makeExpect(isSwitch ? 'update' : (hasExistingStaker ? 'add' : 'create'), v.address);
         expect.name = v.name;
+        expect.msgKey = isSwitch ? 'app.delegateSwitchSuccess' : 'app.delegateSuccess';
         releaseAction.mark(expect, stakeNim);
         if (state.nimiq){
           if (!hasExistingStaker){
