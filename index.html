@@ -2208,6 +2208,41 @@
     $('balanceHint').hidden = (this.value !== prefilledStakeValue);
     updateAmountHint();
   });
+  // Scroll restoration when the on-screen keyboard closes (amount field). The scroll position is remembered
+  // on focus, before the keyboard resizes the viewport, and put back after it closes. Nothing is done while
+  // typing, if there is no visualViewport, if the user scrolled by hand after the focus, or if the page was
+  // hidden meanwhile. Purely cosmetic: any doubt = do nothing.
+  (function(){
+    var input = $('stakeAmt2'), vv = window.visualViewport, saved = null, timer = null;
+    if (!input || !vv) return;
+    function restoreSoon(ms){
+      clearTimeout(timer);
+      timer = setTimeout(function(){
+        var s = saved; saved = null;
+        if (!s || s.manual || document.hidden) return;
+        if (Math.abs(window.scrollY - s.y) < 4) return;
+        try { window.scrollTo({ top: s.y, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, s.y); }
+      }, ms);
+    }
+    input.addEventListener('focus', function(){
+      clearTimeout(timer);
+      saved = { y: window.scrollY, h: vv.height, shrunk: false, manual: false };
+    });
+    ['touchmove', 'wheel'].forEach(function(ev){
+      window.addEventListener(ev, function(){ if (saved) saved.manual = true; }, { passive: true });
+    });
+    vv.addEventListener('resize', function(){
+      if (!saved) return;
+      if (vv.height < saved.h * 0.85){ saved.shrunk = true; return; }
+      if (saved.shrunk && vv.height >= saved.h * 0.9) restoreSoon(250);
+    });
+    input.addEventListener('blur', function(){
+      if (saved && saved.shrunk) restoreSoon(500); else saved = null;
+    });
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden){ clearTimeout(timer); saved = null; }
+    });
+  })();
   var lastStakerStatus = null;
   var statusInFlight = null, lastStatusFetchAt = 0;
   function fetchStakerStatus(){
