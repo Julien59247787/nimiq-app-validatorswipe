@@ -13,10 +13,10 @@ browser emulation with a mock backend. The manual test plan is in [TESTING.md](T
 | Flow | Status |
 |---|---|
 | Browse validators, favorites, delegation history | Verified on device |
-| **Add stake** (existing staker, same validator), including with a main-account balance of 0 and funds held in a swap contract | Verified on-chain on device |
-| **Switch validator** (update staker) | Verified on-chain on device |
-| Complete cycle create / add / switch / retire / claim | Verified on device with real funds for the competition submission; retire and claim were **not** replayed end to end with the final 1.0.0 build |
-| **Create stake** (a first stake) with funds held in a swap contract | **Not tested end to end** |
+| **Add stake** (existing staker, same validator), including with a main-account balance of 0 and funds held in a swap contract | Verified on-chain (execution result true) |
+| **Switch validator** (update staker) and **Retire** from a wallet whose funds are in a swap contract | **Not verified: included in a block but rejected at execution** in every attempt (see below). Earlier "verified" statements were based on the wallet's transaction history, which shows these transactions as confirmed, and are withdrawn |
+| **Create stake** with funds held in a swap contract | Passes from a contract created by a single transfer; **fails** from a contract built by merging several transfers (see below) |
+| **Claim** (remove stake) | Not tested end to end with the final build |
 | Wallet rejection or cancellation, SDK `ErrorResponse` resolved instead of rejected | Verified on device (error message shown, action can be retried) |
 | Duplicate taps, page reload while a transaction is pending | Verified in browser emulation; reload behavior checked on device |
 | Connection through Nimiq Hub (browser or hardware wallet such as Ledger) | Implemented, **not tested end to end** on mobile browsers or with a hardware wallet |
@@ -40,19 +40,25 @@ shows the one-line hint, and never blocks browsing, staking, switching validator
 claiming. If the wallet cannot fund a transaction it rejects it and the app shows the wallet's
 error message.
 
-## Transactions that stay "Pending" in Nimiq Pay
+## Switch validator and Retire from a swap contract are rejected at execution
 
-Observed on two Android emulator wallets (Nimiq Pay in an emulator, mainnet, real funds): after a first stake was
-created and topped up, an *Update Staker* (switch) and a *Retire Stake* sent from the app stayed "Pending" in
-Nimiq Pay and were **not on the chain** eight minutes later, while the create and add transactions had been
-confirmed within about 2 seconds. The cause is not established (host or network side; the app only receives a
-transaction hash or an error from the SDK and cannot see the host's pending state). What the app does about it: a
-single write lock keeps every button that sends a transaction disabled until the chain reflects the previous
-action; after 15 seconds it says the confirmation is taking longer than usual, after 60 seconds it shows "Still
-not confirmed. The network may be slow, or the transaction may not have been sent. Wait a little longer, or unlock to
-try again.", keeps the buttons disabled, re-reads the chain every 15 seconds for up to 10 minutes, and offers a manual "Not
-sent? Unlock" button (never automatic, because of the risk of a duplicate action). If it stays this way, check the transaction in Nimiq Pay before unlocking; reloading the app re-reads the chain but
-does not lift the lock by itself.
+Observed in our tests (Android 16 phone and Android 13 emulator, Nimiq Pay v2.19.1, mainnet, real funds, 2026-09-16 to
+2026-09-20, more than 30 occurrences): when the wallet's funds sit in a swap contract (HTLC), every *Update Staker*
+(switch validator) and every *Retire Stake* sent from the app is sent from that contract, is **included in a block**
+but has an execution result of **false**: nothing changes on the chain. *Create stake* and *Add stake* sent from a
+swap contract have an execution result of true. Nimiq Pay's own transaction history shows the rejected transactions as
+confirmed (or "Pending"), so the wallet history is **not** proof that the staking state changed; the chain state is.
+The cause on the host side is not established (a hypothesis: the staker's signature proof is computed for another
+sender than the contract). There is no workaround in the app.
+
+What the app does: it never claims a success from the wallet's answer alone. A single write lock keeps every button
+that sends a transaction disabled until the chain reflects the action; after 15 seconds it says the confirmation is
+taking longer than usual, after 60 seconds it shows "Still not confirmed. The network may be slow, or the
+transaction may not have been sent. Wait a little longer, or unlock to try again.", keeps the buttons disabled,
+re-reads the chain every 15 seconds for up to 10 minutes, and offers a manual "Not sent? Unlock" button (never
+automatic, because of the risk of a duplicate action). A rejected transaction changes nothing on the chain (value 0,
+fee 0). If it stays this way, check the transaction in Nimiq Pay before unlocking; reloading the app re-reads the
+chain but does not lift the lock by itself. Do not present Switch or Retire from a swap contract as verified.
 
 ## Create stake from a swap contract (HTLC): merged contracts fail
 

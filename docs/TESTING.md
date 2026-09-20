@@ -32,7 +32,7 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] First Create with a wallet whose funds come from a single transfer (a wallet funded by merged transfers can fail at Create, on an emulator and on a phone, see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail)).
 - [ ] No staker yet: amount required, *create staker* is sent, success message stays until dismissed, the waiting line appears and disappears once the chain reflects the transaction, the active delegation banner and history update.
 - [ ] Staker exists, same validator: *add stake*.
-- [ ] Staker exists, other validator: the amount field is replaced by the switch note; *update staker* is sent without an amount.
+- [ ] Staker exists, other validator: the amount field is replaced by the switch note; *update staker* is sent without an amount. Check the result on the chain (execution result), not in the wallet's history: from a swap contract it is currently rejected at execution (see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#switch-validator-and-retire-from-a-swap-contract-are-rejected-at-execution)).
 - [ ] Main-account balance 0 with funds in Nimiq Pay: the one-line hint appears under the amount field; staking is not blocked.
 - [ ] Amount pre-filled from the balance: the "pre-filled" hint shows and disappears when the amount is edited.
 
@@ -49,10 +49,10 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] Reload the page while a transaction is pending: the waiting message and the lock on Delegate, Confirm withdrawal and Claim come back, then clear when the chain reflects the action.
 - [ ] While an action is pending, Delegate, Confirm withdrawal and Claim are all disabled; browsing, tabs and languages stay usable.
 - [ ] Progressive messages: "Waiting for the network to confirm your transaction…" for 15 s, then "This is taking a bit longer than usual…" up to 60 s.
-- [ ] Pending that never reaches the chain: after 60 s the message becomes "Still not confirmed. The network may be slow, or the transaction may not have been sent. Wait a little longer, or unlock to try again." with an orange "Not sent? Unlock" button, the three buttons stay disabled, and "Not sent? Unlock" lifts the lock (manual only).
+- [ ] Pending that the chain never reflects (never included, or included but rejected at execution, which is what Switch and Retire from a swap contract do today): after 60 s the message becomes "Still not confirmed. The network may be slow, or the transaction may not have been sent. Wait a little longer, or unlock to try again." with an orange "Not sent? Unlock" button, the three buttons stay disabled, and "Not sent? Unlock" lifts the lock (manual only).
 - [ ] Two open pages: the lock is seen by both; lifting it in one lifts it in the other.
 - [ ] The delegation history gets a row only after the chain reflects the action.
-- [ ] The success message and the confetti appear only once the chain reflects the action; a wallet "success" that never reaches the chain shows none of them.
+- [ ] The success message and the confetti appear only once the chain reflects the action; a wallet "success" that the chain never reflects shows none of them.
 - [ ] After any action (create, add, switch, retire, claim, also in demo mode) the validator is still in My favorites and the counter is unchanged; after a Create the same validator's card is in Add mode with the amount field visible; the validator leaves My favorites only when its star is removed.
 - [ ] Disabled buttons (Claim, Confirm withdrawal, Delegate) look disabled while an action is pending.
 
