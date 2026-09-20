@@ -179,9 +179,10 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
 
 What has been verified, on one Android phone in Nimiq Pay with real funds: browsing, favorites, **Create stake**
 (from a contract created by a single transfer) and **Add stake** (on-chain), error handling and duplicate-tap
-protection. **Not verified:** **Switch validator** and **Retire** from a wallet whose funds are in a swap contract
-(they are included in a block but rejected at execution in every attempt), Create stake from a merged swap contract
-(fails), Claim with the final build, and the Nimiq Hub path on mobile browsers or with a hardware wallet. The
+protection. **Not verified:** **Switch validator** and **Retire** in Nimiq Pay (two behaviors observed: included in a
+block but rejected at execution from a swap contract that still holds funds, and nothing sent when the contract was
+entirely spent), Create stake from a merged swap contract (fails), Claim with the final build, and the Nimiq Hub
+path on mobile browsers or with a hardware wallet. The
 details, with the environment, are in
 [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#verification-status-version-100). Some translations
 are machine-generated and have not been reviewed by native speakers — corrections are welcome (see

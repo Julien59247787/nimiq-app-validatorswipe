@@ -45,13 +45,16 @@ work is available in the Git history.
 
 ### Known limitations
 
-- Switch validator (UpdateStaker) and Retire (RetireStake) sent from a swap contract (HTLC) are included in a block but
-  rejected at execution (execution result false, no state change) in every attempt we made (more than 30, 2026-09-16 to
-  2026-09-20, Android 16 phone and Android 13 emulator, Nimiq Pay v2.19.1); Create and Add from a swap contract
-  succeed. Nimiq Pay's transaction history shows the rejected transactions as confirmed, so earlier "verified"
-  statements for Switch were based on that history and are withdrawn. The cause on the host side is not established
-  and there is no workaround in the app: Switch and Retire must not be presented as verified. See
-  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
+- Switch validator (UpdateStaker) and Retire (RetireStake) in Nimiq Pay are **not verified**; two behaviors were
+  observed on the chain (Nimiq Pay v2.19.1, 2026-09-16 to 2026-09-20). On an Android 16 phone, from a swap contract
+  (HTLC) that still holds funds, they are included in a block but rejected at execution (execution result false, no
+  state change; more than 30 occurrences), while Create and Add from a swap contract succeed. On an Android 13
+  emulator, with wallets whose swap contract had been entirely spent by the previous Create and Add, no transaction
+  reaches the chain and Nimiq Pay shows "Pending". Nimiq Pay's history is not proof of a state change, so earlier
+  "verified" statements for Switch are withdrawn. Hypothesis, not proven: Nimiq Pay sends them from a swap contract;
+  if it exists the transaction is rejected, if it no longer exists nothing is sent (open question: a user who has
+  staked everything). No workaround in the app. See [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
+
 - Create stake fails ("Transaction invalidated during transaction", nothing on the chain) when the wallet's funds
   sit in a swap contract built by merging several transfers; it passes from a contract created by a single
   transfer, in full or partially, and Add stake works from a merged contract. Observed in our tests on an Android 13
@@ -119,8 +122,8 @@ submission (PR #238 of the competition's submissions repository) was merged on 2
 - The complete staking lifecycle driven by the account's on-chain state (`/api/v2/staker-status`):
   create staker, add stake, switch validator, retire, then claim after the network waiting period,
   with a "My stake" block, a permanent "active delegation" banner and a delegation history. These flows are
-  implemented; Switch and Retire sent from a swap contract were later found to be rejected at execution (see
-  Known limitations under Unreleased).
+  implemented; Switch and Retire were later found not to work reliably in Nimiq Pay (see Known limitations under
+  Unreleased).
 - Nimiq Pay (Mini App SDK) and regular browsers (Nimiq Hub, transactions built with `@nimiq/core`).
 - 11 languages, English by default; honest demo mode when no wallet is connected.
 - Endless ribbon browsing in both tabs; validators ordered by number of available metrics;
