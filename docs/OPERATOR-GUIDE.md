@@ -227,6 +227,14 @@ Notes:
   whitelist proxy (other methods are refused) that rate-limits bursts with HTTP 429, so any server-side use needs a
   cache, a single flight per hash and a global cap. No RPC method exposes why an execution failed (boolean only)
   and there is no simulation method.
+- **Public archive RPC quota.** A public archive RPC typically applies a quota per client address (for example 20 tokens
+  per 10 seconds) with a cost that depends on the size of the response (a response of up to 100 transactions costs 1
+  token, 2,000 transactions cost 20; `getBlockNumber` and `getTransactionByHash` cost 1 each). Rules: never run a
+  reconciliation or a bulk scan without rate limiting (an operator was blacklisted after an unthrottled
+  reconciliation); keep a sustained rate of about 1 request per second per node; do not call
+  `getTransactionsByAddress` with a large `max` in a request path; honor the `X-Ratelimit-Remaining` and
+  `X-Ratelimit-Reset` headers (`Reset` is a Unix timestamp in seconds); stop after repeated `429` answers instead
+  of looping.
 
 ### 2.2 Per-validator stats (uptime / reliability / fee / name)
 
