@@ -217,6 +217,16 @@ Notes:
   normal `found:false` case.
 - Use short timeouts (≈ 5 s) and never expose the RPC port publicly.
 - Do **not** proxy arbitrary RPC methods to the internet; expose only the two endpoints above.
+- **History rule.** Transaction history and lookups by hash need a node with a history index. A default full or
+  validator node runs without one: `getTransactionByHash`, `getTransactionsByAddress` and
+  `getTransactionHashesByAddress` answer "Method requires a history index". Use an archive node of your own or a
+  public archive RPC. Measured on a public archive RPC: `getTransactionByHash` answers in about 0.1 s with
+  `blockNumber`, `confirmations`, `executionResult` (a boolean only), `fromType`, `flags`, `proof` and
+  `recipientData`; an unknown hash returns "Transaction not found"; `getTransactionsByAddress` and
+  `getTransactionHashesByAddress` take 3 parameters `[address, max, startAt|null]`. Such a service is usually a
+  whitelist proxy (other methods are refused) that rate-limits bursts with HTTP 429, so any server-side use needs a
+  cache, a single flight per hash and a global cap. No RPC method exposes why an execution failed (boolean only)
+  and there is no simulation method.
 
 ### 2.2 Per-validator stats (uptime / reliability / fee / name)
 
