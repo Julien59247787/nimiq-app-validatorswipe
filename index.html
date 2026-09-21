@@ -313,7 +313,7 @@
       <h1 data-i18n="hero.title">Choisis ton validateur <em>d'un geste</em>, délègue en un tap.</h1>
       <p class="lead" data-i18n="hero.lead">Validator Swipe transforme le choix d'un validateur Nimiq — souvent une page de tableau austère — en une décision rapide et informée : score de confiance, taux de récompense, disponibilité. Tu compares, tu délègues, ta NIM reste à toi.</p>
       <div class="hero-cta">
-        <a href="#demo" class="btn btn-primary" data-i18n="hero.ctaDemo">🛡️ Essayer la démo</a>
+        <a href="#demo" class="btn btn-primary" data-i18n="hero.ctaDemo">🛡️ Voir les validateurs</a>
         <a href="#faq" class="btn btn-ghost" data-i18n="hero.ctaFaq">Qui paie quoi ?</a>
       </div>
       <div class="hero-cta" style="margin-top:8px;">
@@ -396,7 +396,7 @@
             <button class="swipe-btn star" id="shortlistBtn" data-i18n-aria="app.shortlistAria" aria-label="Mettre de côté">⭐</button>
             <button class="swipe-btn nav" id="nextBtn" data-i18n-aria="app.nextAria" aria-label="Suivant">▶</button>
           </div>
-          <p class="helptext" data-i18n="app.sampleDataNote">Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation elle-même reste simulée.</p>
+          <p class="helptext" data-i18n="app.sampleDataNote">Disponibilité et fiabilité sont les <b>vraies</b> statistiques des deux validateurs, mises à jour par NimiqHub. Hors de Nimiq Pay, la délégation est simulée sauf si tu connectes un wallet avec Nimiq Hub.</p>
           <p class="helptext" data-i18n="app.browseHelptext">Mettre de côté ne coûte rien et ne délègue rien — ça ajoute juste le validateur à tes favoris pour comparer avant de choisir.</p>
         </div>
 
@@ -484,7 +484,7 @@
     <div>
       <div class="eyebrow" data-i18n="tech.eyebrow">Intégration technique</div>
       <h2 data-i18n="tech.title">Une vraie transaction de staking</h2>
-      <p data-i18n="tech.lead">Les données de validateurs sont toujours réelles, même hors de Nimiq Pay — seule la délégation elle-même y reste simulée. Dans Nimiq Pay, ou via Nimiq Hub en dehors, chaque délégation est une vraie transaction.</p>
+      <p data-i18n="tech.lead">Les données de validateurs sont toujours réelles, même hors de Nimiq Pay. Hors de Nimiq Pay, la délégation est simulée sauf si tu connectes un wallet avec Nimiq Hub. Dans Nimiq Pay, ou via Nimiq Hub en dehors, chaque délégation est une vraie transaction.</p>
       <ul>
         <li data-i18n="tech.li1">Détection automatique de <code>window.nimiqPay</code> au chargement, avec repli sur Nimiq Hub sinon</li>
         <li data-i18n="tech.li2">Délégation, ajout de stake ou changement de validateur selon l'état réel — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code></li>
@@ -577,7 +577,7 @@
       'app.removeStakeHubUnsupported': 'Cette étape n\'est pas encore disponible via Nimiq Hub — ouvre l\'app dans Nimiq Pay pour récupérer tes fonds.',
       'app.passAria': 'Passer',
       'app.delegateAria': 'Déléguer',
-      'app.sampleDataNote': 'Les ~40 validateurs et leurs statistiques sont <b>réels</b>, mis à jour quotidiennement. Certaines métriques restent vides quand l\'historique est insuffisant — jamais devinées. Hors de Nimiq Pay, la délégation elle-même reste simulée.',
+      'app.sampleDataNote': 'Les ~40 validateurs et leurs statistiques sont <b>réels</b>, mis à jour quotidiennement. Certaines métriques restent vides quand l\'historique est insuffisant — jamais devinées. Hors de Nimiq Pay, la délégation est simulée sauf si tu connectes un wallet avec Nimiq Hub.',
       'app.browseTab': 'Parcourir',
       'app.shortlistTab': 'Mes favoris',
       'app.backAria': 'Précédent',
@@ -660,7 +660,7 @@
       'faq.a3': 'À <b>0 dans l\'immense majorité des cas</b>, comme toutes les transactions Nimiq — la délégation ne fait pas exception.',
       'tech.eyebrow': 'Intégration technique',
       'tech.title': 'Une vraie transaction de staking',
-      'tech.lead': 'Les données de validateurs sont toujours réelles, même hors de Nimiq Pay — seule la délégation elle-même y reste simulée. Dans Nimiq Pay, ou via Nimiq Hub en dehors, chaque délégation est une vraie transaction.',
+      'tech.lead': 'Les données de validateurs sont toujours réelles, même hors de Nimiq Pay. Hors de Nimiq Pay, la délégation est simulée sauf si tu connectes un wallet avec Nimiq Hub. Dans Nimiq Pay, ou via Nimiq Hub en dehors, chaque délégation est une vraie transaction.',
       'tech.li1': 'Détection automatique de <code>window.nimiqPay</code> au chargement, avec repli sur Nimiq Hub sinon',
       'tech.li2': 'Délégation, ajout de stake ou changement de validateur selon l\'état réel — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Aucune donnée de validateur inventée en production — source : dashboard des validateurs',
@@ -698,7 +698,7 @@
       'app.removeStakeHubUnsupported': 'This step isn\'t available via Nimiq Hub yet — open the app in Nimiq Pay to claim your funds.',
       'app.passAria': 'Pass',
       'app.delegateAria': 'Delegate',
-      'app.sampleDataNote': 'All ~40 validators and their stats are <b>real</b>, refreshed daily. Some metrics stay blank when there isn\'t enough history yet — never guessed. Outside Nimiq Pay, the delegation itself stays simulated.',
+      'app.sampleDataNote': 'All ~40 validators and their stats are <b>real</b>, refreshed daily. Some metrics stay blank when there isn\'t enough history yet — never guessed. Outside Nimiq Pay, the delegation is simulated unless you connect a wallet with Nimiq Hub.',
       'app.browseTab': 'Browse',
       'app.shortlistTab': 'My favorites',
       'app.backAria': 'Previous',
@@ -781,7 +781,7 @@
       'faq.a3': '<b>0 in the vast majority of cases</b>, like every Nimiq transaction — delegation is no exception.',
       'tech.eyebrow': 'Technical integration',
       'tech.title': 'A real staking transaction',
-      'tech.lead': 'Validator data is always real, even outside Nimiq Pay — only delegation itself stays simulated there. Inside Nimiq Pay, or via Nimiq Hub outside it, every delegation is a real transaction.',
+      'tech.lead': 'Validator data is always real, even outside Nimiq Pay. Outside Nimiq Pay, the delegation is simulated unless you connect a wallet with Nimiq Hub. Inside Nimiq Pay, or via Nimiq Hub outside it, every delegation is a real transaction.',
       'tech.li1': 'Automatic detection of <code>window.nimiqPay</code> on load, falling back to Nimiq Hub otherwise',
       'tech.li2': 'Delegate, add stake, or switch validator based on real state — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'No invented validator data in production — source: validators dashboard',
@@ -814,7 +814,7 @@
       'app.statusLive': 'Se ha detectado un monedero',
       'app.passAria': 'Saltar',
       'app.delegateAria': 'Delegar',
-      'app.sampleDataNote': 'Los aproximadamente 40 validadores y sus estadísticas son <b>reales</b> y se actualizan a diario. Algunas métricas aparecen en blanco cuando el historial es insuficiente; nunca se han estimado. Fuera de Nimiq Pay, la delegación en sí misma sigue siendo simulada.',
+      'app.sampleDataNote': 'Los aproximadamente 40 validadores y sus estadísticas son <b>reales</b> y se actualizan a diario. Algunas métricas aparecen en blanco cuando el historial es insuficiente; nunca se han estimado. Fuera de Nimiq Pay, la delegación es simulada a menos que conectes un monedero con Nimiq Hub.',
       'app.browseTab': 'Explorar',
       'app.shortlistTab': 'Mis favoritos',
       'app.backAria': 'Anterior',
@@ -867,7 +867,7 @@
       'faq.a3': 'En<b> la inmensa mayoría de los casos</b>, al igual que todas las transacciones de Nimiq, la delegación no es una excepción.',
       'tech.eyebrow': 'Integración técnica',
       'tech.title': 'Una auténtica operación de staking',
-      'tech.lead': 'Los datos de los validadores siempre son reales, incluso fuera de Nimiq Pay; solo la delegación en sí misma sigue siendo simulada. En Nimiq Pay, o a través de Nimiq Hub fuera de la aplicación, cada delegación es una transacción real.',
+      'tech.lead': 'Los datos de los validadores siempre son reales, incluso fuera de Nimiq Pay. Fuera de Nimiq Pay, la delegación es simulada a menos que conectes un monedero con Nimiq Hub. En Nimiq Pay, o a través de Nimiq Hub fuera de la aplicación, cada delegación es una transacción real.',
       'tech.li1': 'Detección automática de <code>window.nimiqPay</code> al cargarse la página; en caso contrario, se redirige a Nimiq Hub',
       'tech.li2': 'Delegación, aumento de la apuesta o cambio de validador según el estado real — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'No se ha inventado ningún dato de validador en producción — fuente: panel de control de validadores',
@@ -935,7 +935,7 @@
       'app.statusLive': '检测到钱包',
       'app.passAria': '跳过',
       'app.delegateAria': '授权',
-      'app.sampleDataNote': '约40名验证者及其统计数据均为<b>真实数据</b>，并每日更新。当历史数据不足时，某些指标会显示为空——绝非凭空臆测。在Nimiq Pay之外，委托操作本身仍为模拟状态。',
+      'app.sampleDataNote': '约40名验证者及其统计数据均为<b>真实数据</b>，并每日更新。当历史数据不足时，某些指标会显示为空——绝非凭空臆测。在Nimiq Pay之外，委托是模拟的，除非你通过Nimiq Hub连接钱包。',
       'app.browseTab': '浏览',
       'app.shortlistTab': '我的收藏',
       'app.backAria': '上一页',
@@ -988,7 +988,7 @@
       'faq.a3': '在<b>绝大多数情况下</b>，与所有Nimiq交易一样，委托操作也不例外。',
       'tech.eyebrow': '技术集成',
       'tech.title': '一笔真正的质押交易',
-      'tech.lead': '验证者的数据始终是真实的，即使在Nimiq Pay之外也是如此——只有委托本身在Nimiq Pay中仍是模拟的。无论是在Nimiq Pay中，还是通过Nimiq Hub在Nimiq Pay之外，每次委托都是一笔真实的交易。',
+      'tech.lead': '验证者的数据始终是真实的，即使在Nimiq Pay之外也是如此。在Nimiq Pay之外，委托是模拟的，除非你通过Nimiq Hub连接钱包。无论是在Nimiq Pay中，还是通过Nimiq Hub在Nimiq Pay之外，每次委托都是一笔真实的交易。',
       'tech.li1': '加载时自动检测 <code>window.nimiqPay</code>，若未检测到则转至 Nimiq Hub',
       'tech.li2': '根据实际情况进行委托、增加质押或更换验证者 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '生产环境中未出现任何虚构的验证者数据 — 来源：验证者仪表盘',
@@ -1056,7 +1056,7 @@
       'app.statusLive': 'ウォレットが検出されました',
       'app.passAria': 'スキップ',
       'app.delegateAria': '委任する',
-      'app.sampleDataNote': '約40人のバリデーターとその統計データは<b>実在のもので</b>あり、毎日更新されています。履歴が不十分な場合、一部の指標は空白のままとなりますが、推測で埋められることはありません。Nimiq Pay以外では、デリゲーション自体はシミュレーションによるものです。',
+      'app.sampleDataNote': '約40人のバリデーターとその統計データは<b>実在のもので</b>あり、毎日更新されています。履歴が不十分な場合、一部の指標は空白のままとなりますが、推測で埋められることはありません。Nimiq Pay以外では、Nimiq Hubでウォレットを接続しない限り、デリゲーションはシミュレーションになります。',
       'app.browseTab': '閲覧する',
       'app.shortlistTab': 'お気に入り',
       'app.backAria': '前へ',
@@ -1109,7 +1109,7 @@
       'faq.a3': 'Nimiqのすべての取引と同様に、<b>圧倒的多数のケースにおいて</b>手数料は0です。委任も例外ではありません。',
       'tech.eyebrow': '技術的な統合',
       'tech.title': '本物のステーキング取引',
-      'tech.lead': 'バリデーターのデータは、Nimiq Payの外であっても常に実際のものです。シミュレーションされているのは、委任そのものだけです。Nimiq Pay内でも、Nimiq Hubを介して外部で行われる場合でも、各委任は実際のトランザクションとなります。',
+      'tech.lead': 'バリデーターのデータは、Nimiq Payの外であっても常に実際のものです。Nimiq Payの外では、Nimiq Hubでウォレットを接続しない限り、委任はシミュレーションになります。Nimiq Pay内でも、Nimiq Hubを介して外部で行われる場合でも、各委任は実際のトランザクションとなります。',
       'tech.li1': '読み込み時に <code>window.nimiqPay</code> を自動的に検出し、見つからない場合は Nimiq Hub に切り替える',
       'tech.li2': '実際の状況に応じたステークの委任、追加、またはバリデーターの変更 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '本番環境で架空のバリデーターデータは一切生成されていない — 出典：バリデーターのダッシュボード',
@@ -1177,7 +1177,7 @@
       'app.statusLive': '지갑이 감지되었습니다',
       'app.passAria': '건너뛰기',
       'app.delegateAria': '위임하기',
-      'app.sampleDataNote': '약 40명의 검증자와 그들의 통계는 <b>실제</b> 데이터이며, 매일 업데이트됩니다. 기록이 충분하지 않을 경우 일부 지표는 비어 있으며, 결코 임의로 추측된 수치가 아닙니다. Nimiq Pay를 제외한 위임 기능 자체는 시뮬레이션된 상태로 유지됩니다.',
+      'app.sampleDataNote': '약 40명의 검증자와 그들의 통계는 <b>실제</b> 데이터이며, 매일 업데이트됩니다. 기록이 충분하지 않을 경우 일부 지표는 비어 있으며, 결코 임의로 추측된 수치가 아닙니다. Nimiq Pay 외부에서는 Nimiq Hub로 지갑을 연결하지 않으면 위임이 시뮬레이션됩니다.',
       'app.browseTab': '찾아보기',
       'app.shortlistTab': '내 즐겨찾기',
       'app.backAria': '이전',
@@ -1230,7 +1230,7 @@
       'faq.a3': '<b>대다수의 경우</b>, 모든 Nimiq 거래와 마찬가지로 위임도 예외는 아닙니다.',
       'tech.eyebrow': '기술적 통합',
       'tech.title': '진정한 스테이킹 거래',
-      'tech.lead': '검증자의 데이터는 Nimiq Pay 외부에서도 항상 실제 데이터이며, 오직 위임 자체만이 시뮬레이션된 상태로 유지됩니다. Nimiq Pay 내에서든, Nimiq Hub를 통해 외부에서든, 각 위임은 실제 거래입니다.',
+      'tech.lead': '검증자의 데이터는 Nimiq Pay 외부에서도 항상 실제 데이터입니다. Nimiq Pay 외부에서는 Nimiq Hub로 지갑을 연결하지 않으면 위임이 시뮬레이션됩니다. Nimiq Pay 내에서든, Nimiq Hub를 통해 외부에서든, 각 위임은 실제 거래입니다.',
       'tech.li1': '로딩 시 <code>window.nimiqPay</code>를 자동으로 감지하며, 그렇지 않은 경우 Nimiq Hub로 전환',
       'tech.li2': '실제 상태에 따른 위임, 스테이크 추가 또는 검증자 변경 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '프로덕션 환경에서 임의로 생성된 검증자 데이터 없음 — 출처: 검증자 대시보드',
@@ -1298,7 +1298,7 @@
       'app.statusLive': 'Wallet erkannt',
       'app.passAria': 'Weiter',
       'app.delegateAria': 'Delegieren',
-      'app.sampleDataNote': 'Die rund 40 Validatoren und ihre Statistiken sind <b>echt</b> und werden täglich aktualisiert. Einige Kennzahlen bleiben leer, wenn die historischen Daten nicht ausreichen – sie werden niemals geschätzt. Außerhalb von Nimiq Pay bleibt die Delegierung selbst simuliert.',
+      'app.sampleDataNote': 'Die rund 40 Validatoren und ihre Statistiken sind <b>echt</b> und werden täglich aktualisiert. Einige Kennzahlen bleiben leer, wenn die historischen Daten nicht ausreichen – sie werden niemals geschätzt. Außerhalb von Nimiq Pay wird die Delegierung simuliert, es sei denn, du verbindest eine Wallet über den Nimiq Hub.',
       'app.browseTab': 'Durchsuchen',
       'app.shortlistTab': 'Meine Favoriten',
       'app.backAria': 'Zurück',
@@ -1351,7 +1351,7 @@
       'faq.a3': '<b>In den allermeisten Fällen</b> 0, wie bei allen Nimiq-Transaktionen – die Delegierung bildet da keine Ausnahme.',
       'tech.eyebrow': 'Technische Integration',
       'tech.title': 'Eine echte Staking-Transaktion',
-      'tech.lead': 'Die Daten der Validatoren sind immer echt, auch außerhalb von Nimiq Pay – lediglich die Delegation selbst bleibt dort simuliert. In Nimiq Pay oder außerhalb über den Nimiq Hub ist jede Delegation eine echte Transaktion.',
+      'tech.lead': 'Die Daten der Validatoren sind immer echt, auch außerhalb von Nimiq Pay. Außerhalb von Nimiq Pay wird die Delegation simuliert, es sei denn, du verbindest eine Wallet über den Nimiq Hub. In Nimiq Pay oder außerhalb über den Nimiq Hub ist jede Delegation eine echte Transaktion.',
       'tech.li1': 'Automatische Erkennung von <code>„window.nimiqPay“</code> beim Laden; andernfalls wird auf den Nimiq Hub zurückgegriffen',
       'tech.li2': 'Delegierung, Hinzufügen von Stakes oder Wechsel des Validators entsprechend dem aktuellen Status — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'In der Produktion wurden keine Validator-Daten erfunden – Quelle: Validator-Dashboard',
@@ -1419,7 +1419,7 @@
       'app.statusLive': 'Carteira detetada',
       'app.passAria': 'Ignorar',
       'app.delegateAria': 'Delegar',
-      'app.sampleDataNote': 'Os cerca de 40 validadores e as respetivas estatísticas são <b>reais</b> e atualizados diariamente. Algumas métricas permanecem em branco quando o histórico é insuficiente — nunca são estimadas. Fora do Nimiq Pay, a própria delegação continua a ser simulada.',
+      'app.sampleDataNote': 'Os cerca de 40 validadores e as respetivas estatísticas são <b>reais</b> e atualizados diariamente. Algumas métricas permanecem em branco quando o histórico é insuficiente — nunca são estimadas. Fora do Nimiq Pay, a delegação é simulada, a menos que ligues uma carteira com o Nimiq Hub.',
       'app.browseTab': 'Explorar',
       'app.shortlistTab': 'Os meus favoritos',
       'app.backAria': 'Anterior',
@@ -1472,7 +1472,7 @@
       'faq.a3': '<b>Na imensa maioria dos casos</b>, tal como todas as transações Nimiq — a delegação não constitui exceção.',
       'tech.eyebrow': 'Integração técnica',
       'tech.title': 'Uma verdadeira transação de staking',
-      'tech.lead': 'Os dados dos validadores são sempre reais, mesmo fora do Nimiq Pay — apenas a própria delegação é simulada. No Nimiq Pay, ou através do Nimiq Hub fora da aplicação, cada delegação é uma transação real.',
+      'tech.lead': 'Os dados dos validadores são sempre reais, mesmo fora do Nimiq Pay. Fora do Nimiq Pay, a delegação é simulada, a menos que ligues uma carteira com o Nimiq Hub. No Nimiq Pay, ou através do Nimiq Hub fora da aplicação, cada delegação é uma transação real.',
       'tech.li1': 'Detecção automática do <code>window.nimiqPay</code> ao carregar a página; caso contrário, redireciona para o Nimiq Hub',
       'tech.li2': 'Delegação, adição de stake ou alteração do validador de acordo com o estado real — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Não foram inventados dados de validadores em produção — fonte: painel de controlo dos validadores',
@@ -1540,7 +1540,7 @@
       'app.statusLive': 'Обнаружен кошелек',
       'app.passAria': 'Пропустить',
       'app.delegateAria': 'Делегировать',
-      'app.sampleDataNote': 'Около 40 валидаторов и их статистические данные являются <b>реальными</b> и обновляются ежедневно. Некоторые показатели остаются пустыми, если исторических данных недостаточно — они никогда не вычисляются на основе предположений. За пределами Nimiq Pay сама делегация по-прежнему моделируется.',
+      'app.sampleDataNote': 'Около 40 валидаторов и их статистические данные являются <b>реальными</b> и обновляются ежедневно. Некоторые показатели остаются пустыми, если исторических данных недостаточно — они никогда не вычисляются на основе предположений. За пределами Nimiq Pay делегация симулируется, если ты не подключишь кошелёк через Nimiq Hub.',
       'app.browseTab': 'Просмотреть',
       'app.shortlistTab': 'Мои избранные',
       'app.backAria': 'Предыдущая',
@@ -1593,7 +1593,7 @@
       'faq.a3': '<b>В подавляющем большинстве случаев комиссия</b> равна 0, как и при всех транзакциях Nimiq — делегирование не является исключением.',
       'tech.eyebrow': 'Техническая интеграция',
       'tech.title': 'Настоящая сделка по стейкингу',
-      'tech.lead': 'Данные валидаторов всегда являются реальными, даже вне Nimiq Pay — только сама делегация в этом случае остается симулированной. В Nimiq Pay или через Nimiq Hub вне приложения каждая делегация представляет собой реальную транзакцию.',
+      'tech.lead': 'Данные валидаторов всегда являются реальными, даже вне Nimiq Pay. Вне Nimiq Pay делегация симулируется, если ты не подключишь кошелёк через Nimiq Hub. В Nimiq Pay или через Nimiq Hub вне приложения каждая делегация представляет собой реальную транзакцию.',
       'tech.li1': 'Автоматическое определение наличия <code>window.nimiqPay</code> при загрузке; в противном случае переключение на Nimiq Hub',
       'tech.li2': 'Делегирование, добавление доли или смена валидатора в зависимости от фактического состояния — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'В производственной среде не было зарегистрировано ни одного вымышленного валидатора — источник: панель мониторинга валидаторов',
@@ -1661,7 +1661,7 @@
       'app.statusLive': 'Cüzdan algılandı',
       'app.passAria': 'Atla',
       'app.delegateAria': 'Yetki devretmek',
-      'app.sampleDataNote': 'Yaklaşık 40 doğrulayıcı ve istatistikleri <b>gerçektir</b> ve günlük olarak güncellenir. Geçmiş veriler yetersiz olduğunda bazı metrikler boş kalır — asla tahmin edilmez. Nimiq Pay dışında, delegasyonun kendisi simüle edilmiş olarak kalır.',
+      'app.sampleDataNote': 'Yaklaşık 40 doğrulayıcı ve istatistikleri <b>gerçektir</b> ve günlük olarak güncellenir. Geçmiş veriler yetersiz olduğunda bazı metrikler boş kalır — asla tahmin edilmez. Nimiq Pay dışında, Nimiq Hub ile bir cüzdan bağlamadıkça delegasyon simüle edilir.',
       'app.browseTab': 'Göz at',
       'app.shortlistTab': 'Favorilerim',
       'app.backAria': 'Önceki',
@@ -1714,7 +1714,7 @@
       'faq.a3': 'Nimiq’teki tüm işlemlerde olduğu gibi — delegasyon da bir istisna oluşturmaz — <b>vakaların büyük çoğunluğunda</b> 0’dır.',
       'tech.eyebrow': 'Teknik entegrasyon',
       'tech.title': 'Gerçek bir staking işlemi',
-      'tech.lead': 'Doğrulayıcıların verileri, Nimiq Pay dışında bile her zaman gerçektir — sadece delegasyonun kendisi simüle edilmiş olarak kalır. Nimiq Pay’de veya Nimiq Hub aracılığıyla Nimiq Pay dışında, her delegasyon gerçek bir işlemdir.',
+      'tech.lead': 'Doğrulayıcıların verileri, Nimiq Pay dışında bile her zaman gerçektir. Nimiq Pay dışında, Nimiq Hub ile bir cüzdan bağlamadıkça delegasyon simüle edilir. Nimiq Pay’de veya Nimiq Hub aracılığıyla Nimiq Pay dışında, her delegasyon gerçek bir işlemdir.',
       'tech.li1': 'Sayfa yüklendiğinde <code>window.nimiqPay</code> otomatik olarak algılanır; aksi takdirde Nimiq Hub’a yönlendirilir',
       'tech.li2': 'Gerçek duruma göre delegasyon, stake ekleme veya validatör değiştirme — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Üretim ortamında uydurulmuş hiçbir doğrulayıcı verisi yok — kaynak: doğrulayıcılar panosu',
@@ -1782,7 +1782,7 @@
       'app.statusLive': 'تم الكشف عن محفظة',
       'app.passAria': 'تخطي',
       'app.delegateAria': 'تفويض',
-      'app.sampleDataNote': 'يبلغ عدد المُصدقين حوالي 40 مُصدقًا، وإحصاءاتهم <b>حقيقية</b> ويتم تحديثها يوميًا. تظل بعض المقاييس فارغة عندما يكون السجل التاريخي غير كافٍ — ولا يتم تخمينها أبدًا. خارج نطاق Nimiq Pay، تظل عملية التفويض نفسها محاكاة.',
+      'app.sampleDataNote': 'يبلغ عدد المُصدقين حوالي 40 مُصدقًا، وإحصاءاتهم <b>حقيقية</b> ويتم تحديثها يوميًا. تظل بعض المقاييس فارغة عندما يكون السجل التاريخي غير كافٍ — ولا يتم تخمينها أبدًا. خارج Nimiq Pay يكون التفويض محاكىً ما لم تربط محفظة عبر Nimiq Hub.',
       'app.browseTab': 'تصفح',
       'app.shortlistTab': 'المفضلة لديّ',
       'app.backAria': 'السابق',
@@ -1835,7 +1835,7 @@
       'faq.a3': '<b>في الغالبية العظمى من الحالات</b>، تبلغ التكلفة <b>صفر</b>ًا، شأنها شأن جميع معاملات Nimiq — ولا يُستثنى من ذلك التفويض.',
       'tech.eyebrow': 'التكامل التقني',
       'tech.title': 'معاملة حقيقية للستيكينغ',
-      'tech.lead': 'تظل بيانات المُصدقين حقيقية دائمًا، حتى خارج Nimiq Pay — حيث يظل التفويض نفسه فقط مُحاكىً هناك. أما في Nimiq Pay، أو عبر Nimiq Hub خارجها، فإن كل تفويض يمثل معاملة حقيقية.',
+      'tech.lead': 'تظل بيانات المُصدقين حقيقية دائمًا، حتى خارج Nimiq Pay. خارج Nimiq Pay يكون التفويض محاكىً ما لم تربط محفظة عبر Nimiq Hub. أما في Nimiq Pay، أو عبر Nimiq Hub خارجها، فإن كل تفويض يمثل معاملة حقيقية.',
       'tech.li1': 'الكشف التلقائي عن <code>window.nimiqPay</code> عند التحميل، مع التحويل إلى Nimiq Hub في حالة عدم وجوده',
       'tech.li2': 'التفويض، أو إضافة حصة، أو تغيير المُصدق وفقًا للحالة الفعلية — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'لم يتم اختراع أي بيانات خاصة بالمُصدقين في بيئة الإنتاج — المصدر: لوحة معلومات المُصدقين',
