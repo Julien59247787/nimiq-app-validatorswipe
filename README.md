@@ -22,6 +22,7 @@ Licensed under [MIT](LICENSE).
 - [Running your own instance](#running-your-own-instance)
 - [Documentation](#documentation)
 - [Good to know](#good-to-know)
+- [Known issues and workarounds](#known-issues-and-workarounds)
 - [Project status](#project-status)
 - [Reporting a bug](#reporting-a-bug)
 - [Contributing & security](#contributing--security)
@@ -170,6 +171,28 @@ steps and a verification checklist — is in **[docs/OPERATOR-GUIDE.md](docs/OPE
   behind the chain by up to a minute; the app reads the chain itself.
 - **Reliability is capped at 100 %.** The statistics source can publish a value above 100 % for some validators;
   the API caps it at 100 % (a fraction between 0 and 1) and the app shows it as provided.
+
+## Known issues and workarounds
+
+**Create stake fails with "Your first stake couldn't be created"** (Nimiq Pay, funds that arrived in several transfers).
+The "relay wallet" workaround, observed in our tests, **not a guarantee**:
+
+1. Create a temporary wallet on [wallet.nimiq.com](https://wallet.nimiq.com) **and back it up first**, before
+   sending anything to it.
+2. Send your whole balance from Nimiq Pay to that wallet's address, checking the address character by character.
+3. Wait until the funds have arrived.
+4. Send **everything** back in **one single transfer** to your Nimiq Pay address.
+5. Wait for "Processing funds" to finish in Nimiq Pay, then create your first stake again.
+
+Risks: a wrong address or a forgotten backup can lose funds, so always double-check. Once your first stake exists,
+adding to it works even if funds arrive in several transfers.
+
+**Switch validator or Retire is rejected** ("The network rejected this transaction. Nothing was changed."). Nimiq Pay
+currently rejects these actions for some wallets; the stake is safe and the Nimiq Pay team has been informed. There
+is **no verified workaround**. In particular, wallet.nimiq.com cannot import a Nimiq Pay wallet (12 words against
+24), so do not present it as a way to Switch or Retire.
+
+Details: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
 
 ## Project status
 

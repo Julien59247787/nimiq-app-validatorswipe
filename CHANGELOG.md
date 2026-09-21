@@ -6,9 +6,19 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [Unreleased]
+## [1.1.0] — date set at publication (not yet released, no tag)
+
+The batch of the next release: remembered favorites, the write lock, honest confirmation, detection of a transaction
+rejected by the network, and help messages.
 
 ### Added
+
+- Help messages. A Create that fails with "Transaction invalidated" shows a dedicated text (new key
+  `app.createNeedsSingleTransfer`, technical detail kept) explaining that the NIM must come from a single transfer and
+  the relay-wallet workaround; Add, Switch and Retire keep their messages. The "network rejected" message adds, for
+  Switch and Retire only, "Nimiq Pay currently rejects this action for some wallets. Your stake is safe. We've reported
+  it to the Nimiq Pay team." (new key `app.txRejectedNimiqPay`), with no workaround. 11 languages. The README and
+  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md) get a "Known issues and workarounds" section.
 
 - A transaction that the network rejects is now detected. The hash returned by the wallet is kept in the pending
   record and the page asks the optional same-origin endpoint `GET /api/v2/tx-status?hash=` at each poll tick. When the
@@ -130,7 +140,7 @@ submission (PR #238 of the competition's submissions repository) was merged on 2
   create staker, add stake, switch validator, retire, then claim after the network waiting period,
   with a "My stake" block, a permanent "active delegation" banner and a delegation history. These flows are
   implemented; Switch and Retire were later found not to work reliably in Nimiq Pay (see Known limitations under
-  Unreleased).
+  1.1.0).
 - Nimiq Pay (Mini App SDK) and regular browsers (Nimiq Hub, transactions built with `@nimiq/core`).
 - 11 languages, English by default; honest demo mode when no wallet is connected.
 - Endless ribbon browsing in both tabs; validators ordered by number of available metrics;

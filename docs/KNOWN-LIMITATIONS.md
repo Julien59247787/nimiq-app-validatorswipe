@@ -101,8 +101,34 @@ another address and send them back in a single transfer before the first Create.
 Nimiq Pay refuses to send funds to the wallet's own address ("You can not use this address"), so the funds cannot
 be consolidated by sending them to oneself from the wallet.
 
-The app reports the failure as "Nimiq Pay rejected the transaction" and keeps the raw detail; it does not
-describe it as a stake conflict.
+When a Create fails with this message, the app shows a dedicated help text ("Your first stake couldn't be created ...",
+11 languages) and keeps the raw detail under it; Add, Switch and Retire keep their usual messages. The workaround
+is described below.
+
+## Known issues and workarounds
+
+**Create stake fails with "Your first stake couldn't be created"** (Nimiq Pay, funds that arrived in several transfers).
+The "relay wallet" workaround, observed in our tests, **not a guarantee**:
+
+1. Create a temporary wallet on [wallet.nimiq.com](https://wallet.nimiq.com) **and back it up first**, before
+   sending anything to it.
+2. Send your whole balance from Nimiq Pay to that wallet's address, checking the address character by character.
+3. Wait until the funds have arrived.
+4. Send **everything** back in **one single transfer** to your Nimiq Pay address.
+5. Wait for "Processing funds" to finish in Nimiq Pay, then create your first stake again.
+
+Risks: a wrong address or a forgotten backup can lose funds, so always double-check. Once your first stake exists,
+adding to it works even if funds arrive in several transfers.
+
+**Switch validator or Retire is rejected** ("The network rejected this transaction. Nothing was changed."). Nimiq Pay
+currently rejects these actions for some wallets; the stake is safe and the Nimiq Pay team has been informed. There
+is **no verified workaround**. In particular, wallet.nimiq.com cannot import a Nimiq Pay wallet (12 words against
+24), so do not present it as a way to Switch or Retire.
+
+This workaround comes from two observations, not from a test campaign. It has not been confirmed by the Nimiq Pay team.
+When the transaction is included and rejected at execution (Switch, Retire), the app shows "The network rejected this
+transaction. Nothing was changed." and, for those two actions only, "Nimiq Pay currently rejects this action for some
+wallets. Your stake is safe. We've reported it to the Nimiq Pay team." It never advises a workaround for them.
 
 ## Nimiq Pay measurements and host behavior
 
@@ -153,6 +179,6 @@ describe it as a stake conflict.
   `ETag` (see the [Operator Guide](OPERATOR-GUIDE.md)).
 - Read swap-contract balances on-chain so the amount can be pre-filled when the main-account balance reads 0.
 
-The full list of ideas is under *Unreleased* in the [changelog](../CHANGELOG.md#unreleased).
+The full list of ideas is under *1.1.0* in the [changelog](../CHANGELOG.md).
 
 Have a limitation to report? Please [open an issue](https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose).
