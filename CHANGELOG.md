@@ -6,6 +6,35 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.1] — 2026-09-21
+
+Footer status and description updated; app version shown; audit of displayed text.
+
+### Changed
+
+- Footer status, in 11 languages: "Live on mainnet: real validator data, real delegation inside Nimiq Pay" replaces
+  "interactive demo, real validator data", which was no longer true (delegation is real inside Nimiq Pay; it is
+  simulated only when no wallet is connected).
+- Footer description, in 11 languages: "Built for the Nimiq Mini Apps Competition (Cycle II). Open source, made for
+  Nimiq Pay." replaces "Open prototype, no backend" (the app uses the operator's `staker-status`, `validators-list`
+  and `tx-status` endpoints) and the competition dates.
+- The retire explanation, in 11 languages, no longer says the second step (claiming the funds) is "upcoming": it
+  exists.
+
+### Added
+
+- The app version (`v1.1.1`) is shown, small, at the bottom of the page next to "Report a bug", and links to its
+  GitHub release.
+- `scripts/check-version.sh`: fails when the displayed version, its link and the newest dated CHANGELOG entry differ;
+  added to the release checklist in [docs/TESTING.md](docs/TESTING.md).
+
+### Audit of displayed text (left as is, for a decision)
+
+- The header chip still names the competition; "Watch the demo video" is kept; "you can withdraw it whenever you
+  want" (how it works, step 3) describes the protocol, not Nimiq Pay's current Retire behavior; the technical
+  section and the sample-data note say delegation "stays simulated" outside Nimiq Pay without mentioning the Nimiq Hub
+  path; the "~40 validators" figure is not checked by the app.
+
 ## [1.1.0] — 2026-09-21
 
 The batch of the next release: remembered favorites, the write lock, honest confirmation, detection of a transaction

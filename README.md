@@ -196,9 +196,9 @@ Details: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
 
 ## Project status
 
-**Version 1.0.0** is the first publication: the version submitted to the Nimiq Mini Apps Competition
-(Cycle II) on 2026-09-18 (tag `competition-submission`). Every later change is listed under
-"Changes since the competition submission" in the [CHANGELOG](CHANGELOG.md).
+**Version 1.1.1** is the current release (the version is shown at the bottom of the app). **Version 1.0.0** was the first
+publication: the version submitted to the Nimiq Mini Apps Competition (Cycle II) on 2026-09-18 (tag
+`competition-submission`). Every change since is listed in the [CHANGELOG](CHANGELOG.md).
 
 What has been verified, on one Android phone in Nimiq Pay with real funds: browsing, favorites, **Create stake**
 (from a contract created by a single transfer) and **Add stake** (on-chain), error handling and duplicate-tap

@@ -269,6 +269,7 @@
   .credit-discord-link:hover{ transform:translateY(-1px) scale(1.04); background:#5865F2; color:#fff; }
   .credit-bug-link{ display:inline-flex; align-items:center; justify-content:center; min-height:30px; padding:5px 4px; color:var(--text-faint); font-size:12px; font-weight:600; text-decoration:underline; text-underline-offset:2px; }
   .credit-bug-link:hover, .credit-bug-link:focus-visible{ color:var(--text); }
+  .credit-version-link{ font-size:11px; font-weight:500; opacity:.85; }
   .credit-mascot-link{ display:inline-flex; align-items:center; justify-content:center; padding:8px; margin:-8px; }
   .credit-mascot{ display:block; width:28px; height:28px; max-width:28px; object-fit:contain; opacity:.85; transition:transform .15s, opacity .15s; }
   .credit-mascot:hover{ transform:translateY(-1px) scale(1.06); opacity:1; }
@@ -508,12 +509,12 @@
   <div class="wrap footer-grid">
     <div>
       <div class="brand">🛡️ Validator Swipe</div>
-      <p data-i18n="footer.desc">Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.</p>
+      <p data-i18n="footer.desc">Conçu pour la Nimiq Mini Apps Competition (Cycle II). Open source, pensé pour Nimiq Pay.</p>
     </div>
     <div class="meta">
       <div><span data-i18n="footer.network">Réseau</span> : Nimiq (NIM)</div>
       <div>SDK : @nimiq/mini-app-sdk</div>
-      <div><span data-i18n="footer.status">Statut</span> : <span data-i18n="footer.statusValue">démo interactive, vraies données validateurs</span></div>
+      <div><span data-i18n="footer.status">Statut</span> : <span data-i18n="footer.statusValue">En production sur le mainnet : vraies données validateurs, vraie délégation dans Nimiq Pay</span></div>
     </div>
   </div>
 </footer>
@@ -525,6 +526,8 @@
   <a class="credit-discord-link" href="https://discord.gg/96gHeaZYRH" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le serveur Discord de @Ju" data-i18n-aria="footer.discordAria" title="Rejoindre le serveur Discord" data-i18n-title="footer.discordTitle">Discord ↗</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Report a bug</a>
+  <span class="credit-separator" aria-hidden="true">&middot;</span>
+  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.1" target="_blank" rel="noopener noreferrer">v1.1.1</a>
   <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Open the validators dashboard" data-i18n-aria="footer.mascotLink" title="Open the validators dashboard" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
@@ -625,7 +628,7 @@
       'app.activeDelegation': 'Tu délègues actuellement à {validator}',
       'app.retireToggle': 'Retirer mon stake',
       'app.retireAmtLabel': 'Montant à retirer (NIM)',
-      'app.retireHint': 'Cette étape « retire » ton stake — il faut attendre la fin de l\'époque du réseau Nimiq en cours (généralement plusieurs heures) avant que les fonds ne reviennent dans ton wallet, via une 2e étape à venir.',
+      'app.retireHint': 'Cette étape « retire » ton stake — il faut attendre la fin de l\'époque du réseau Nimiq en cours (généralement plusieurs heures) avant que les fonds ne reviennent dans ton wallet, via une 2e étape.',
       'app.retireConfirm': 'Confirmer le retrait',
       'app.retireInvalidAmount': 'Indique un montant valide à retirer.',
       'app.retireSuccess': 'Retrait initié ! Reviens une fois l\'époque réseau en cours terminée (généralement plusieurs heures) pour récupérer tes fonds via "Récupérer mes fonds".',
@@ -662,10 +665,10 @@
       'tech.li2': 'Délégation, ajout de stake ou changement de validateur selon l\'état réel — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Aucune donnée de validateur inventée en production — source : dashboard des validateurs',
       'tech.li4': 'Repli gracieux en mode démo si aucun wallet n\'est détecté',
-      'footer.desc': 'Projet conçu pour la Nimiq Mini Apps Competition, Cycle II (24 août – 18 septembre 2026). Prototype ouvert, sans backend, pensé pour être hébergé et chargé dans Nimiq Pay.',
+      'footer.desc': 'Conçu pour la Nimiq Mini Apps Competition (Cycle II). Open source, pensé pour Nimiq Pay.',
       'footer.network': 'Réseau',
       'footer.status': 'Statut',
-      'footer.statusValue': 'démo interactive, vraies données validateurs',
+      'footer.statusValue': 'En production sur le mainnet : vraies données validateurs, vraie délégation dans Nimiq Pay',
       'footer.madeWith': 'Fait avec',
       'footer.loveAria': 'amour',
       'footer.by': 'par',
@@ -746,7 +749,7 @@
       'app.activeDelegation': 'You\'re currently delegating to {validator}',
       'app.retireToggle': 'Retire my stake',
       'app.retireAmtLabel': 'Amount to retire (NIM)',
-      'app.retireHint': 'This step "retires" your stake — you\'ll need to wait for the current Nimiq network epoch to end (usually several hours) before funds return to your wallet, via an upcoming 2nd step.',
+      'app.retireHint': 'This step "retires" your stake — you\'ll need to wait for the current Nimiq network epoch to end (usually several hours) before funds return to your wallet, via a 2nd step.',
       'app.retireConfirm': 'Confirm withdrawal',
       'app.retireInvalidAmount': 'Enter a valid amount to retire.',
       'app.retireSuccess': 'Withdrawal initiated! Come back once the current network epoch ends (usually several hours) to claim your funds via "Claim my funds".',
@@ -783,10 +786,10 @@
       'tech.li2': 'Delegate, add stake, or switch validator based on real state — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'No invented validator data in production — source: validators dashboard',
       'tech.li4': 'Graceful fallback to demo mode when no wallet is detected',
-      'footer.desc': 'Built for the Nimiq Mini Apps Competition, Cycle II (August 24 – September 18, 2026). Open prototype, no backend, designed to be hosted and loaded inside Nimiq Pay.',
+      'footer.desc': 'Built for the Nimiq Mini Apps Competition (Cycle II). Open source, made for Nimiq Pay.',
       'footer.network': 'Network',
       'footer.status': 'Status',
-      'footer.statusValue': 'interactive demo, real validator data',
+      'footer.statusValue': 'Live on mainnet: real validator data, real delegation inside Nimiq Pay',
       'footer.madeWith': 'Made with',
       'footer.loveAria': 'love',
       'footer.by': 'by',
@@ -869,10 +872,10 @@
       'tech.li2': 'Delegación, aumento de la apuesta o cambio de validador según el estado real — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'No se ha inventado ningún dato de validador en producción — fuente: panel de control de validadores',
       'tech.li4': 'Vuelve al modo de demostración de forma automática si no se detecta ningún monedero',
-      'footer.desc': 'Proyecto diseñado para la Nimiq Mini Apps Competition, Ciclo II (del 24 de agosto al 18 de septiembre de 2026). Prototipo abierto, sin backend, pensado para alojarse y cargarse en Nimiq Pay.',
+      'footer.desc': 'Creado para el Concurso de miniaplicaciones de Nimiq (II edición). Código abierto, hecho para Nimiq Pay.',
       'footer.network': 'Red',
       'footer.status': 'Estatuto',
-      'footer.statusValue': 'demostración interactiva, datos reales de los validadores',
+      'footer.statusValue': 'En producción en la mainnet: datos reales de validadores, delegación real dentro de Nimiq Pay',
       'footer.madeWith': 'Hecho con',
       'footer.loveAria': 'amor',
       'footer.by': 'por',
@@ -883,7 +886,7 @@
       'footer.discordTitle': 'Unirse al servidor de Discord',
       'app.retireToggle': 'Retirar mi apuesta',
       'app.retireAmtLabel': 'Importe a retirar (NIM)',
-      'app.retireHint': 'Este paso «retira» tu participación: hay que esperar a que finalice la época actual de la red Nimiq (normalmente varias horas) para que los fondos vuelvan a tu monedero, mediante un segundo paso que se realizará más adelante.',
+      'app.retireHint': 'Este paso «retira» tu participación: hay que esperar a que finalice la época actual de la red Nimiq (normalmente varias horas) para que los fondos vuelvan a tu monedero, mediante un segundo paso.',
       'app.retireConfirm': 'Confirmar la retirada',
       'app.retireInvalidAmount': 'Indica una cantidad válida para retirar.',
       'app.retireSuccess': '¡Retirada iniciada! Vuelve una vez que haya finalizado el periodo de actualización de la red (normalmente varias horas) para recuperar tus fondos a través de «Recuperar mis fondos».',
@@ -990,10 +993,10 @@
       'tech.li2': '根据实际情况进行委托、增加质押或更换验证者 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '生产环境中未出现任何虚构的验证者数据 — 来源：验证者仪表盘',
       'tech.li4': '若未检测到钱包，则优雅地切换至演示模式',
-      'footer.desc': '该项目专为Nimiq Mini Apps Competition第二轮（2026年8月24日–9月18日）设计。这是一个开源原型，不包含后端，旨在托管并加载到Nimiq Pay中。',
+      'footer.desc': '为 Nimiq 迷你应用大赛（第二届）打造。开源，专为 Nimiq Pay 而生。',
       'footer.network': '网络',
       'footer.status': '状态',
-      'footer.statusValue': '交互式演示，真实数据验证器',
+      'footer.statusValue': '已在主网上线：真实的验证者数据，在 Nimiq Pay 内进行真实委托',
       'footer.madeWith': '由……制成',
       'footer.loveAria': '爱',
       'footer.by': '作者：',
@@ -1004,7 +1007,7 @@
       'footer.discordTitle': '加入 Discord 服务器',
       'app.retireToggle': '提取我的质押金',
       'app.retireAmtLabel': '取款金额（NIM）',
-      'app.retireHint': '此步骤会“提取”你的质押资产——你需要等待当前Nimiq网络周期结束（通常需要数小时），资金才会通过后续的第二步返还到你的钱包中。',
+      'app.retireHint': '此步骤会“提取”你的质押资产——你需要等待当前Nimiq网络周期结束（通常需要数小时），资金才会通过第二步返还到你的钱包中。',
       'app.retireConfirm': '确认提现',
       'app.retireInvalidAmount': '请输入有效的取款金额。',
       'app.retireSuccess': '提现已发起！请在当前网络周期结束后（通常需要数小时）返回，通过“提取我的资金”功能提取资金。',
@@ -1111,10 +1114,10 @@
       'tech.li2': '実際の状況に応じたステークの委任、追加、またはバリデーターの変更 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '本番環境で架空のバリデーターデータは一切生成されていない — 出典：バリデーターのダッシュボード',
       'tech.li4': 'ウォレットが検出されない場合は、デモモードでスムーズに切り替わる',
-      'footer.desc': 'Nimiq Mini Apps Competition 第2回（2026年8月24日～9月18日）向けに考案されたプロジェクト。バックエンドを持たないオープンなプロトタイプであり、Nimiq Pay上でホストおよび実行されることを想定して設計されている。',
+      'footer.desc': 'Nimiq ミニアプリコンテスト（第2回）のために作られました。オープンソースで、Nimiq Pay 向けに作られています。',
       'footer.network': 'ネットワーク',
       'footer.status': 'ステータス',
-      'footer.statusValue': 'インタラクティブなデモ、実際のデータ、バリデータ',
+      'footer.statusValue': 'メインネットで稼働中：実際のバリデーターデータ、Nimiq Pay 内での実際のデリゲーション',
       'footer.madeWith': '使用素材：',
       'footer.loveAria': '愛',
       'footer.by': '著者：',
@@ -1125,7 +1128,7 @@
       'footer.discordTitle': 'Discordサーバーに参加する',
       'app.retireToggle': 'ステークを引き出す',
       'app.retireAmtLabel': '引き出し額（NIM）',
-      'app.retireHint': 'このステップでは、ステークが「解除」されます。資金がウォレットに戻ってくるには、現在進行中のNimiqネットワークのエポックが終了するまで（通常は数時間）待つ必要があり、その後、続く第2ステップを経て資金がウォレットに戻ります。',
+      'app.retireHint': 'このステップでは、ステークが「解除」されます。資金がウォレットに戻ってくるには、現在進行中のNimiqネットワークのエポックが終了するまで（通常は数時間）待つ必要があり、その後、第2ステップを経て資金がウォレットに戻ります。',
       'app.retireConfirm': '引き出しの確認',
       'app.retireInvalidAmount': '引き出し可能な有効な金額を入力してください。',
       'app.retireSuccess': '出金手続きが開始されました！現在のネットワーク処理が完了したら（通常、数時間かかります）、再度アクセスして「資金を受け取る」から資金を受け取ってください。',
@@ -1232,10 +1235,10 @@
       'tech.li2': '실제 상태에 따른 위임, 스테이크 추가 또는 검증자 변경 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '프로덕션 환경에서 임의로 생성된 검증자 데이터 없음 — 출처: 검증자 대시보드',
       'tech.li4': '지갑이 감지되지 않을 경우 데모 모드로 우아하게 전환',
-      'footer.desc': 'Nimiq Mini Apps Competition 2차 대회(2026년 8월 24일 ~ 9월 18일)를 위해 기획된 프로젝트입니다. 백엔드가 없는 오픈형 프로토타입으로, Nimiq Pay에 호스팅 및 로드되도록 설계되었습니다.',
+      'footer.desc': 'Nimiq 미니 앱 공모전(2차)을 위해 만들었습니다. 오픈 소스이며 Nimiq Pay를 위해 만들어졌습니다.',
       'footer.network': '네트워크',
       'footer.status': '상태',
-      'footer.statusValue': '대화형 데모, 실제 데이터, 검증자',
+      'footer.statusValue': '메인넷에서 운영 중: 실제 검증자 데이터, Nimiq Pay 안에서의 실제 위임',
       'footer.madeWith': '만든 재료:',
       'footer.loveAria': '사랑',
       'footer.by': '작성자:',
@@ -1246,7 +1249,7 @@
       'footer.discordTitle': 'Discord 서버에 가입하기',
       'app.retireToggle': '내 스테이크 회수하기',
       'app.retireAmtLabel': '인출 금액 (NIM)',
-      'app.retireHint': '이 단계에서는 스테이크가 “철회”됩니다. 자금이 지갑으로 돌아오려면 현재 진행 중인 Nimiq 네트워크 에포크가 끝날 때까지(보통 몇 시간 정도 소요됨) 기다려야 하며, 이후 진행될 두 번째 단계를 통해 자금이 입금됩니다.',
+      'app.retireHint': '이 단계에서는 스테이크가 “철회”됩니다. 자금이 지갑으로 돌아오려면 현재 진행 중인 Nimiq 네트워크 에포크가 끝날 때까지(보통 몇 시간 정도 소요됨) 기다려야 하며, 이후 두 번째 단계를 통해 자금이 입금됩니다.',
       'app.retireConfirm': '인출 확인',
       'app.retireInvalidAmount': '인출 가능한 유효한 금액을 입력하십시오.',
       'app.retireSuccess': '인출이 시작되었습니다! 현재 진행 중인 네트워크 처리 기간이 끝나면(보통 몇 시간 정도 소요됨) 다시 방문하여 “자금 회수”를 통해 자금을 수령하세요.',
@@ -1353,10 +1356,10 @@
       'tech.li2': 'Delegierung, Hinzufügen von Stakes oder Wechsel des Validators entsprechend dem aktuellen Status — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'In der Produktion wurden keine Validator-Daten erfunden – Quelle: Validator-Dashboard',
       'tech.li4': 'Reibungsloser Rückfall in den Demo-Modus, wenn kein Wallet erkannt wird',
-      'footer.desc': 'Projekt, das für den Nimiq Mini Apps-Wettbewerb, Runde II (24. August – 18. September 2026), entwickelt wurde. Offener Prototyp ohne Backend, der für das Hosting und Laden in Nimiq Pay konzipiert ist.',
+      'footer.desc': 'Entwickelt für den Nimiq Mini-Apps-Wettbewerb (Runde II). Open Source, gemacht für Nimiq Pay.',
       'footer.network': 'Netzwerk',
       'footer.status': 'Status',
-      'footer.statusValue': 'Interaktive Demo, echte Validierungsdaten',
+      'footer.statusValue': 'Live im Mainnet: echte Validator-Daten, echte Delegierung in Nimiq Pay',
       'footer.madeWith': 'Hergestellt aus',
       'footer.loveAria': 'Liebe',
       'footer.by': 'von',
@@ -1367,7 +1370,7 @@
       'footer.discordTitle': 'Dem Discord-Server beitreten',
       'app.retireToggle': 'Meinen Einsatz abheben',
       'app.retireAmtLabel': 'Abhebebetrag (NIM)',
-      'app.retireHint': 'In diesem Schritt wird dein Stake „abgerufen“ – du musst das Ende der laufenden Nimiq-Netzwerkeepoche abwarten (in der Regel mehrere Stunden), bevor das Guthaben in einem zweiten Schritt, der noch folgt, wieder in deine Wallet zurückfließt.',
+      'app.retireHint': 'In diesem Schritt wird dein Stake „abgerufen“ – du musst das Ende der laufenden Nimiq-Netzwerkeepoche abwarten (in der Regel mehrere Stunden), bevor das Guthaben in einem zweiten Schritt wieder in deine Wallet zurückfließt.',
       'app.retireConfirm': 'Auszahlung bestätigen',
       'app.retireInvalidAmount': 'Gibt einen gültigen Abhebungsbetrag an.',
       'app.retireSuccess': 'Auszahlung eingeleitet! Komm bitte zurück, sobald der aktuelle Netzwerkzyklus abgeschlossen ist (in der Regel mehrere Stunden), um dein Guthaben über „Mein Guthaben abrufen“ abzuheben.',
@@ -1474,10 +1477,10 @@
       'tech.li2': 'Delegação, adição de stake ou alteração do validador de acordo com o estado real — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Não foram inventados dados de validadores em produção — fonte: painel de controlo dos validadores',
       'tech.li4': 'Recurso de retorno automático ao modo de demonstração, caso não seja detetada nenhuma carteira',
-      'footer.desc': 'Projeto concebido para o Concurso Nimiq Mini Apps, Ciclo II (24 de agosto – 18 de setembro de 2026). Protótipo aberto, sem backend, concebido para ser alojado e carregado no Nimiq Pay.',
+      'footer.desc': 'Criado para o Concurso de Mini-Aplicações Nimiq (2.º Ciclo). Código aberto, feito para o Nimiq Pay.',
       'footer.network': 'Rede',
       'footer.status': 'Estatuto',
-      'footer.statusValue': 'demonstração interativa, dados reais e validadores',
+      'footer.statusValue': 'Em produção na mainnet: dados reais de validadores, delegação real dentro do Nimiq Pay',
       'footer.madeWith': 'Feito com',
       'footer.loveAria': 'amor',
       'footer.by': 'por',
@@ -1488,7 +1491,7 @@
       'footer.discordTitle': 'Entrar no servidor do Discord',
       'app.retireToggle': 'Retirar a minha participação',
       'app.retireAmtLabel': 'Montante a levantar (NIM)',
-      'app.retireHint': 'Esta etapa «retira» a tua aposta — é necessário aguardar até ao final da época atual da rede Nimiq (geralmente várias horas) para que os fundos voltem para a tua carteira, através de uma segunda etapa que se seguirá.',
+      'app.retireHint': 'Esta etapa «retira» a tua aposta — é necessário aguardar até ao final da época atual da rede Nimiq (geralmente várias horas) para que os fundos voltem para a tua carteira, através de uma segunda etapa.',
       'app.retireConfirm': 'Confirmar o levantamento',
       'app.retireInvalidAmount': 'Indique um montante válido a levantar.',
       'app.retireSuccess': 'Levantamento iniciado! Volta assim que o período de processamento em curso terminar (normalmente várias horas) para levantar os teus fundos através da opção «Levantar os meus fundos».',
@@ -1595,10 +1598,10 @@
       'tech.li2': 'Делегирование, добавление доли или смена валидатора в зависимости от фактического состояния — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'В производственной среде не было зарегистрировано ни одного вымышленного валидатора — источник: панель мониторинга валидаторов',
       'tech.li4': 'Плавный переход в демонстрационный режим, если не обнаружено ни одного кошелька',
-      'footer.desc': 'Проект, разработанный для конкурса Nimiq Mini Apps Competition, II этап (24 августа — 18 сентября 2026 года). Открытый прототип без бэкенда, предназначенный для размещения и загрузки в Nimiq Pay.',
+      'footer.desc': 'Создано для конкурса мини-приложений Nimiq (II-й цикл). Открытый исходный код, сделано для Nimiq Pay.',
       'footer.network': 'Сеть',
       'footer.status': 'Статус',
-      'footer.statusValue': 'интерактивная демонстрация, реальные данные валидаторов',
+      'footer.statusValue': 'Работает в основной сети: реальные данные валидаторов, реальное делегирование в Nimiq Pay',
       'footer.madeWith': 'Сделано из',
       'footer.loveAria': 'любовь',
       'footer.by': 'автор:',
@@ -1609,7 +1612,7 @@
       'footer.discordTitle': 'Присоединиться к серверу Discord',
       'app.retireToggle': 'Изъять мой стейк',
       'app.retireAmtLabel': 'Сумма к снятию (NIM)',
-      'app.retireHint': 'На этом этапе твоя ставка «извлекается» — необходимо дождаться окончания текущей эпохи сети Nimiq (обычно это занимает несколько часов), после чего средства поступят в твой кошелек в рамках второго этапа, который состоится позже.',
+      'app.retireHint': 'На этом этапе твоя ставка «извлекается» — необходимо дождаться окончания текущей эпохи сети Nimiq (обычно это занимает несколько часов), после чего средства поступят в твой кошелек в рамках второго этапа.',
       'app.retireConfirm': 'Подтвердить снятие средств',
       'app.retireInvalidAmount': 'Укажите допустимую сумму для снятия.',
       'app.retireSuccess': 'Вывод средств инициирован! Вернись после завершения текущего сетевого цикла (обычно это занимает несколько часов), чтобы получить свои средства через раздел «Получить средства».',
@@ -1716,10 +1719,10 @@
       'tech.li2': 'Gerçek duruma göre delegasyon, stake ekleme veya validatör değiştirme — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Üretim ortamında uydurulmuş hiçbir doğrulayıcı verisi yok — kaynak: doğrulayıcılar panosu',
       'tech.li4': 'Herhangi bir cüzdan algılanmazsa, demo modunda sorunsuz bir şekilde geri dönüş yapılır',
-      'footer.desc': 'Nimiq Mini Apps Yarışması, II. Dönem (24 Ağustos – 18 Eylül 2026) için tasarlanan proje. Nimiq Pay’de barındırılmak ve yüklenmek üzere tasarlanmış, arka uçsuz, açık kaynaklı bir prototip.',
+      'footer.desc': 'Nimiq Mini Uygulamalar Yarışması (2. Dönem) için geliştirildi. Açık kaynak, Nimiq Pay için yapıldı.',
       'footer.network': 'Ağ',
       'footer.status': 'Durum',
-      'footer.statusValue': 'etkileşimli demo, gerçek veriler ve doğrulayıcılar',
+      'footer.statusValue': 'Ana ağda canlı: gerçek doğrulayıcı verileri, Nimiq Pay içinde gerçek delegasyon',
       'footer.madeWith': 'Şunlarla yapılmıştır',
       'footer.loveAria': 'aşk',
       'footer.by': 'tarafından',
@@ -1730,7 +1733,7 @@
       'footer.discordTitle': 'Discord sunucusuna katılmak',
       'app.retireToggle': 'Hisse payımı çekmek',
       'app.retireAmtLabel': 'Çekilecek tutar (NIM)',
-      'app.retireHint': 'Bu adım, stake\'ini "geri çeker" — fonların, ileride gerçekleşecek ikinci bir adım aracılığıyla cüzdana geri dönmesi için, devam eden Nimiq ağı döneminin sona ermesini beklemen gerekir (genellikle birkaç saat sürer).',
+      'app.retireHint': 'Bu adım, stake\'ini "geri çeker" — fonların, ikinci bir adım aracılığıyla cüzdana geri dönmesi için, devam eden Nimiq ağı döneminin sona ermesini beklemen gerekir (genellikle birkaç saat sürer).',
       'app.retireConfirm': 'Para çekme işlemini onayla',
       'app.retireInvalidAmount': 'Çekilebilecek geçerli bir tutarı belirtir.',
       'app.retireSuccess': 'Para çekme işlemi başlatıldı! Mevcut ağ dönemi sona erdiğinde (genellikle birkaç saat sürer) geri gelip "Paramı Al" seçeneği aracılığıyla paranı alabilirsin.',
@@ -1837,10 +1840,10 @@
       'tech.li2': 'التفويض، أو إضافة حصة، أو تغيير المُصدق وفقًا للحالة الفعلية — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'لم يتم اختراع أي بيانات خاصة بالمُصدقين في بيئة الإنتاج — المصدر: لوحة معلومات المُصدقين',
       'tech.li4': 'العودة السلسة إلى وضع العرض التوضيحي في حالة عدم اكتشاف أي محفظة',
-      'footer.desc': 'مشروع تم تصميمه للمشاركة في مسابقة Nimiq Mini Apps، الدورة الثانية (24 أغسطس – 18 سبتمبر 2026). نموذج أولي مفتوح، بدون بنية خلفية، مصمم ليتم استضافته وتشغيله في Nimiq Pay.',
+      'footer.desc': 'صُمم لمسابقة Nimiq للتطبيقات المصغرة (الدورة الثانية). مفتوح المصدر، ومصنوع لـ Nimiq Pay.',
       'footer.network': 'الشبكة',
       'footer.status': 'الحالة',
-      'footer.statusValue': 'عرض تفاعلي، بيانات حقيقية، أدوات التحقق',
+      'footer.statusValue': 'يعمل على الشبكة الرئيسية: بيانات مُصدقين حقيقية وتفويض حقيقي داخل Nimiq Pay',
       'footer.madeWith': 'مصنوع من',
       'footer.loveAria': 'الحب',
       'footer.by': 'بقلم',
@@ -1851,7 +1854,7 @@
       'footer.discordTitle': 'الانضمام إلى خادم Discord',
       'app.retireToggle': 'سحب رهنتي',
       'app.retireAmtLabel': 'المبلغ المراد سحبه (NIM)',
-      'app.retireHint': 'تقوم هذه الخطوة بـ«سحب» رصيدك — يجب الانتظار حتى نهاية العصر الحالي لشبكة Nimiq (عادةً ما يستغرق ذلك عدة ساعات) قبل أن تعود الأموال إلى محفظتك، وذلك عبر خطوة ثانية ستتم لاحقًا.',
+      'app.retireHint': 'تقوم هذه الخطوة بـ«سحب» رصيدك — يجب الانتظار حتى نهاية العصر الحالي لشبكة Nimiq (عادةً ما يستغرق ذلك عدة ساعات) قبل أن تعود الأموال إلى محفظتك، وذلك عبر خطوة ثانية.',
       'app.retireConfirm': 'تأكيد السحب',
       'app.retireInvalidAmount': 'أدخل مبلغًا صالحًا للسحب.',
       'app.retireSuccess': 'تم بدء عملية السحب! يرجى العودة بعد انتهاء الفترة الحالية للشبكة (عادةً ما تستغرق عدة ساعات) لاسترداد أموالك عبر خيار "استرداد أموالي".',
