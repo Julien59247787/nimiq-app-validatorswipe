@@ -6,7 +6,7 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [1.1.0] — date set at publication (not yet released, no tag)
+## [1.1.0] — 2026-09-21
 
 The batch of the next release: remembered favorites, the write lock, honest confirmation, detection of a transaction
 rejected by the network, and help messages.
