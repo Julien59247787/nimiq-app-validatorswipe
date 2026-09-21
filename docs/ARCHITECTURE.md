@@ -162,7 +162,7 @@ confirmed" with the manual unlock button. `execution_result: true` also changes 
 ## Testing
 
 There is no automated suite; the manual test plan and the record of what has been verified on a real device are in
-[TESTING.md](TESTING.md) and [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#verification-status-version-100).
+[TESTING.md](TESTING.md) and [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#verification-status-current).
 
 ## Hard-coded, operator-specific bits
 

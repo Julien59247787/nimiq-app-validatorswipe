@@ -4,7 +4,7 @@ This page lists what the app does not do, what depends on the environment, and â
 what has and has not been verified on a real device. Anything not listed as verified should be
 treated as untested.
 
-## Verification status (version 1.0.0)
+## Verification status (current)
 
 Real-device checks were made on one Android phone running Nimiq Pay (Android 16, WebView/Chrome
 152, device pixel ratio 2) against Nimiq mainnet with real funds, and in desktop and mobile

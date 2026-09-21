@@ -5,7 +5,7 @@
 Validator Swipe is a [Nimiq Pay](https://nimiq.com) mini app that turns choosing a
 validator — usually a dry table of numbers — into a fast, informed decision, then lets
 you delegate (stake) your NIM in one tap. It also covers the rest of the staking
-lifecycle: switch validator, add stake, retire, and claim your funds back.
+lifecycle: switch validator, add stake, retire, and claim your funds back (Switch and Retire: see [Known issues and workarounds](#known-issues-and-workarounds)).
 
 Built by **@Ju'Team** (Ju & Claude) for the Nimiq Mini Apps Competition, Cycle II.
 Licensed under [MIT](LICENSE).
@@ -38,7 +38,7 @@ Licensed under [MIT](LICENSE).
   by accident while browsing.
 - **Complete staking lifecycle**, driven by the account's real on-chain state:
   create a staker, add to an existing stake, switch validator, **retire** a stake,
-  then **claim** the funds after the network waiting period.
+  then **claim** the funds after the network waiting period. Switch and Retire have known limits in Nimiq Pay (see [Known issues and workarounds](#known-issues-and-workarounds)).
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
 - **Tidy positioning.** In Nimiq Pay, a tap on Browse, My favorites or the app title re-centres the card under the host bar
@@ -207,7 +207,7 @@ block but rejected at execution from a swap contract that still holds funds, and
 entirely spent), Create stake from a merged swap contract (fails), Claim with the final build, and the Nimiq Hub
 path on mobile browsers or with a hardware wallet. The
 details, with the environment, are in
-[docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#verification-status-version-100). Some translations
+[docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#verification-status-current). Some translations
 are machine-generated and have not been reviewed by native speakers — corrections are welcome (see
 [docs/I18N.md](docs/I18N.md)).
 

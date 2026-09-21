@@ -30,12 +30,21 @@ Footer status and description updated; app version shown; audit of displayed tex
 - `scripts/check-version.sh`: fails when the displayed version, its link and the newest dated CHANGELOG entry differ;
   added to the release checklist in [docs/TESTING.md](docs/TESTING.md).
 
-### Audit of displayed text (left as is, for a decision)
+### Audit of displayed text
 
-- The header chip still names the competition; "Watch the demo video" is kept; "you can withdraw it whenever you
-  want" (how it works, step 3) describes the protocol, not Nimiq Pay's current Retire behavior; the technical
-  section and the sample-data note say delegation "stays simulated" outside Nimiq Pay without mentioning the Nimiq Hub
-  path; the "~40 validators" figure is not checked by the app.
+Also fixed after the audit:
+
+- "Outside Nimiq Pay, the delegation is simulated unless you connect a wallet with Nimiq Hub" replaces "stays
+  simulated" in the technical section and the sample-data note (11 languages); the Hub path is still not tested end to end.
+- The static French copy of the hero button now reads "Voir les validateurs" like the dictionaries (it was "Essayer la
+  démo", which no longer matched the button).
+- README: the lifecycle summary points to "Known issues and workarounds" for Switch and Retire; the section
+  "Verification status (version 1.0.0)" of `docs/KNOWN-LIMITATIONS.md` is now "Verification status (current)" and
+  every link to it is updated.
+
+Checked and left as is: the header chip naming the competition (the origin of the app), "you can withdraw it whenever you
+  want" (it describes that the validator never holds the funds; the rejection message and Known issues cover Nimiq Pay),
+  and the "~40 validators, refreshed daily" figure (it comes from the API).
 
 ## [1.1.0] — 2026-09-21
 

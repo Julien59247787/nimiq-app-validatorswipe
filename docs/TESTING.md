@@ -2,7 +2,7 @@
 
 Validator Swipe has no automated test suite yet (it is one static file, see
 [CONTRIBUTING.md](../CONTRIBUTING.md)). This checklist is what a maintainer runs before a release. What
-has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#verification-status-version-100).
+has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#verification-status-current).
 
 ## Environments
 
