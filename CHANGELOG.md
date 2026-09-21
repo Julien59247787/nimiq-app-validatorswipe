@@ -10,6 +10,13 @@ work is available in the Git history.
 
 ### Added
 
+- A transaction that the network rejects is now detected. The hash returned by the wallet is kept in the pending
+  record and the page asks the optional same-origin endpoint `GET /api/v2/tx-status?hash=` at each poll tick. When the
+  transaction is included, rejected at execution and has at least 2 confirmations, the page shows "The network
+  rejected this transaction. Nothing was changed." (11 languages, new key `app.txRejected`) and lifts the lock
+  automatically (safe: value 0, nothing to duplicate). Any other answer, or no endpoint, leaves the previous behavior
+  (waiting, "Still not confirmed", manual "Not sent? Unlock"). See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 - Favorites survive closing and reloading the app: the public addresses of the favorite validators are kept in
   `localStorage` (`vs:favorites`, in order, at most 50, never the wallet address), restored once the validator list
   has loaded, kept in sync between open pages, and never purged while the list is only the built-in fallback.

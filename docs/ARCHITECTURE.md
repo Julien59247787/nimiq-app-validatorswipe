@@ -87,14 +87,27 @@ network's waiting period, which is tied to the end of the current epoch) and the
 
 ### 4. Backend contract
 
-The page only needs two endpoints, served from the **same origin** as the page
+The page needs two endpoints, plus one optional endpoint, served from the **same origin** as the page
 (relative URLs, so no CORS configuration is required):
 
 - `GET /api/v2/validators-list?limit=200`
 - `GET /api/v2/staker-status?address=<user friendly address>`
+- `GET /api/v2/tx-status?hash=<64 hex characters>` (optional, see below)
 
 Their schemas, data sources and operational requirements are specified in the
 [Operator Guide](OPERATOR-GUIDE.md).
+
+**`tx-status` (optional).** The Mini App SDK answers a send request with the transaction hash. The page keeps it (only
+if it matches `^[0-9a-f]{64}$`) in the pending record `vs:pending` and, at each tick of the status poll, makes one more
+request. The response is JSON and must not be cached (`no-store`):
+`{ found, included, block_number, confirmations, execution_result, warming }`. `found: false` means the transaction is
+not (yet) in the window the server can see; `warming: true` means a cold start. The page acts on exactly one case:
+`found` is true, `execution_result` is `false` and `confirmations` is at least 2. It then shows "The network rejected
+this transaction. Nothing was changed." and lifts the write lock **automatically**: a transaction rejected at execution
+changes nothing (value 0), so no action can be duplicated. Every other answer (not found, warming, HTTP error such as
+404, timeout after 5 s, invalid JSON, no hash) changes nothing: the page keeps waiting, then shows "Still not
+confirmed" with the manual unlock button. `execution_result: true` also changes nothing: the lock is lifted when
+`staker-status` reflects the action. Budget: one extra small request per poll tick (fast during the first 60 s, then every 15 s for up to 10 minutes) and none when the hash is missing.
 
 ### 5. Graceful degradation
 
