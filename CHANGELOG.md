@@ -20,6 +20,8 @@ Footer status and description updated; app version shown; audit of displayed tex
   and `tx-status` endpoints) and the competition dates.
 - The retire explanation, in 11 languages, no longer says the second step (claiming the funds) is "upcoming": it
   exists.
+- Operator Guide: the optional `tx-status` endpoint is documented (it was missing, and the guide said only two endpoints
+  are called); `demo.mp4` is stated to be a stable public URL replaced on the nodes without an app release.
 
 ### Added
 

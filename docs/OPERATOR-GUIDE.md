@@ -66,7 +66,7 @@ module). This drives the CSP in §3.4. Self-hosting these requires editing the a
 
 ## 1. API contract consumed by `index.html`
 
-Only these two endpoints are called. Both are `GET`, JSON, unauthenticated and read-only.
+Only these endpoints are called (the third one is optional, see §1.3). All are `GET`, JSON, unauthenticated and read-only.
 Every response should carry `Cache-Control: no-store`.
 
 Common envelope fields:
@@ -198,6 +198,15 @@ Semantics to keep exactly right:
 Not consumed by the app but useful: `GET /api/health` → `200`, for monitoring and deploy checks.
 
 ---
+
+### 1.3 `GET /api/v2/tx-status?hash=<64 hex characters>` (optional)
+
+Lets the app tell that the network rejected a transaction it just sent. Response, never cached (`Cache-Control: no-store`):
+`{ "found": bool, "included": bool, "block_number": int, "confirmations": int, "execution_result": bool, "warming": bool }`.
+`found: false` means the transaction is not (yet) in the window the server can see; `warming: true` means a cold start. Never
+return signature proofs or recipient data. The app acts only on `found: true`, `execution_result: false` and
+`confirmations >= 2`; any other answer, an error or the absence of the route leaves the app waiting as before. One extra
+small request per poll tick while a transaction is pending. See [ARCHITECTURE.md](ARCHITECTURE.md#4-backend-contract).
 
 ## 2. Data sources and logic
 
@@ -587,6 +596,8 @@ notice in [LICENSE](../LICENSE).
 
 The hero has a "Watch the demo video" button linking to a relative `demo.mp4`. Provide your own
 recording next to `index.html`, or remove the button (`hero.ctaVideo`).
+
+`demo.mp4` is a stable public URL: replace the file on the nodes (same content on both) when a new video is ready; no app release is needed.
 
 ### e) After any edit inside the `<script>`
 
