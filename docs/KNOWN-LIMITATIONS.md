@@ -15,7 +15,7 @@ browser emulation with a mock backend. The manual test plan is in [TESTING.md](T
 | Browse validators, favorites, delegation history | Verified on device |
 | **Add stake** (existing staker, same validator), including with a main-account balance of 0 and funds held in a swap contract | Verified on-chain (execution result true) |
 | **Switch validator** (update staker) and **Retire** in Nimiq Pay | **Not verified.** Two observed behaviors (see below): from a swap contract that still holds funds, the transactions are included in a block but rejected at execution; when the swap contract was entirely spent, no transaction reaches the chain and Nimiq Pay shows "Pending". Earlier "verified" statements were based on the wallet's transaction history and are withdrawn |
-| **Create stake** with funds held in a swap contract | Passes from a contract created by a single transfer; **fails** from a contract built by merging several transfers (see below) |
+| **Create stake** with funds held in a swap contract | **Status changing (2026-09-23):** now fails even from a single-transfer contract, a regression from 3/3 successes on 2026-09-16 to 2026-09-20; always fails from a contract built by merging several transfers (see below) |
 | **Claim** (remove stake) | Not tested end to end with the final build |
 | Wallet rejection or cancellation, SDK `ErrorResponse` resolved instead of rejected | Verified on device (error message shown, action can be retried) |
 | Duplicate taps, page reload while a transaction is pending | Verified in browser emulation; reload behavior checked on device |
@@ -73,11 +73,21 @@ automatic, because of the risk of a duplicate action). A rejected transaction ch
 stays this way, check the chain (or the transaction in Nimiq Pay) before unlocking; reloading the app re-reads the
 chain but does not lift the lock by itself. **Do not present Switch or Retire as verified.**
 
-## Create stake from a swap contract (HTLC): merged contracts fail
+## Create stake from a swap contract (HTLC): currently fails even from a single transfer
 
-Observed in our tests (Android 13 emulator and Android 16 phone, Nimiq Pay v2.19.1 on both, mainnet, real funds;
-dates 2026-09-16 to 2026-09-20). The wallet held its funds in a swap contract (HTLC) and a first stake
-(**Create stake**) was sent from the app:
+**Update, 2026-09-23 — regression.** Since this date, **Create stake now fails even from a contract created by a
+single transfer**, which had worked reliably before: 2 newly created wallets, tested the same way as the 3 earlier
+successes below (contract created, Create attempted a few minutes later), gave **2 failures out of 2**, same raw
+error and no transaction on the chain. Nimiq Pay's version is unchanged (v2.19.1). This coincides with two Mini App
+SDK releases this week (0.2.0 on 2026-09-21, 0.2.1 on 2026-09-22); reading their code shows only a client-side
+wrapper change, nothing about Nimiq Pay's closed-source internal logic, so it is a coincidence in time, **not a
+proven cause**. Sören (Nimiq Pay team) has not answered since 2026-09-18. Until this is reconfirmed either way,
+**do not present the "single transfer" advice or the relay-wallet workaround below as reliable** — they were, and
+may again become, correct, but the current on-chain evidence is 2 failures out of 2 from single-transfer contracts.
+
+**Historical results (2026-09-16 to 2026-09-20), superseded by the update above.** Android 13 emulator and
+Android 16 phone, Nimiq Pay v2.19.1 on both, mainnet, real funds. The wallet held its funds in a swap contract
+(HTLC) and a first stake (**Create stake**) was sent from the app:
 
 | Contract funding the wallet | Amount sent | Result |
 |---|---|---|
@@ -89,26 +99,31 @@ dates 2026-09-16 to 2026-09-20). The wallet held its funds in a swap contract (H
 
 The error is always the raw message "Failed to send payment transaction: Transaction invalidated during
 transaction" (code -32603), and no transaction reaches the chain. **Add stake** worked from a contract of the
-same kind.
+same kind, at the time of these tests.
 
-**Conclusion (cautious).** In these tests only contracts produced by merging several transfers fail at Create
-(the amount, the decimals and a partial spend are ruled out), and the failure is **not specific to the emulator**:
-it was reproduced on a real Android 16 phone with the same Nimiq Pay version. On the phone, Nimiq Pay also raised a
-native notification carrying the same text, so the error is emitted by the host, not by the app. The cause on the
-Nimiq Pay side is not established and should be confirmed with the host team. **Workaround observed twice (not a guarantee):** withdraw the funds to
-another address and send them back in a single transfer before the first Create.
+**Historical conclusion (cautious, no longer the current state as of 2026-09-23).** In these tests only contracts
+produced by merging several transfers failed at Create (the amount, the decimals and a partial spend were ruled
+out), and the failure was **not specific to the emulator**: it was reproduced on a real Android 16 phone with the
+same Nimiq Pay version. On the phone, Nimiq Pay also raised a native notification carrying the same text, so the
+error is emitted by the host, not by the app. The cause on the Nimiq Pay side was not established then and still
+is not. **Workaround observed twice back then (not a guarantee, and not reconfirmed since the 2026-09-23
+regression):** withdraw the funds to another address and send them back in a single transfer before the first
+Create.
 
 Nimiq Pay refuses to send funds to the wallet's own address ("You can not use this address"), so the funds cannot
 be consolidated by sending them to oneself from the wallet.
 
 When a Create fails with this message, the app shows a dedicated help text ("Your first stake couldn't be created ...",
-11 languages) and keeps the raw detail under it; Add, Switch and Retire keep their usual messages. The workaround
-is described below.
+11 languages) and keeps the raw detail under it; Add, Switch and Retire keep their usual messages. This text (app
+message key `app.createNeedsSingleTransfer`) has been left unchanged for now: sending NIM in a single transfer
+remains a reasonable thing to try even though it is no longer confirmed to work (see the 2026-09-23 update above),
+and the app cannot currently offer better advice. The workaround below is affected by the same regression.
 
 ## Known issues and workarounds
 
-**Create stake fails with "Your first stake couldn't be created"** (Nimiq Pay, funds that arrived in several transfers).
-The "relay wallet" workaround, observed in our tests, **not a guarantee**:
+**Create stake fails with "Your first stake couldn't be created"**. **As of 2026-09-23, this can happen even when the
+funds arrived in a single transfer (see the regression above) — the relay-wallet workaround below is not currently
+reconfirmed to fix it.** It remains the only workaround observed in our tests, **not a guarantee**:
 
 1. Create a temporary wallet on [wallet.nimiq.com](https://wallet.nimiq.com) **and back it up first**, before
    sending anything to it.

@@ -30,7 +30,7 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] The connection pill shows "Wallet detected" when a wallet is connected and "Wallet not detected" otherwise, before and after a language change.
 
 **Delegation** (My favorites; small amounts)
-- [ ] First Create with a wallet whose funds come from a single transfer (a wallet funded by merged transfers can fail at Create, on an emulator and on a phone, see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail)).
+- [ ] First Create: status changing as of 2026-09-23 (Create can currently fail from a swap-contract wallet regardless of how it was funded); check the current guidance in [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-currently-fails-even-from-a-single-transfer) before assuming single-transfer funding will pass.
 - [ ] No staker yet: amount required, *create staker* is sent, success message stays until dismissed, the waiting line appears and disappears once the chain reflects the transaction, the active delegation banner and history update.
 - [ ] Staker exists, same validator: *add stake*.
 - [ ] Staker exists, other validator: the amount field is replaced by the switch note; *update staker* is sent without an amount. Check the result on the chain (execution result), not in the wallet's history: in Nimiq Pay it is currently not verified: rejected at execution from a swap contract that still holds funds, nothing sent when the contract was entirely spent (see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#switch-validator-and-retire-in-nimiq-pay-two-observed-behaviors-not-verified)).

@@ -6,6 +6,19 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [Unreleased]
+
+### Changed
+
+- 2026-09-23: **Create stake regression, confirmed on-chain.** Create now fails even from a swap contract (HTLC)
+  created by a single transfer (2 new wallets, 2 failures out of 2, same raw error and no transaction reaching the
+  chain), which had worked reliably from 2026-09-16 to 2026-09-20 (3 successes out of 3 in the same conditions).
+  Nimiq Pay's version is unchanged (v2.19.1); this coincides with two Mini App SDK releases (0.2.0 on 2026-09-21,
+  0.2.1 on 2026-09-22), read and found to be a client-side wrapper change only — a coincidence in time, not a proven
+  cause. No code change in the app; documentation updated ([docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md),
+  [README.md](README.md)) to withdraw the "passes from a single transfer" and relay-wallet-workaround claims until
+  reconfirmed.
+
 ## [1.1.1] — 2026-09-21
 
 Footer status and description updated; app version shown; audit of displayed text.
@@ -117,7 +130,8 @@ rejected by the network, and help messages.
   transfer, in full or partially, and Add stake works from a merged contract. Observed in our tests on an Android 13
   emulator and an Android 16 phone, Nimiq Pay v2.19.1 on both (the host also raises a native notification with the
   same text); the cause on the host side is not established. See
-  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-merged-contracts-fail).
+  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-currently-fails-even-from-a-single-transfer)
+  (status updated 2026-09-23: this no longer passes reliably from a single transfer either, see [Unreleased](#unreleased) above).
 
 ### Ideas
 
