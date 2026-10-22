@@ -513,7 +513,7 @@
     </div>
     <div class="meta">
       <div><span data-i18n="footer.network">Réseau</span> : Nimiq (NIM)</div>
-      <div>SDK : @nimiq/mini-app-sdk</div>
+      <div>SDK : @nimiq/mini-app-sdk@0.1.0</div>
       <div><span data-i18n="footer.status">Statut</span> : <span data-i18n="footer.statusValue">En production sur le mainnet : vraies données validateurs, vraie délégation dans Nimiq Pay</span></div>
     </div>
   </div>
@@ -527,7 +527,7 @@
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Signaler un bug</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
-  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.1" target="_blank" rel="noopener noreferrer">v1.1.1</a>
+  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.2" target="_blank" rel="noopener noreferrer">v1.1.2</a>
   <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le tableau de bord des validateurs" data-i18n-aria="footer.mascotLink" title="Ouvrir le tableau de bord des validateurs" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
@@ -3243,7 +3243,9 @@
       $('hubConnectBtn').hidden = false;
       return;
     }
-    import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk/+esm').then(function(mod){
+    // SDK pinned to 0.1.0 (the version before 0.2.0 of 2026-09-21), as a test of the SDK track for the Create-stake
+    // regression seen on 2026-09-23 (not proven to be the cause; see the 1.1.2 entry of the changelog).
+    import('https://cdn.jsdelivr.net/npm/@nimiq/mini-app-sdk@0.1.0/+esm').then(function(mod){
       return mod.init();
     }).then(function(nimiq){
       state.nimiq = nimiq;
