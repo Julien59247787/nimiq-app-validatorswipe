@@ -84,6 +84,7 @@ wrapper change, nothing about Nimiq Pay's closed-source internal logic, so it is
 proven cause**. Sören (Nimiq Pay team) has not answered since 2026-09-18. Until this is reconfirmed either way,
 **do not present the "single transfer" advice or the relay-wallet workaround below as reliable** — they were, and
 may again become, correct, but the current on-chain evidence is 2 failures out of 2 from single-transfer contracts.
+Version 1.1.2 pins the Mini App SDK to 0.1.0 to test that track (not proven to be the cause).
 
 **Historical results (2026-09-16 to 2026-09-20), superseded by the update above.** Android 13 emulator and
 Android 16 phone, Nimiq Pay v2.19.1 on both, mainnet, real funds. The wallet held its funds in a swap contract
@@ -171,8 +172,8 @@ wallets. Your stake is safe. We've reported it to the Nimiq Pay team." It never 
   epoch you retire. The app deliberately gives no fixed duration.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
 - **Third-party CDNs.** Libraries and fonts are loaded from CDNs (jsDelivr, Google Fonts), so the
-  page depends on their availability and they see visitors' IP addresses. The Mini App SDK
-  version is not pinned.
+  page depends on their availability and they see visitors' IP addresses. The Mini App SDK is pinned to 0.1.0 since 1.1.2
+  (a test, see the changelog); `@nimiq/core` and the Hub API are pinned too.
 - **Statistics coverage.** Uptime, reliability, reward rate and fee depend on the operator's data
   source; validators without enough history show "—" for missing values. Reliability is capped at
   100 % by the reference API.
@@ -188,7 +189,7 @@ wallets. Your stake is safe. We've reported it to the Nimiq Pay team." It never 
 
 - Obtain the height of Nimiq Pay's top bar from the host team, so the re-centring can be calibrated
   instead of relying on `env(safe-area-inset-top)` being reported.
-- Pin the Mini App SDK version (and, later, self-host the libraries).
+- Self-host the libraries (the Mini App SDK is pinned to 0.1.0 since 1.1.2, as a test: decide whether to keep the pin).
 - Deployment note for operators: with several nodes answering in turn, per-node `ETag` values differ,
   so conditional requests (`304`) do not hit; serve identical files and disable or align the
   `ETag` (see the [Operator Guide](OPERATOR-GUIDE.md)).

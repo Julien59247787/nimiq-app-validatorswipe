@@ -19,8 +19,9 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 1. **Syntax:** load the page with the browser console open: no error. Count `{`/`}` and `(`/`)` in the inline script.
 2. **i18n parity:** every key exists in the 11 languages ([I18N.md](I18N.md#the-golden-rule-key-parity)); no mojibake.
 3. **CSP hash:** recompute the script hash (normalize CRLF to LF) and compare with the deployed header ([Operator Guide](OPERATOR-GUIDE.md#34-content-security-policy)).
-4. **Displayed version:** `scripts/check-version.sh vX.Y.Z` must print OK (the version shown at the bottom of the page, its release link and the newest dated CHANGELOG entry agree with the tag about to be created). Read the footer status and description in a few languages: they must match the current reality.
-5. **No leaks:** no secrets, internal hostnames/IPs or full wallet addresses in the repository.
+4. **Pinned libraries:** the URLs of `@nimiq/mini-app-sdk`, `@nimiq/core` and `@nimiq/hub-api` in `index.html` carry an exact version.
+5. **Displayed version:** `scripts/check-version.sh vX.Y.Z` must print OK (the version shown at the bottom of the page, its release link and the newest dated CHANGELOG entry agree with the tag about to be created). Read the footer status and description in a few languages: they must match the current reality.
+6. **No leaks:** no secrets, internal hostnames/IPs or full wallet addresses in the repository.
 
 ## Checklist
 

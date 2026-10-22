@@ -47,7 +47,7 @@ relative to its own origin, so the API and the static files must be served from 
 origin** (or a reverse proxy must make them look so).
 
 At runtime the page also loads from `cdn.jsdelivr.net`: `@nimiq/hub-api` (`<script src>`),
-`@nimiq/mini-app-sdk` and `@nimiq/core` (dynamic `import()`; the latter loads a WebAssembly
+`@nimiq/mini-app-sdk` (pinned to 0.1.0 since 1.1.2) and `@nimiq/core` (dynamic `import()`; the latter loads a WebAssembly
 module). This drives the CSP in §3.4. Self-hosting these requires editing the app.
 
 **What you need, in short:**

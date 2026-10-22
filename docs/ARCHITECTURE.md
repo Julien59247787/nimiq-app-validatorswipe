@@ -57,7 +57,7 @@ Inside a single IIFE-style script block:
 | | Inside Nimiq Pay | Outside Nimiq Pay (regular browser) |
 |---|---|---|
 | Detection | `window.nimiqPay` exists | it doesn't |
-| Library | `@nimiq/mini-app-sdk` (dynamic ES import from a CDN) | `@nimiq/hub-api` (script tag, pinned version) |
+| Library | `@nimiq/mini-app-sdk` (dynamic ES import from a CDN, pinned to 0.1.0 since 1.1.2) | `@nimiq/hub-api` (script tag, pinned version) |
 | Get the address | `listAccounts()` | `chooseAddress()` popup → "Connect" button |
 | Send a transaction | `sendNewStakerTransaction`, `sendStakeTransaction`, `sendUpdateStakerTransaction`, `sendRetireStakeTransaction`, `sendRemoveStakeTransaction` | build with `@nimiq/core` `TransactionBuilder`, then `hub.checkout()` (signs **and** broadcasts) |
 | Disconnect | n/a | "Disconnect" button |
@@ -177,7 +177,7 @@ whoever forks it. The exact steps are in the [Operator Guide](OPERATOR-GUIDE.md#
 
 | Dependency | How it is loaded |
 |---|---|
-| `@nimiq/mini-app-sdk` | dynamic `import()` from jsDelivr (Nimiq Pay path only) |
+| `@nimiq/mini-app-sdk` | dynamic `import()` from jsDelivr, pinned to 0.1.0 since 1.1.2 (Nimiq Pay path only) |
 | `@nimiq/hub-api` 1.14.0 | `<script>` from jsDelivr |
 | `@nimiq/core` 2.21.0 | dynamic `import()` from jsDelivr, Hub path only |
 | `hub.nimiq.com` | popup opened by the Hub client |

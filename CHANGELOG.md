@@ -6,10 +6,21 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [Unreleased]
+## [1.1.2] — 2026-10-22
+
+Test release: the Mini App SDK loaded by the page is pinned to 0.1.0.
 
 ### Changed
 
+- `@nimiq/mini-app-sdk` is now imported as `@nimiq/mini-app-sdk@0.1.0` instead of the latest published version (the page used to import the
+  unpinned package). This is the **test of one hypothesis, not a fix**: the unpinned SDK moved from 0.1.0 to 0.2.0 on 2026-09-21 and to 0.2.1 on
+  2026-09-22, shortly before Create stake from a swap contract started failing on 2026-09-23 (see the next entry); it is at 0.2.4 today.
+  The coincidence in time is not evidence of a cause: the Nimiq Pay version did not change and the error message comes from the host side.
+  The app only uses `init`, `listAccounts` and the five `send...Transaction` methods, none of the functions added in 0.2.x
+  (`NimiqProviderError`, `getBalance`, `requestDeviceIdentifier`, ...). With 0.1.0, `init()` returns the host provider itself; 0.2.x returns a
+  wrapper object. If Create stake still fails with 0.1.0, the SDK track is ruled out; if it works again, keep the pin and report it to the Nimiq Pay team.
+- The inline script changed, so the Content-Security-Policy hash of the script changes: operators must update it ([Operator Guide](docs/OPERATOR-GUIDE.md), section 3.4).
+- The displayed version is v1.1.2 (`scripts/check-version.sh v1.1.2`).
 - 2026-09-23: **Create stake regression, confirmed on-chain.** Create now fails even from a swap contract (HTLC)
   created by a single transfer (2 new wallets, 2 failures out of 2, same raw error and no transaction reaching the
   chain), which had worked reliably from 2026-09-16 to 2026-09-20 (3 successes out of 3 in the same conditions).
@@ -140,7 +151,7 @@ Ideas with no commitment on a date or a version. None of these is implemented ye
 **Candidate work for a patch release**
 - Obtain the height of Nimiq Pay's top bar from the host team to calibrate the re-centring, instead of relying on
   `env(safe-area-inset-top)` being reported.
-- Pin the Mini App SDK version.
+- Pin the Mini App SDK version (done in 1.1.2 as a test: 0.1.0).
 - Operator note: with several nodes answering in turn, per-node `ETag` values differ, so conditional requests
   (`304`) do not hit; see the [Operator Guide](docs/OPERATOR-GUIDE.md).
 

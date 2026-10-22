@@ -116,7 +116,7 @@ Good to know when running from a clone: the "Watch the demo video" button links 
 ## Architecture in 10 lines
 
 1. One self-contained `index.html` (HTML + CSS + vanilla JS, no build step).
-2. Inside Nimiq Pay: `@nimiq/mini-app-sdk` (loaded from a CDN) provides the wallet
+2. Inside Nimiq Pay: `@nimiq/mini-app-sdk` (loaded from a CDN, pinned to 0.1.0 since 1.1.2) provides the wallet
    account and signs/sends staking transactions.
 3. Outside Nimiq Pay: `@nimiq/hub-api` opens the Nimiq Hub popup to pick an address;
    transactions are built locally with `@nimiq/core` and signed + broadcast through the Hub.
