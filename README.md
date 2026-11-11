@@ -194,6 +194,10 @@ adding to it works even if funds arrive in several transfers.
 staking empties it, those requests cannot leave Nimiq Pay. Since 1.1.5 the app keeps 5 NIM spendable when you stake
 (they are not spent by these requests). If everything is already staked, receive a few NIM first.
 
+**Ready for the Nimiq Pay fix.** If Nimiq Pay adopts our proposed fix (staking signals sent from the local account,
+announced by `getCapabilities()`, see [docs/NIMIQ-PAY-CAPABILITIES.md](docs/NIMIQ-PAY-CAPABILITIES.md)), the app
+detects it and stops keeping the 5 NIM reserve. Issue / PR to be linked once published.
+
 **Unstake and Switch take time.** That is the Nimiq staking protocol: unstaked NIM stay locked 12 to 24 hours
 (until the end of the current epoch, then one more epoch) before "Finish unstaking" and "Claim my funds", and switching validator requires the stake to be unstaked first.
 Until 1.1.2 the app sent requests the protocol refuses for both (fixed in 1.1.3; see the details below). Our

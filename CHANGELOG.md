@@ -6,6 +6,17 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.7] — 2026-11-11
+
+- **Ready for the Nimiq Pay fix.** We propose that Nimiq Pay sends Unstake, Finish unstaking and Switch from the
+  user's local account and exposes a host method `getCapabilities()` returning
+  `{ stakingSignalsFromLocalAccount: true }` ([contract](docs/NIMIQ-PAY-CAPABILITIES.md)). The app asks for it once
+  (only if the method exists, 3 s timeout); with that exact flag the 5 NIM reserve is no longer needed (pre-fill and
+  Max = whole balance, reserve notes hidden). Without it nothing changes from 1.1.6.
+- Translations: Chinese spacing, Turkish "Claim my funds" button in the imperative ("Paramı geri al"), Arabic terms
+  for "validator" and "stake" unified.
+- The reserve note now follows a language change at once.
+
 ## [1.1.6] — 2026-11-11
 
 - **Fixed: "A valid Nimiq address is required" shown by Nimiq Pay when the app opened (1.1.5).** The app passed

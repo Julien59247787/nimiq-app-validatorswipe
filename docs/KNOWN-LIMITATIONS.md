@@ -177,6 +177,11 @@ and reads a "no staker" answer again before a Create; the node itself is the ope
   left only if the backend gives the current block height (`block_number`, optional). Without it, "Finish unstaking"
   sent too early is rejected by the network and changes nothing. Release also requires that the validator is not
   jailed (`is_inactive_stake_released`), which the app does not check.
+- **Ready for the Nimiq Pay fix (since 1.1.7).** Cause: Nimiq Pay sends the value-0 staking signals from its swap
+  contract (commit `29957790` notes they "could also be sent by the local wallet"). Proposed fix: send them from the
+  local account and expose `getCapabilities()` with `stakingSignalsFromLocalAccount: true`
+  ([contract](NIMIQ-PAY-CAPABILITIES.md)). The app detects it by itself and then drops the reserve below. Issue / PR
+  to be linked once published.
 - **Reserve of 5 NIM (since 1.1.5).** Inside Nimiq Pay the app keeps 5 NIM spendable when staking (pre-filled
   amount, Max button and a refusal above balance minus 5 NIM), so the case below cannot be created from this app.
   It relies on `getBalance` of Nimiq Pay (2.22.1 and later); with an older Nimiq Pay, or if the balance cannot be
