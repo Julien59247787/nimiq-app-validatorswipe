@@ -533,7 +533,7 @@
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Signaler un bug</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
-  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.5" target="_blank" rel="noopener noreferrer">v1.1.5</a>
+  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.6" target="_blank" rel="noopener noreferrer">v1.1.6</a>
   <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le tableau de bord des validateurs" data-i18n-aria="footer.mascotLink" title="Ouvrir le tableau de bord des validateurs" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
@@ -2557,9 +2557,13 @@
   // Spendable balance in Nimiq Pay = local account + swap contract, both listed by listAccounts and read with
   // getBalance (luna) of the host (Nimiq Pay >= 2.22.1). null = unknown (older host, no consensus): then nothing is
   // pre-filled from it and nothing is refused because of it.
-  var lastWalletReadAt = 0;
+  // The injected provider takes the address as a STRING and wraps it itself (Nimiq Pay example mini-app-sdk/dapp
+  // HelloWorld.vue: nimiq.getBalance(address)); passing an object made Nimiq Pay show "A valid Nimiq address is
+  // required" (1.1.5). Each failure from the host can show a toast in Nimiq Pay, so after any error the reads stop for
+  // the session (no retry loop) and the app falls back to the neutral behaviour (nothing pre-filled or refused).
+  var lastWalletReadAt = 0, balanceReadsOff = false, headReadsOff = false;
   function readOneBalance(addr){
-    return Promise.resolve(state.nimiq.getBalance({ address: addr })).then(function(v){
+    return Promise.resolve(state.nimiq.getBalance(addr)).then(function(v){
       if (typeof v !== 'number' || !(v >= 0)) throw new Error('bad balance');
       return v;
     }, function(err){
@@ -2569,17 +2573,23 @@
     });
   }
   function refreshWalletReads(){
-    if (!state.nimiq || !state.accounts || Date.now() - lastWalletReadAt < 8000) return;
+    if (!state.nimiq || !state.accounts || Date.now() - lastWalletReadAt < 60000) return;
     lastWalletReadAt = Date.now();
-    if (typeof state.nimiq.getBalance === 'function'){
+    if (!balanceReadsOff && typeof state.nimiq.getBalance === 'function'){
       Promise.all(state.accounts.map(readOneBalance)).then(function(vals){
         state.spendableLuna = vals.reduce(function(a, b){ return a + b; }, 0);
-      }, function(){ state.spendableLuna = null; }).then(afterWalletReads);
+      }, function(err){
+        state.spendableLuna = null; balanceReadsOff = true;
+        console.warn('Validator Swipe: balance read failed, reserve not enforced this session.', err);
+      }).then(afterWalletReads);
     }
-    if (typeof state.nimiq.getBlockNumber === 'function'){
+    if (!headReadsOff && typeof state.nimiq.getBlockNumber === 'function'){
       Promise.resolve(state.nimiq.getBlockNumber()).then(function(h){
         state.headBlock = typeof h === 'number' && h > 0 ? h : null;
-      }, function(){ state.headBlock = null; }).then(afterWalletReads);
+      }, function(err){
+        state.headBlock = null; headReadsOff = true;
+        console.warn('Validator Swipe: block height read failed.', err);
+      }).then(afterWalletReads);
     }
   }
   function afterWalletReads(){

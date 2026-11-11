@@ -6,6 +6,15 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.6] — 2026-11-11
+
+- **Fixed: "A valid Nimiq address is required" shown by Nimiq Pay when the app opened (1.1.5).** The app passed
+  `{ address }` to `getBalance`; the provider injected by Nimiq Pay takes the address as a string and wraps it itself
+  (Nimiq Pay example Mini App, `mini-app-sdk/dapp/src/components/HelloWorld.vue`). The balance is now read with one
+  call per address, at most once a minute, and after any error the reads stop for the session (no retry loop, no
+  repeated message); the app then neither pre-fills nor refuses an amount from the balance. `getBlockNumber` is
+  called without arguments, with the same stop-on-error rule.
+
 ## [1.1.5] — 2026-11-11
 
 - **Correction of 1.1.4.** The note shown when everything is staked said that Nimiq Pay "may keep" the received NIM
