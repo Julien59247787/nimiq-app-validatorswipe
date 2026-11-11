@@ -163,7 +163,7 @@ Response `200` (always 200 for a well-formed address, even if it never staked):
 | `found` | boolean | `true` iff the node knows a **staker** entry for this address. Most addresses are `false` — normal, not an error. |
 | `active_balance_luna` | int\|null | currently staked (active) amount |
 | `delegation` | string\|null | validator address currently delegated to |
-| `inactive_balance_luna` | int\|null | amount in retired/unbonding state (a retire is in progress if > 0) |
+| `inactive_balance_luna` | int\|null | unstaked amount, locked until the lock-up ends (the app then offers "Finish unstaking"). All nodes behind a balancer must give the same answer: since 1.1.3 the app resists one node answering `found: false` by mistake, but the node must be fixed |
 | `inactive_from` | int\|null | marker for when the unbonding delay started. Returned by the reference backend but **not read by the current UI** (optional) |
 | `retired_balance_luna` | int\|null | fully unbonded amount, withdrawable |
 | `wallet_balance_luna` | int\|null | **spendable balance of the basic account**, independent of `found` |

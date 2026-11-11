@@ -59,7 +59,7 @@ Inside a single IIFE-style script block:
 | Detection | `window.nimiqPay` exists | it doesn't |
 | Library | `@nimiq/mini-app-sdk` (dynamic ES import from a CDN, pinned to 0.1.0 since 1.1.2) | `@nimiq/hub-api` (script tag, pinned version) |
 | Get the address | `listAccounts()` | `chooseAddress()` popup → "Connect" button |
-| Send a transaction | `sendNewStakerTransaction`, `sendStakeTransaction`, `sendUpdateStakerTransaction`, `sendRetireStakeTransaction`, `sendRemoveStakeTransaction` | build with `@nimiq/core` `TransactionBuilder`, then `hub.checkout()` (signs **and** broadcasts) |
+| Send a transaction | `sendNewStakerTransaction`, `sendStakeTransaction`, `sendUpdateStakerTransaction` (with `reactivateAllStake`), `sendSetActiveStakeTransaction`, `sendRetireStakeTransaction`, `sendRemoveStakeTransaction` | build with `@nimiq/core` `TransactionBuilder`, then `hub.checkout()` (signs **and** broadcasts) |
 | Disconnect | n/a | "Disconnect" button |
 
 `@nimiq/core` is loaded lazily (dynamic import, pinned version) only when a Hub staking
@@ -81,9 +81,15 @@ staker exists, different validator picked   → update staker  (new delegation; 
                                               existing stake, does not add funds)
 ```
 
-Unstaking is two steps: **retire** (choose an amount; funds become claimable after the
-network's waiting period, which is tied to the end of the current epoch) and then
-**claim / remove stake**.
+Unstaking is three steps, as the staking contract requires (since 1.1.3): **Unstake** = set active stake (the
+amount becomes inactive and is locked about one epoch), **Finish unstaking** = retire stake of the inactive balance
+once the lock is over, then **Claim my funds** = remove stake. Switching validator (update staker) is only possible
+with no active stake; it is then sent with `reactivateAllStake`.
+
+Staker-status answers go through one gate (1.1.3): they are numbered and an answer older than the last one applied is
+ignored; a staker seen in the session is kept unless several answers in a row say otherwise; a "no staker" answer is
+read again before a Create. An action is confirmed only by a `found: true` answer that reflects it, or by `tx-status`
+reporting the transaction executed.
 
 ### 4. Backend contract
 

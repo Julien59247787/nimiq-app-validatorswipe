@@ -13,9 +13,9 @@ browser emulation with a mock backend. The manual test plan is in [TESTING.md](T
 | Flow | Status |
 |---|---|
 | Browse validators, favorites, delegation history | Verified on device |
-| **Add stake** (existing staker, same validator), including with a main-account balance of 0 and funds held in a swap contract | Verified on-chain (execution result true) |
-| **Switch validator** (update staker) and **Retire** in Nimiq Pay | **Not verified.** Two observed behaviors (see below): from a swap contract that still holds funds, the transactions are included in a block but rejected at execution; when the swap contract was entirely spent, no transaction reaches the chain and Nimiq Pay shows "Pending". Earlier "verified" statements were based on the wallet's transaction history and are withdrawn |
-| **Create stake** with funds held in a swap contract | **Status changing (2026-09-23):** now fails even from a single-transfer contract, a regression from 3/3 successes on 2026-09-16 to 2026-09-20; always fails from a contract built by merging several transfers (see below) |
+| **Add stake** (existing staker, same validator), including with a main-account balance of 0 and funds held in a swap contract | Verified on-chain (execution result true), again on 2026-11-10 (block 66517911, Nimiq Pay 2.22.x) |
+| **Unstake**, **Finish unstaking** and **Switch validator** (1.1.3) | **Not tested on a device yet** (local mock only). Until 1.1.2 these requests could never succeed: the app sent transactions the staking protocol refuses (see below) |
+| **Create stake** with funds held in a swap contract | **Executed on-chain on 2026-11-10** (200 NIM, block 66516076, Nimiq Pay 2.22.x, app 1.1.2). Failed 2/2 on 2026-09-23 (Nimiq Pay 2.19.1); the cause of the change is not established. Always failed in September from a contract built by merging several transfers (see below) |
 | **Claim** (remove stake) | Not tested end to end with the final build |
 | Wallet rejection or cancellation, SDK `ErrorResponse` resolved instead of rejected | Verified on device (error message shown, action can be retried) |
 | Duplicate taps, page reload while a transaction is pending | Verified in browser emulation; reload behavior checked on device |
@@ -40,40 +40,41 @@ shows the one-line hint, and never blocks browsing, staking, switching validator
 claiming. If the wallet cannot fund a transaction it rejects it and the app shows the wallet's
 error message.
 
-## Switch validator and Retire in Nimiq Pay: two observed behaviors, not verified
+## Switch validator and Retire until 1.1.2: the app sent transactions the protocol refuses
 
-Dates 2026-09-16 to 2026-09-20, Nimiq Pay v2.19.1, mainnet, real funds. The transaction history shown by Nimiq Pay
-is **not** proof that the staking state changed (it shows these transactions as confirmed or "Pending"); the chain
-state is.
+Found on 2026-11-11 by reading the staking contract (core-rs-albatross v2.3.0, `primitives/account/src/account/staking_contract/staker.rs`) and Nimiq's own example Mini App
+(`mini-app-sdk/dapp/src/components/Staking.vue` in the Nimiq Pay repository):
 
-**Observed on the chain (verified with a block explorer and the nodes' mempool):**
+- **RetireStake** only moves INACTIVE stake to the retired balance, and only once its lock-up is over
+  (`retire_stake`: `InsufficientFunds` if the inactive balance is too small, `InvalidForRecipient` while locked).
+  Until 1.1.2 "Retire my stake" sent *RetireStake* with an amount of the ACTIVE stake, with no inactive balance:
+  it could never succeed.
+- **UpdateStaker** (switch validator) fails while the staker has ACTIVE stake, or while its inactive stake is still
+  locked (`update_staker`: "All stake must be inactivated or retired before re-delegating"). Until 1.1.2 "Switch"
+  sent it with an active stake: it could never succeed. The example Mini App also sends `reactivateAllStake: true`.
 
-1. *Android 16 phone, the swap contract still holds funds.* Every *Update Staker* (switch validator) and every
-   *Retire Stake* sent from the app is sent from that contract, is **included in a block**, and has an execution
-   result of **false**: nothing changes on the chain (value 0, fee 0). More than 30 occurrences. *Create stake* and
-   *Add stake* sent from a swap contract have an execution result of true.
-2. *Android 13 emulator, two wallets whose swap contracts had been entirely spent by the previous Create / Add.*
-   **No transaction appears on the chain at all** (mempool of two nodes watched every 2 seconds, block scan and the
-   history of the contracts checked); Nimiq Pay shows the transactions as "Pending".
+The September observations stay true as facts (Android 16 phone, Nimiq Pay v2.19.1: more than 30 *Update Staker*
+and *Retire Stake* included in a block with an execution result of **false**; Android 13 emulator with an emptied
+swap contract: nothing reached the chain), but their **cause was the app**, not the swap contract (HTLC) or the
+cosigner as this page supposed before. On 2026-11-10 (Nimiq Pay 2.22.x), the old *Retire Stake* request from a
+wallet whose swap contract was empty never reached the chain nor the mempool; the request was invalid in any case.
 
-**Hypothesis (not proven):** Nimiq Pay sends Update and Retire from a swap contract. If the contract still exists
-the transaction is included and then rejected; if it no longer exists (everything already staked, no free balance)
-nothing is sent. The cause of the rejection on the host side (for example a staker signature proof computed for
-another sender) is not established.
+**What 1.1.3 does.** **Unstake** = *SetActiveStake* (active stake minus the amount; `set_active_stake`): the
+amount becomes inactive and stays locked about one epoch (about 12 hours, per the example Mini App; exactly until
+`Policy::block_after_collateral_lockup(inactive_from)`). **Finish unstaking** = *RetireStake* of the inactive
+balance, possible once the lock is over; too early, the network rejects it at execution and nothing changes, and
+the app says the lock may not be over yet. **Claim my funds** = *RemoveStake* of the retired balance. A new Unstake
+is refused while one is in progress (it would restart the lock). **Switch**: with an active stake the app explains
+the two steps (unstake everything, wait for the lock, then choose the new validator) and sends nothing; with no
+active stake it sends *UpdateStaker* with `reactivateAllStake`, which moves the inactive stake to the new validator
+and makes it active again. These flows were checked against a local mock only, not yet on a device.
 
-**Open question:** for a user who has staked everything (no free balance and no remaining swap contract), Switch and
-Retire may be impossible in Nimiq Pay. There is no workaround in the app.
+## Create stake from a swap contract (HTLC): failed in September, executed on 2026-11-10
 
-What the app does: it never claims a success from the wallet's answer alone. A single write lock keeps every button
-that sends a transaction disabled until the chain reflects the action; after 15 seconds it says the confirmation is
-taking longer than usual, after 60 seconds it shows "Still not confirmed. The network may be slow, or the
-transaction may not have been sent. Wait a little longer, or unlock to try again.", keeps the buttons disabled,
-re-reads the chain every 15 seconds for up to 10 minutes, and offers a manual "Not sent? Unlock" button (never
-automatic, because of the risk of a duplicate action). A rejected transaction changes nothing on the chain. If it
-stays this way, check the chain (or the transaction in Nimiq Pay) before unlocking; reloading the app re-reads the
-chain but does not lift the lock by itself. **Do not present Switch or Retire as verified.**
-
-## Create stake from a swap contract (HTLC): currently fails even from a single transfer
+**Update, 2026-11-10.** Create stake (200 NIM, block 66516076) and Add stake (50 NIM, block 66517911) from a wallet
+whose funds were in a swap contract were **executed on the chain** (Nimiq Pay 2.22.x, app 1.1.2 with the Mini App
+SDK pinned to 0.1.0). Whether the pinned SDK or a Nimiq Pay update made the difference is not established. The
+paragraphs below describe the earlier state.
 
 **Update, 2026-09-23 — regression.** Since this date, **Create stake now fails even from a contract created by a
 single transfer**, which had worked reliably before: 2 newly created wallets, tested the same way as the 3 earlier
@@ -136,15 +137,14 @@ reconfirmed to fix it.** It remains the only workaround observed in our tests, *
 Risks: a wrong address or a forgotten backup can lose funds, so always double-check. Once your first stake exists,
 adding to it works even if funds arrive in several transfers.
 
-**Switch validator or Retire is rejected** ("The network rejected this transaction. Nothing was changed."). Nimiq Pay
-currently rejects these actions for some wallets; the stake is safe and the Nimiq Pay team has been informed. There
-is **no verified workaround**. In particular, wallet.nimiq.com cannot import a Nimiq Pay wallet (12 words against
-24), so do not present it as a way to Switch or Retire.
+**Unstake and Switch take time.** This is the staking protocol, not a fault: unstaked NIM stay locked about one
+epoch (about 12 hours) before "Finish unstaking" and then "Claim my funds"; switching validator requires the whole
+stake to be unstaked first (see the section on Switch and Retire above). A rejected "Finish unstaking" or Switch
+usually means the lock is not over yet: nothing is changed on the chain, try again later.
 
-This workaround comes from two observations, not from a test campaign. It has not been confirmed by the Nimiq Pay team.
-When the transaction is included and rejected at execution (Switch, Retire), the app shows "The network rejected this
-transaction. Nothing was changed." and, for those two actions only, "Nimiq Pay currently rejects this action for some
-wallets. Your stake is safe. We've reported it to the Nimiq Pay team." It never advises a workaround for them.
+**The staker state from one node can be wrong.** On 2026-11-11 one of the two nodes behind the round-robin answered
+"no staker" for a staker the chain knows. The app (1.1.3) keeps the staker it has already seen, ignores older answers
+and reads a "no staker" answer again before a Create; the node itself is the operator's to fix.
 
 ## Nimiq Pay measurements and host behavior
 
@@ -153,7 +153,9 @@ wallets. Your stake is safe. We've reported it to the Nimiq Pay team." It never 
   2 minutes. The app re-reads the chain for up to 60 seconds and then keeps the last state it could
   confirm. The transaction history shown by a wallet app may lag behind the chain by up to a minute.
 - **SDK errors.** The Mini App SDK's `send*Transaction` promises can *resolve* with an error object
-  instead of rejecting; the app treats that as a failure.
+  instead of rejecting; the app treats that as a failure. Nimiq Pay's errors carry a code: `4001` the user
+  cancelled, `-32001` the outcome is unknown (it may have been sent). Since 1.1.3 an unknown outcome, and any
+  `-32603` other than "invalidated", is not called a failure: the app keeps watching the chain.
 - **Host bar and scrolling.** Inside Nimiq Pay the host's browser bar can overlay the top of the
   page. On the test phone `env(safe-area-inset-top)` reported **51 CSS px**. The app scrolls the
   page in two cases only: to restore the position after the on-screen keyboard closes, and, on a tap
@@ -167,9 +169,10 @@ wallets. Your stake is safe. We've reported it to the Nimiq Pay team." It never 
 
 - **Claiming retired funds** (*remove stake*) is available inside Nimiq Pay only; on the Nimiq Hub
   path the app shows an explanatory message.
-- **Waiting period.** Unstaking is a two-step process: after *retire*, funds become claimable once
-  the current network epoch has ended. This usually takes several hours, depending on when in the
-  epoch you retire. The app deliberately gives no fixed duration.
+- **Waiting period.** Unstaking is a three-step process (Unstake, Finish unstaking, Claim). After Unstake the
+  amount stays locked about one epoch (about 12 hours). The app does not read the current block height, so it does
+  not show the exact end of the lock: "Finish unstaking" sent too early is rejected by the network and changes
+  nothing.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
 - **Third-party CDNs.** Libraries and fonts are loaded from CDNs (jsDelivr, Google Fonts), so the
   page depends on their availability and they see visitors' IP addresses. The Mini App SDK is pinned to 0.1.0 since 1.1.2

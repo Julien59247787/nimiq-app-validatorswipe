@@ -6,6 +6,54 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.3] — 2026-11-11
+
+Unstake and Switch now follow the staking protocol; the staker state no longer flips; no success or failure is
+claimed that the chain has not shown.
+
+### Fixed
+
+- **Unstake (was "Retire my stake") never worked.** The app sent *RetireStake* with an amount of the ACTIVE stake,
+  but the staking contract only retires INACTIVE stake whose lock-up is over (core-rs-albatross v2.3.0, `primitives/account/src/account/staking_contract/staker.rs`, `retire_stake`:
+  `InsufficientFunds` / `InvalidForRecipient`). Unstaking is now the protocol's three steps, in the same order as
+  Nimiq's own example Mini App (`mini-app-sdk/dapp/src/components/Staking.vue` in the Nimiq Pay repository):
+  **Unstake** = *SetActiveStake* (the amount becomes inactive and stays locked about one epoch, about 12 hours),
+  **Finish unstaking** = *RetireStake* of the inactive balance once the lock is over, **Claim my funds** =
+  *RemoveStake*. A new Unstake is refused while one is in progress (it would restart the lock).
+- **Switch validator never worked while the stake was active.** *UpdateStaker* fails when the staker has active
+  stake (core-rs-albatross v2.3.0, `primitives/account/src/account/staking_contract/staker.rs`, `update_staker`: "All stake must be inactivated or retired before re-delegating"). The app now explains
+  the two steps instead of sending a transaction doomed to fail, and sends *UpdateStaker* with `reactivateAllStake`
+  once the stake is inactive and unlocked. The September failures of Switch and Retire (included, execution result
+  false) are explained by this, not by the swap contract (HTLC) as the earlier documentation supposed.
+- **Staker state flipping, Create offered instead of Add, Create offered again after a successful Create, the
+  "active stake" banner missing at launch.** On 2026-11-11 one of the two nodes behind the round-robin answered
+  `found: false` for a staker that the other node and the chain know (reported to the operator). The app now numbers
+  its staker-status requests and ignores answers older than the last one applied, keeps a staker seen in the session
+  unless several answers in a row say otherwise (or its stake can legitimately have disappeared), reads a "no staker"
+  answer again before a Create, and reads it again shortly at launch.
+- **"Withdrawal initiated!" shown for a transaction that never reached the chain.** An empty (`found: false`)
+  answer made "active stake lower than before" true. Only a `found: true` answer can now confirm an action, or the
+  `tx-status` endpoint reporting the transaction executed on the chain.
+- **An Add executed on the chain was reported as failed.** Nimiq Pay can answer an error although the transaction
+  went through (2026-11-10). An unknown outcome (code `-32001`, or `-32603` other than "invalidated") is no longer
+  called a failure: the app says Nimiq Pay could not confirm whether it was sent, asks not to send it again and to
+  check Nimiq Pay, keeps the lock and keeps watching the chain.
+- Label: "Retire my stake" becomes **Unstake**, in echo to Stake (11 languages). The message that said "Nimiq Pay
+  currently rejects this action for some wallets" is removed (it was wrong); a rejected Switch or Finish unstaking
+  now says the lock may not be over yet.
+- The displayed version is v1.1.3 (`scripts/check-version.sh v1.1.3`). The inline script changed: the CSP hash of
+  the script changes.
+
+### Known limitations
+
+- Create stake and Add stake from a wallet whose funds are in a swap contract were **executed on the chain on
+  2026-11-10** (Nimiq Pay 2.22.x, app 1.1.2 with the SDK pinned to 0.1.0): Create 200 NIM, block 66516076; Add
+  50 NIM, block 66517911. Whether this comes from the pinned SDK or from a Nimiq Pay update is not established, so
+  the pin is kept.
+- The new Unstake, Finish unstaking and Switch flows were tested only against a local mock, **not yet on a device**.
+  In September Nimiq Pay sent nothing at all for staking requests from a wallet whose swap contract was empty; it is
+  not established whether that also applies to the new (valid) requests.
+
 ## [1.1.2] — 2026-10-22
 
 Test release: the Mini App SDK loaded by the page is pinned to 0.1.0.
@@ -141,7 +189,7 @@ rejected by the network, and help messages.
   transfer, in full or partially, and Add stake works from a merged contract. Observed in our tests on an Android 13
   emulator and an Android 16 phone, Nimiq Pay v2.19.1 on both (the host also raises a native notification with the
   same text); the cause on the host side is not established. See
-  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-currently-fails-even-from-a-single-transfer)
+  [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-failed-in-september-executed-on-2026-11-10)
   (status updated 2026-09-23: this no longer passes reliably from a single transfer either, see [Unreleased](#unreleased) above).
 
 ### Ideas

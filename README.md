@@ -5,7 +5,7 @@
 Validator Swipe is a [Nimiq Pay](https://nimiq.com) mini app that turns choosing a
 validator — usually a dry table of numbers — into a fast, informed decision, then lets
 you delegate (stake) your NIM in one tap. It also covers the rest of the staking
-lifecycle: switch validator, add stake, retire, and claim your funds back (Switch and Retire: see [Known issues and workarounds](#known-issues-and-workarounds)).
+lifecycle: add stake, unstake and claim your funds back, and switch validator, in the steps the Nimiq protocol requires (see [Known issues and workarounds](#known-issues-and-workarounds)).
 
 Built by **@Ju'Team** (Ju & Claude) for the Nimiq Mini Apps Competition, Cycle II.
 Licensed under [MIT](LICENSE).
@@ -37,8 +37,9 @@ Licensed under [MIT](LICENSE).
   *My favorites* (the only place a transaction can be sent). Nothing is ever delegated
   by accident while browsing.
 - **Complete staking lifecycle**, driven by the account's real on-chain state:
-  create a staker, add to an existing stake, switch validator, **retire** a stake,
-  then **claim** the funds after the network waiting period. Switch and Retire have known limits in Nimiq Pay (see [Known issues and workarounds](#known-issues-and-workarounds)).
+  create a staker, add to an existing stake, **unstake** (then *finish unstaking* once the lock of about
+  12 hours is over), **claim** the funds, and switch validator once the stake is unstaked (see
+  [Known issues and workarounds](#known-issues-and-workarounds)).
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
 - **Tidy positioning.** In Nimiq Pay, a tap on Browse, My favorites or the app title re-centres the card under the host bar
@@ -72,7 +73,7 @@ public validators; no wallet address is visible.
 | ![My favorites tab: a favorited validator card and an empty "Amount to delegate (NIM)" field with the placeholder "Enter the amount of NIM to stake here"](docs/images/03-favorites-delegate-amount.png) | ![My favorites tab with the amount field pre-filled with the wallet's available balance, and the hint "This amount is pre-filled with your available balance — double-check it before confirming."](docs/images/04-delegate-amount-prefilled.png) |
 | **3. My favorites — delegate.** The only place a transaction can be sent. When the main-account balance reads 0 the amount field shows an explicit placeholder, and a one-line hint says the available balance is shown in Nimiq Pay. | **4. Pre-filled amount.** When the wallet's spendable balance is known, the amount is pre-filled with it (editable), with a reminder to double-check before confirming. |
 | ![Retire flow: "Amount to retire (NIM)" pre-filled with the active stake, an explanation that the funds return after the current network epoch ends, and a "Confirm withdrawal" button](docs/images/05-retire-stake.png) | |
-| **5. Retire stake.** The amount is pre-filled with the active stake; the text explains that funds return to the wallet once the current network epoch has ended, after which they can be claimed. | |
+| **5. Unstake** (screenshot of an earlier version, where the button read "Retire my stake"). The amount is pre-filled with the active stake; since 1.1.3 the text explains the three steps: Unstake, Finish unstaking after the lock of about 12 hours, Claim my funds. | |
 
 ## How staking works here
 
@@ -87,9 +88,11 @@ your on-chain state and picks the right transaction:
 |---|---|---|
 | No staker yet | Delegate | create staker |
 | Staker exists, same validator | Add funds | add stake |
-| Staker exists, other validator | Switch validator | update staker (moves the whole stake) |
-| Want your funds back | Step 1: wait for epoch end | retire stake |
-| Retired stake available | Step 2: claim | remove stake |
+| Staker exists, other validator, no active stake | Switch validator | update staker (moves the stake and reactivates it) |
+| Staker exists, other validator, active stake | Switch validator | nothing sent: unstake first, then switch after the lock |
+| Want your funds back | Step 1: unstake | set active stake (the amount becomes inactive, locked about 12 hours) |
+| Inactive stake, lock over | Step 2: finish unstaking | retire stake |
+| Retired stake available | Step 3: claim | remove stake |
 
 ## Quick start
 
@@ -187,26 +190,23 @@ The "relay wallet" workaround, observed in our tests, **not a guarantee**:
 Risks: a wrong address or a forgotten backup can lose funds, so always double-check. Once your first stake exists,
 adding to it works even if funds arrive in several transfers.
 
-**Switch validator or Retire is rejected** ("The network rejected this transaction. Nothing was changed."). Nimiq Pay
-currently rejects these actions for some wallets; the stake is safe and the Nimiq Pay team has been informed. There
-is **no verified workaround**. In particular, wallet.nimiq.com cannot import a Nimiq Pay wallet (12 words against
-24), so do not present it as a way to Switch or Retire.
+**Unstake and Switch take time.** That is the Nimiq staking protocol: unstaked NIM stay locked about 12 hours
+before "Finish unstaking" and "Claim my funds", and switching validator requires the stake to be unstaked first.
+Until 1.1.2 the app sent requests the protocol refuses for both (fixed in 1.1.3; see the details below).
 
 Details: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
 
 ## Project status
 
-**Version 1.1.1** is the current release (the version is shown at the bottom of the app). **Version 1.0.0** was the first
+**Version 1.1.3** is the current release (the version is shown at the bottom of the app). **Version 1.0.0** was the first
 publication: the version submitted to the Nimiq Mini Apps Competition (Cycle II) on 2026-09-18 (tag
 `competition-submission`). Every change since is listed in the [CHANGELOG](CHANGELOG.md).
 
-What has been verified, on one Android phone in Nimiq Pay with real funds: browsing, favorites and **Add stake**
-(on-chain), error handling and duplicate-tap protection. **Create stake's status is currently changing: as of
-2026-09-23 it fails even from a single-transfer contract (a regression from earlier verified behavior; see Known
-issues and workarounds), cause not established.** **Not verified:** **Switch validator** and **Retire** in Nimiq Pay
-(two behaviors observed: included in a block but rejected at execution from a swap contract that still holds funds,
-and nothing sent when the contract was entirely spent), Claim with the final build, and the Nimiq Hub path on mobile
-browsers or with a hardware wallet. The
+What has been verified, on one Android phone in Nimiq Pay with real funds: browsing, favorites, **Create stake**
+and **Add stake** (executed on-chain on 2026-11-10 with Nimiq Pay 2.22.x; Create had failed in September), error
+handling and duplicate-tap protection. **Not verified on a device yet:** the 1.1.3 **Unstake**, **Finish
+unstaking** and **Switch validator** flows (until 1.1.2 those requests were invalid for the protocol), Claim with
+the final build, and the Nimiq Hub path on mobile browsers or with a hardware wallet. The
 details, with the environment, are in
 [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#verification-status-current). Some translations
 are machine-generated and have not been reviewed by native speakers — corrections are welcome (see

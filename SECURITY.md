@@ -8,7 +8,7 @@ Validator Swipe never holds, sees, or transmits a private key, seed phrase or pa
   Nimiq Pay (via the Mini App SDK) or in the Nimiq Hub popup (`hub.nimiq.com`). The app
   only receives the result of a signing request the user explicitly approved.
 - **The app cannot move funds on its own.** Each staking action (delegate, add stake,
-  switch validator, retire, claim) requires an explicit confirmation by the user in their
+  switch validator, unstake, finish unstaking, claim) requires an explicit confirmation by the user in their
   wallet. Browsing and "setting aside" favorites sends nothing.
 - **Delegation keeps funds under the user's control.** Staking on Nimiq does not transfer
   ownership of the funds to the validator.

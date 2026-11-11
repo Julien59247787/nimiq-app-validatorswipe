@@ -31,10 +31,12 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] The connection pill shows "Wallet detected" when a wallet is connected and "Wallet not detected" otherwise, before and after a language change.
 
 **Delegation** (My favorites; small amounts)
-- [ ] First Create: status changing as of 2026-09-23 (Create can currently fail from a swap-contract wallet regardless of how it was funded); check the current guidance in [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-currently-fails-even-from-a-single-transfer) before assuming single-transfer funding will pass.
+- [ ] First Create from a wallet whose funds are in a swap contract: executed on-chain on 2026-11-10 with Nimiq Pay 2.22.x after failing in September; check the current state in [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-failed-in-september-executed-on-2026-11-10) and the execution result on the chain.
 - [ ] No staker yet: amount required, *create staker* is sent, success message stays until dismissed, the waiting line appears and disappears once the chain reflects the transaction, the active delegation banner and history update.
 - [ ] Staker exists, same validator: *add stake*.
-- [ ] Staker exists, other validator: the amount field is replaced by the switch note; *update staker* is sent without an amount. Check the result on the chain (execution result), not in the wallet's history: in Nimiq Pay it is currently not verified: rejected at execution from a swap contract that still holds funds, nothing sent when the contract was entirely spent (see [KNOWN-LIMITATIONS.md](KNOWN-LIMITATIONS.md#switch-validator-and-retire-in-nimiq-pay-two-observed-behaviors-not-verified)).
+- [ ] Staker exists, other validator, **active stake**: the note explains that the stake must be unstaked first; Delegate shows the same explanation and **nothing is sent**.
+- [ ] Staker exists, other validator, **no active stake** (inactive, lock over): *update staker* is sent with `reactivateAllStake: true` and no amount; check the execution result on the chain, not in the wallet's history.
+- [ ] One node answering "no staker" every other time (mock it): the banner and the stake block never disappear, Delegate on the same validator always sends *add stake*, never *create staker*.
 - [ ] Main-account balance 0 with funds in Nimiq Pay: the one-line hint appears under the amount field; staking is not blocked.
 - [ ] Amount pre-filled from the balance: the "pre-filled" hint shows and disappears when the amount is edited.
 
@@ -60,8 +62,11 @@ has actually been verified on a real device is recorded in [KNOWN-LIMITATIONS.md
 - [ ] After any action (create, add, switch, retire, claim, also in demo mode) the validator is still in My favorites and the counter is unchanged; after a Create the same validator's card is in Add mode with the amount field visible; the validator leaves My favorites only when its star is removed.
 - [ ] Disabled buttons (Claim, Confirm withdrawal, Delegate) look disabled while an action is pending.
 
-**Retire and claim**
-- [ ] Open "Retire my stake": the amount is pre-filled with the active stake; confirm; the stake shows as retiring; claim becomes available after the epoch ends and is sent from Nimiq Pay.
+**Unstake, finish unstaking and claim**
+- [ ] Open "Unstake": the amount is pre-filled with the active stake; confirm: *set active stake* is sent with the new active balance (active minus the amount); no success message until the chain shows an inactive balance.
+- [ ] With an inactive balance: "Unstake" is disabled and a note says unstaking is in progress; "Finish unstaking" is shown and sends *retire stake* with the inactive balance; too early, the network rejects it and the message says the lock may not be over yet.
+- [ ] With a retired balance: "Claim my funds" sends *remove stake* from Nimiq Pay.
+- [ ] Nimiq Pay answers an unknown outcome (code -32001, or -32603 other than "invalidated"): the message says Nimiq Pay could not confirm whether it was sent and asks not to send it again; the lock stays and the success message appears if the chain then reflects the action.
 
 **Interface**
 - [ ] Amount field: the keyboard opens and closes; the page returns to where it was.
