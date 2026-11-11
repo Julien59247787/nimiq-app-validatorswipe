@@ -6,6 +6,19 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [Unreleased] — 1.1.4 candidate
+
+- **Real lock duration.** The texts said "about 12 hours"; the real wait is **12 to 24 hours**: the unstaked amount
+  counts as inactive from the next election block (`inactive_from`, end of the current epoch, up to about 12 hours
+  away), then stays locked one more epoch (43,200 blocks, about 12 hours). Fixed in the 11 languages. When the API
+  gives the current block height, the unlock note also shows an estimated local date and time (one block per second).
+- **Free NIM needed when everything is staked.** Nimiq Pay sends Unstake, Finish unstaking and Switch from its swap
+  contract; when that contract has been emptied (everything staked), the request never reaches the chain. Proved on
+  2026-11-11: after receiving 50 NIM, Nimiq Pay funded a new swap contract with them and the same Unstake was executed.
+  The app now says so (information only, nothing is blocked) when the wallet's free balance is 0.
+- Known: "Finish unstaking" and Switch are disabled until the unlock **only if** the API gives `block_number`; the
+  production backend does not give it yet.
+
 ## [1.1.3] — 2026-11-11
 
 Unstake and Switch now follow the staking protocol; the staker state no longer flips; no success or failure is

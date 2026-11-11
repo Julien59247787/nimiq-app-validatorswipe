@@ -63,7 +63,7 @@ wallet whose swap contract was empty never reached the chain nor the mempool; th
 **What 1.1.3 does.** **Unstake** = *SetActiveStake* (active stake minus the amount; `set_active_stake`): the
 amount becomes inactive and stays locked one epoch, exactly until block `inactive_from + 43,201` on mainnet
 (`Policy::block_after_collateral_lockup`: one epoch is 60 blocks per batch x 720 batches; about 12 hours at about
-one block per second). The app shows that block; with the current block height from the API (optional
+one block per second). `inactive_from` is the next election block, so the whole wait is 12 to 24 hours. The app shows that block; with the current block height from the API (optional
 `block_number`) it also shows the blocks left and keeps "Finish unstaking" and Switch disabled until then. **Finish unstaking** = *RetireStake* of the inactive
 balance, possible once the lock is over; too early, the network rejects it at execution and nothing changes, and
 the app says the lock may not be over yet. **Claim my funds** = *RemoveStake* of the retired balance. A new Unstake
@@ -141,7 +141,7 @@ Risks: a wrong address or a forgotten backup can lose funds, so always double-ch
 adding to it works even if funds arrive in several transfers.
 
 **Unstake and Switch take time.** This is the staking protocol, not a fault: unstaked NIM stay locked about one
-epoch (about 12 hours) before "Finish unstaking" and then "Claim my funds"; switching validator requires the whole
+epoch after the end of the current one (12 to 24 hours in all) before "Finish unstaking" and then "Claim my funds"; switching validator requires the whole
 stake to be unstaked first (see the section on Switch and Retire above). A rejected "Finish unstaking" or Switch
 usually means the lock is not over yet: nothing is changed on the chain, try again later.
 
@@ -173,12 +173,18 @@ and reads a "no staker" answer again before a Create; the node itself is the ope
 - **Claiming retired funds** (*remove stake*) is available inside Nimiq Pay only; on the Nimiq Hub
   path the app shows an explanatory message.
 - **Waiting period.** Unstaking is a three-step process (Unstake, Finish unstaking, Claim). After Unstake the
-  amount stays locked one epoch (43,200 blocks, about 12 hours). The app shows the unlock block; it shows the blocks
+  amount stays locked until the end of the current epoch, then one more epoch (43,200 blocks): 12 to 24 hours. The app shows the unlock block; it shows the blocks
   left only if the backend gives the current block height (`block_number`, optional). Without it, "Finish unstaking"
   sent too early is rejected by the network and changes nothing. Release also requires that the validator is not
   jailed (`is_inactive_stake_released`), which the app does not check.
+- **Everything staked: free NIM needed.** Nimiq Pay sends Unstake, Finish unstaking and Switch from its swap contract
+  (HTLC). When staking emptied it, the contract no longer exists on the chain and the request never reaches it
+  (Nimiq Pay answers "outcome unknown"). Workaround proved on 2026-11-11: receive a small amount of NIM; Nimiq Pay
+  funds a new swap contract with it and the request is executed. That amount then stays in the swap contract until
+  its timeout (14 days in our test) before going back to the wallet. The app shows this note when the free balance
+  is 0; it blocks nothing, since the free NIM may already be in a swap contract.
 - **Still open on the Nimiq Pay side** (to be re-tested with the correct requests): Create stake from a swap contract
-  built by merging several transfers, and Unstake from a wallet whose swap contract is empty.
+  built by merging several transfers.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
 - **Third-party CDNs.** Libraries and fonts are loaded from CDNs (jsDelivr, Google Fonts), so the
   page depends on their availability and they see visitors' IP addresses. The Mini App SDK is pinned to 0.1.0 since 1.1.2

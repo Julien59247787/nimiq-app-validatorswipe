@@ -37,8 +37,8 @@ Licensed under [MIT](LICENSE).
   *My favorites* (the only place a transaction can be sent). Nothing is ever delegated
   by accident while browsing.
 - **Complete staking lifecycle**, driven by the account's real on-chain state:
-  create a staker, add to an existing stake, **unstake** (then *finish unstaking* once the lock of about
-  12 hours is over), **claim** the funds, and switch validator once the stake is unstaked (see
+  create a staker, add to an existing stake, **unstake** (then *finish unstaking* once the lock of 12 to
+  24 hours is over), **claim** the funds, and switch validator once the stake is unstaked (see
   [Known issues and workarounds](#known-issues-and-workarounds)).
 - **Always in sync with the chain.** After every transaction the app re-reads the on-chain state
   until it is reflected, and shows a "waiting for the network to confirm" line meanwhile.
@@ -73,7 +73,7 @@ public validators; no wallet address is visible.
 | ![My favorites tab: a favorited validator card and an empty "Amount to delegate (NIM)" field with the placeholder "Enter the amount of NIM to stake here"](docs/images/03-favorites-delegate-amount.png) | ![My favorites tab with the amount field pre-filled with the wallet's available balance, and the hint "This amount is pre-filled with your available balance — double-check it before confirming."](docs/images/04-delegate-amount-prefilled.png) |
 | **3. My favorites — delegate.** The only place a transaction can be sent. When the main-account balance reads 0 the amount field shows an explicit placeholder, and a one-line hint says the available balance is shown in Nimiq Pay. | **4. Pre-filled amount.** When the wallet's spendable balance is known, the amount is pre-filled with it (editable), with a reminder to double-check before confirming. |
 | ![Retire flow: "Amount to retire (NIM)" pre-filled with the active stake, an explanation that the funds return after the current network epoch ends, and a "Confirm withdrawal" button](docs/images/05-retire-stake.png) | |
-| **5. Unstake** (screenshot of an earlier version, where the button read "Retire my stake"). The amount is pre-filled with the active stake; since 1.1.3 the text explains the three steps: Unstake, Finish unstaking after the lock of about 12 hours, Claim my funds. | |
+| **5. Unstake** (screenshot of an earlier version, where the button read "Retire my stake"). The amount is pre-filled with the active stake; since 1.1.3 the text explains the three steps: Unstake, Finish unstaking after the lock of 12 to 24 hours, Claim my funds. | |
 
 ## How staking works here
 
@@ -90,7 +90,7 @@ your on-chain state and picks the right transaction:
 | Staker exists, same validator | Add funds | add stake |
 | Staker exists, other validator, no active stake | Switch validator | update staker (moves the stake and reactivates it) |
 | Staker exists, other validator, active stake | Switch validator | nothing sent: unstake first, then switch after the lock |
-| Want your funds back | Step 1: unstake | set active stake (the amount becomes inactive, locked about 12 hours) |
+| Want your funds back | Step 1: unstake | set active stake (the amount becomes inactive, locked 12 to 24 hours) |
 | Inactive stake, lock over | Step 2: finish unstaking | retire stake |
 | Retired stake available | Step 3: claim | remove stake |
 
@@ -190,8 +190,8 @@ The "relay wallet" workaround, observed in our tests, **not a guarantee**:
 Risks: a wrong address or a forgotten backup can lose funds, so always double-check. Once your first stake exists,
 adding to it works even if funds arrive in several transfers.
 
-**Unstake and Switch take time.** That is the Nimiq staking protocol: unstaked NIM stay locked about 12 hours
-before "Finish unstaking" and "Claim my funds", and switching validator requires the stake to be unstaked first.
+**Unstake and Switch take time.** That is the Nimiq staking protocol: unstaked NIM stay locked 12 to 24 hours
+(until the end of the current epoch, then one more epoch) before "Finish unstaking" and "Claim my funds", and switching validator requires the stake to be unstaked first.
 Until 1.1.2 the app sent requests the protocol refuses for both (fixed in 1.1.3; see the details below). Our
 September reports to the Nimiq Pay team blamed Nimiq Pay for these failures: they were wrong, the cause was our app.
 
