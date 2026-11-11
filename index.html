@@ -371,14 +371,16 @@
             <b id="myStakeRetiredValue"></b>
           </div>
           <div class="my-stake-actions" id="retireBox" hidden>
-            <button type="button" class="btn btn-retire" id="retireToggleBtn" data-i18n="app.retireToggle">Retirer mon stake</button>
+            <button type="button" class="btn btn-retire" id="retireToggleBtn" data-i18n="app.retireToggle">Déstaker</button>
+            <button type="button" class="btn btn-claim" id="finishUnstakeBtn" data-i18n="app.finishUnstakeBtn" hidden>Terminer le déstaking</button>
             <button type="button" class="btn btn-claim" id="removeStakeBtn" data-i18n="app.removeStakeBtn" hidden>Récupérer mes fonds</button>
           </div>
+          <p class="helptext" id="unstakeInProgressNote" hidden></p>
           <div class="retire-form" id="retireForm" hidden>
-            <label for="retireAmt" data-i18n="app.retireAmtLabel" style="color:var(--nimiq-gold); font-weight:700;">Montant à retirer (NIM)</label>
+            <label for="retireAmt" data-i18n="app.retireAmtLabel" style="color:var(--nimiq-gold); font-weight:700;">Montant à déstaker (NIM)</label>
             <input type="number" id="retireAmt" placeholder="1" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--nimiq-gold); font-weight:700; font-family:'Sora',sans-serif; font-size:.9rem;" />
-            <p class="helptext" data-i18n="app.retireHint">Cette étape « retire » ton stake — il faut attendre la fin de l'époque du réseau Nimiq en cours (généralement plusieurs heures) avant que les fonds ne reviennent dans ton wallet, via une 2e étape.</p>
-            <button type="button" class="btn btn-primary" id="retireConfirmBtn" data-i18n="app.retireConfirm" style="width:100%;">Confirmer le retrait</button>
+            <p class="helptext" data-i18n="app.retireHint">Déstaker se fait en trois étapes sur Nimiq : 1) Déstaker : le montant ne rapporte plus et reste verrouillé environ 12 heures ; 2) Terminer le déstaking, une fois le verrou levé ; 3) Récupérer mes fonds, pour les retrouver dans ton wallet.</p>
+            <button type="button" class="btn btn-primary" id="retireConfirmBtn" data-i18n="app.retireConfirm" style="width:100%;">Confirmer le déstaking</button>
           </div>
         </div>
 
@@ -527,7 +529,7 @@
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Signaler un bug</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
-  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.2" target="_blank" rel="noopener noreferrer">v1.1.2</a>
+  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.3" target="_blank" rel="noopener noreferrer">v1.1.3</a>
   <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le tableau de bord des validateurs" data-i18n-aria="footer.mascotLink" title="Ouvrir le tableau de bord des validateurs" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
@@ -620,18 +622,23 @@
       'app.pendingSlow': 'Ça prend un peu plus de temps que d\'habitude…',
       'app.notConfirmed': 'Toujours pas confirmé. Le réseau est peut-être lent, ou la transaction n\'a peut-être pas été envoyée. Patiente encore un peu, ou débloque pour réessayer.',
       'app.txRejected': 'Le réseau a rejeté cette transaction. Rien n\'a été modifié.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay rejette actuellement cette action pour certains portefeuilles. Ton stake est en sécurité. Nous l\'avons signalé à l\'équipe Nimiq Pay.',
       'app.createNeedsSingleTransfer': 'Ton premier stake n\'a pas pu être créé. Avec Nimiq Pay, cela peut arriver quand tes NIM sont arrivés en plusieurs transferts. Pour l\'instant, tes NIM doivent provenir d\'un seul transfert. Une solution simple : crée un portefeuille temporaire sur wallet.nimiq.com (et sauvegarde-le d\'abord), envoie-y tous tes NIM depuis Nimiq Pay, puis renvoie-les en un seul transfert, attends la fin de « Processing funds » et réessaie. Vérifie toujours bien l\'adresse. Une fois ton premier stake créé, l\'ajout fonctionne normalement.',
       'app.unlockContinue': 'Pas envoyé ? Débloquer',
       'app.delegateSuccess': 'Délégation réussie ! Tu délègues maintenant à {validator}.',
       'app.delegateSwitchSuccess': 'Basculé ! Ton stake existant délègue maintenant à {validator}.',
       'app.activeDelegation': 'Tu délègues actuellement à {validator}',
-      'app.retireToggle': 'Retirer mon stake',
-      'app.retireAmtLabel': 'Montant à retirer (NIM)',
-      'app.retireHint': 'Cette étape « retire » ton stake — il faut attendre la fin de l\'époque du réseau Nimiq en cours (généralement plusieurs heures) avant que les fonds ne reviennent dans ton wallet, via une 2e étape.',
-      'app.retireConfirm': 'Confirmer le retrait',
-      'app.retireInvalidAmount': 'Indique un montant valide à retirer.',
-      'app.retireSuccess': 'Retrait initié ! Reviens une fois l\'époque réseau en cours terminée (généralement plusieurs heures) pour récupérer tes fonds via "Récupérer mes fonds".',
+      'app.retireToggle': 'Déstaker',
+      'app.retireAmtLabel': 'Montant à déstaker (NIM)',
+      'app.retireHint': 'Déstaker se fait en trois étapes sur Nimiq : 1) Déstaker : le montant ne rapporte plus et reste verrouillé environ 12 heures ; 2) Terminer le déstaking, une fois le verrou levé ; 3) Récupérer mes fonds, pour les retrouver dans ton wallet.',
+      'app.retireConfirm': 'Confirmer le déstaking',
+      'app.retireInvalidAmount': 'Indique un montant valide à déstaker (au plus ton stake actif).',
+      'app.retireSuccess': 'Déstaking confirmé par le réseau. Tes NIM restent verrouillés environ 12 heures ; touche ensuite « Terminer le déstaking », puis « Récupérer mes fonds ».',
+      'app.finishUnstakeBtn': 'Terminer le déstaking',
+      'app.finishUnstakeSuccess': 'Déstaking terminé sur le réseau. Touche « Récupérer mes fonds » pour retrouver tes NIM dans ton wallet.',
+      'app.unstakeInProgress': 'Déstaking en cours : {amount} verrouillés. Un nouveau déstaking relancerait le verrou : il est désactivé jusqu\'à ce que tu termines le déstaking.',
+      'app.outcomeUnknown': 'Nimiq Pay n\'a pas pu confirmer si la transaction a été envoyée. Ne la renvoie pas : vérifie son état dans Nimiq Pay. L\'app continue de surveiller le réseau et affichera le résultat ici.',
+      'app.switchNeedsUnstake': 'Pour déplacer ton stake vers un autre validateur, Nimiq impose deux étapes : d\'abord déstaker la totalité (Déstaker), puis, après le verrou d\'environ 12 heures, choisir ici le nouveau validateur ; ton stake y est déplacé et redevient actif. Rien n\'a été envoyé.',
+      'app.txRejectedLocked': 'Si tu as déstaké récemment, le verrou (environ 12 heures) n\'est peut-être pas encore levé : réessaie plus tard.',
       'app.myStakeActiveLabel': 'Stake actif',
       'app.myStakeInactiveLabel': 'En cours de retrait',
       'app.myStakeRetiredLabel': 'Solde récupérable',
@@ -741,18 +748,23 @@
       'app.pendingSlow': 'This is taking a bit longer than usual…',
       'app.notConfirmed': 'Still not confirmed. The network may be slow, or the transaction may not have been sent. Wait a little longer, or unlock to try again.',
       'app.txRejected': 'The network rejected this transaction. Nothing was changed.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay currently rejects this action for some wallets. Your stake is safe. We\'ve reported it to the Nimiq Pay team.',
       'app.createNeedsSingleTransfer': 'Your first stake couldn\'t be created. With Nimiq Pay this can happen when your NIM arrived in several transfers. For now your NIM must come from one single transfer. A simple way: create a temporary wallet on wallet.nimiq.com (and back it up first), send all your NIM there from Nimiq Pay, then send them back in one transfer, wait for "Processing funds", and try again. Always double-check the address. Once your first stake exists, adding to it works normally.',
       'app.unlockContinue': 'Not sent? Unlock',
       'app.delegateSuccess': 'Delegation successful! You\'re now delegating to {validator}.',
       'app.delegateSwitchSuccess': 'Switched! Your existing stake now delegates to {validator}.',
       'app.activeDelegation': 'You\'re currently delegating to {validator}',
-      'app.retireToggle': 'Retire my stake',
-      'app.retireAmtLabel': 'Amount to retire (NIM)',
-      'app.retireHint': 'This step "retires" your stake — you\'ll need to wait for the current Nimiq network epoch to end (usually several hours) before funds return to your wallet, via a 2nd step.',
-      'app.retireConfirm': 'Confirm withdrawal',
-      'app.retireInvalidAmount': 'Enter a valid amount to retire.',
-      'app.retireSuccess': 'Withdrawal initiated! Come back once the current network epoch ends (usually several hours) to claim your funds via "Claim my funds".',
+      'app.retireToggle': 'Unstake',
+      'app.retireAmtLabel': 'Amount to unstake (NIM)',
+      'app.retireHint': 'Unstaking takes three steps on Nimiq: 1) Unstake: the amount stops earning rewards and stays locked for about 12 hours; 2) Finish unstaking, once the lock is over; 3) Claim my funds, to get them back in your wallet.',
+      'app.retireConfirm': 'Confirm unstake',
+      'app.retireInvalidAmount': 'Enter a valid amount to unstake (at most your active stake).',
+      'app.retireSuccess': 'Unstake confirmed on the network. Your NIM stay locked for about 12 hours; then tap “Finish unstaking”, and finally “Claim my funds”.',
+      'app.finishUnstakeBtn': 'Finish unstaking',
+      'app.finishUnstakeSuccess': 'Unstaking finished on the network. Tap “Claim my funds” to get your NIM back in your wallet.',
+      'app.unstakeInProgress': 'Unstaking in progress: {amount} locked. A new unstake would restart the lock, so it is disabled until you finish unstaking.',
+      'app.outcomeUnknown': 'Nimiq Pay could not confirm whether the transaction was sent. Do not send it again: check its status in Nimiq Pay. The app keeps watching the network and will show the result here.',
+      'app.switchNeedsUnstake': 'To move your stake to another validator, Nimiq requires two steps: first unstake the whole amount (Unstake), then, after the lock of about 12 hours, choose the new validator here; your stake moves to it and becomes active again. Nothing was sent.',
+      'app.txRejectedLocked': 'If you unstaked recently, the lock (about 12 hours) may not be over yet: try again later.',
       'app.myStakeActiveLabel': 'Active stake',
       'app.myStakeInactiveLabel': 'Being withdrawn',
       'app.myStakeRetiredLabel': 'Claimable balance',
@@ -884,12 +896,18 @@
       'footer.mascotLink': 'Abrir el panel de control de los validadores',
       'footer.discordAria': 'Unirse al servidor de Discord de @Ju',
       'footer.discordTitle': 'Unirse al servidor de Discord',
-      'app.retireToggle': 'Retirar mi apuesta',
-      'app.retireAmtLabel': 'Importe a retirar (NIM)',
-      'app.retireHint': 'Este paso «retira» tu participación: hay que esperar a que finalice la época actual de la red Nimiq (normalmente varias horas) para que los fondos vuelvan a tu monedero, mediante un segundo paso.',
-      'app.retireConfirm': 'Confirmar la retirada',
-      'app.retireInvalidAmount': 'Indica una cantidad válida para retirar.',
-      'app.retireSuccess': '¡Retirada iniciada! Vuelve una vez que haya finalizado el periodo de actualización de la red (normalmente varias horas) para recuperar tus fondos a través de «Recuperar mis fondos».',
+      'app.retireToggle': 'Retirar stake',
+      'app.retireAmtLabel': 'Cantidad a retirar del stake (NIM)',
+      'app.retireHint': 'Retirar el stake en Nimiq tiene tres pasos: 1) Retirar stake: la cantidad deja de generar recompensas y queda bloqueada unas 12 horas; 2) Terminar el retiro, cuando acabe el bloqueo; 3) Recuperar mi dinero, para tenerlo de nuevo en tu monedero.',
+      'app.retireConfirm': 'Confirmar el retiro',
+      'app.retireInvalidAmount': 'Introduce una cantidad válida para retirar (como máximo tu stake activo).',
+      'app.retireSuccess': 'Retiro confirmado por la red. Tus NIM quedan bloqueados unas 12 horas; después toca «Terminar el retiro» y, por último, «Recuperar mi dinero».',
+      'app.finishUnstakeBtn': 'Terminar el retiro',
+      'app.finishUnstakeSuccess': 'Retiro terminado en la red. Toca «Recuperar mi dinero» para tener tus NIM de nuevo en tu monedero.',
+      'app.unstakeInProgress': 'Retiro en curso: {amount} bloqueados. Un nuevo retiro reiniciaría el bloqueo, por eso está desactivado hasta que termines el retiro.',
+      'app.outcomeUnknown': 'Nimiq Pay no pudo confirmar si la transacción se envió. No la vuelvas a enviar: comprueba su estado en Nimiq Pay. La app sigue vigilando la red y mostrará el resultado aquí.',
+      'app.switchNeedsUnstake': 'Para mover tu stake a otro validador, Nimiq exige dos pasos: primero retira todo el stake (Retirar stake) y, tras el bloqueo de unas 12 horas, elige aquí el nuevo validador; tu stake pasa a él y vuelve a estar activo. No se ha enviado nada.',
+      'app.txRejectedLocked': 'Si retiraste el stake hace poco, puede que el bloqueo (unas 12 horas) aún no haya terminado: inténtalo más tarde.',
       'app.myStakeActiveLabel': 'Stake activo',
       'app.myStakeInactiveLabel': 'En proceso de retirada',
       'app.myStakeRetiredLabel': 'Saldo recuperable',
@@ -910,7 +928,6 @@
       'app.pendingSlow': 'Está tardando un poco más de lo habitual…',
       'app.notConfirmed': 'Sigue sin confirmarse. Puede que la red vaya lenta o que la transacción no se haya enviado. Espera un poco más o desbloquea para volver a intentarlo.',
       'app.txRejected': 'La red rechazó esta transacción. No se cambió nada.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay rechaza actualmente esta acción en algunas carteras. Tu stake está a salvo. Lo hemos comunicado al equipo de Nimiq Pay.',
       'app.createNeedsSingleTransfer': 'No se pudo crear tu primer stake. Con Nimiq Pay esto puede ocurrir cuando tus NIM llegaron en varias transferencias. Por ahora, tus NIM deben venir de una sola transferencia. Una forma sencilla: crea una cartera temporal en wallet.nimiq.com (y haz primero una copia de seguridad), envía allí todos tus NIM desde Nimiq Pay, luego envíalos de vuelta en una sola transferencia, espera a que termine «Processing funds» y vuelve a intentarlo. Comprueba siempre bien la dirección. Una vez creado tu primer stake, añadir más funciona con normalidad.',
       'app.unlockContinue': '¿No se envió? Desbloquear',
       'app.delegateSuccess': '¡Delegación realizada con éxito! Ahora delegas en {validator}.',
@@ -1005,12 +1022,18 @@
       'footer.mascotLink': '打开验证者仪表盘',
       'footer.discordAria': '加入 @Ju 的 Discord 服务器',
       'footer.discordTitle': '加入 Discord 服务器',
-      'app.retireToggle': '提取我的质押金',
-      'app.retireAmtLabel': '取款金额（NIM）',
-      'app.retireHint': '此步骤会“提取”你的质押资产——你需要等待当前Nimiq网络周期结束（通常需要数小时），资金才会通过第二步返还到你的钱包中。',
-      'app.retireConfirm': '确认提现',
-      'app.retireInvalidAmount': '请输入有效的取款金额。',
-      'app.retireSuccess': '提现已发起！请在当前网络周期结束后（通常需要数小时）返回，通过“提取我的资金”功能提取资金。',
+      'app.retireToggle': '解除质押',
+      'app.retireAmtLabel': '解除质押的数量（NIM）',
+      'app.retireHint': '在 Nimiq 上解除质押分三步：1）解除质押：该金额不再产生奖励，并锁定约 12 小时；2）锁定结束后，点击“完成解除质押”；3）点击“取回我的资金”，资金回到你的钱包。',
+      'app.retireConfirm': '确认解除质押',
+      'app.retireInvalidAmount': '请输入有效的解除质押数量（不超过你的有效质押）。',
+      'app.retireSuccess': '网络已确认解除质押。你的 NIM 将锁定约 12 小时；之后点击“完成解除质押”，最后点击“取回我的资金”。',
+      'app.finishUnstakeBtn': '完成解除质押',
+      'app.finishUnstakeSuccess': '网络上的解除质押已完成。点击“取回我的资金”，让 NIM 回到你的钱包。',
+      'app.unstakeInProgress': '解除质押进行中：{amount} 已锁定。再次解除质押会重新开始锁定，因此在你完成解除质押之前该操作已停用。',
+      'app.outcomeUnknown': 'Nimiq Pay 无法确认交易是否已发送。请不要再次发送：请在 Nimiq Pay 中查看其状态。应用会继续关注网络，并在此显示结果。',
+      'app.switchNeedsUnstake': '要把质押转到另一个验证者，Nimiq 需要两步：先解除全部质押（解除质押），等待约 12 小时的锁定结束后，在这里选择新的验证者；你的质押会转过去并重新生效。本次未发送任何内容。',
+      'app.txRejectedLocked': '如果你刚解除质押，锁定（约 12 小时）可能尚未结束：请稍后再试。',
       'app.myStakeActiveLabel': '活跃质押',
       'app.myStakeInactiveLabel': '正在下架',
       'app.myStakeRetiredLabel': '可收回余额',
@@ -1031,7 +1054,6 @@
       'app.pendingSlow': '比平时花的时间稍长……',
       'app.notConfirmed': '仍未确认。网络可能较慢，或者交易可能没有发出。请再等一会儿，或解锁后重试。',
       'app.txRejected': '网络拒绝了这笔交易。没有任何更改。',
-      'app.txRejectedNimiqPay': 'Nimiq Pay 目前会对部分钱包拒绝此操作。你的质押是安全的。我们已向 Nimiq Pay 团队反馈。',
       'app.createNeedsSingleTransfer': '无法创建你的第一笔质押。使用 Nimiq Pay 时，如果你的 NIM 是分多次转入的，可能会出现这种情况。目前你的 NIM 必须来自单次转账。一个简单的办法：在 wallet.nimiq.com 上创建一个临时钱包（并先备份），从 Nimiq Pay 把全部 NIM 转到该钱包，再一次性转回来，等待“Processing funds”结束后重试。请务必仔细核对地址。首笔质押创建成功后，追加质押可正常进行。',
       'app.unlockContinue': '没发出？解锁',
       'app.delegateSuccess': '授权成功！现在，你已将权限授权给 {validator}。',
@@ -1126,12 +1148,18 @@
       'footer.mascotLink': 'バリデーターのダッシュボードを開く',
       'footer.discordAria': '@JuのDiscordサーバーに参加する',
       'footer.discordTitle': 'Discordサーバーに参加する',
-      'app.retireToggle': 'ステークを引き出す',
-      'app.retireAmtLabel': '引き出し額（NIM）',
-      'app.retireHint': 'このステップでは、ステークが「解除」されます。資金がウォレットに戻ってくるには、現在進行中のNimiqネットワークのエポックが終了するまで（通常は数時間）待つ必要があり、その後、第2ステップを経て資金がウォレットに戻ります。',
-      'app.retireConfirm': '引き出しの確認',
-      'app.retireInvalidAmount': '引き出し可能な有効な金額を入力してください。',
-      'app.retireSuccess': '出金手続きが開始されました！現在のネットワーク処理が完了したら（通常、数時間かかります）、再度アクセスして「資金を受け取る」から資金を受け取ってください。',
+      'app.retireToggle': 'ステーク解除',
+      'app.retireAmtLabel': 'ステーク解除する金額（NIM）',
+      'app.retireHint': 'Nimiq のステーク解除は 3 段階です。1）ステーク解除：その金額は報酬を生まなくなり、約 12 時間ロックされます。2）ロックが終わったら「ステーク解除を完了」。3）「資金を引き出す」でウォレットに戻します。',
+      'app.retireConfirm': 'ステーク解除を確定',
+      'app.retireInvalidAmount': '有効なステーク解除額を入力してください（有効なステーク以下）。',
+      'app.retireSuccess': 'ネットワークでステーク解除が確認されました。NIM は約 12 時間ロックされます。その後「ステーク解除を完了」、最後に「資金を引き出す」をタップしてください。',
+      'app.finishUnstakeBtn': 'ステーク解除を完了',
+      'app.finishUnstakeSuccess': 'ネットワーク上でステーク解除が完了しました。「資金を引き出す」をタップして NIM をウォレットに戻してください。',
+      'app.unstakeInProgress': 'ステーク解除中：{amount} がロック中です。新たに解除するとロックがやり直しになるため、解除を完了するまで無効になっています。',
+      'app.outcomeUnknown': 'Nimiq Pay は取引が送信されたかどうかを確認できませんでした。再送しないでください。Nimiq Pay で状態を確認してください。アプリはネットワークの監視を続け、結果をここに表示します。',
+      'app.switchNeedsUnstake': 'ステークを別のバリデーターに移すには、Nimiq では 2 段階が必要です。まず全額をステーク解除し、約 12 時間のロックが終わった後、ここで新しいバリデーターを選びます。ステークはそこに移り、再び有効になります。何も送信されていません。',
+      'app.txRejectedLocked': '最近ステーク解除した場合、ロック（約 12 時間）がまだ終わっていない可能性があります。後でもう一度お試しください。',
       'app.myStakeActiveLabel': 'アクティブなステーク',
       'app.myStakeInactiveLabel': '現在引き出し中',
       'app.myStakeRetiredLabel': '回収可能残高',
@@ -1152,7 +1180,6 @@
       'app.pendingSlow': '通常より少し時間がかかっています…',
       'app.notConfirmed': 'まだ確認されていません。ネットワークが遅いか、取引が送信されていない可能性があります。もう少し待つか、ロックを解除してやり直してください。',
       'app.txRejected': 'ネットワークがこの取引を拒否しました。何も変更されていません。',
-      'app.txRejectedNimiqPay': 'Nimiq Pay は現在、一部のウォレットでこの操作を拒否します。ステークは安全です。Nimiq Pay チームに報告済みです。',
       'app.createNeedsSingleTransfer': '最初のステークを作成できませんでした。Nimiq Pay では、NIM が複数回の送金で届いた場合にこの問題が起こることがあります。現時点では、NIM が1回の送金で届いている必要があります。簡単な方法：wallet.nimiq.com で一時的なウォレットを作成し（先にバックアップを取ってください）、Nimiq Pay からすべての NIM をそこへ送り、1回の送金で送り返して、「Processing funds」が終わるのを待ってからもう一度お試しください。アドレスは必ず十分に確認してください。最初のステークができれば、追加は通常どおり行えます。',
       'app.unlockContinue': '送信されていない？ ロック解除',
       'app.delegateSuccess': '委任は成功しました！これからは{validator}に委任することになります。',
@@ -1247,12 +1274,18 @@
       'footer.mascotLink': '검증자 대시보드 열기',
       'footer.discordAria': '@Ju의 Discord 서버에 가입하기',
       'footer.discordTitle': 'Discord 서버에 가입하기',
-      'app.retireToggle': '내 스테이크 회수하기',
-      'app.retireAmtLabel': '인출 금액 (NIM)',
-      'app.retireHint': '이 단계에서는 스테이크가 “철회”됩니다. 자금이 지갑으로 돌아오려면 현재 진행 중인 Nimiq 네트워크 에포크가 끝날 때까지(보통 몇 시간 정도 소요됨) 기다려야 하며, 이후 두 번째 단계를 통해 자금이 입금됩니다.',
-      'app.retireConfirm': '인출 확인',
-      'app.retireInvalidAmount': '인출 가능한 유효한 금액을 입력하십시오.',
-      'app.retireSuccess': '인출이 시작되었습니다! 현재 진행 중인 네트워크 처리 기간이 끝나면(보통 몇 시간 정도 소요됨) 다시 방문하여 “자금 회수”를 통해 자금을 수령하세요.',
+      'app.retireToggle': '스테이크 해제',
+      'app.retireAmtLabel': '해제할 금액 (NIM)',
+      'app.retireHint': 'Nimiq에서 스테이크 해제는 3단계입니다. 1) 스테이크 해제: 해당 금액은 보상을 받지 않으며 약 12시간 동안 잠깁니다. 2) 잠금이 끝나면 \'스테이크 해제 완료\'. 3) \'내 자금 회수하기\'로 지갑에 돌려받습니다.',
+      'app.retireConfirm': '스테이크 해제 확인',
+      'app.retireInvalidAmount': '해제할 유효한 금액을 입력하세요(활성 스테이크 이하).',
+      'app.retireSuccess': '네트워크에서 스테이크 해제가 확인되었습니다. NIM은 약 12시간 동안 잠깁니다. 그 후 \'스테이크 해제 완료\', 마지막으로 \'내 자금 회수하기\'를 누르세요.',
+      'app.finishUnstakeBtn': '스테이크 해제 완료',
+      'app.finishUnstakeSuccess': '네트워크에서 스테이크 해제가 완료되었습니다. \'내 자금 회수하기\'를 눌러 NIM을 지갑으로 돌려받으세요.',
+      'app.unstakeInProgress': '스테이크 해제 진행 중: {amount} 잠김. 새로 해제하면 잠금이 다시 시작되므로, 해제를 완료할 때까지 비활성화됩니다.',
+      'app.outcomeUnknown': 'Nimiq Pay가 거래 전송 여부를 확인하지 못했습니다. 다시 보내지 마세요. Nimiq Pay에서 상태를 확인하세요. 앱은 네트워크를 계속 확인하며 결과를 여기에 표시합니다.',
+      'app.switchNeedsUnstake': '스테이크를 다른 검증자로 옮기려면 Nimiq에서는 두 단계가 필요합니다. 먼저 전액을 스테이크 해제한 뒤, 약 12시간의 잠금이 끝나면 여기에서 새 검증자를 선택하세요. 스테이크가 옮겨지고 다시 활성화됩니다. 아무것도 전송되지 않았습니다.',
+      'app.txRejectedLocked': '최근에 스테이크를 해제했다면 잠금(약 12시간)이 아직 끝나지 않았을 수 있습니다. 나중에 다시 시도하세요.',
       'app.myStakeActiveLabel': '활성 스테이크',
       'app.myStakeInactiveLabel': '철회 중',
       'app.myStakeRetiredLabel': '회수 가능한 잔액',
@@ -1273,7 +1306,6 @@
       'app.pendingSlow': '평소보다 조금 더 걸리고 있습니다…',
       'app.notConfirmed': '아직 확인되지 않았습니다. 네트워크가 느리거나 거래가 전송되지 않았을 수 있습니다. 조금 더 기다리거나 잠금을 해제하고 다시 시도하세요.',
       'app.txRejected': '네트워크가 이 거래를 거부했습니다. 변경된 것은 없습니다.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay가 현재 일부 지갑에서 이 작업을 거부하고 있습니다. 스테이크는 안전합니다. Nimiq Pay 팀에 보고했습니다.',
       'app.createNeedsSingleTransfer': '첫 스테이크를 만들지 못했습니다. Nimiq Pay에서는 NIM이 여러 번에 나뉘어 도착했을 때 이런 일이 생길 수 있습니다. 현재는 NIM이 한 번의 전송으로 들어와 있어야 합니다. 간단한 방법: wallet.nimiq.com에서 임시 지갑을 만들고(먼저 백업하세요), Nimiq Pay에서 모든 NIM을 그 지갑으로 보낸 다음, 한 번의 전송으로 다시 보내고 “Processing funds”가 끝날 때까지 기다린 뒤 다시 시도하세요. 주소는 항상 꼼꼼히 확인하세요. 첫 스테이크가 만들어지면 추가는 정상적으로 작동합니다.',
       'app.unlockContinue': '전송되지 않았나요? 잠금 해제',
       'app.delegateSuccess': '위임이 성공적으로 완료되었습니다! 이제 {validator}에게 권한을 위임하게 됩니다.',
@@ -1368,12 +1400,18 @@
       'footer.mascotLink': 'Das Validatoren-Dashboard öffnen',
       'footer.discordAria': 'Dem Discord-Server von @Ju beitreten',
       'footer.discordTitle': 'Dem Discord-Server beitreten',
-      'app.retireToggle': 'Meinen Einsatz abheben',
-      'app.retireAmtLabel': 'Abhebebetrag (NIM)',
-      'app.retireHint': 'In diesem Schritt wird dein Stake „abgerufen“ – du musst das Ende der laufenden Nimiq-Netzwerkeepoche abwarten (in der Regel mehrere Stunden), bevor das Guthaben in einem zweiten Schritt wieder in deine Wallet zurückfließt.',
-      'app.retireConfirm': 'Auszahlung bestätigen',
-      'app.retireInvalidAmount': 'Gibt einen gültigen Abhebungsbetrag an.',
-      'app.retireSuccess': 'Auszahlung eingeleitet! Komm bitte zurück, sobald der aktuelle Netzwerkzyklus abgeschlossen ist (in der Regel mehrere Stunden), um dein Guthaben über „Mein Guthaben abrufen“ abzuheben.',
+      'app.retireToggle': 'Unstaken',
+      'app.retireAmtLabel': 'Betrag zum Unstaken (NIM)',
+      'app.retireHint': 'Unstaken erfolgt bei Nimiq in drei Schritten: 1) Unstaken: Der Betrag bringt keine Belohnungen mehr und bleibt etwa 12 Stunden gesperrt; 2) Unstaking abschließen, sobald die Sperre vorbei ist; 3) Mein Geld zurückerhalten, damit es wieder in deiner Wallet ist.',
+      'app.retireConfirm': 'Unstaken bestätigen',
+      'app.retireInvalidAmount': 'Gib einen gültigen Betrag zum Unstaken ein (höchstens deinen aktiven Stake).',
+      'app.retireSuccess': 'Unstaken vom Netzwerk bestätigt. Deine NIM bleiben etwa 12 Stunden gesperrt; tippe danach auf „Unstaking abschließen“ und zuletzt auf „Mein Geld zurückerhalten“.',
+      'app.finishUnstakeBtn': 'Unstaking abschließen',
+      'app.finishUnstakeSuccess': 'Unstaking im Netzwerk abgeschlossen. Tippe auf „Mein Geld zurückerhalten“, damit deine NIM wieder in deiner Wallet sind.',
+      'app.unstakeInProgress': 'Unstaking läuft: {amount} gesperrt. Ein neues Unstaken würde die Sperre neu starten, daher ist es deaktiviert, bis du das Unstaking abschließt.',
+      'app.outcomeUnknown': 'Nimiq Pay konnte nicht bestätigen, ob die Transaktion gesendet wurde. Sende sie nicht erneut: Prüfe ihren Status in Nimiq Pay. Die App beobachtet das Netzwerk weiter und zeigt das Ergebnis hier an.',
+      'app.switchNeedsUnstake': 'Um deinen Stake zu einem anderen Validator zu verschieben, verlangt Nimiq zwei Schritte: zuerst den gesamten Betrag unstaken (Unstaken), dann nach der Sperre von etwa 12 Stunden hier den neuen Validator wählen; dein Stake wechselt dorthin und ist wieder aktiv. Es wurde nichts gesendet.',
+      'app.txRejectedLocked': 'Wenn du kürzlich unstaked hast, ist die Sperre (etwa 12 Stunden) vielleicht noch nicht vorbei: Versuche es später erneut.',
       'app.myStakeActiveLabel': 'Aktives Stake',
       'app.myStakeInactiveLabel': 'Wird gerade zurückgezogen',
       'app.myStakeRetiredLabel': 'Einzuziehender Restbetrag',
@@ -1394,7 +1432,6 @@
       'app.pendingSlow': 'Das dauert etwas länger als üblich …',
       'app.notConfirmed': 'Immer noch nicht bestätigt. Das Netzwerk ist vielleicht langsam, oder die Transaktion wurde möglicherweise nicht gesendet. Warte noch etwas oder entsperre, um es erneut zu versuchen.',
       'app.txRejected': 'Das Netzwerk hat diese Transaktion abgelehnt. Es wurde nichts geändert.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay lehnt diese Aktion derzeit bei einigen Wallets ab. Dein Stake ist sicher. Wir haben es dem Nimiq-Pay-Team gemeldet.',
       'app.createNeedsSingleTransfer': 'Dein erster Stake konnte nicht erstellt werden. Bei Nimiq Pay kann das passieren, wenn deine NIM in mehreren Überweisungen angekommen sind. Vorerst müssen deine NIM aus einer einzigen Überweisung stammen. Ein einfacher Weg: Erstelle auf wallet.nimiq.com eine temporäre Wallet (und sichere sie zuerst), sende alle deine NIM von Nimiq Pay dorthin, sende sie dann in einer einzigen Überweisung zurück, warte, bis „Processing funds“ beendet ist, und versuche es erneut. Prüfe die Adresse immer sorgfältig. Sobald dein erster Stake existiert, funktioniert das Aufstocken normal.',
       'app.unlockContinue': 'Nicht gesendet? Entsperren',
       'app.delegateSuccess': 'Erfolgreiche Delegierung! Du delegierst nun an {validator}.',
@@ -1489,12 +1526,18 @@
       'footer.mascotLink': 'Abrir o painel de controlo dos validadores',
       'footer.discordAria': 'Entrar no servidor do Discord do @Ju',
       'footer.discordTitle': 'Entrar no servidor do Discord',
-      'app.retireToggle': 'Retirar a minha participação',
-      'app.retireAmtLabel': 'Montante a levantar (NIM)',
-      'app.retireHint': 'Esta etapa «retira» a tua aposta — é necessário aguardar até ao final da época atual da rede Nimiq (geralmente várias horas) para que os fundos voltem para a tua carteira, através de uma segunda etapa.',
-      'app.retireConfirm': 'Confirmar o levantamento',
-      'app.retireInvalidAmount': 'Indique um montante válido a levantar.',
-      'app.retireSuccess': 'Levantamento iniciado! Volta assim que o período de processamento em curso terminar (normalmente várias horas) para levantar os teus fundos através da opção «Levantar os meus fundos».',
+      'app.retireToggle': 'Retirar stake',
+      'app.retireAmtLabel': 'Montante a retirar do stake (NIM)',
+      'app.retireHint': 'Retirar o stake no Nimiq tem três passos: 1) Retirar stake: o montante deixa de render recompensas e fica bloqueado cerca de 12 horas; 2) Concluir a retirada, quando o bloqueio terminar; 3) Recuperar os meus fundos, para os teres de novo na tua carteira.',
+      'app.retireConfirm': 'Confirmar a retirada',
+      'app.retireInvalidAmount': 'Indica um montante válido a retirar (no máximo o teu stake ativo).',
+      'app.retireSuccess': 'Retirada confirmada pela rede. Os teus NIM ficam bloqueados cerca de 12 horas; depois toca em «Concluir a retirada» e, por fim, em «Recuperar os meus fundos».',
+      'app.finishUnstakeBtn': 'Concluir a retirada',
+      'app.finishUnstakeSuccess': 'Retirada concluída na rede. Toca em «Recuperar os meus fundos» para teres os teus NIM de novo na carteira.',
+      'app.unstakeInProgress': 'Retirada em curso: {amount} bloqueados. Uma nova retirada reiniciaria o bloqueio, por isso está desativada até concluíres a retirada.',
+      'app.outcomeUnknown': 'O Nimiq Pay não conseguiu confirmar se a transação foi enviada. Não a voltes a enviar: verifica o estado no Nimiq Pay. A app continua a observar a rede e mostrará o resultado aqui.',
+      'app.switchNeedsUnstake': 'Para mudar o teu stake para outro validador, o Nimiq exige dois passos: primeiro retira todo o stake (Retirar stake) e, após o bloqueio de cerca de 12 horas, escolhe aqui o novo validador; o teu stake passa para ele e volta a ficar ativo. Nada foi enviado.',
+      'app.txRejectedLocked': 'Se retiraste o stake há pouco, o bloqueio (cerca de 12 horas) pode ainda não ter terminado: tenta mais tarde.',
       'app.myStakeActiveLabel': 'Stake ativo',
       'app.myStakeInactiveLabel': 'Em processo de retirada',
       'app.myStakeRetiredLabel': 'Saldo recuperável',
@@ -1515,7 +1558,6 @@
       'app.pendingSlow': 'Está a demorar um pouco mais do que o habitual…',
       'app.notConfirmed': 'Ainda não confirmado. A rede pode estar lenta ou a transação pode não ter sido enviada. Espera mais um pouco ou desbloqueia para tentares novamente.',
       'app.txRejected': 'A rede rejeitou esta transação. Nada foi alterado.',
-      'app.txRejectedNimiqPay': 'O Nimiq Pay rejeita atualmente esta ação em algumas carteiras. O teu stake está seguro. Já o comunicámos à equipa do Nimiq Pay.',
       'app.createNeedsSingleTransfer': 'O teu primeiro stake não pôde ser criado. Com o Nimiq Pay, isto pode acontecer quando os teus NIM chegaram em várias transferências. Por agora, os teus NIM têm de vir de uma única transferência. Uma forma simples: cria uma carteira temporária em wallet.nimiq.com (e faz primeiro uma cópia de segurança), envia para lá todos os teus NIM a partir do Nimiq Pay, depois envia-os de volta numa única transferência, espera que «Processing funds» termine e tenta novamente. Confirma sempre bem o endereço. Depois de o teu primeiro stake existir, adicionar funciona normalmente.',
       'app.unlockContinue': 'Não enviado? Desbloquear',
       'app.delegateSuccess': 'Delegação bem-sucedida! Agora estás a delegar ao {validator}.',
@@ -1610,12 +1652,18 @@
       'footer.mascotLink': 'Открыть панель управления валидаторами',
       'footer.discordAria': 'Присоединиться к серверу Discord @Ju',
       'footer.discordTitle': 'Присоединиться к серверу Discord',
-      'app.retireToggle': 'Изъять мой стейк',
-      'app.retireAmtLabel': 'Сумма к снятию (NIM)',
-      'app.retireHint': 'На этом этапе твоя ставка «извлекается» — необходимо дождаться окончания текущей эпохи сети Nimiq (обычно это занимает несколько часов), после чего средства поступят в твой кошелек в рамках второго этапа.',
-      'app.retireConfirm': 'Подтвердить снятие средств',
-      'app.retireInvalidAmount': 'Укажите допустимую сумму для снятия.',
-      'app.retireSuccess': 'Вывод средств инициирован! Вернись после завершения текущего сетевого цикла (обычно это занимает несколько часов), чтобы получить свои средства через раздел «Получить средства».',
+      'app.retireToggle': 'Вывести из стейка',
+      'app.retireAmtLabel': 'Сумма для вывода из стейка (NIM)',
+      'app.retireHint': 'Вывод из стейка в Nimiq проходит в три шага: 1) Вывести из стейка: сумма перестаёт приносить награды и блокируется примерно на 12 часов; 2) Завершить вывод, когда блокировка закончится; 3) Получить мои средства, чтобы вернуть их в кошелёк.',
+      'app.retireConfirm': 'Подтвердить вывод',
+      'app.retireInvalidAmount': 'Введи корректную сумму для вывода (не больше твоего активного стейка).',
+      'app.retireSuccess': 'Вывод из стейка подтверждён сетью. Твои NIM заблокированы примерно на 12 часов; затем нажми «Завершить вывод», а потом «Получить мои средства».',
+      'app.finishUnstakeBtn': 'Завершить вывод',
+      'app.finishUnstakeSuccess': 'Вывод из стейка завершён в сети. Нажми «Получить мои средства», чтобы вернуть NIM в кошелёк.',
+      'app.unstakeInProgress': 'Вывод в процессе: {amount} заблокировано. Новый вывод перезапустил бы блокировку, поэтому он отключён, пока ты не завершишь вывод.',
+      'app.outcomeUnknown': 'Nimiq Pay не смог подтвердить, была ли отправлена транзакция. Не отправляй её снова: проверь её статус в Nimiq Pay. Приложение продолжает следить за сетью и покажет результат здесь.',
+      'app.switchNeedsUnstake': 'Чтобы перевести стейк к другому валидатору, Nimiq требует два шага: сначала выведи из стейка всю сумму (Вывести из стейка), затем, после блокировки примерно на 12 часов, выбери здесь нового валидатора; стейк перейдёт к нему и снова станет активным. Ничего не отправлено.',
+      'app.txRejectedLocked': 'Если ты недавно вывел средства из стейка, блокировка (около 12 часов) могла ещё не закончиться: попробуй позже.',
       'app.myStakeActiveLabel': 'Активный стейк',
       'app.myStakeInactiveLabel': 'В процессе изъятия',
       'app.myStakeRetiredLabel': 'Восстановимый остаток',
@@ -1636,7 +1684,6 @@
       'app.pendingSlow': 'Это занимает чуть больше времени, чем обычно…',
       'app.notConfirmed': 'Всё ещё не подтверждено. Возможно, сеть работает медленно или транзакция не была отправлена. Подожди ещё немного или разблокируй, чтобы попробовать снова.',
       'app.txRejected': 'Сеть отклонила эту транзакцию. Ничего не изменилось.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay сейчас отклоняет это действие для некоторых кошельков. Твой стейк в безопасности. Мы сообщили об этом команде Nimiq Pay.',
       'app.createNeedsSingleTransfer': 'Не удалось создать твой первый стейк. С Nimiq Pay так может случиться, если твои NIM пришли несколькими переводами. Пока что твои NIM должны прийти одним переводом. Простой способ: создай временный кошелёк на wallet.nimiq.com (и сначала сделай его резервную копию), отправь туда все свои NIM из Nimiq Pay, затем отправь их обратно одним переводом, дождись окончания «Processing funds» и попробуй снова. Всегда внимательно проверяй адрес. Когда первый стейк будет создан, пополнение будет работать как обычно.',
       'app.unlockContinue': 'Не отправлено? Разблокировать',
       'app.delegateSuccess': 'Делегирование прошло успешно! Теперь ты делегируешь полномочия {validator}.',
@@ -1731,12 +1778,18 @@
       'footer.mascotLink': 'Validatör kontrol panelini aç',
       'footer.discordAria': '@Ju’nun Discord sunucusuna katıl',
       'footer.discordTitle': 'Discord sunucusuna katılmak',
-      'app.retireToggle': 'Hisse payımı çekmek',
-      'app.retireAmtLabel': 'Çekilecek tutar (NIM)',
-      'app.retireHint': 'Bu adım, stake\'ini "geri çeker" — fonların, ikinci bir adım aracılığıyla cüzdana geri dönmesi için, devam eden Nimiq ağı döneminin sona ermesini beklemen gerekir (genellikle birkaç saat sürer).',
-      'app.retireConfirm': 'Para çekme işlemini onayla',
-      'app.retireInvalidAmount': 'Çekilebilecek geçerli bir tutarı belirtir.',
-      'app.retireSuccess': 'Para çekme işlemi başlatıldı! Mevcut ağ dönemi sona erdiğinde (genellikle birkaç saat sürer) geri gelip "Paramı Al" seçeneği aracılığıyla paranı alabilirsin.',
+      'app.retireToggle': 'Stake\'ten çık',
+      'app.retireAmtLabel': 'Stake\'ten çıkarılacak miktar (NIM)',
+      'app.retireHint': 'Nimiq\'te stake\'ten çıkmak üç adımdır: 1) Stake\'ten çık: tutar ödül kazanmayı bırakır ve yaklaşık 12 saat kilitli kalır; 2) Kilit bitince Çıkışı tamamla; 3) Paramı geri almak ile cüzdanına geri al.',
+      'app.retireConfirm': 'Çıkışı onayla',
+      'app.retireInvalidAmount': 'Çıkarmak için geçerli bir tutar gir (en fazla aktif stake\'in kadar).',
+      'app.retireSuccess': 'Stake\'ten çıkış ağ tarafından onaylandı. NIM\'lerin yaklaşık 12 saat kilitli kalır; sonra "Çıkışı tamamla"ya, en son da "Paramı geri almak"a dokun.',
+      'app.finishUnstakeBtn': 'Çıkışı tamamla',
+      'app.finishUnstakeSuccess': 'Stake\'ten çıkış ağda tamamlandı. NIM\'lerini cüzdanına geri almak için "Paramı geri almak"a dokun.',
+      'app.unstakeInProgress': 'Stake\'ten çıkış sürüyor: {amount} kilitli. Yeni bir çıkış kilidi yeniden başlatır, bu yüzden çıkışı tamamlayana kadar devre dışı.',
+      'app.outcomeUnknown': 'Nimiq Pay işlemin gönderilip gönderilmediğini doğrulayamadı. Tekrar gönderme: durumunu Nimiq Pay\'de kontrol et. Uygulama ağı izlemeye devam eder ve sonucu burada gösterir.',
+      'app.switchNeedsUnstake': 'Stake\'ini başka bir doğrulayıcıya taşımak için Nimiq iki adım ister: önce tüm tutarı stake\'ten çıkar (Stake\'ten çık), sonra yaklaşık 12 saatlik kilit bitince burada yeni doğrulayıcıyı seç; stake\'in ona geçer ve yeniden aktif olur. Hiçbir şey gönderilmedi.',
+      'app.txRejectedLocked': 'Stake\'ten yakın zamanda çıktıysan kilit (yaklaşık 12 saat) henüz bitmemiş olabilir: daha sonra tekrar dene.',
       'app.myStakeActiveLabel': 'Aktif stake',
       'app.myStakeInactiveLabel': 'Geri çekilme aşamasında',
       'app.myStakeRetiredLabel': 'Geri kazanılabilir bakiye',
@@ -1757,7 +1810,6 @@
       'app.pendingSlow': 'Bu, normalden biraz daha uzun sürüyor…',
       'app.notConfirmed': 'Hâlâ onaylanmadı. Ağ yavaş olabilir veya işlem gönderilmemiş olabilir. Biraz daha bekle ya da yeniden denemek için kilidi aç.',
       'app.txRejected': 'Ağ bu işlemi reddetti. Hiçbir şey değişmedi.',
-      'app.txRejectedNimiqPay': 'Nimiq Pay şu anda bu işlemi bazı cüzdanlar için reddediyor. Stake\'in güvende. Bunu Nimiq Pay ekibine bildirdik.',
       'app.createNeedsSingleTransfer': 'İlk stake\'in oluşturulamadı. Nimiq Pay\'de bu, NIM\'lerin birkaç transferle geldiği durumlarda olabilir. Şimdilik NIM\'lerin tek bir transferle gelmiş olması gerekiyor. Basit bir yol: wallet.nimiq.com\'da geçici bir cüzdan oluştur (önce yedeğini al), tüm NIM\'lerini Nimiq Pay\'den oraya gönder, sonra tek bir transferle geri gönder, "Processing funds" bitene kadar bekle ve tekrar dene. Adresi her zaman iyice kontrol et. İlk stake\'in oluştuktan sonra ekleme normal şekilde çalışır.',
       'app.unlockContinue': 'Gönderilmedi mi? Kilidi aç',
       'app.delegateSuccess': 'Yetki devri başarıyla tamamlandı! Artık {validator}\'a yetki devrediyorsun.',
@@ -1852,12 +1904,18 @@
       'footer.mascotLink': 'افتح لوحة معلومات المُصدِّقين',
       'footer.discordAria': 'الانضمام إلى خادم Discord الخاص بـ @Ju',
       'footer.discordTitle': 'الانضمام إلى خادم Discord',
-      'app.retireToggle': 'سحب رهنتي',
-      'app.retireAmtLabel': 'المبلغ المراد سحبه (NIM)',
-      'app.retireHint': 'تقوم هذه الخطوة بـ«سحب» رصيدك — يجب الانتظار حتى نهاية العصر الحالي لشبكة Nimiq (عادةً ما يستغرق ذلك عدة ساعات) قبل أن تعود الأموال إلى محفظتك، وذلك عبر خطوة ثانية.',
-      'app.retireConfirm': 'تأكيد السحب',
-      'app.retireInvalidAmount': 'أدخل مبلغًا صالحًا للسحب.',
-      'app.retireSuccess': 'تم بدء عملية السحب! يرجى العودة بعد انتهاء الفترة الحالية للشبكة (عادةً ما تستغرق عدة ساعات) لاسترداد أموالك عبر خيار "استرداد أموالي".',
+      'app.retireToggle': 'إلغاء الستيك',
+      'app.retireAmtLabel': 'المبلغ المراد إلغاء الستيك له (NIM)',
+      'app.retireHint': 'يتم إلغاء الستيك في Nimiq على ثلاث خطوات: 1) إلغاء الستيك: يتوقف المبلغ عن تحقيق المكافآت ويبقى مقفلاً نحو 12 ساعة؛ 2) إكمال إلغاء الستيك بعد انتهاء القفل؛ 3) استرداد أموالي لإعادتها إلى محفظتك.',
+      'app.retireConfirm': 'تأكيد إلغاء الستيك',
+      'app.retireInvalidAmount': 'أدخل مبلغاً صالحاً لإلغاء الستيك (بحد أقصى الستيك النشط لديك).',
+      'app.retireSuccess': 'أكدت الشبكة إلغاء الستيك. تبقى عملات NIM مقفلة نحو 12 ساعة؛ ثم اضغط «إكمال إلغاء الستيك»، وأخيراً «استرداد أموالي».',
+      'app.finishUnstakeBtn': 'إكمال إلغاء الستيك',
+      'app.finishUnstakeSuccess': 'اكتمل إلغاء الستيك على الشبكة. اضغط «استرداد أموالي» لإعادة عملات NIM إلى محفظتك.',
+      'app.unstakeInProgress': 'إلغاء الستيك جارٍ: {amount} مقفلة. أي إلغاء جديد سيعيد بدء القفل، لذا هو معطّل حتى تُكمل إلغاء الستيك.',
+      'app.outcomeUnknown': 'لم يتمكن Nimiq Pay من تأكيد ما إذا كانت المعاملة قد أُرسلت. لا تُرسلها مجدداً: تحقّق من حالتها في Nimiq Pay. يواصل التطبيق متابعة الشبكة وسيعرض النتيجة هنا.',
+      'app.switchNeedsUnstake': 'لنقل الستيك إلى مُصدق آخر، يتطلب Nimiq خطوتين: أولاً ألغِ الستيك بالكامل (إلغاء الستيك)، ثم بعد قفل يدوم نحو 12 ساعة اختر هنا المُصدق الجديد؛ ينتقل الستيك إليه ويعود نشطاً. لم يُرسل شيء.',
+      'app.txRejectedLocked': 'إذا ألغيت الستيك مؤخراً، فقد لا يكون القفل (نحو 12 ساعة) قد انتهى بعد: حاول لاحقاً.',
       'app.myStakeActiveLabel': 'الرهن النشط',
       'app.myStakeInactiveLabel': 'قيد السحب',
       'app.myStakeRetiredLabel': 'الرصيد القابل للاسترداد',
@@ -1878,7 +1936,6 @@
       'app.pendingSlow': 'يستغرق هذا وقتًا أطول قليلًا من المعتاد…',
       'app.notConfirmed': 'لم يتم التأكيد بعد. قد تكون الشبكة بطيئة أو ربما لم تُرسل المعاملة. انتظر قليلًا أو ألغِ القفل للمحاولة مجددًا.',
       'app.txRejected': 'رفضت الشبكة هذه المعاملة. لم يتغيّر شيء.',
-      'app.txRejectedNimiqPay': 'يرفض Nimiq Pay حاليًا هذا الإجراء لبعض المحافظ. ستيكك في أمان. لقد أبلغنا فريق Nimiq Pay بذلك.',
       'app.createNeedsSingleTransfer': 'تعذّر إنشاء أول ستيك لك. مع Nimiq Pay قد يحدث هذا عندما تصل عملات NIM الخاصة بك على عدة تحويلات. في الوقت الحالي يجب أن تأتي عملات NIM من تحويل واحد. طريقة بسيطة: أنشئ محفظة مؤقتة على wallet.nimiq.com (وخذ نسخة احتياطية منها أولًا)، أرسل إليها كل عملات NIM من Nimiq Pay، ثم أعدها في تحويل واحد، وانتظر انتهاء «Processing funds» ثم حاول مجددًا. تحقّق دائمًا من العنوان بعناية. بعد إنشاء أول ستيك، تعمل الإضافة إليه بشكل طبيعي.',
       'app.unlockContinue': 'لم تُرسل؟ إلغاء القفل',
       'app.delegateSuccess': 'تفويض ناجح! أنت تفوض الآن إلى {validator}.',
@@ -1995,6 +2052,7 @@
       applyLock();
       if (hubConnecting) $('hubConnectBtn').textContent = t('app.hubConnecting');
       renderDelegationHistory();
+      if (typeof updateUnstakeUi === 'function' && lastStakerStatus) updateUnstakeUi(lastStakerStatus);
     } catch (e) {}
   }
 
@@ -2226,6 +2284,50 @@
     }
     return String(err);
   }
+  // How a failed wallet request is reported (1.1.3). Nimiq Pay answers errors as {code, message, type, data}:
+  // 4001 = the user cancelled; -32001 TRANSACTION_OUTCOME_UNKNOWN = it may have been sent (Nimiq Pay source,
+  // web3-provider/src/provider-errors.ts). "Failed to send payment transaction" (-32603) was shown on 2026-11-10 for an
+  // Add that WAS executed on the chain, so only the cases known to leave nothing on the chain count as a failure:
+  // a cancellation, "invalidated" (rejected before broadcast) and the balance errors.
+  function failureKind(err){
+    var o = err && typeof err === 'object' ? err : {};
+    var code = o.code != null ? o.code : (o.error && o.error.code != null ? o.error.code : null);
+    var type = o.type || (o.error && o.error.type) || '';
+    var msg = errDetail(err);
+    if (code === 4001 || /user rejected|cancel/i.test(msg)) return 'cancelled';
+    if (code === -32001 || type === 'TRANSACTION_OUTCOME_UNKNOWN' || /outcome is unknown|may have been submitted/i.test(msg)) return 'unknown';
+    if (/invalidated/i.test(msg)) return 'rejected';
+    if (/address|balance|insufficient|exceeds/i.test(msg)) return 'balance';
+    if (code === -32603 || /failed to send payment transaction/i.test(msg)) return 'unknown';
+    return 'failed';
+  }
+  // A failed wallet request. An unknown outcome is never called a failure and never invites a new attempt: the lock
+  // stays, the chain is watched (waiting, then "Still not confirmed" with the manual unlock), the hash is kept if any.
+  function stakingFailure(err, releaseAction, expect, label){
+    console.warn('Validator Swipe: ' + label + ' failed.', err);
+    var kind = failureKind(err), rawDetail = errDetail(err);
+    if (kind === 'unknown'){
+      releaseAction(true);
+      var o = err && typeof err === 'object' ? err : {};
+      keepTxHash((o.data && o.data.hash) || (o.error && o.error.data && o.error.data.hash));
+      showErrorModal(t('app.outcomeUnknown'), rawDetail);
+      pollStakerStatus(expect);
+      return;
+    }
+    var humanMsg = kind === 'balance' ? t('app.delegateFailedBalanceHint')
+      : kind === 'rejected' ? t(expect.kind === 'create' ? 'app.createNeedsSingleTransfer' : 'app.delegateFailedRejected')
+      : t('app.delegateFailed');
+    showErrorModal(humanMsg, rawDetail);
+    releaseAction(false);
+  }
+  // SetActiveStake (the first step of unstaking). The host has handled it since 2.19 (useMiniAppHost.ts); SDK 0.1.0
+  // hands over the host provider itself, so the method is called directly when present, else through request().
+  function sendSetActiveStake(newActiveLuna){
+    var p = { newActiveBalance: newActiveLuna };
+    if (typeof state.nimiq.sendSetActiveStakeTransaction === 'function') return state.nimiq.sendSetActiveStakeTransaction(p);
+    if (typeof state.nimiq.request === 'function') return state.nimiq.request({ method: 'sendSetActiveStakeTransaction', params: p });
+    return Promise.reject(new Error('sendSetActiveStakeTransaction is not available in this Nimiq Pay version'));
+  }
 
   // ---------- duplicate-submit guard ----------
   // One tap must produce ONE wallet request. The button's `disabled` attribute alone is not enough
@@ -2308,42 +2410,44 @@
       }
     }
   });
+  // Unstake = SetActiveStake(active - amount): the amount becomes INACTIVE and stays locked about one epoch. Until 1.1.2
+  // the app sent RetireStake with the ACTIVE amount: the staking contract only retires INACTIVE stake that is released
+  // (core-rs-albatross primitives/account/src/account/staking_contract/staker.rs, retire_stake: InsufficientFunds /
+  // InvalidForRecipient), so that request could never succeed. Same order as Nimiq's own example (mini-app-sdk/dapp
+  // Staking.vue): set active stake, then retire once unlocked, then remove.
   retireConfirmBtn.addEventListener('click', function(){
     var amt = parseFloat($('retireAmt').value);
-    if (!(amt > 0) || !(state.nimiq || state.hub)){
+    var s = lastStakerStatus;
+    var active = s && s.found ? (s.active_balance_luna || 0) : 0;
+    var amtLuna = Math.round(amt * 100000);
+    if (!(amt > 0) || !(state.nimiq || state.hub) || !(active > 0) || amtLuna > active){
       showErrorModal(t('app.retireInvalidAmount'), '');
       return;
     }
+    if (s.inactive_balance_luna > 0){
+      showErrorModal(t('app.unstakeInProgress').replace('{amount}', formatStake(s.inactive_balance_luna)), '');
+      return;
+    }
     if (lockState() !== 'idle'){ applyLock(); return; }
-    var releaseAction = beginAction('retire|' + state.myAddress + '|' + amt);
+    var releaseAction = beginAction('unstake|' + state.myAddress + '|' + amt);
     if (!releaseAction) return;
     retireConfirmBtn.disabled = true;
-    var retireExpect = makeExpect('retire');
-    retireExpect.msgKey = 'app.retireSuccess';
-    releaseAction.mark(retireExpect, amt);
-    var retireValueLuna = Math.round(amt * 100000);
-    var retireCall = state.nimiq
-      ? state.nimiq.sendRetireStakeTransaction({ retireStake: retireValueLuna })
-      : hubStakingTx('retire', { value: retireValueLuna });
-    retireCall.then(function(res){
+    var unstakeExpect = makeExpect('unstake');
+    unstakeExpect.msgKey = 'app.retireSuccess';
+    releaseAction.mark(unstakeExpect, amt);
+    var newActiveLuna = active - amtLuna;
+    var call = state.nimiq ? sendSetActiveStake(newActiveLuna) : hubStakingTx('setactive', { value: newActiveLuna });
+    call.then(function(res){
       sdkCheck(res);
       keepTxHash(res);
       releaseAction(true);
       retireForm.hidden = true;
       $('retireAmt').value = '';
       retireConfirmBtn.disabled = false;
-      pollStakerStatus(retireExpect);
+      pollStakerStatus(unstakeExpect);
     }).catch(function(err){
-      console.warn('Validator Swipe: retire stake failed.', err);
-      var rawDetail = errDetail(err);
-      var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail)
-        ? t('app.delegateFailedBalanceHint')
-        : /invalidated/i.test(rawDetail)
-          ? t('app.delegateFailedRejected')
-          : t('app.delegateFailed');
-      showErrorModal(humanMsg, rawDetail);
-      releaseAction(false);
       retireConfirmBtn.disabled = false;
+      stakingFailure(err, releaseAction, unstakeExpect, 'unstake');
     });
   });
 
@@ -2506,16 +2610,50 @@
   }
   var lastStakerStatus = null;
   var statusInFlight = null, lastStatusFetchAt = 0;
+  // Every staker-status answer goes through acceptStatus() (1.1.3). Answers are numbered and one older than the last
+  // applied is ignored (requests can come back out of order). A staker already seen in this session does not vanish
+  // on a single contrary answer: on 2026-11-11 one of the two nodes behind the round-robin answered "found: false" for a
+  // staker the other node and the chain know, and the app flipped between "active stake" and "no stake", offered Create
+  // instead of Add, and took that empty answer for a confirmed withdrawal.
+  var statusSeq = 0, appliedSeq = 0, knownStaker = null, contraryCount = 0, confirmReads = 0, CONTRARY_LIMIT = 4;
+  function stakerMayVanish(s){ return !(s.active_balance_luna > 0) && !(s.inactive_balance_luna > 0); }
+  function acceptStatus(data, seq){
+    if (!data || typeof data.found !== 'boolean') return null;
+    if (seq < appliedSeq) return lastStakerStatus;
+    appliedSeq = seq;
+    if (data.found){
+      knownStaker = { addr: state.myAddress, data: data };
+      contraryCount = 0;
+      return data;
+    }
+    if (knownStaker && knownStaker.addr === state.myAddress && !stakerMayVanish(knownStaker.data)){
+      contraryCount++;
+      if (contraryCount < CONTRARY_LIMIT){
+        console.warn('Validator Swipe: ignored a "no staker" answer contradicting the staker already seen (' + contraryCount + ').');
+        return knownStaker.data;
+      }
+    }
+    knownStaker = null; contraryCount = 0;
+    return data;
+  }
+  function readStakerStatusOnce(){
+    return fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
+      if (!res.ok) throw new Error('staker-status failed: ' + res.status);
+      return res.json();
+    });
+  }
   function fetchStakerStatus(){
     if (!state.myAddress) return Promise.resolve(null);
     if (statusInFlight) return statusInFlight;
     lastStatusFetchAt = Date.now();
-    statusInFlight = fetch('/api/v2/staker-status?address=' + encodeURIComponent(state.myAddress)).then(function(res){
-      if (!res.ok) throw new Error('staker-status failed: ' + res.status);
-      return res.json();
-    }).then(function(data){
+    var seq = ++statusSeq;
+    statusInFlight = readStakerStatusOnce().then(function(raw){
+      var data = acceptStatus(raw, seq);
+      if (!data) return null;
       lastStakerStatus = data;
       renderStakerStatus(data);
+      // a "no staker" answer with no staker seen yet may come from a lagging node: read again shortly (twice at most)
+      if (!data.found && !knownStaker && confirmReads < 2){ confirmReads++; setTimeout(fetchStakerStatus, 1500); }
       return data;
     }).catch(function(err){
       console.warn('Validator Swipe: could not load staker status.', err);
@@ -2545,6 +2683,7 @@
     var s = lastStakerStatus || {};
     return { kind: kind, address: address || null,
       prevActive: s.active_balance_luna || 0,
+      prevInactive: s.inactive_balance_luna || 0,
       prevPending: (s.inactive_balance_luna || 0) + (s.retired_balance_luna || 0),
       prevRetired: s.retired_balance_luna || 0 };
   }
@@ -2589,7 +2728,7 @@
   }
   function markPending(expect, amount){
     storePending({ kind: expect.kind, address: expect.address, name: expect.name || '', msgKey: expect.msgKey || '', prevActive: expect.prevActive,
-      prevPending: expect.prevPending, prevRetired: expect.prevRetired, amount: amount || 0, addr: state.myAddress,
+      prevPending: expect.prevPending, prevRetired: expect.prevRetired, prevInactive: expect.prevInactive || 0, amount: amount || 0, addr: state.myAddress,
       startedAt: Date.now(), id: instanceId });
   }
   // The SDK's send*Transaction answers with the transaction hash (a string); it is kept in the pending record so the
@@ -2603,7 +2742,7 @@
     storePending(p);
   }
   function expectFromPending(p){
-    return { kind: p.kind, address: p.address, name: p.name || '', msgKey: p.msgKey || '', prevActive: p.prevActive, prevPending: p.prevPending, prevRetired: p.prevRetired };
+    return { kind: p.kind, address: p.address, name: p.name || '', msgKey: p.msgKey || '', prevActive: p.prevActive, prevPending: p.prevPending, prevRetired: p.prevRetired, prevInactive: p.prevInactive || 0 };
   }
   function lockState(){
     var p = readPending();
@@ -2627,6 +2766,8 @@
     syncDelegateBtn();
     retireConfirmBtn.disabled = locked;
     removeStakeBtn.disabled = locked;
+    var fub = $('finishUnstakeBtn');
+    if (fub) fub.disabled = locked;
     clearTimeout(lockTimer);
     if (locked) lockTimer = setTimeout(applyLock, 1000);
   }
@@ -2641,13 +2782,16 @@
   }
 
   function expectReflected(data, e){
-    if (!data) return false;
+    // Only a "found" answer can confirm an action: an empty answer (one node answered it wrongly, 2026-11-11) once made
+    // "active < before" true and announced a withdrawal that never reached the chain.
+    if (!data || data.found !== true) return false;
     var same = function(a, b){ return (a || '').replace(/\s+/g, '') === (b || '').replace(/\s+/g, ''); };
-    if (e.kind === 'create' || e.kind === 'update') return !!(data.found && data.delegation && same(data.delegation, e.address));
+    if (e.kind === 'create' || e.kind === 'update') return !!(data.delegation && same(data.delegation, e.address));
     if (e.kind === 'add') return (data.active_balance_luna || 0) > e.prevActive;
-    if (e.kind === 'retire') return ((data.inactive_balance_luna || 0) + (data.retired_balance_luna || 0)) > e.prevPending || (data.active_balance_luna || 0) < e.prevActive;
+    if (e.kind === 'unstake') return (data.inactive_balance_luna || 0) > (e.prevInactive || 0);
+    if (e.kind === 'retire') return (data.retired_balance_luna || 0) > (e.prevRetired || 0);
     if (e.kind === 'remove') return (data.retired_balance_luna || 0) < e.prevRetired;
-    return true;
+    return false;
   }
   // While an action is pending the displayed state is stale (Add vs Switch could be wrong: an Add reuses the
   // delegation of the existing staker): every button that sends a transaction is disabled (see applyLock).
@@ -2665,6 +2809,7 @@
       renderDelegationHistory();
     }
     clearPending(true);
+    setTimeout(refreshStatusSoon, 2500);
     if (mine && expect && expect.msgKey) announceConfirmed(expect);
   }
   // The success message and the confetti come only now, when the chain shows the action (the wallet answering
@@ -2685,21 +2830,22 @@
     var expect = expectFromPending(p);
     if (expectReflected(data, expect)) confirmReflected(expect);
   }
-  // Asks the server (same origin, /api/v2/tx-status) whether the transaction was included and rejected at execution.
-  // Resolves true ONLY for found + execution_result === false + at least 2 confirmations; every other case (no hash,
-  // bad format, not found, warming up, HTTP error, timeout, bad JSON) resolves false and changes nothing.
-  function checkTxRejected(){
+  // Asks the server (same origin, /api/v2/tx-status) what became of the transaction. Resolves 'rejected' (included,
+  // execution_result false) or 'executed' (included, execution_result true), each only with at least 2 confirmations;
+  // every other case (no hash, bad format, not found, warming up, HTTP error, timeout, bad JSON) resolves null.
+  function checkTxOutcome(){
     var p = readPending(), h = p && p.hash;
-    if (!h || !TX_HASH_RE.test(h) || !window.fetch) return Promise.resolve(false);
+    if (!h || !TX_HASH_RE.test(h) || !window.fetch) return Promise.resolve(null);
     var ctl = window.AbortController ? new AbortController() : null;
     var to = ctl ? setTimeout(function(){ ctl.abort(); }, 5000) : null;
     return fetch('/api/v2/tx-status?hash=' + h, ctl ? { cache: 'no-store', signal: ctl.signal } : { cache: 'no-store' }).then(function(res){
-      if (!res.ok) return false;
+      if (!res.ok) return null;
       return res.json().then(function(d){
         var q = readPending();
-        return !!(d && d.found === true && d.execution_result === false && (d.confirmations || 0) >= 2 && q && q.hash === h);
+        if (!(d && d.found === true && (d.confirmations || 0) >= 2 && q && q.hash === h)) return null;
+        return d.execution_result === false ? 'rejected' : d.execution_result === true ? 'executed' : null;
       });
-    }).catch(function(){ return false; }).then(function(r){ if (to) clearTimeout(to); return r; });
+    }).catch(function(){ return null; }).then(function(r){ if (to) clearTimeout(to); return r; });
   }
   // Safe automatic unlock: a transaction rejected at execution changes nothing (value 0), so nothing can be sent twice.
   function networkRejected(){
@@ -2707,8 +2853,9 @@
     var rec = readPending();
     if (!rec) return;
     clearPending(true);
-    // Switch and Retire are the actions Nimiq Pay rejects for some wallets (see docs/KNOWN-LIMITATIONS.md)
-    showErrorModal(t('app.txRejected') + (/^(update|retire)$/.test(rec.kind) ? ' ' + t('app.txRejectedNimiqPay') : ''), '');
+    // Switch and Finish unstaking are rejected while the inactive stake is still locked (staker.rs update_staker,
+    // retire_stake): say so, since it is the usual reason.
+    showErrorModal(t('app.txRejected') + (/^(update|retire)$/.test(rec.kind) ? ' ' + t('app.txRejectedLocked') : ''), '');
   }
   // Reads the chain until it reflects the action: fast for POLL_MAX_MS, then every UNCONFIRMED_POLL_MS (visible page
   // only) up to UNCONFIRMED_POLL_UNTIL_MS. Reaching the end never lifts the lock.
@@ -2726,9 +2873,11 @@
       fetchStakerStatus().then(function(data){
         if (statusPoll !== poll) return;
         if (expectReflected(data, poll.expect)){ confirmReflected(poll.expect); return; }
-        return checkTxRejected().then(function(rejected){
+        return checkTxOutcome().then(function(outcome){
           if (statusPoll !== poll) return;
-          if (rejected){ networkRejected(); return; }
+          if (outcome === 'rejected'){ networkRejected(); return; }
+          // executed on the chain (the staker answer may lag or come from a lagging node): that is a confirmation
+          if (outcome === 'executed'){ confirmReflected(poll.expect); return; }
           poll.timer = setTimeout(tick, nextDelay(Date.now() - poll.startedAt));
         });
       });
@@ -2753,6 +2902,7 @@
     prefillStakeAmount(data);
     updateAmountHint();
     updateSwitchUi();
+    updateUnstakeUi(data);
     if (!data || !data.found){
       myStakeBox.hidden = true;
       return;
@@ -2806,18 +2956,50 @@
       removeStakeBtn.disabled = false;
       pollStakerStatus(removeExpect);
     }).catch(function(err){
-      console.warn('Validator Swipe: remove stake failed.', err);
-      var rawDetail = errDetail(err);
-      var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail)
-        ? t('app.delegateFailedBalanceHint')
-        : /invalidated/i.test(rawDetail)
-          ? t('app.delegateFailedRejected')
-          : t('app.delegateFailed');
-      showErrorModal(humanMsg, rawDetail);
-      releaseAction(false);
       removeStakeBtn.disabled = false;
+      stakingFailure(err, releaseAction, removeExpect, 'remove stake');
     });
   });
+
+  // Finish unstaking = RetireStake of the INACTIVE balance, possible once the lock is over (about one epoch after the
+  // unstake). Too early, the network rejects it at execution and nothing changes (shown with app.txRejectedLocked).
+  var finishUnstakeBtn = $('finishUnstakeBtn');
+  finishUnstakeBtn.addEventListener('click', function(){
+    var s = lastStakerStatus;
+    if (!s || !s.found || !(s.inactive_balance_luna > 0) || !(state.nimiq || state.hub)) return;
+    if (lockState() !== 'idle'){ applyLock(); return; }
+    var releaseAction = beginAction('finish|' + state.myAddress + '|' + s.inactive_balance_luna);
+    if (!releaseAction) return;
+    finishUnstakeBtn.disabled = true;
+    var finishExpect = makeExpect('retire');
+    finishExpect.msgKey = 'app.finishUnstakeSuccess';
+    releaseAction.mark(finishExpect, s.inactive_balance_luna);
+    var call = state.nimiq
+      ? state.nimiq.sendRetireStakeTransaction({ retireStake: s.inactive_balance_luna })
+      : hubStakingTx('retire', { value: s.inactive_balance_luna });
+    call.then(function(res){
+      sdkCheck(res);
+      keepTxHash(res);
+      releaseAction(true);
+      finishUnstakeBtn.disabled = false;
+      pollStakerStatus(finishExpect);
+    }).catch(function(err){
+      finishUnstakeBtn.disabled = false;
+      stakingFailure(err, releaseAction, finishExpect, 'finish unstaking');
+    });
+  });
+  // Unstake buttons follow the chain state: "Finish unstaking" only with an inactive balance; a new unstake is refused
+  // while one is in progress (SetActiveStake would restart the lock-up of the inactive balance, staker.rs set_active_stake).
+  function updateUnstakeUi(data){
+    var inactive = data && data.found ? (data.inactive_balance_luna || 0) : 0;
+    var active = data && data.found ? (data.active_balance_luna || 0) : 0;
+    finishUnstakeBtn.hidden = !(inactive > 0);
+    var note = $('unstakeInProgressNote');
+    note.hidden = !(inactive > 0);
+    if (inactive > 0) note.textContent = t('app.unstakeInProgress').replace('{amount}', formatStake(inactive));
+    retireToggleBtn.disabled = inactive > 0 || !(active > 0);
+    if (retireToggleBtn.disabled) retireForm.hidden = true;
+  }
 
   function metricOrDash(value, suffix){
     return value != null ? value.toFixed(2) + suffix : '—';
@@ -2867,7 +3049,11 @@
     var v = bookmarked[shortIdx];
     var isSwitchNow = !!(v && lastStakerStatus && lastStakerStatus.found && lastStakerStatus.delegation && !sameAddr(lastStakerStatus.delegation, v.address));
     $('stakeField').hidden = isSwitchNow;
-    $('switchNote').hidden = !isSwitchNow;
+    var note = $('switchNote');
+    note.hidden = !isSwitchNow;
+    // A switch is only possible with no active stake (staker.rs update_staker): otherwise explain the two steps.
+    var key = isSwitchNow && lastStakerStatus.active_balance_luna > 0 ? 'app.switchNeedsUnstake' : 'app.switchNote';
+    if (note.getAttribute('data-i18n') !== key){ note.setAttribute('data-i18n', key); note.textContent = t(key); }
   }
   function renderShortlistCard(){
     shortlistCardStack.innerHTML = '';
@@ -3025,7 +3211,7 @@
       delegateBtn.disabled = true;
       var stakeValueLuna = Math.round(stakeNim * 100000);
 
-      function fireDelegation(hasExistingStaker, currentDelegation){
+      function fireDelegation(hasExistingStaker, currentDelegation, stakerData){
         // Nimiq's staking contract only allows ONE staker object per
         // address (confirmed via albatross-doc: "Create" makes the staker
         // object, "Stake" adds to an existing one and reuses its current
@@ -3044,6 +3230,14 @@
         // Only Create / Add stake need an amount of NIM. A switch (update staker)
         // sends no value. If the staker status is unknown (isSwitch undetermined)
         // an amount is required, so a Create can never go out without one.
+        // UpdateStaker fails while the staker has ACTIVE stake (staker.rs update_staker: "All stake must be inactivated
+        // or retired before re-delegating"); until 1.1.2 the app sent it anyway and it was rejected at execution.
+        if (isSwitch && stakerData && stakerData.active_balance_luna > 0){
+          showErrorModal(t('app.switchNeedsUnstake'), '');
+          releaseAction(false);
+          syncDelegateBtn();
+          return;
+        }
         if (!isSwitch && !(stakeNim > 0)){
           showErrorModal(t('app.delegateAmountRequired'), '');
           releaseAction(false);
@@ -3065,7 +3259,7 @@
           if (!hasExistingStaker){
             call = state.nimiq.sendNewStakerTransaction({ delegation: v.address, value: stakeValueLuna });
           } else if (isSwitch){
-            call = state.nimiq.sendUpdateStakerTransaction({ newDelegation: v.address });
+            call = state.nimiq.sendUpdateStakerTransaction({ newDelegation: v.address, reactivateAllStake: true });
           } else {
             call = state.nimiq.sendStakeTransaction({ value: stakeValueLuna });
           }
@@ -3078,33 +3272,14 @@
           if (!hasExistingStaker){
             call = hubStakingTx('create', { delegation: v.address, value: stakeValueLuna });
           } else if (isSwitch){
-            call = hubStakingTx('update', { delegation: v.address });
+            call = hubStakingTx('update', { delegation: v.address, reactivate: true });
           } else {
             call = hubStakingTx('add', { value: stakeValueLuna });
           }
         }
         call.then(function(res){ sdkCheck(res); keepTxHash(res); releaseAction(true); onDelegated(isSwitch, false, expect); }).catch(function(err){
-          // Confirmed via real-device test: the confirm screen already shows
-          // the validator address correctly, so the failure happens inside
-          // Nimiq Pay's own transaction build/sign step after confirmation —
-          // not something a client-side retry of the same call can fix, and
-          // firing a second sendXxx immediately risks hitting Nimiq Pay's own
-          // "transaction already in progress" guard while it's still busy.
-          // No auto-retry here; single clean attempt only.
-          console.warn('Validator Swipe: delegation failed.', err);
-          var rawDetail = errDetail(err);
-          // "expected instance of Address" has been confirmed (real-device
-          // test, 2026-09-16) to actually mean "insufficient balance" in
-          // Nimiq Pay's current build — the raw message is misleading to a
-          // non-technical user, so show a human explanation first and keep
-          // the raw detail as a secondary line for debugging.
-          var humanMsg = /address|balance|insufficient|exceeds/i.test(rawDetail)
-            ? t('app.delegateFailedBalanceHint')
-            : /invalidated/i.test(rawDetail)
-              ? t(expect.kind === 'create' ? 'app.createNeedsSingleTransfer' : 'app.delegateFailedRejected')
-              : t('app.delegateFailed');
-          showErrorModal(humanMsg, rawDetail);
-          releaseAction(false);
+          // single clean attempt, no auto-retry (Nimiq Pay has its own "transaction already in progress" guard)
+          stakingFailure(err, releaseAction, expect, 'delegation');
           syncDelegateBtn();
         });
       }
@@ -3131,11 +3306,21 @@
         syncDelegateBtn();
       }
       if (state.myAddress){
-        readStatusStrict(0).then(function(data){
+        // never Create on a single "no staker" answer: a staker seen in this session wins (acceptStatus), and a "no
+        // staker" answer is read again twice before a Create is sent (bug of 2026-11-11: Create offered instead of Add)
+        var strictRead = function(){
+          var seq = ++statusSeq;
+          return readStatusStrict(0).then(function(raw){ return acceptStatus(raw, seq) || raw; });
+        };
+        var confirmNoStaker = function(data, left){
+          if (data.found || left <= 0) return data;
+          return new Promise(function(r){ setTimeout(r, 700); }).then(strictRead).then(function(d){ return confirmNoStaker(d, left - 1); });
+        };
+        strictRead().then(function(data){ return confirmNoStaker(data, 2); }).then(function(data){
           try {
             lastStakerStatus = data;
             renderStakerStatus(data);
-            fireDelegation(!!data.found, data.delegation);
+            fireDelegation(!!data.found, data.delegation, data);
           } catch (e){
             console.warn('Validator Swipe: delegation aborted before sending.', e);
             releaseAction(false);
@@ -3303,7 +3488,9 @@
       } else if (kind === 'add'){
         tx = Nimiq.TransactionBuilder.newAddStake(sender, sender, BigInt(opts.value), null, 0, NIMIQ_MAINNET_NETWORK_ID);
       } else if (kind === 'update'){
-        tx = Nimiq.TransactionBuilder.newUpdateStaker(sender, Nimiq.Address.fromUserFriendlyAddress(opts.delegation), false, null, 0, NIMIQ_MAINNET_NETWORK_ID);
+        tx = Nimiq.TransactionBuilder.newUpdateStaker(sender, Nimiq.Address.fromUserFriendlyAddress(opts.delegation), !!opts.reactivate, null, 0, NIMIQ_MAINNET_NETWORK_ID);
+      } else if (kind === 'setactive'){
+        tx = Nimiq.TransactionBuilder.newSetActiveStake(sender, BigInt(opts.value), null, 0, NIMIQ_MAINNET_NETWORK_ID);
       } else if (kind === 'retire'){
         tx = Nimiq.TransactionBuilder.newRetireStake(sender, BigInt(opts.value), null, 0, NIMIQ_MAINNET_NETWORK_ID);
       } else {
@@ -3362,6 +3549,7 @@
     state.hub = null;
     state.myAddress = null;
     lastStakerStatus = null;
+    knownStaker = null; contraryCount = 0; confirmReads = 0;
     stopStatusPoll();
     clearPending(true);
     updateAmountHint();
