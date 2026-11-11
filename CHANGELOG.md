@@ -6,7 +6,7 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [1.1.8] — unreleased
+## [1.1.8] — 2026-11-11
 
 - **Language menu shows all 11 languages.** The menu was capped at 280 px while the 11 languages need about 377 px,
   and phone scrollbars are invisible overlays, so Türkçe and العربية looked missing. The menu now grows up to
