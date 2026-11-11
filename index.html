@@ -81,6 +81,8 @@
   .btn-primary:hover{ box-shadow:var(--shadow); }
   .btn-ghost{ background:transparent; color:var(--text); border:1.5px solid var(--border); }
   .btn:disabled{ opacity:.4; cursor:not-allowed; filter:grayscale(.4); }
+  /* .btn sets display, which overrode the hidden attribute: Claim / Finish / Max showed while hidden (fixed 1.1.6) */
+  .btn[hidden]{ display:none !important; }
   #retireConfirmBtn:disabled, #removeStakeBtn:disabled{ pointer-events:none; }
   .btn-ghost:hover{ border-color:var(--signal); color:var(--signal-strong); }
   .stat-row{ display:flex; gap:28px; margin-top:38px; flex-wrap:wrap; }
