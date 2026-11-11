@@ -21,6 +21,10 @@ work is available in the Git history.
   reserve, a **Max** button gives the same value, a larger amount is refused before anything is sent, and a line
   explains the reserve (11 languages). If the balance cannot be read, nothing is pre-filled or refused from it.
   Outside Nimiq Pay (Nimiq Hub) there is no swap contract and no reserve.
+- **Real swipe.** Swiping a card left shows the next validator, right the previous one (touch and mouse, pointer
+  events, 50 px threshold; a mostly vertical move is ignored so the page still scrolls). It only presses the arrow
+  buttons, so the arrows and the keyboard work as before, and a swipe never favorites, delegates or sends anything.
+- Header chip and footer: Cycle II becomes **Cycle III** (11 languages).
 - **Current block height from Nimiq Pay.** When the API gives no `block_number`, the app reads the height with
   `getBlockNumber`, so the blocks left and the disabled "Finish unstaking" / Switch until the unlock also work with
   the current backend.

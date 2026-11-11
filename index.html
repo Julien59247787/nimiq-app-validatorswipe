@@ -127,6 +127,7 @@
     min-height: var(--card-min-height, auto);
   }
   .v-card.leaving-right{ transform: translateX(140%) rotate(18deg); opacity:0; }
+  #cardStack, #shortlistCardStack{ touch-action: pan-y; }
   .v-card.leaving-left{ transform: translateX(-140%) rotate(-18deg); opacity:0; }
   .v-card .vname{ font-family:'Fraunces',serif; font-weight:700; font-size:1.1rem; }
   .v-card .vtag{ font-size:.72rem; color:var(--text-faint); margin-top:1px; }
@@ -303,7 +304,7 @@
 
 <header class="top">
   <div class="brand"><span class="mark">🛡️</span> Validator Swipe</div>
-  <div class="chip" data-i18n="header.chip">Nimiq Mini Apps Competition · Cycle II</div>
+  <div class="chip" data-i18n="header.chip">Nimiq Mini Apps Competition · Cycle III</div>
 </header>
 
 <section class="hero wrap">
@@ -514,7 +515,7 @@
   <div class="wrap footer-grid">
     <div>
       <div class="brand">🛡️ Validator Swipe</div>
-      <p data-i18n="footer.desc">Conçu pour la Nimiq Mini Apps Competition (Cycle II). Open source, pensé pour Nimiq Pay.</p>
+      <p data-i18n="footer.desc">Conçu pour la Nimiq Mini Apps Competition (Cycle III). Open source, pensé pour Nimiq Pay.</p>
     </div>
     <div class="meta">
       <div><span data-i18n="footer.network">Réseau</span> : Nimiq (NIM)</div>
@@ -563,7 +564,7 @@
   var SUPPORTED_LANGS = ['fr', 'en', 'es', 'zh', 'ja', 'ko', 'de', 'pt', 'ru', 'tr', 'ar'];
   var T = {
     fr: {
-      'header.chip': 'Nimiq Mini Apps Competition · Cycle II',
+      'header.chip': 'Nimiq Mini Apps Competition · Cycle III',
       'hero.eyebrow': 'Un mini app pour Nimiq Pay',
       'hero.title': 'Choisis ton validateur <em>d\'un geste</em>, délègue en un tap.',
       'hero.lead': 'Validator Swipe transforme le choix d\'un validateur Nimiq — souvent une page de tableau austère — en une décision rapide et informée : score de confiance, taux de récompense, disponibilité. Tu compares, tu délègues, ta NIM reste à toi.',
@@ -683,7 +684,7 @@
       'tech.li2': 'Délégation, ajout de stake ou changement de validateur selon l\'état réel — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Aucune donnée de validateur inventée en production — source : dashboard des validateurs',
       'tech.li4': 'Repli gracieux en mode démo si aucun wallet n\'est détecté',
-      'footer.desc': 'Conçu pour la Nimiq Mini Apps Competition (Cycle II). Open source, pensé pour Nimiq Pay.',
+      'footer.desc': 'Conçu pour la Nimiq Mini Apps Competition (Cycle III). Open source, pensé pour Nimiq Pay.',
       'footer.network': 'Réseau',
       'footer.status': 'Statut',
       'footer.statusValue': 'En production sur le mainnet : vraies données validateurs, vraie délégation dans Nimiq Pay',
@@ -697,7 +698,7 @@
       'footer.discordTitle': 'Rejoindre le serveur Discord'
     },
     en: {
-      'header.chip': 'Nimiq Mini Apps Competition · Cycle II',
+      'header.chip': 'Nimiq Mini Apps Competition · Cycle III',
       'hero.eyebrow': 'A mini app for Nimiq Pay',
       'hero.title': 'Pick your validator <em>with a swipe</em>, delegate with a tap.',
       'hero.lead': 'Validator Swipe turns choosing a Nimiq validator — usually a dry table of numbers — into a fast, informed decision: trust score, reward rate, uptime. Compare, delegate, your NIM stays yours.',
@@ -817,7 +818,7 @@
       'tech.li2': 'Delegate, add stake, or switch validator based on real state — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'No invented validator data in production — source: validators dashboard',
       'tech.li4': 'Graceful fallback to demo mode when no wallet is detected',
-      'footer.desc': 'Built for the Nimiq Mini Apps Competition (Cycle II). Open source, made for Nimiq Pay.',
+      'footer.desc': 'Built for the Nimiq Mini Apps Competition (Cycle III). Open source, made for Nimiq Pay.',
       'footer.network': 'Network',
       'footer.status': 'Status',
       'footer.statusValue': 'Live on mainnet: real validator data, real delegation inside Nimiq Pay',
@@ -831,7 +832,7 @@
       'footer.discordTitle': 'Join the Discord server'
     },
     es: {
-      'header.chip': 'Concurso de miniaplicaciones de Nimiq · II edición',
+      'header.chip': 'Concurso de miniaplicaciones de Nimiq · III edición',
       'hero.eyebrow': 'Una miniaplicación para Nimiq Pay',
       'hero.title': 'Elige tu validador <em>con un solo gesto</em> y delega con un solo toque.',
       'hero.lead': 'Validator Swipe transforma la elección de un validador de Nimiq —que suele ser una página de tabla bastante austera— en una decisión rápida y bien fundamentada: puntuación de confianza, tasa de recompensa, disponibilidad. Comparas, delegas y tu NIM sigue siendo tuyo.',
@@ -903,7 +904,7 @@
       'tech.li2': 'Delegación, aumento de la apuesta o cambio de validador según el estado real — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'No se ha inventado ningún dato de validador en producción — fuente: panel de control de validadores',
       'tech.li4': 'Vuelve al modo de demostración de forma automática si no se detecta ningún monedero',
-      'footer.desc': 'Creado para el Concurso de miniaplicaciones de Nimiq (II edición). Código abierto, hecho para Nimiq Pay.',
+      'footer.desc': 'Creado para el Concurso de miniaplicaciones de Nimiq (III edición). Código abierto, hecho para Nimiq Pay.',
       'footer.network': 'Red',
       'footer.status': 'Estatuto',
       'footer.statusValue': 'En producción en la mainnet: datos reales de validadores, delegación real dentro de Nimiq Pay',
@@ -965,7 +966,7 @@
       'app.delegateFailedDetail': 'Detalles técnicos:',
     },
     zh: {
-      'header.chip': 'Nimiq 迷你应用大赛 · 第二届',
+      'header.chip': 'Nimiq 迷你应用大赛 · 第三届',
       'hero.eyebrow': '一款适用于 Nimiq Pay 的迷你应用',
       'hero.title': '<em>一键</em>选择验证人，轻点一下即可委托。',
       'hero.lead': 'Validator Swipe 将选择 Nimiq 验证者——通常是一个单调的表格页面——的过程，转变为一个快速且明智的决策：信任评分、奖励率、可用性。你比较，你委托，你的 NIM 依然归你所有。',
@@ -1037,7 +1038,7 @@
       'tech.li2': '根据实际情况进行委托、增加质押或更换验证者 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '生产环境中未出现任何虚构的验证者数据 — 来源：验证者仪表盘',
       'tech.li4': '若未检测到钱包，则优雅地切换至演示模式',
-      'footer.desc': '为 Nimiq 迷你应用大赛（第二届）打造。开源，专为 Nimiq Pay 而生。',
+      'footer.desc': '为 Nimiq 迷你应用大赛（第三届）打造。开源，专为 Nimiq Pay 而生。',
       'footer.network': '网络',
       'footer.status': '状态',
       'footer.statusValue': '已在主网上线：真实的验证者数据，在 Nimiq Pay 内进行真实委托',
@@ -1099,7 +1100,7 @@
       'app.delegateFailedDetail': '技术细节：',
     },
     ja: {
-      'header.chip': 'Nimiq ミニアプリコンテスト・第2回',
+      'header.chip': 'Nimiq ミニアプリコンテスト・第3回',
       'hero.eyebrow': 'Nimiq Pay用のミニアプリ',
       'hero.title': '<em>ワンタッチで</em>バリデーターを選び、タップ一つで委任しよう。',
       'hero.lead': 'Validator Swipe を使えば、Nimiq のバリデーター選び——往々にして味気ない表形式のページに過ぎない——が、信頼スコア、報酬率、稼働状況といった情報を基にした迅速かつ的確な判断へと変わります。比較して、委任して、あなたの NIM はそのまま手元に残ります。',
@@ -1171,7 +1172,7 @@
       'tech.li2': '実際の状況に応じたステークの委任、追加、またはバリデーターの変更 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '本番環境で架空のバリデーターデータは一切生成されていない — 出典：バリデーターのダッシュボード',
       'tech.li4': 'ウォレットが検出されない場合は、デモモードでスムーズに切り替わる',
-      'footer.desc': 'Nimiq ミニアプリコンテスト（第2回）のために作られました。オープンソースで、Nimiq Pay 向けに作られています。',
+      'footer.desc': 'Nimiq ミニアプリコンテスト（第3回）のために作られました。オープンソースで、Nimiq Pay 向けに作られています。',
       'footer.network': 'ネットワーク',
       'footer.status': 'ステータス',
       'footer.statusValue': 'メインネットで稼働中：実際のバリデーターデータ、Nimiq Pay 内での実際のデリゲーション',
@@ -1233,7 +1234,7 @@
       'app.delegateFailedDetail': '技術的詳細：',
     },
     ko: {
-      'header.chip': 'Nimiq 미니 앱 공모전 · 2차',
+      'header.chip': 'Nimiq 미니 앱 공모전 · 3차',
       'hero.eyebrow': 'Nimiq Pay용 미니 앱',
       'hero.title': '<em>손쉬운</em> 검증 도구를 선택하고, 탭 한 번으로 위임하세요.',
       'hero.lead': 'Validator Swipe는 Nimiq 검증자 선택 과정 — 대개는 딱딱한 표로 이루어진 페이지 — 을 신뢰도 점수, 보상률, 가용성 등의 정보를 바탕으로 한 신속하고 현명한 결정으로 바꿔줍니다. 비교하고, 위임하고, NIM은 여전히 여러분의 것입니다.',
@@ -1305,7 +1306,7 @@
       'tech.li2': '실제 상태에 따른 위임, 스테이크 추가 또는 검증자 변경 — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': '프로덕션 환경에서 임의로 생성된 검증자 데이터 없음 — 출처: 검증자 대시보드',
       'tech.li4': '지갑이 감지되지 않을 경우 데모 모드로 우아하게 전환',
-      'footer.desc': 'Nimiq 미니 앱 공모전(2차)을 위해 만들었습니다. 오픈 소스이며 Nimiq Pay를 위해 만들어졌습니다.',
+      'footer.desc': 'Nimiq 미니 앱 공모전(3차)을 위해 만들었습니다. 오픈 소스이며 Nimiq Pay를 위해 만들어졌습니다.',
       'footer.network': '네트워크',
       'footer.status': '상태',
       'footer.statusValue': '메인넷에서 운영 중: 실제 검증자 데이터, Nimiq Pay 안에서의 실제 위임',
@@ -1367,7 +1368,7 @@
       'app.delegateFailedDetail': '기술적 세부 사항:',
     },
     de: {
-      'header.chip': 'Nimiq Mini-Apps-Wettbewerb · Runde II',
+      'header.chip': 'Nimiq Mini-Apps-Wettbewerb · Runde III',
       'hero.eyebrow': 'Eine Mini-App für Nimiq Pay',
       'hero.title': 'Wähle deinen Validator <em>mit einer Geste</em> aus, delegiere mit einem Fingertipp.',
       'hero.lead': 'Validator Swipe verwandelt die Auswahl eines Nimiq-Validators – oft eine nüchterne Tabelle – in eine schnelle und fundierte Entscheidung: Vertrauensbewertung, Belohnungsrate, Verfügbarkeit. Du vergleichst, du delegierst, dein NIM bleibt dir.',
@@ -1439,7 +1440,7 @@
       'tech.li2': 'Delegierung, Hinzufügen von Stakes oder Wechsel des Validators entsprechend dem aktuellen Status — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'In der Produktion wurden keine Validator-Daten erfunden – Quelle: Validator-Dashboard',
       'tech.li4': 'Reibungsloser Rückfall in den Demo-Modus, wenn kein Wallet erkannt wird',
-      'footer.desc': 'Entwickelt für den Nimiq Mini-Apps-Wettbewerb (Runde II). Open Source, gemacht für Nimiq Pay.',
+      'footer.desc': 'Entwickelt für den Nimiq Mini-Apps-Wettbewerb (Runde III). Open Source, gemacht für Nimiq Pay.',
       'footer.network': 'Netzwerk',
       'footer.status': 'Status',
       'footer.statusValue': 'Live im Mainnet: echte Validator-Daten, echte Delegierung in Nimiq Pay',
@@ -1501,7 +1502,7 @@
       'app.delegateFailedDetail': 'Technische Details:',
     },
     pt: {
-      'header.chip': 'Concurso de Mini-Aplicações Nimiq · 2.º Ciclo',
+      'header.chip': 'Concurso de Mini-Aplicações Nimiq · 3.º Ciclo',
       'hero.eyebrow': 'Uma mini-aplicação para o Nimiq Pay',
       'hero.title': 'Escolhe o teu validador <em>com um simples gesto</em>, delega com um toque.',
       'hero.lead': 'O Validator Swipe transforma a escolha de um validador Nimiq — que muitas vezes é uma página de tabela austera — numa decisão rápida e informada: pontuação de confiança, taxa de recompensa, disponibilidade. Comparas, delegas e o teu NIM continua a ser teu.',
@@ -1573,7 +1574,7 @@
       'tech.li2': 'Delegação, adição de stake ou alteração do validador de acordo com o estado real — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Não foram inventados dados de validadores em produção — fonte: painel de controlo dos validadores',
       'tech.li4': 'Recurso de retorno automático ao modo de demonstração, caso não seja detetada nenhuma carteira',
-      'footer.desc': 'Criado para o Concurso de Mini-Aplicações Nimiq (2.º Ciclo). Código aberto, feito para o Nimiq Pay.',
+      'footer.desc': 'Criado para o Concurso de Mini-Aplicações Nimiq (3.º Ciclo). Código aberto, feito para o Nimiq Pay.',
       'footer.network': 'Rede',
       'footer.status': 'Estatuto',
       'footer.statusValue': 'Em produção na mainnet: dados reais de validadores, delegação real dentro do Nimiq Pay',
@@ -1635,7 +1636,7 @@
       'app.delegateFailedDetail': 'Detalhes técnicos:',
     },
     ru: {
-      'header.chip': 'Конкурс мини-приложений Nimiq · II-й цикл',
+      'header.chip': 'Конкурс мини-приложений Nimiq · III-й цикл',
       'hero.eyebrow': 'Мини-приложение для Nimiq Pay',
       'hero.title': 'Выбери валидатор <em>одним движением</em>, делегируй полномочия одним нажатием.',
       'hero.lead': 'Validator Swipe превращает выбор валидатора Nimiq — зачастую представляющий собой скучную таблицу — в быстрый и осознанный выбор: рейтинг доверия, ставка вознаграждения, доступность. Вы сравниваете, делегируете — а ваши NIM остаются у вас.',
@@ -1707,7 +1708,7 @@
       'tech.li2': 'Делегирование, добавление доли или смена валидатора в зависимости от фактического состояния — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'В производственной среде не было зарегистрировано ни одного вымышленного валидатора — источник: панель мониторинга валидаторов',
       'tech.li4': 'Плавный переход в демонстрационный режим, если не обнаружено ни одного кошелька',
-      'footer.desc': 'Создано для конкурса мини-приложений Nimiq (II-й цикл). Открытый исходный код, сделано для Nimiq Pay.',
+      'footer.desc': 'Создано для конкурса мини-приложений Nimiq (III-й цикл). Открытый исходный код, сделано для Nimiq Pay.',
       'footer.network': 'Сеть',
       'footer.status': 'Статус',
       'footer.statusValue': 'Работает в основной сети: реальные данные валидаторов, реальное делегирование в Nimiq Pay',
@@ -1769,7 +1770,7 @@
       'app.delegateFailedDetail': 'Технические сведения:',
     },
     tr: {
-      'header.chip': 'Nimiq Mini Uygulamalar Yarışması · 2. Dönem',
+      'header.chip': 'Nimiq Mini Uygulamalar Yarışması · 3. Dönem',
       'hero.eyebrow': 'Nimiq Pay için bir mini uygulama',
       'hero.title': '<em>Tek bir hareketle</em> doğrulayıcını seç, tek bir dokunuşla yetki ver.',
       'hero.lead': 'Validator Swipe, bir Nimiq doğrulayıcısını seçme sürecini — genellikle sade bir tablo sayfası olan — hızlı ve bilinçli bir karara dönüştürür: güven puanı, ödül oranı, kullanılabilirlik. Karşılaştırırsın, delege edersin, NIM’in sana kalır.',
@@ -1841,7 +1842,7 @@
       'tech.li2': 'Gerçek duruma göre delegasyon, stake ekleme veya validatör değiştirme — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'Üretim ortamında uydurulmuş hiçbir doğrulayıcı verisi yok — kaynak: doğrulayıcılar panosu',
       'tech.li4': 'Herhangi bir cüzdan algılanmazsa, demo modunda sorunsuz bir şekilde geri dönüş yapılır',
-      'footer.desc': 'Nimiq Mini Uygulamalar Yarışması (2. Dönem) için geliştirildi. Açık kaynak, Nimiq Pay için yapıldı.',
+      'footer.desc': 'Nimiq Mini Uygulamalar Yarışması (3. Dönem) için geliştirildi. Açık kaynak, Nimiq Pay için yapıldı.',
       'footer.network': 'Ağ',
       'footer.status': 'Durum',
       'footer.statusValue': 'Ana ağda canlı: gerçek doğrulayıcı verileri, Nimiq Pay içinde gerçek delegasyon',
@@ -1903,7 +1904,7 @@
       'app.delegateFailedDetail': 'Teknik ayrıntılar:',
     },
     ar: {
-      'header.chip': 'مسابقة Nimiq للتطبيقات المصغرة · الدورة الثانية',
+      'header.chip': 'مسابقة Nimiq للتطبيقات المصغرة · الدورة الثالثة',
       'hero.eyebrow': 'تطبيق مصغر لـ Nimiq Pay',
       'hero.title': 'اختر مُصدِّقك <em>بحركة واحدة</em>، وفوّض الصلاحيات بنقرة واحدة.',
       'hero.lead': 'يحول تطبيق Validator Swipe عملية اختيار جهاز التحقق من Nimiq — التي غالبًا ما تكون عبارة عن صفحة جدول جافة — إلى قرار سريع ومستنير: درجة الثقة، ومعدل المكافأة، والتوافر. قم بالمقارنة، وقم بالتفويض، وستظل عملة NIM ملكك.',
@@ -1975,7 +1976,7 @@
       'tech.li2': 'التفويض، أو إضافة حصة، أو تغيير المُصدق وفقًا للحالة الفعلية — <code>sendNewStakerTransaction()</code> / <code>sendStakeTransaction()</code> / <code>sendUpdateStakerTransaction()</code>',
       'tech.li3': 'لم يتم اختراع أي بيانات خاصة بالمُصدقين في بيئة الإنتاج — المصدر: لوحة معلومات المُصدقين',
       'tech.li4': 'العودة السلسة إلى وضع العرض التوضيحي في حالة عدم اكتشاف أي محفظة',
-      'footer.desc': 'صُمم لمسابقة Nimiq للتطبيقات المصغرة (الدورة الثانية). مفتوح المصدر، ومصنوع لـ Nimiq Pay.',
+      'footer.desc': 'صُمم لمسابقة Nimiq للتطبيقات المصغرة (الدورة الثالثة). مفتوح المصدر، ومصنوع لـ Nimiq Pay.',
       'footer.network': 'الشبكة',
       'footer.status': 'الحالة',
       'footer.statusValue': 'يعمل على الشبكة الرئيسية: بيانات مُصدقين حقيقية وتفويض حقيقي داخل Nimiq Pay',
@@ -3216,6 +3217,33 @@
       (v.desc ? '<p class="v-desc">' + v.desc + '</p>' : '');
   }
 
+  // Finger / mouse swipe on the card stacks (1.1.5): left = next validator, right = previous. It only "presses" the
+  // arrow buttons (same guards, animations, keyboard and screen-reader paths); a swipe never favorites, delegates or
+  // sends anything. Mostly-vertical moves are ignored so the page still scrolls (touch-action: pan-y).
+  function attachSwipe(stack, prevBtn, nextBtnEl){
+    var sx = 0, sy = 0, id = null, busyUntil = 0, moved = false;
+    stack.addEventListener('pointerdown', function(ev){
+      if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+      id = ev.pointerId; sx = ev.clientX; sy = ev.clientY; moved = false;
+    });
+    stack.addEventListener('pointermove', function(ev){
+      if (ev.pointerId === id && Math.abs(ev.clientX - sx) > 10) moved = true;
+    });
+    function end(ev){
+      if (ev.pointerId !== id) return;
+      id = null;
+      var dx = ev.clientX - sx, dy = ev.clientY - sy;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < 1.5 * Math.abs(dy) || Date.now() < busyUntil) return;
+      var b = dx < 0 ? nextBtnEl : prevBtn;
+      if (!b || b.disabled || b.offsetParent === null) return;
+      busyUntil = Date.now() + 400;   // no new navigation while the card animation (260 ms) runs
+      b.click();
+    }
+    stack.addEventListener('pointerup', end);
+    stack.addEventListener('pointercancel', function(ev){ if (ev.pointerId === id) id = null; });
+    // a drag must not also "click" something inside the card
+    stack.addEventListener('click', function(ev){ if (moved){ ev.stopPropagation(); ev.preventDefault(); moved = false; } }, true);
+  }
   function renderCard(){
     cardStack.innerHTML = '';
     // Endless ribbon: wraps both ways (forward past the last card already
@@ -3353,6 +3381,8 @@
     renderShortlistCard();
   });
 
+  attachSwipe(cardStack, backBtn, nextBtn);
+  attachSwipe(shortlistCardStack, shortlistBackBtn, shortlistNextBtn);
   shortlistNextBtn.addEventListener('click', function(){
     shortIdx++;
     renderShortlistCard();

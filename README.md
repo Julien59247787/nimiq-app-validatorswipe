@@ -7,7 +7,7 @@ validator — usually a dry table of numbers — into a fast, informed decision,
 you delegate (stake) your NIM in one tap. It also covers the rest of the staking
 lifecycle: add stake, unstake and claim your funds back, and switch validator, in the steps the Nimiq protocol requires (see [Known issues and workarounds](#known-issues-and-workarounds)).
 
-Built by **@Ju'Team** (Ju & Claude) for the Nimiq Mini Apps Competition, Cycle II.
+Built by **@Ju'Team** (Ju & Claude) for the Nimiq Mini Apps Competition (Cycle II, updated for Cycle III).
 Licensed under [MIT](LICENSE).
 
 ---
