@@ -6,7 +6,15 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [Unreleased] — 1.1.4 candidate
+## [1.1.5] — 2026-11-11
+
+- **Correction of 1.1.4.** The note shown when everything is staked said that Nimiq Pay "may keep" the received NIM
+  in a swap contract for up to 14 days. That was wrong: in Nimiq Pay the swap contract (HTLC) is the normal spending
+  account; payments are made from it and Nimiq Pay renews it before its timeout (`src/stores/sync/htlc.ts`,
+  `extendValidity`). The received NIM stay spendable as usual. Fixed in the 11 languages and in the documentation.
+- The footer version link pointed to 1.1.3 in 1.1.4; it now shows 1.1.5.
+
+## [1.1.4] — 2026-11-11
 
 - **Real lock duration.** The texts said "about 12 hours"; the real wait is **12 to 24 hours**: the unstaked amount
   counts as inactive from the next election block (`inactive_from`, end of the current epoch, up to about 12 hours
@@ -14,7 +22,8 @@ work is available in the Git history.
   gives the current block height, the unlock note also shows an estimated local date and time (one block per second).
 - **Free NIM needed when everything is staked.** Nimiq Pay sends Unstake, Finish unstaking and Switch from its swap
   contract; when that contract has been emptied (everything staked), the request never reaches the chain. Proved on
-  2026-11-11: after receiving 50 NIM, Nimiq Pay funded a new swap contract with them and the same Unstake was executed.
+  2026-11-11: after receiving 50 NIM, Nimiq Pay moved them into a new swap contract (its normal spending account)
+  and the same Unstake was executed.
   The app now says so (information only, nothing is blocked) when the wallet's free balance is 0.
 - Known: "Finish unstaking" and Switch are disabled until the unlock **only if** the API gives `block_number`; the
   production backend does not give it yet.
@@ -212,7 +221,7 @@ rejected by the network, and help messages.
   emulator and an Android 16 phone, Nimiq Pay v2.19.1 on both (the host also raises a native notification with the
   same text); the cause on the host side is not established. See
   [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md#create-stake-from-a-swap-contract-htlc-failed-in-september-executed-on-2026-11-10)
-  (status updated 2026-09-23: this no longer passes reliably from a single transfer either, see [Unreleased](#unreleased) above).
+  (status updated 2026-09-23: this no longer passes reliably from a single transfer either, see the 1.1.x entries above).
 
 ### Ideas
 

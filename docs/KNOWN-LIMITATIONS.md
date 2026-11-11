@@ -180,9 +180,10 @@ and reads a "no staker" answer again before a Create; the node itself is the ope
 - **Everything staked: free NIM needed.** Nimiq Pay sends Unstake, Finish unstaking and Switch from its swap contract
   (HTLC). When staking emptied it, the contract no longer exists on the chain and the request never reaches it
   (Nimiq Pay answers "outcome unknown"). Workaround proved on 2026-11-11: receive a small amount of NIM; Nimiq Pay
-  funds a new swap contract with it and the request is executed. That amount then stays in the swap contract until
-  its timeout (14 days in our test) before going back to the wallet. The app shows this note when the free balance
-  is 0; it blocks nothing, since the free NIM may already be in a swap contract.
+  moves it into a new swap contract and the request is executed. The swap contract is Nimiq Pay's normal spending
+  account (payments are made from it, and Nimiq Pay renews it before its timeout), so those NIM stay spendable as
+  usual. The app shows this note when the free balance of the basic account is 0; it blocks nothing, since the
+  available NIM are normally in the swap contract.
 - **Still open on the Nimiq Pay side** (to be re-tested with the correct requests): Create stake from a swap contract
   built by merging several transfers.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
