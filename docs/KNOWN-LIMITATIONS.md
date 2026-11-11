@@ -56,12 +56,15 @@ Found on 2026-11-11 by reading the staking contract (core-rs-albatross v2.3.0, `
 The September observations stay true as facts (Android 16 phone, Nimiq Pay v2.19.1: more than 30 *Update Staker*
 and *Retire Stake* included in a block with an execution result of **false**; Android 13 emulator with an emptied
 swap contract: nothing reached the chain), but their **cause was the app**, not the swap contract (HTLC) or the
-cosigner as this page supposed before. On 2026-11-10 (Nimiq Pay 2.22.x), the old *Retire Stake* request from a
+cosigner as this page supposed before. **Our reports to the Nimiq Pay team in September were wrong on this point**:
+those failures came from our use of the protocol, not from Nimiq Pay. On 2026-11-10 (Nimiq Pay 2.22.x), the old *Retire Stake* request from a
 wallet whose swap contract was empty never reached the chain nor the mempool; the request was invalid in any case.
 
 **What 1.1.3 does.** **Unstake** = *SetActiveStake* (active stake minus the amount; `set_active_stake`): the
-amount becomes inactive and stays locked about one epoch (about 12 hours, per the example Mini App; exactly until
-`Policy::block_after_collateral_lockup(inactive_from)`). **Finish unstaking** = *RetireStake* of the inactive
+amount becomes inactive and stays locked one epoch, exactly until block `inactive_from + 43,201` on mainnet
+(`Policy::block_after_collateral_lockup`: one epoch is 60 blocks per batch x 720 batches; about 12 hours at about
+one block per second). The app shows that block; with the current block height from the API (optional
+`block_number`) it also shows the blocks left and keeps "Finish unstaking" and Switch disabled until then. **Finish unstaking** = *RetireStake* of the inactive
 balance, possible once the lock is over; too early, the network rejects it at execution and nothing changes, and
 the app says the lock may not be over yet. **Claim my funds** = *RemoveStake* of the retired balance. A new Unstake
 is refused while one is in progress (it would restart the lock). **Switch**: with an active stake the app explains
@@ -170,9 +173,12 @@ and reads a "no staker" answer again before a Create; the node itself is the ope
 - **Claiming retired funds** (*remove stake*) is available inside Nimiq Pay only; on the Nimiq Hub
   path the app shows an explanatory message.
 - **Waiting period.** Unstaking is a three-step process (Unstake, Finish unstaking, Claim). After Unstake the
-  amount stays locked about one epoch (about 12 hours). The app does not read the current block height, so it does
-  not show the exact end of the lock: "Finish unstaking" sent too early is rejected by the network and changes
-  nothing.
+  amount stays locked one epoch (43,200 blocks, about 12 hours). The app shows the unlock block; it shows the blocks
+  left only if the backend gives the current block height (`block_number`, optional). Without it, "Finish unstaking"
+  sent too early is rejected by the network and changes nothing. Release also requires that the validator is not
+  jailed (`is_inactive_stake_released`), which the app does not check.
+- **Still open on the Nimiq Pay side** (to be re-tested with the correct requests): Create stake from a swap contract
+  built by merging several transfers, and Unstake from a wallet whose swap contract is empty.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.
 - **Third-party CDNs.** Libraries and fonts are loaded from CDNs (jsDelivr, Google Fonts), so the
   page depends on their availability and they see visitors' IP addresses. The Mini App SDK is pinned to 0.1.0 since 1.1.2

@@ -164,7 +164,8 @@ Response `200` (always 200 for a well-formed address, even if it never staked):
 | `active_balance_luna` | int\|null | currently staked (active) amount |
 | `delegation` | string\|null | validator address currently delegated to |
 | `inactive_balance_luna` | int\|null | unstaked amount, locked until the lock-up ends (the app then offers "Finish unstaking"). All nodes behind a balancer must give the same answer: since 1.1.3 the app resists one node answering `found: false` by mistake, but the node must be fixed |
-| `inactive_from` | int\|null | marker for when the unbonding delay started. Returned by the reference backend but **not read by the current UI** (optional) |
+| `inactive_from` | int\|null | block from which the inactive stake counts (an election block). **Read since 1.1.3**: the UI shows the unlock block `inactive_from + 43,201` (mainnet) |
+| `block_number` | int | *optional* : current block height of the node. When present the UI shows the blocks left before the unlock and keeps "Finish unstaking" and Switch disabled until then |
 | `retired_balance_luna` | int\|null | fully unbonded amount, withdrawable |
 | `wallet_balance_luna` | int\|null | **spendable balance of the basic account**, independent of `found` |
 

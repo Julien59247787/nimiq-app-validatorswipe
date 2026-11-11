@@ -192,7 +192,8 @@ adding to it works even if funds arrive in several transfers.
 
 **Unstake and Switch take time.** That is the Nimiq staking protocol: unstaked NIM stay locked about 12 hours
 before "Finish unstaking" and "Claim my funds", and switching validator requires the stake to be unstaked first.
-Until 1.1.2 the app sent requests the protocol refuses for both (fixed in 1.1.3; see the details below).
+Until 1.1.2 the app sent requests the protocol refuses for both (fixed in 1.1.3; see the details below). Our
+September reports to the Nimiq Pay team blamed Nimiq Pay for these failures: they were wrong, the cause was our app.
 
 Details: [docs/KNOWN-LIMITATIONS.md](docs/KNOWN-LIMITATIONS.md).
 

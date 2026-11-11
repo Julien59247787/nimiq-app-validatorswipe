@@ -24,7 +24,14 @@ claimed that the chain has not shown.
   stake (core-rs-albatross v2.3.0, `primitives/account/src/account/staking_contract/staker.rs`, `update_staker`: "All stake must be inactivated or retired before re-delegating"). The app now explains
   the two steps instead of sending a transaction doomed to fail, and sends *UpdateStaker* with `reactivateAllStake`
   once the stake is inactive and unlocked. The September failures of Switch and Retire (included, execution result
-  false) are explained by this, not by the swap contract (HTLC) as the earlier documentation supposed.
+  false) are explained by this, not by the swap contract (HTLC) or the Nimiq Pay cosigner as the earlier
+  documentation supposed. **Our reports to the Nimiq Pay team in September were wrong on this point**: those
+  failures came from our use of the protocol, not from Nimiq Pay.
+- **The real unlock is shown.** While unstaking, the app shows the block at which the inactive stake unlocks
+  (`inactive_from` from the chain plus one epoch of collateral lock-up, 43,200 blocks on mainnet: `Policy::
+  block_after_collateral_lockup` in core-rs-albatross `primitives/src/policy.rs`). If the API also gives the current
+  block height (optional `block_number` in `staker-status`), it shows the blocks left and keeps "Finish unstaking"
+  and Switch disabled until then; no duration is invented.
 - **Staker state flipping, Create offered instead of Add, Create offered again after a successful Create, the
   "active stake" banner missing at launch.** On 2026-11-11 one of the two nodes behind the round-robin answered
   `found: false` for a staker that the other node and the chain know (reported to the operator). The app now numbers
@@ -51,8 +58,10 @@ claimed that the chain has not shown.
   50 NIM, block 66517911. Whether this comes from the pinned SDK or from a Nimiq Pay update is not established, so
   the pin is kept.
 - The new Unstake, Finish unstaking and Switch flows were tested only against a local mock, **not yet on a device**.
-  In September Nimiq Pay sent nothing at all for staking requests from a wallet whose swap contract was empty; it is
-  not established whether that also applies to the new (valid) requests.
+- Still open on the Nimiq Pay side, to be re-tested with the correct requests: Create stake from a swap contract
+  built by merging several transfers (failed in September; not re-tested since), and Unstake from a wallet whose swap
+  contract is empty (in September and on 2026-11-10 Nimiq Pay sent nothing for the old, invalid requests; not yet
+  tried with the new, valid ones).
 
 ## [1.1.2] — 2026-10-22
 

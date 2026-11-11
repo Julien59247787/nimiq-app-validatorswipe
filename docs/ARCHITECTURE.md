@@ -84,7 +84,9 @@ staker exists, different validator picked   → update staker  (new delegation; 
 Unstaking is three steps, as the staking contract requires (since 1.1.3): **Unstake** = set active stake (the
 amount becomes inactive and is locked about one epoch), **Finish unstaking** = retire stake of the inactive balance
 once the lock is over, then **Claim my funds** = remove stake. Switching validator (update staker) is only possible
-with no active stake; it is then sent with `reactivateAllStake`.
+with no active stake and an unlocked inactive stake; it is then sent with `reactivateAllStake`. The unlock block is
+`inactive_from + 43,201` on mainnet (one epoch of collateral lock-up); the blocks left are shown only when the API
+gives the current height (`block_number`, optional).
 
 Staker-status answers go through one gate (1.1.3): they are numbered and an answer older than the last one applied is
 ignored; a staker seen in the session is kept unless several answers in a row say otherwise; a "no staker" answer is
