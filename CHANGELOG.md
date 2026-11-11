@@ -14,6 +14,11 @@ work is available in the Git history.
   call per address, at most once a minute, and after any error the reads stop for the session (no retry loop, no
   repeated message); the app then neither pre-fills nor refuses an amount from the balance. `getBlockNumber` is
   called without arguments, with the same stop-on-error rule.
+- Only the Nimiq Pay swap contract is read (the second address of `listAccounts`): Nimiq Pay sweeps the local account
+  into it, and reading an empty local account makes Nimiq Pay show "No account found". Without a swap contract the
+  balance stays unknown and nothing is called. The app first asks `isConsensusEstablished`; "Nimiq network is not
+  ready" is retried at most 3 times, 20 s apart. Nimiq Pay may still show a single message in rare cases (for
+  example a swap contract just emptied), never a repeated one.
 - **Fixed: "Claim my funds" (and the other hidden buttons) showed while hidden.** The button style set `display`, which
   overrode the `hidden` attribute, so "Claim my funds" looked active with nothing to claim (clicking it did nothing).
   Hidden buttons are now really hidden.

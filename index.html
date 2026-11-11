@@ -2563,36 +2563,51 @@
   // HelloWorld.vue: nimiq.getBalance(address)); passing an object made Nimiq Pay show "A valid Nimiq address is
   // required" (1.1.5). Each failure from the host can show a toast in Nimiq Pay, so after any error the reads stop for
   // the session (no retry loop) and the app falls back to the neutral behaviour (nothing pre-filled or refused).
-  var lastWalletReadAt = 0, balanceReadsOff = false, headReadsOff = false;
-  function readOneBalance(addr){
-    return Promise.resolve(state.nimiq.getBalance(addr)).then(function(v){
-      if (typeof v !== 'number' || !(v >= 0)) throw new Error('bad balance');
-      return v;
-    }, function(err){
-      // a pruned / never-used account is reported as "No account found": its balance is 0
-      if (err && /no account found/i.test(String(err.message || err))) return 0;
-      throw err;
-    });
-  }
+  // Only the swap contract (HTLC, accounts[1]) is read: Nimiq Pay sweeps the local account into it
+  // (src/stores/sync/htlc.ts), and reading an empty local account answers "No account found", which Nimiq Pay shows
+  // as a toast. No swap contract in the list = balance unknown (neutral), no call. Right after a receipt not yet swept
+  // the balance can be under-estimated: acceptable (the reserve only gets stricter).
+  // Errors: "Nimiq network is not ready" (no consensus yet at launch) is transient: at most 3 tries 20 s apart, and
+  // isConsensusEstablished() is asked first when available so the host is normally not called too early. Any other
+  // error, or "No account found" (pruned contract = 0, kept), stops the reads for the session: Nimiq Pay may show at
+  // most one toast, never a repeated one.
+  var lastWalletReadAt = 0, balanceReadsOff = false, headReadsOff = false, notReadyTries = 0;
+  function isNotReady(err){ return /network is not ready/i.test(String(err && (err.message || err))); }
   function refreshWalletReads(){
-    if (!state.nimiq || !state.accounts || Date.now() - lastWalletReadAt < 60000) return;
+    if (!state.nimiq || !state.accounts) return;
+    var gap = state.spendableLuna == null ? 20000 : 60000;
+    if (Date.now() - lastWalletReadAt < gap) return;
     lastWalletReadAt = Date.now();
-    if (!balanceReadsOff && typeof state.nimiq.getBalance === 'function'){
-      Promise.all(state.accounts.map(readOneBalance)).then(function(vals){
-        state.spendableLuna = vals.reduce(function(a, b){ return a + b; }, 0);
-      }, function(err){
-        state.spendableLuna = null; balanceReadsOff = true;
-        console.warn('Validator Swipe: balance read failed, reserve not enforced this session.', err);
-      }).then(afterWalletReads);
-    }
-    if (!headReadsOff && typeof state.nimiq.getBlockNumber === 'function'){
-      Promise.resolve(state.nimiq.getBlockNumber()).then(function(h){
-        state.headBlock = typeof h === 'number' && h > 0 ? h : null;
-      }, function(err){
-        state.headBlock = null; headReadsOff = true;
-        console.warn('Validator Swipe: block height read failed.', err);
-      }).then(afterWalletReads);
-    }
+    var nimiq = state.nimiq;
+    var ready = typeof nimiq.isConsensusEstablished === 'function'
+      ? Promise.resolve(nimiq.isConsensusEstablished()).then(function(ok){ return ok === true; }, function(){ return false; })
+      : Promise.resolve(true);
+    ready.then(function(ok){
+      if (!ok){
+        if (++notReadyTries >= 3){ balanceReadsOff = true; headReadsOff = true; }
+        return;
+      }
+      var htlc = state.accounts[1];
+      if (!balanceReadsOff && htlc && typeof nimiq.getBalance === 'function'){
+        Promise.resolve(nimiq.getBalance(htlc)).then(function(v){
+          if (typeof v !== 'number' || !(v >= 0)) throw new Error('bad balance');
+          state.spendableLuna = v;
+        }).catch(function(err){
+          if (/no account found/i.test(String(err && (err.message || err)))){ state.spendableLuna = 0; balanceReadsOff = true; return; }
+          if (isNotReady(err) && ++notReadyTries < 3) return;
+          state.spendableLuna = null; balanceReadsOff = true;
+          console.warn('Validator Swipe: balance read stopped for this session.', err);
+        }).then(afterWalletReads);
+      }
+      if (!headReadsOff && typeof nimiq.getBlockNumber === 'function'){
+        Promise.resolve(nimiq.getBlockNumber()).then(function(h){
+          state.headBlock = typeof h === 'number' && h > 0 ? h : null;
+        }, function(err){
+          state.headBlock = null;
+          if (!(isNotReady(err) && notReadyTries < 3)) headReadsOff = true;
+        }).then(afterWalletReads);
+      }
+    });
   }
   function afterWalletReads(){
     prefillStakeAmount(lastStakerStatus);
