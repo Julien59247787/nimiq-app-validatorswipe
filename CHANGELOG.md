@@ -6,6 +6,14 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.8] — unreleased
+
+- **Language menu shows all 11 languages.** The menu was capped at 280 px while the 11 languages need about 377 px,
+  and phone scrollbars are invisible overlays, so Türkçe and العربية looked missing. The menu now grows up to
+  440 px (never more than the screen height minus 120 px), so all languages fit on a 360×640 screen. On smaller
+  screens it shows a thin coloured scrollbar and a shadow at the edge that still has languages to scroll to.
+  CSS only; no script change.
+
 ## [1.1.7] — 2026-11-11
 
 - **Ready for the Nimiq Pay fix.** We propose that Nimiq Pay sends Unstake, Finish unstaking and Switch from the
