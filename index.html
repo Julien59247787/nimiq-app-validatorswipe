@@ -411,6 +411,8 @@
             <input type="number" id="stakeAmt2" data-i18n-placeholder="app.stakeAmtPlaceholder" placeholder="Indique ici la quantité de NIM à staker" min="1" step="1" style="width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:var(--surface-2); color:var(--nimiq-gold); font-weight:700; font-family:'Sora',sans-serif; font-size:.9rem;" />
             <p class="helptext" id="noMainBalanceHint" data-i18n="app.amountHintNoMainBalance" style="margin-top:6px;" hidden>Ton solde disponible s'affiche dans Nimiq Pay. Indique le montant à déléguer.</p>
             <p class="helptext" id="balanceHint" data-i18n="app.balanceHint" style="margin-top:6px;" hidden>Ce montant est pré-rempli avec ton solde disponible — vérifie-le avant de confirmer.</p>
+            <button type="button" class="btn" id="stakeMaxBtn" data-i18n="app.stakeMax" style="margin-top:6px; padding:6px 14px;" hidden>Max</button>
+            <p class="helptext" id="reserveNote" style="margin-top:6px;" hidden></p>
           </div>
           <p class="helptext" id="switchNote" data-i18n="app.switchNote" style="margin:12px 6px 0; color:var(--nimiq-gold); font-weight:700;" hidden>Changer de validateur déplace tout ton stake existant vers ce validateur — aucun nouveau NIM n'est nécessaire.</p>
           <div class="swipe-actions">
@@ -644,6 +646,9 @@
       'app.unlockRemaining': 'Déverrouillage au bloc {block} : encore {blocks} blocs (un bloc par seconde environ).',
       'app.unlockReady': 'Déverrouillé : tu peux terminer le déstaking.',
       'app.needFreeNim': 'Si tout ton solde est staké, Nimiq Pay a besoin d\'un peu de NIM disponibles pour envoyer Déstaker, Terminer le déstaking ou un changement de validateur : reçois d\'abord un petit montant. Ces NIM restent utilisables normalement dans Nimiq Pay.',
+      'app.reserveNote': '{reserve} NIM restent dans ton wallet Nimiq Pay pour que Déstaker, Terminer le déstaking et le changement de validateur fonctionnent ; ils ne sont pas dépensés.',
+      'app.reserveExceeded': 'Tu peux staker au plus {max} NIM : {reserve} NIM doivent rester dans Nimiq Pay pour pouvoir déstaker plus tard. Rien n\'a été envoyé.',
+      'app.stakeMax': 'Max',
       'app.switchWaitUnlock': 'Ton stake est déstaké mais encore verrouillé jusqu\'au bloc {block} (encore {blocks} blocs). Change de validateur après ; rien n\'a été envoyé.',
       'app.myStakeActiveLabel': 'Stake actif',
       'app.myStakeInactiveLabel': 'En cours de retrait',
@@ -775,6 +780,9 @@
       'app.unlockRemaining': 'Unlocks at block {block}: {blocks} blocks to go (about one block per second).',
       'app.unlockReady': 'Unlocked: you can finish unstaking.',
       'app.needFreeNim': 'If all your balance is staked, Nimiq Pay needs some available NIM to send Unstake, Finish unstaking or a validator switch: receive a small amount first. Those NIM stay spendable as usual in Nimiq Pay.',
+      'app.reserveNote': '{reserve} NIM stay in your Nimiq Pay wallet so that Unstake, Finish unstaking and Switch keep working; they are not spent.',
+      'app.reserveExceeded': 'You can stake at most {max} NIM: {reserve} NIM must stay in Nimiq Pay so you can unstake later. Nothing was sent.',
+      'app.stakeMax': 'Max',
       'app.switchWaitUnlock': 'Your stake is unstaked but still locked until block {block} ({blocks} blocks to go). Switch after that; nothing was sent.',
       'app.myStakeActiveLabel': 'Active stake',
       'app.myStakeInactiveLabel': 'Being withdrawn',
@@ -923,6 +931,9 @@
       'app.unlockRemaining': 'Se desbloquea en el bloque {block}: faltan {blocks} bloques (aproximadamente un bloque por segundo).',
       'app.unlockReady': 'Desbloqueado: puedes terminar el retiro.',
       'app.needFreeNim': 'Si todo tu saldo está en stake, Nimiq Pay necesita algunos NIM disponibles para enviar Retirar stake, Terminar el retiro o un cambio de validador: recibe primero una pequeña cantidad. Esos NIM siguen pudiéndose usar con normalidad en Nimiq Pay.',
+      'app.reserveNote': '{reserve} NIM se quedan en tu monedero Nimiq Pay para que Retirar stake, Terminar el retiro y el cambio de validador funcionen; no se gastan.',
+      'app.reserveExceeded': 'Puedes hacer staking de {max} NIM como máximo: {reserve} NIM deben quedarse en Nimiq Pay para poder retirar el stake más tarde. No se ha enviado nada.',
+      'app.stakeMax': 'Máx.',
       'app.switchWaitUnlock': 'Tu stake está retirado pero sigue bloqueado hasta el bloque {block} (faltan {blocks} bloques). Cambia de validador después; no se ha enviado nada.',
       'app.myStakeActiveLabel': 'Stake activo',
       'app.myStakeInactiveLabel': 'En proceso de retirada',
@@ -1054,6 +1065,9 @@
       'app.unlockRemaining': '将在区块 {block} 解锁：还剩 {blocks} 个区块（约每秒一个区块）。',
       'app.unlockReady': '已解锁：你可以完成解除质押。',
       'app.needFreeNim': '如果你的余额已全部质押，Nimiq Pay 需要一些可用的 NIM 才能发送解除质押、完成解除质押或更换验证者：请先接收少量 NIM。这些 NIM 在 Nimiq Pay 中仍可照常使用。',
+      'app.reserveNote': '{reserve} NIM 会保留在你的 Nimiq Pay 钱包中，以便解除质押、完成解除质押和更换验证者能够正常进行；这些 NIM 不会被花掉。',
+      'app.reserveExceeded': '你最多可以质押 {max} NIM：需要在 Nimiq Pay 中保留 {reserve} NIM，以便之后能够解除质押。本次未发送任何内容。',
+      'app.stakeMax': '最大',
       'app.switchWaitUnlock': '你的质押已解除，但在区块 {block} 之前仍被锁定（还剩 {blocks} 个区块）。请之后再更换验证者；本次未发送任何内容。',
       'app.myStakeActiveLabel': '活跃质押',
       'app.myStakeInactiveLabel': '正在下架',
@@ -1185,6 +1199,9 @@
       'app.unlockRemaining': 'ブロック {block} でロック解除：残り {blocks} ブロック（約 1 秒に 1 ブロック）。',
       'app.unlockReady': 'ロック解除済み：ステーク解除を完了できます。',
       'app.needFreeNim': '残高をすべてステークしている場合、Nimiq Pay がステーク解除・ステーク解除の完了・バリデーター変更を送信するには、利用可能な NIM が少し必要です。まず少額を受け取ってください。その NIM は Nimiq Pay で通常どおり使えます。',
+      'app.reserveNote': 'ステーク解除・ステーク解除の完了・バリデーター変更が動作するよう、{reserve} NIM を Nimiq Pay ウォレットに残します。この NIM は使われません。',
+      'app.reserveExceeded': 'ステークできるのは最大 {max} NIM です。後でステーク解除できるよう、{reserve} NIM を Nimiq Pay に残す必要があります。何も送信されていません。',
+      'app.stakeMax': '最大',
       'app.switchWaitUnlock': 'ステークは解除済みですが、ブロック {block} までロックされています（残り {blocks} ブロック）。その後にバリデーターを変更してください。何も送信されていません。',
       'app.myStakeActiveLabel': 'アクティブなステーク',
       'app.myStakeInactiveLabel': '現在引き出し中',
@@ -1316,6 +1333,9 @@
       'app.unlockRemaining': '블록 {block}에서 잠금 해제: {blocks}개 블록 남음(약 1초에 1블록).',
       'app.unlockReady': '잠금 해제됨: 스테이크 해제를 완료할 수 있습니다.',
       'app.needFreeNim': '잔액을 모두 스테이크했다면, Nimiq Pay가 스테이크 해제, 스테이크 해제 완료 또는 검증자 변경을 보내려면 사용 가능한 NIM이 조금 필요합니다. 먼저 소액을 받으세요. 그 NIM은 Nimiq Pay에서 평소처럼 사용할 수 있습니다.',
+      'app.reserveNote': '스테이크 해제, 스테이크 해제 완료, 검증자 변경이 작동하도록 {reserve} NIM이 Nimiq Pay 지갑에 남습니다. 이 NIM은 사용되지 않습니다.',
+      'app.reserveExceeded': '최대 {max} NIM까지 스테이킹할 수 있습니다. 나중에 스테이크를 해제하려면 {reserve} NIM이 Nimiq Pay에 남아 있어야 합니다. 아무것도 전송되지 않았습니다.',
+      'app.stakeMax': '최대',
       'app.switchWaitUnlock': '스테이크는 해제되었지만 블록 {block}까지 잠겨 있습니다({blocks}개 블록 남음). 그 후에 검증자를 변경하세요. 아무것도 전송되지 않았습니다.',
       'app.myStakeActiveLabel': '활성 스테이크',
       'app.myStakeInactiveLabel': '철회 중',
@@ -1447,6 +1467,9 @@
       'app.unlockRemaining': 'Entsperrt bei Block {block}: noch {blocks} Blöcke (etwa ein Block pro Sekunde).',
       'app.unlockReady': 'Entsperrt: Du kannst das Unstaking abschließen.',
       'app.needFreeNim': 'Wenn dein ganzes Guthaben gestakt ist, braucht Nimiq Pay etwas verfügbares NIM, um Unstaken, Unstaking abschließen oder einen Validatorwechsel zu senden: Empfange zuerst einen kleinen Betrag. Diese NIM bleiben in Nimiq Pay ganz normal nutzbar.',
+      'app.reserveNote': '{reserve} NIM bleiben in deiner Nimiq-Pay-Wallet, damit Unstaken, Unstaking abschließen und der Validatorwechsel funktionieren; sie werden nicht ausgegeben.',
+      'app.reserveExceeded': 'Du kannst höchstens {max} NIM staken: {reserve} NIM müssen in Nimiq Pay bleiben, damit du später unstaken kannst. Es wurde nichts gesendet.',
+      'app.stakeMax': 'Max.',
       'app.switchWaitUnlock': 'Dein Stake ist unstaked, aber bis Block {block} gesperrt (noch {blocks} Blöcke). Wechsle danach den Validator; es wurde nichts gesendet.',
       'app.myStakeActiveLabel': 'Aktives Stake',
       'app.myStakeInactiveLabel': 'Wird gerade zurückgezogen',
@@ -1578,6 +1601,9 @@
       'app.unlockRemaining': 'Desbloqueia no bloco {block}: faltam {blocks} blocos (cerca de um bloco por segundo).',
       'app.unlockReady': 'Desbloqueado: podes concluir a retirada.',
       'app.needFreeNim': 'Se todo o teu saldo está em stake, o Nimiq Pay precisa de alguns NIM disponíveis para enviar Retirar stake, Concluir a retirada ou uma mudança de validador: recebe primeiro um pequeno montante. Esses NIM continuam a poder ser usados normalmente no Nimiq Pay.',
+      'app.reserveNote': '{reserve} NIM ficam na tua carteira Nimiq Pay para que Retirar stake, Concluir a retirada e a mudança de validador funcionem; não são gastos.',
+      'app.reserveExceeded': 'Podes fazer stake de no máximo {max} NIM: {reserve} NIM têm de ficar no Nimiq Pay para poderes retirar o stake mais tarde. Nada foi enviado.',
+      'app.stakeMax': 'Máx.',
       'app.switchWaitUnlock': 'O teu stake foi retirado mas continua bloqueado até ao bloco {block} (faltam {blocks} blocos). Muda de validador depois; nada foi enviado.',
       'app.myStakeActiveLabel': 'Stake ativo',
       'app.myStakeInactiveLabel': 'Em processo de retirada',
@@ -1709,6 +1735,9 @@
       'app.unlockRemaining': 'Разблокировка на блоке {block}: осталось {blocks} блоков (примерно один блок в секунду).',
       'app.unlockReady': 'Разблокировано: можно завершить вывод.',
       'app.needFreeNim': 'Если весь твой баланс в стейке, Nimiq Pay нужно немного доступных NIM, чтобы отправить вывод из стейка, завершение вывода или смену валидатора: сначала получи небольшую сумму. Эти NIM остаются доступными в Nimiq Pay как обычно.',
+      'app.reserveNote': '{reserve} NIM остаются в твоём кошельке Nimiq Pay, чтобы вывод из стейка, завершение вывода и смена валидатора работали; они не тратятся.',
+      'app.reserveExceeded': 'Можно застейкать не больше {max} NIM: {reserve} NIM должны остаться в Nimiq Pay, чтобы потом можно было вывести стейк. Ничего не отправлено.',
+      'app.stakeMax': 'Макс.',
       'app.switchWaitUnlock': 'Твой стейк выведен, но заблокирован до блока {block} (осталось {blocks} блоков). Смени валидатора после этого; ничего не отправлено.',
       'app.myStakeActiveLabel': 'Активный стейк',
       'app.myStakeInactiveLabel': 'В процессе изъятия',
@@ -1840,6 +1869,9 @@
       'app.unlockRemaining': '{block}. blokta kilit açılır: {blocks} blok kaldı (yaklaşık saniyede bir blok).',
       'app.unlockReady': 'Kilit açıldı: çıkışı tamamlayabilirsin.',
       'app.needFreeNim': 'Bakiyenin tamamı stake edildiyse, Nimiq Pay\'in Stake\'ten çık, Çıkışı tamamla veya doğrulayıcı değişikliğini gönderebilmesi için biraz kullanılabilir NIM gerekir: önce küçük bir miktar al. Bu NIM\'ler Nimiq Pay\'de her zamanki gibi kullanılabilir kalır.',
+      'app.reserveNote': 'Stake\'ten çık, Çıkışı tamamla ve doğrulayıcı değişikliğinin çalışması için {reserve} NIM Nimiq Pay cüzdanında kalır; bunlar harcanmaz.',
+      'app.reserveExceeded': 'En fazla {max} NIM stake edebilirsin: daha sonra stake\'ten çıkabilmen için {reserve} NIM Nimiq Pay\'de kalmalı. Hiçbir şey gönderilmedi.',
+      'app.stakeMax': 'Maks.',
       'app.switchWaitUnlock': 'Stake\'in çıkarıldı ama {block}. bloka kadar kilitli ({blocks} blok kaldı). Doğrulayıcıyı ondan sonra değiştir; hiçbir şey gönderilmedi.',
       'app.myStakeActiveLabel': 'Aktif stake',
       'app.myStakeInactiveLabel': 'Geri çekilme aşamasında',
@@ -1971,6 +2003,9 @@
       'app.unlockRemaining': 'يُفتح القفل عند الكتلة {block}: تبقّى {blocks} كتلة (نحو كتلة واحدة في الثانية).',
       'app.unlockReady': 'تم فتح القفل: يمكنك إكمال إلغاء الستيك.',
       'app.needFreeNim': 'إذا كان رصيدك كله في الستيك، يحتاج Nimiq Pay إلى بعض عملات NIM المتاحة لإرسال إلغاء الستيك أو إكمال إلغاء الستيك أو تغيير المُصدق: استلم مبلغاً صغيراً أولاً. تبقى هذه العملات قابلة للاستخدام كالمعتاد في Nimiq Pay.',
+      'app.reserveNote': 'تبقى {reserve} NIM في محفظة Nimiq Pay لكي يعمل إلغاء الستيك وإكمال إلغاء الستيك وتغيير المُصدق؛ لا يتم إنفاقها.',
+      'app.reserveExceeded': 'يمكنك إيداع {max} NIM كحد أقصى: يجب أن تبقى {reserve} NIM في Nimiq Pay لتتمكن من إلغاء الستيك لاحقاً. لم يُرسل شيء.',
+      'app.stakeMax': 'الحد الأقصى',
       'app.switchWaitUnlock': 'تم إلغاء الستيك لكنه مقفل حتى الكتلة {block} (تبقّى {blocks} كتلة). غيّر المُصدق بعد ذلك؛ لم يُرسل شيء.',
       'app.myStakeActiveLabel': 'الرهن النشط',
       'app.myStakeInactiveLabel': 'قيد السحب',
@@ -2513,9 +2548,74 @@
   // (via /api/v2/staker-status's wallet_balance_luna) instead of a guess.
   // Only fills an EMPTY field: once the user has typed something, later
   // status refreshes (e.g. after a delegation) leave their input alone.
+  // Reserve kept spendable in Nimiq Pay (1.1.5). Nimiq Pay sends Unstake / Finish unstaking / Switch (value 0, fee 0)
+  // from its swap contract (HTLC); once Create / Add stake emptied it, that contract is pruned and those requests never
+  // reach the chain (proved 2026-11-11). The reserve is not spent by them: it only has to stay > 0. 1 NIM would do;
+  // 5 NIM leaves a margin (fees, dust). Only inside Nimiq Pay (Hub has no swap contract).
+  var RESERVE_LUNA = 500000;
+  // Spendable balance in Nimiq Pay = local account + swap contract, both listed by listAccounts and read with
+  // getBalance (luna) of the host (Nimiq Pay >= 2.22.1). null = unknown (older host, no consensus): then nothing is
+  // pre-filled from it and nothing is refused because of it.
+  var lastWalletReadAt = 0;
+  function readOneBalance(addr){
+    return Promise.resolve(state.nimiq.getBalance({ address: addr })).then(function(v){
+      if (typeof v !== 'number' || !(v >= 0)) throw new Error('bad balance');
+      return v;
+    }, function(err){
+      // a pruned / never-used account is reported as "No account found": its balance is 0
+      if (err && /no account found/i.test(String(err.message || err))) return 0;
+      throw err;
+    });
+  }
+  function refreshWalletReads(){
+    if (!state.nimiq || !state.accounts || Date.now() - lastWalletReadAt < 8000) return;
+    lastWalletReadAt = Date.now();
+    if (typeof state.nimiq.getBalance === 'function'){
+      Promise.all(state.accounts.map(readOneBalance)).then(function(vals){
+        state.spendableLuna = vals.reduce(function(a, b){ return a + b; }, 0);
+      }, function(){ state.spendableLuna = null; }).then(afterWalletReads);
+    }
+    if (typeof state.nimiq.getBlockNumber === 'function'){
+      Promise.resolve(state.nimiq.getBlockNumber()).then(function(h){
+        state.headBlock = typeof h === 'number' && h > 0 ? h : null;
+      }, function(){ state.headBlock = null; }).then(afterWalletReads);
+    }
+  }
+  function afterWalletReads(){
+    prefillStakeAmount(lastStakerStatus);
+    updateAmountHint();
+    updateReserveUi();
+    if (lastStakerStatus) updateUnstakeUi(lastStakerStatus);
+  }
+  function maxStakeLuna(){
+    return state.spendableLuna == null ? null : Math.max(0, state.spendableLuna - RESERVE_LUNA);
+  }
+  function updateReserveUi(){
+    var on = !!state.nimiq;
+    var note = $('reserveNote');
+    note.hidden = !on;
+    if (on) note.textContent = t('app.reserveNote').replace('{reserve}', String(RESERVE_LUNA / 100000));
+    var m = maxStakeLuna();
+    $('stakeMaxBtn').hidden = !(on && m !== null && m >= 100000);
+  }
+  $('stakeMaxBtn').addEventListener('click', function(){
+    var m = maxStakeLuna();
+    if (m === null) return;
+    var input = $('stakeAmt2');
+    input.value = String(Math.floor(m / 100000));
+    prefilledStakeValue = input.value;
+    $('balanceHint').hidden = false;
+    updateAmountHint();
+  });
   function prefillStakeAmount(data){
     var input = $('stakeAmt2');
     if (!input || input.value !== '') return;
+    var m = maxStakeLuna();
+    if (m !== null){
+      var mn = Math.floor(m / 100000);
+      if (mn >= 1){ input.value = String(mn); prefilledStakeValue = input.value; $('balanceHint').hidden = false; }
+      return;
+    }
     if (!data || data.wallet_balance_luna == null) return;
     var nim = Math.floor(data.wallet_balance_luna / 100000);
     if (nim >= 1){
@@ -2957,6 +3057,8 @@
     renderDelegationHistory();
     prefillStakeAmount(data);
     updateAmountHint();
+    updateReserveUi();
+    refreshWalletReads();
     updateSwitchUi();
     updateUnstakeUi(data);
     if (!data || !data.found){
@@ -3054,7 +3156,7 @@
   function unlockInfo(data){
     if (!data || !data.found || !(data.inactive_balance_luna > 0) || typeof data.inactive_from !== 'number') return null;
     var block = data.inactive_from + BLOCKS_PER_EPOCH + 1;
-    var head = typeof data.block_number === 'number' ? data.block_number : null;
+    var head = typeof data.block_number === 'number' ? data.block_number : (typeof state.headBlock === 'number' ? state.headBlock : null);
     return { block: block, left: head === null ? null : Math.max(0, block - head) };
   }
   // Rough local date/time of the unlock (about one block per second); an estimate, shown with "~".
@@ -3085,7 +3187,8 @@
     // Nimiq Pay sends these signalling transactions from its swap contract (HTLC), which is its normal spending
     // account; an emptied one is pruned and the request never reaches the chain (proved 2026-11-11). Information only:
     // the available NIM sit in that contract while wallet_balance_luna is 0, so nothing is blocked.
-    $('needFreeNimNote').hidden = !(state.nimiq && (active > 0 || inactive > 0) && data && data.wallet_balance_luna === 0);
+    var spend = state.spendableLuna;
+    $('needFreeNimNote').hidden = !(state.nimiq && (active > 0 || inactive > 0) && (spend != null ? spend === 0 : (data && data.wallet_balance_luna === 0)));
   }
 
   function metricOrDash(value, suffix){
@@ -3339,6 +3442,14 @@
           syncDelegateBtn();
           return;
         }
+        // Keep the reserve (1.1.5): Create / Add may not empty the swap contract. Only when the balance is known.
+        var maxL = state.nimiq ? maxStakeLuna() : null;
+        if (!isSwitch && maxL !== null && stakeValueLuna > maxL){
+          showErrorModal(t('app.reserveExceeded').replace('{max}', String(Math.floor(maxL / 100000))).replace('{reserve}', String(RESERVE_LUNA / 100000)), '');
+          releaseAction(false);
+          syncDelegateBtn();
+          return;
+        }
         // No spendable-balance guard here on purpose: wallet_balance_luna only
         // covers the basic account, while Nimiq Pay can also use funds held in
         // a swap contract (HTLC) when staking. A real-device test showed an
@@ -3543,6 +3654,8 @@
           return;
         }
         state.myAddress = accounts[0];
+        // [local account, swap contract] (Nimiq Pay getNimiqAccounts): both count in the spendable balance
+        state.accounts = accounts.filter(function(a){ return typeof a === 'string'; }).slice(0, 2);
         fetchStakerStatus();
         resumePending();
       }).catch(function(err){

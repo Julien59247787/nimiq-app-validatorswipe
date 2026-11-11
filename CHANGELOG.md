@@ -13,6 +13,17 @@ work is available in the Git history.
   account; payments are made from it and Nimiq Pay renews it before its timeout (`src/stores/sync/htlc.ts`,
   `extendValidity`). The received NIM stay spendable as usual. Fixed in the 11 languages and in the documentation.
 - The footer version link pointed to 1.1.3 in 1.1.4; it now shows 1.1.5.
+- **A reserve of 5 NIM stays spendable in Nimiq Pay.** Create and Add stake can no longer empty the Nimiq Pay swap
+  contract, so Unstake, Finish unstaking and Switch (value 0, fee 0, sent from that contract) keep reaching the chain.
+  The reserve is not spent by them; it only has to stay above 0 (1 NIM would do, 5 NIM leaves a margin for fees or
+  dust). The spendable balance is read from Nimiq Pay itself (`listAccounts` gives the local account and the swap
+  contract, `getBalance` their balances, Nimiq Pay 2.22.1 and later): the amount is pre-filled with balance minus
+  reserve, a **Max** button gives the same value, a larger amount is refused before anything is sent, and a line
+  explains the reserve (11 languages). If the balance cannot be read, nothing is pre-filled or refused from it.
+  Outside Nimiq Pay (Nimiq Hub) there is no swap contract and no reserve.
+- **Current block height from Nimiq Pay.** When the API gives no `block_number`, the app reads the height with
+  `getBlockNumber`, so the blocks left and the disabled "Finish unstaking" / Switch until the unlock also work with
+  the current backend.
 
 ## [1.1.4] — 2026-11-11
 
