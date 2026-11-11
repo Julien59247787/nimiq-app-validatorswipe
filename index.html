@@ -639,6 +639,10 @@
       'app.outcomeUnknown': 'Nimiq Pay n\'a pas pu confirmer si la transaction a été envoyée. Ne la renvoie pas : vérifie son état dans Nimiq Pay. L\'app continue de surveiller le réseau et affichera le résultat ici.',
       'app.switchNeedsUnstake': 'Pour déplacer ton stake vers un autre validateur, Nimiq impose deux étapes : d\'abord déstaker la totalité (Déstaker), puis, après le verrou d\'environ 12 heures, choisir ici le nouveau validateur ; ton stake y est déplacé et redevient actif. Rien n\'a été envoyé.',
       'app.txRejectedLocked': 'Si tu as déstaké récemment, le verrou (environ 12 heures) n\'est peut-être pas encore levé : réessaie plus tard.',
+      'app.unlockAtBlock': 'Déverrouillage au bloc {block}.',
+      'app.unlockRemaining': 'Déverrouillage au bloc {block} : encore {blocks} blocs (un bloc par seconde environ).',
+      'app.unlockReady': 'Déverrouillé : tu peux terminer le déstaking.',
+      'app.switchWaitUnlock': 'Ton stake est déstaké mais encore verrouillé jusqu\'au bloc {block} (encore {blocks} blocs). Change de validateur après ; rien n\'a été envoyé.',
       'app.myStakeActiveLabel': 'Stake actif',
       'app.myStakeInactiveLabel': 'En cours de retrait',
       'app.myStakeRetiredLabel': 'Solde récupérable',
@@ -765,6 +769,10 @@
       'app.outcomeUnknown': 'Nimiq Pay could not confirm whether the transaction was sent. Do not send it again: check its status in Nimiq Pay. The app keeps watching the network and will show the result here.',
       'app.switchNeedsUnstake': 'To move your stake to another validator, Nimiq requires two steps: first unstake the whole amount (Unstake), then, after the lock of about 12 hours, choose the new validator here; your stake moves to it and becomes active again. Nothing was sent.',
       'app.txRejectedLocked': 'If you unstaked recently, the lock (about 12 hours) may not be over yet: try again later.',
+      'app.unlockAtBlock': 'Unlocks at block {block}.',
+      'app.unlockRemaining': 'Unlocks at block {block}: {blocks} blocks to go (about one block per second).',
+      'app.unlockReady': 'Unlocked: you can finish unstaking.',
+      'app.switchWaitUnlock': 'Your stake is unstaked but still locked until block {block} ({blocks} blocks to go). Switch after that; nothing was sent.',
       'app.myStakeActiveLabel': 'Active stake',
       'app.myStakeInactiveLabel': 'Being withdrawn',
       'app.myStakeRetiredLabel': 'Claimable balance',
@@ -908,6 +916,10 @@
       'app.outcomeUnknown': 'Nimiq Pay no pudo confirmar si la transacción se envió. No la vuelvas a enviar: comprueba su estado en Nimiq Pay. La app sigue vigilando la red y mostrará el resultado aquí.',
       'app.switchNeedsUnstake': 'Para mover tu stake a otro validador, Nimiq exige dos pasos: primero retira todo el stake (Retirar stake) y, tras el bloqueo de unas 12 horas, elige aquí el nuevo validador; tu stake pasa a él y vuelve a estar activo. No se ha enviado nada.',
       'app.txRejectedLocked': 'Si retiraste el stake hace poco, puede que el bloqueo (unas 12 horas) aún no haya terminado: inténtalo más tarde.',
+      'app.unlockAtBlock': 'Se desbloquea en el bloque {block}.',
+      'app.unlockRemaining': 'Se desbloquea en el bloque {block}: faltan {blocks} bloques (aproximadamente un bloque por segundo).',
+      'app.unlockReady': 'Desbloqueado: puedes terminar el retiro.',
+      'app.switchWaitUnlock': 'Tu stake está retirado pero sigue bloqueado hasta el bloque {block} (faltan {blocks} bloques). Cambia de validador después; no se ha enviado nada.',
       'app.myStakeActiveLabel': 'Stake activo',
       'app.myStakeInactiveLabel': 'En proceso de retirada',
       'app.myStakeRetiredLabel': 'Saldo recuperable',
@@ -1034,6 +1046,10 @@
       'app.outcomeUnknown': 'Nimiq Pay 无法确认交易是否已发送。请不要再次发送：请在 Nimiq Pay 中查看其状态。应用会继续关注网络，并在此显示结果。',
       'app.switchNeedsUnstake': '要把质押转到另一个验证者，Nimiq 需要两步：先解除全部质押（解除质押），等待约 12 小时的锁定结束后，在这里选择新的验证者；你的质押会转过去并重新生效。本次未发送任何内容。',
       'app.txRejectedLocked': '如果你刚解除质押，锁定（约 12 小时）可能尚未结束：请稍后再试。',
+      'app.unlockAtBlock': '将在区块 {block} 解锁。',
+      'app.unlockRemaining': '将在区块 {block} 解锁：还剩 {blocks} 个区块（约每秒一个区块）。',
+      'app.unlockReady': '已解锁：你可以完成解除质押。',
+      'app.switchWaitUnlock': '你的质押已解除，但在区块 {block} 之前仍被锁定（还剩 {blocks} 个区块）。请之后再更换验证者；本次未发送任何内容。',
       'app.myStakeActiveLabel': '活跃质押',
       'app.myStakeInactiveLabel': '正在下架',
       'app.myStakeRetiredLabel': '可收回余额',
@@ -1160,6 +1176,10 @@
       'app.outcomeUnknown': 'Nimiq Pay は取引が送信されたかどうかを確認できませんでした。再送しないでください。Nimiq Pay で状態を確認してください。アプリはネットワークの監視を続け、結果をここに表示します。',
       'app.switchNeedsUnstake': 'ステークを別のバリデーターに移すには、Nimiq では 2 段階が必要です。まず全額をステーク解除し、約 12 時間のロックが終わった後、ここで新しいバリデーターを選びます。ステークはそこに移り、再び有効になります。何も送信されていません。',
       'app.txRejectedLocked': '最近ステーク解除した場合、ロック（約 12 時間）がまだ終わっていない可能性があります。後でもう一度お試しください。',
+      'app.unlockAtBlock': 'ブロック {block} でロック解除されます。',
+      'app.unlockRemaining': 'ブロック {block} でロック解除：残り {blocks} ブロック（約 1 秒に 1 ブロック）。',
+      'app.unlockReady': 'ロック解除済み：ステーク解除を完了できます。',
+      'app.switchWaitUnlock': 'ステークは解除済みですが、ブロック {block} までロックされています（残り {blocks} ブロック）。その後にバリデーターを変更してください。何も送信されていません。',
       'app.myStakeActiveLabel': 'アクティブなステーク',
       'app.myStakeInactiveLabel': '現在引き出し中',
       'app.myStakeRetiredLabel': '回収可能残高',
@@ -1286,6 +1306,10 @@
       'app.outcomeUnknown': 'Nimiq Pay가 거래 전송 여부를 확인하지 못했습니다. 다시 보내지 마세요. Nimiq Pay에서 상태를 확인하세요. 앱은 네트워크를 계속 확인하며 결과를 여기에 표시합니다.',
       'app.switchNeedsUnstake': '스테이크를 다른 검증자로 옮기려면 Nimiq에서는 두 단계가 필요합니다. 먼저 전액을 스테이크 해제한 뒤, 약 12시간의 잠금이 끝나면 여기에서 새 검증자를 선택하세요. 스테이크가 옮겨지고 다시 활성화됩니다. 아무것도 전송되지 않았습니다.',
       'app.txRejectedLocked': '최근에 스테이크를 해제했다면 잠금(약 12시간)이 아직 끝나지 않았을 수 있습니다. 나중에 다시 시도하세요.',
+      'app.unlockAtBlock': '블록 {block}에서 잠금이 해제됩니다.',
+      'app.unlockRemaining': '블록 {block}에서 잠금 해제: {blocks}개 블록 남음(약 1초에 1블록).',
+      'app.unlockReady': '잠금 해제됨: 스테이크 해제를 완료할 수 있습니다.',
+      'app.switchWaitUnlock': '스테이크는 해제되었지만 블록 {block}까지 잠겨 있습니다({blocks}개 블록 남음). 그 후에 검증자를 변경하세요. 아무것도 전송되지 않았습니다.',
       'app.myStakeActiveLabel': '활성 스테이크',
       'app.myStakeInactiveLabel': '철회 중',
       'app.myStakeRetiredLabel': '회수 가능한 잔액',
@@ -1412,6 +1436,10 @@
       'app.outcomeUnknown': 'Nimiq Pay konnte nicht bestätigen, ob die Transaktion gesendet wurde. Sende sie nicht erneut: Prüfe ihren Status in Nimiq Pay. Die App beobachtet das Netzwerk weiter und zeigt das Ergebnis hier an.',
       'app.switchNeedsUnstake': 'Um deinen Stake zu einem anderen Validator zu verschieben, verlangt Nimiq zwei Schritte: zuerst den gesamten Betrag unstaken (Unstaken), dann nach der Sperre von etwa 12 Stunden hier den neuen Validator wählen; dein Stake wechselt dorthin und ist wieder aktiv. Es wurde nichts gesendet.',
       'app.txRejectedLocked': 'Wenn du kürzlich unstaked hast, ist die Sperre (etwa 12 Stunden) vielleicht noch nicht vorbei: Versuche es später erneut.',
+      'app.unlockAtBlock': 'Entsperrt bei Block {block}.',
+      'app.unlockRemaining': 'Entsperrt bei Block {block}: noch {blocks} Blöcke (etwa ein Block pro Sekunde).',
+      'app.unlockReady': 'Entsperrt: Du kannst das Unstaking abschließen.',
+      'app.switchWaitUnlock': 'Dein Stake ist unstaked, aber bis Block {block} gesperrt (noch {blocks} Blöcke). Wechsle danach den Validator; es wurde nichts gesendet.',
       'app.myStakeActiveLabel': 'Aktives Stake',
       'app.myStakeInactiveLabel': 'Wird gerade zurückgezogen',
       'app.myStakeRetiredLabel': 'Einzuziehender Restbetrag',
@@ -1538,6 +1566,10 @@
       'app.outcomeUnknown': 'O Nimiq Pay não conseguiu confirmar se a transação foi enviada. Não a voltes a enviar: verifica o estado no Nimiq Pay. A app continua a observar a rede e mostrará o resultado aqui.',
       'app.switchNeedsUnstake': 'Para mudar o teu stake para outro validador, o Nimiq exige dois passos: primeiro retira todo o stake (Retirar stake) e, após o bloqueio de cerca de 12 horas, escolhe aqui o novo validador; o teu stake passa para ele e volta a ficar ativo. Nada foi enviado.',
       'app.txRejectedLocked': 'Se retiraste o stake há pouco, o bloqueio (cerca de 12 horas) pode ainda não ter terminado: tenta mais tarde.',
+      'app.unlockAtBlock': 'Desbloqueia no bloco {block}.',
+      'app.unlockRemaining': 'Desbloqueia no bloco {block}: faltam {blocks} blocos (cerca de um bloco por segundo).',
+      'app.unlockReady': 'Desbloqueado: podes concluir a retirada.',
+      'app.switchWaitUnlock': 'O teu stake foi retirado mas continua bloqueado até ao bloco {block} (faltam {blocks} blocos). Muda de validador depois; nada foi enviado.',
       'app.myStakeActiveLabel': 'Stake ativo',
       'app.myStakeInactiveLabel': 'Em processo de retirada',
       'app.myStakeRetiredLabel': 'Saldo recuperável',
@@ -1664,6 +1696,10 @@
       'app.outcomeUnknown': 'Nimiq Pay не смог подтвердить, была ли отправлена транзакция. Не отправляй её снова: проверь её статус в Nimiq Pay. Приложение продолжает следить за сетью и покажет результат здесь.',
       'app.switchNeedsUnstake': 'Чтобы перевести стейк к другому валидатору, Nimiq требует два шага: сначала выведи из стейка всю сумму (Вывести из стейка), затем, после блокировки примерно на 12 часов, выбери здесь нового валидатора; стейк перейдёт к нему и снова станет активным. Ничего не отправлено.',
       'app.txRejectedLocked': 'Если ты недавно вывел средства из стейка, блокировка (около 12 часов) могла ещё не закончиться: попробуй позже.',
+      'app.unlockAtBlock': 'Разблокировка на блоке {block}.',
+      'app.unlockRemaining': 'Разблокировка на блоке {block}: осталось {blocks} блоков (примерно один блок в секунду).',
+      'app.unlockReady': 'Разблокировано: можно завершить вывод.',
+      'app.switchWaitUnlock': 'Твой стейк выведен, но заблокирован до блока {block} (осталось {blocks} блоков). Смени валидатора после этого; ничего не отправлено.',
       'app.myStakeActiveLabel': 'Активный стейк',
       'app.myStakeInactiveLabel': 'В процессе изъятия',
       'app.myStakeRetiredLabel': 'Восстановимый остаток',
@@ -1790,6 +1826,10 @@
       'app.outcomeUnknown': 'Nimiq Pay işlemin gönderilip gönderilmediğini doğrulayamadı. Tekrar gönderme: durumunu Nimiq Pay\'de kontrol et. Uygulama ağı izlemeye devam eder ve sonucu burada gösterir.',
       'app.switchNeedsUnstake': 'Stake\'ini başka bir doğrulayıcıya taşımak için Nimiq iki adım ister: önce tüm tutarı stake\'ten çıkar (Stake\'ten çık), sonra yaklaşık 12 saatlik kilit bitince burada yeni doğrulayıcıyı seç; stake\'in ona geçer ve yeniden aktif olur. Hiçbir şey gönderilmedi.',
       'app.txRejectedLocked': 'Stake\'ten yakın zamanda çıktıysan kilit (yaklaşık 12 saat) henüz bitmemiş olabilir: daha sonra tekrar dene.',
+      'app.unlockAtBlock': '{block}. blokta kilit açılır.',
+      'app.unlockRemaining': '{block}. blokta kilit açılır: {blocks} blok kaldı (yaklaşık saniyede bir blok).',
+      'app.unlockReady': 'Kilit açıldı: çıkışı tamamlayabilirsin.',
+      'app.switchWaitUnlock': 'Stake\'in çıkarıldı ama {block}. bloka kadar kilitli ({blocks} blok kaldı). Doğrulayıcıyı ondan sonra değiştir; hiçbir şey gönderilmedi.',
       'app.myStakeActiveLabel': 'Aktif stake',
       'app.myStakeInactiveLabel': 'Geri çekilme aşamasında',
       'app.myStakeRetiredLabel': 'Geri kazanılabilir bakiye',
@@ -1916,6 +1956,10 @@
       'app.outcomeUnknown': 'لم يتمكن Nimiq Pay من تأكيد ما إذا كانت المعاملة قد أُرسلت. لا تُرسلها مجدداً: تحقّق من حالتها في Nimiq Pay. يواصل التطبيق متابعة الشبكة وسيعرض النتيجة هنا.',
       'app.switchNeedsUnstake': 'لنقل الستيك إلى مُصدق آخر، يتطلب Nimiq خطوتين: أولاً ألغِ الستيك بالكامل (إلغاء الستيك)، ثم بعد قفل يدوم نحو 12 ساعة اختر هنا المُصدق الجديد؛ ينتقل الستيك إليه ويعود نشطاً. لم يُرسل شيء.',
       'app.txRejectedLocked': 'إذا ألغيت الستيك مؤخراً، فقد لا يكون القفل (نحو 12 ساعة) قد انتهى بعد: حاول لاحقاً.',
+      'app.unlockAtBlock': 'يُفتح القفل عند الكتلة {block}.',
+      'app.unlockRemaining': 'يُفتح القفل عند الكتلة {block}: تبقّى {blocks} كتلة (نحو كتلة واحدة في الثانية).',
+      'app.unlockReady': 'تم فتح القفل: يمكنك إكمال إلغاء الستيك.',
+      'app.switchWaitUnlock': 'تم إلغاء الستيك لكنه مقفل حتى الكتلة {block} (تبقّى {blocks} كتلة). غيّر المُصدق بعد ذلك؛ لم يُرسل شيء.',
       'app.myStakeActiveLabel': 'الرهن النشط',
       'app.myStakeInactiveLabel': 'قيد السحب',
       'app.myStakeRetiredLabel': 'الرصيد القابل للاسترداد',
@@ -2767,7 +2811,7 @@
     retireConfirmBtn.disabled = locked;
     removeStakeBtn.disabled = locked;
     var fub = $('finishUnstakeBtn');
-    if (fub) fub.disabled = locked;
+    if (fub) fub.disabled = locked || fub.getAttribute('data-wait') === '1';
     clearTimeout(lockTimer);
     if (locked) lockTimer = setTimeout(applyLock, 1000);
   }
@@ -2990,13 +3034,33 @@
   });
   // Unstake buttons follow the chain state: "Finish unstaking" only with an inactive balance; a new unstake is refused
   // while one is in progress (SetActiveStake would restart the lock-up of the inactive balance, staker.rs set_active_stake).
+  // The real unlock of the inactive stake: inactive_from (from the chain) plus the collateral lock-up of the protocol,
+  // one epoch on mainnet = 60 blocks per batch x 720 batches (core-rs-albatross primitives/src/policy.rs:
+  // block_after_collateral_lockup(n) = n + blocks_per_epoch + 1; staker.rs is_inactive_stake_released). The blocks
+  // left are known only if the API gives the current block height (optional `block_number`); no time is invented.
+  var BLOCKS_PER_EPOCH = 43200;
+  function unlockInfo(data){
+    if (!data || !data.found || !(data.inactive_balance_luna > 0) || typeof data.inactive_from !== 'number') return null;
+    var block = data.inactive_from + BLOCKS_PER_EPOCH + 1;
+    var head = typeof data.block_number === 'number' ? data.block_number : null;
+    return { block: block, left: head === null ? null : Math.max(0, block - head) };
+  }
+  function unlockText(info){
+    if (!info) return '';
+    if (info.left === null) return t('app.unlockAtBlock').replace('{block}', String(info.block));
+    if (info.left > 0) return t('app.unlockRemaining').replace('{block}', String(info.block)).replace('{blocks}', String(info.left));
+    return t('app.unlockReady');
+  }
   function updateUnstakeUi(data){
     var inactive = data && data.found ? (data.inactive_balance_luna || 0) : 0;
     var active = data && data.found ? (data.active_balance_luna || 0) : 0;
+    var info = unlockInfo(data);
     finishUnstakeBtn.hidden = !(inactive > 0);
+    finishUnstakeBtn.setAttribute('data-wait', info && info.left > 0 ? '1' : '');
+    finishUnstakeBtn.disabled = lockState() !== 'idle' || !!(info && info.left > 0);
     var note = $('unstakeInProgressNote');
     note.hidden = !(inactive > 0);
-    if (inactive > 0) note.textContent = t('app.unstakeInProgress').replace('{amount}', formatStake(inactive));
+    if (inactive > 0) note.textContent = t('app.unstakeInProgress').replace('{amount}', formatStake(inactive)) + (info ? ' ' + unlockText(info) : '');
     retireToggleBtn.disabled = inactive > 0 || !(active > 0);
     if (retireToggleBtn.disabled) retireForm.hidden = true;
   }
@@ -3234,6 +3298,14 @@
         // or retired before re-delegating"); until 1.1.2 the app sent it anyway and it was rejected at execution.
         if (isSwitch && stakerData && stakerData.active_balance_luna > 0){
           showErrorModal(t('app.switchNeedsUnstake'), '');
+          releaseAction(false);
+          syncDelegateBtn();
+          return;
+        }
+        // ... and while the inactive stake is still locked, when the current height is known (staker.rs update_staker)
+        var lockInfo = isSwitch ? unlockInfo(stakerData) : null;
+        if (lockInfo && lockInfo.left > 0){
+          showErrorModal(t('app.switchWaitUnlock').replace('{block}', String(lockInfo.block)).replace('{blocks}', String(lockInfo.left)), '');
           releaseAction(false);
           syncDelegateBtn();
           return;
