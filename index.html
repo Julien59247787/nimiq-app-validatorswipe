@@ -538,7 +538,7 @@
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Signaler un bug</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
-  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.8" target="_blank" rel="noopener noreferrer">v1.1.8</a>
+  <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.9" target="_blank" rel="noopener noreferrer">v1.1.9</a>
   <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le tableau de bord des validateurs" data-i18n-aria="footer.mascotLink" title="Ouvrir le tableau de bord des validateurs" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
@@ -652,6 +652,7 @@
       'app.unlockRemaining': 'Déverrouillage au bloc {block} : encore {blocks} blocs (un bloc par seconde environ).',
       'app.unlockReady': 'Déverrouillé : tu peux terminer le déstaking.',
       'app.needFreeNim': 'Si tout ton solde est staké, Nimiq Pay a besoin d\'un peu de NIM disponibles pour envoyer Déstaker, Terminer le déstaking ou un changement de validateur : reçois d\'abord un petit montant. Ces NIM restent utilisables normalement dans Nimiq Pay.',
+      'app.signalWalletUpdating': 'Si tu viens de recevoir ou de récupérer des NIM, Nimiq Pay est peut-être encore en train de mettre à jour ton wallet : attends quelques secondes et réessaie.',
       'app.reserveNote': '{reserve} NIM restent dans ton wallet Nimiq Pay pour que Déstaker, Terminer le déstaking et le changement de validateur fonctionnent ; ils ne sont pas dépensés.',
       'app.reserveExceeded': 'Tu peux staker au plus {max} NIM : {reserve} NIM doivent rester dans Nimiq Pay pour pouvoir déstaker plus tard. Rien n\'a été envoyé.',
       'app.stakeMax': 'Max',
@@ -786,6 +787,7 @@
       'app.unlockRemaining': 'Unlocks at block {block}: {blocks} blocks to go (about one block per second).',
       'app.unlockReady': 'Unlocked: you can finish unstaking.',
       'app.needFreeNim': 'If all your balance is staked, Nimiq Pay needs some available NIM to send Unstake, Finish unstaking or a validator switch: receive a small amount first. Those NIM stay spendable as usual in Nimiq Pay.',
+      'app.signalWalletUpdating': 'If you just received or claimed NIM, Nimiq Pay may still be updating your wallet: wait a few seconds and try again.',
       'app.reserveNote': '{reserve} NIM stay in your Nimiq Pay wallet so that Unstake, Finish unstaking and Switch keep working; they are not spent.',
       'app.reserveExceeded': 'You can stake at most {max} NIM: {reserve} NIM must stay in Nimiq Pay so you can unstake later. Nothing was sent.',
       'app.stakeMax': 'Max',
@@ -937,6 +939,7 @@
       'app.unlockRemaining': 'Se desbloquea en el bloque {block}: faltan {blocks} bloques (aproximadamente un bloque por segundo).',
       'app.unlockReady': 'Desbloqueado: puedes terminar el retiro.',
       'app.needFreeNim': 'Si todo tu saldo está en stake, Nimiq Pay necesita algunos NIM disponibles para enviar Retirar stake, Terminar el retiro o un cambio de validador: recibe primero una pequeña cantidad. Esos NIM siguen pudiéndose usar con normalidad en Nimiq Pay.',
+      'app.signalWalletUpdating': 'Si acabas de recibir o recuperar NIM, puede que Nimiq Pay aún esté actualizando tu wallet: espera unos segundos y vuelve a intentarlo.',
       'app.reserveNote': '{reserve} NIM se quedan en tu monedero Nimiq Pay para que Retirar stake, Terminar el retiro y el cambio de validador funcionen; no se gastan.',
       'app.reserveExceeded': 'Puedes hacer staking de {max} NIM como máximo: {reserve} NIM deben quedarse en Nimiq Pay para poder retirar el stake más tarde. No se ha enviado nada.',
       'app.stakeMax': 'Máx.',
@@ -1071,6 +1074,7 @@
       'app.unlockRemaining': '将在区块 {block} 解锁：还剩 {blocks} 个区块（约每秒一个区块）。',
       'app.unlockReady': '已解锁：你可以完成解除质押。',
       'app.needFreeNim': '如果你的余额已全部质押，Nimiq Pay 需要一些可用的 NIM 才能发送解除质押、完成解除质押或更换验证者：请先接收少量 NIM。这些 NIM 在 Nimiq Pay 中仍可照常使用。',
+      'app.signalWalletUpdating': '如果你刚收到或取回 NIM，Nimiq Pay 可能仍在更新你的钱包：请等几秒钟后再试。',
       'app.reserveNote': '{reserve} NIM 会保留在你的 Nimiq Pay 钱包中，以便解除质押、完成解除质押和更换验证者能够正常进行；这些 NIM 不会被花掉。',
       'app.reserveExceeded': '你最多可以质押 {max} NIM：需要在 Nimiq Pay 中保留 {reserve} NIM，以便之后能够解除质押。本次未发送任何内容。',
       'app.stakeMax': '最大',
@@ -1205,6 +1209,7 @@
       'app.unlockRemaining': 'ブロック {block} でロック解除：残り {blocks} ブロック（約 1 秒に 1 ブロック）。',
       'app.unlockReady': 'ロック解除済み：ステーク解除を完了できます。',
       'app.needFreeNim': '残高をすべてステークしている場合、Nimiq Pay がステーク解除・ステーク解除の完了・バリデーター変更を送信するには、利用可能な NIM が少し必要です。まず少額を受け取ってください。その NIM は Nimiq Pay で通常どおり使えます。',
+      'app.signalWalletUpdating': 'NIM を受け取った、または引き出した直後の場合、Nimiq Pay がまだウォレットを更新中の可能性があります。数秒待ってからもう一度お試しください。',
       'app.reserveNote': 'ステーク解除・ステーク解除の完了・バリデーター変更が動作するよう、{reserve} NIM を Nimiq Pay ウォレットに残します。この NIM は使われません。',
       'app.reserveExceeded': 'ステークできるのは最大 {max} NIM です。後でステーク解除できるよう、{reserve} NIM を Nimiq Pay に残す必要があります。何も送信されていません。',
       'app.stakeMax': '最大',
@@ -1339,6 +1344,7 @@
       'app.unlockRemaining': '블록 {block}에서 잠금 해제: {blocks}개 블록 남음(약 1초에 1블록).',
       'app.unlockReady': '잠금 해제됨: 스테이크 해제를 완료할 수 있습니다.',
       'app.needFreeNim': '잔액을 모두 스테이크했다면, Nimiq Pay가 스테이크 해제, 스테이크 해제 완료 또는 검증자 변경을 보내려면 사용 가능한 NIM이 조금 필요합니다. 먼저 소액을 받으세요. 그 NIM은 Nimiq Pay에서 평소처럼 사용할 수 있습니다.',
+      'app.signalWalletUpdating': '방금 NIM을 받았거나 회수했다면 Nimiq Pay가 아직 지갑을 업데이트하는 중일 수 있습니다. 몇 초 기다린 후 다시 시도하세요.',
       'app.reserveNote': '스테이크 해제, 스테이크 해제 완료, 검증자 변경이 작동하도록 {reserve} NIM이 Nimiq Pay 지갑에 남습니다. 이 NIM은 사용되지 않습니다.',
       'app.reserveExceeded': '최대 {max} NIM까지 스테이킹할 수 있습니다. 나중에 스테이크를 해제하려면 {reserve} NIM이 Nimiq Pay에 남아 있어야 합니다. 아무것도 전송되지 않았습니다.',
       'app.stakeMax': '최대',
@@ -1473,6 +1479,7 @@
       'app.unlockRemaining': 'Entsperrt bei Block {block}: noch {blocks} Blöcke (etwa ein Block pro Sekunde).',
       'app.unlockReady': 'Entsperrt: Du kannst das Unstaking abschließen.',
       'app.needFreeNim': 'Wenn dein ganzes Guthaben gestakt ist, braucht Nimiq Pay etwas verfügbares NIM, um Unstaken, Unstaking abschließen oder einen Validatorwechsel zu senden: Empfange zuerst einen kleinen Betrag. Diese NIM bleiben in Nimiq Pay ganz normal nutzbar.',
+      'app.signalWalletUpdating': 'Wenn du gerade NIM empfangen oder abgeholt hast, aktualisiert Nimiq Pay deine Wallet vielleicht noch: Warte ein paar Sekunden und versuche es erneut.',
       'app.reserveNote': '{reserve} NIM bleiben in deiner Nimiq-Pay-Wallet, damit Unstaken, Unstaking abschließen und der Validatorwechsel funktionieren; sie werden nicht ausgegeben.',
       'app.reserveExceeded': 'Du kannst höchstens {max} NIM staken: {reserve} NIM müssen in Nimiq Pay bleiben, damit du später unstaken kannst. Es wurde nichts gesendet.',
       'app.stakeMax': 'Max.',
@@ -1607,6 +1614,7 @@
       'app.unlockRemaining': 'Desbloqueia no bloco {block}: faltam {blocks} blocos (cerca de um bloco por segundo).',
       'app.unlockReady': 'Desbloqueado: podes concluir a retirada.',
       'app.needFreeNim': 'Se todo o teu saldo está em stake, o Nimiq Pay precisa de alguns NIM disponíveis para enviar Retirar stake, Concluir a retirada ou uma mudança de validador: recebe primeiro um pequeno montante. Esses NIM continuam a poder ser usados normalmente no Nimiq Pay.',
+      'app.signalWalletUpdating': 'Se acabaste de receber ou recuperar NIM, o Nimiq Pay pode ainda estar a atualizar a tua wallet: espera alguns segundos e tenta novamente.',
       'app.reserveNote': '{reserve} NIM ficam na tua carteira Nimiq Pay para que Retirar stake, Concluir a retirada e a mudança de validador funcionem; não são gastos.',
       'app.reserveExceeded': 'Podes fazer stake de no máximo {max} NIM: {reserve} NIM têm de ficar no Nimiq Pay para poderes retirar o stake mais tarde. Nada foi enviado.',
       'app.stakeMax': 'Máx.',
@@ -1741,6 +1749,7 @@
       'app.unlockRemaining': 'Разблокировка на блоке {block}: осталось {blocks} блоков (примерно один блок в секунду).',
       'app.unlockReady': 'Разблокировано: можно завершить вывод.',
       'app.needFreeNim': 'Если весь твой баланс в стейке, Nimiq Pay нужно немного доступных NIM, чтобы отправить вывод из стейка, завершение вывода или смену валидатора: сначала получи небольшую сумму. Эти NIM остаются доступными в Nimiq Pay как обычно.',
+      'app.signalWalletUpdating': 'Если ты только что получил или забрал NIM, Nimiq Pay, возможно, ещё обновляет твой кошелёк: подожди несколько секунд и попробуй снова.',
       'app.reserveNote': '{reserve} NIM остаются в твоём кошельке Nimiq Pay, чтобы вывод из стейка, завершение вывода и смена валидатора работали; они не тратятся.',
       'app.reserveExceeded': 'Можно застейкать не больше {max} NIM: {reserve} NIM должны остаться в Nimiq Pay, чтобы потом можно было вывести стейк. Ничего не отправлено.',
       'app.stakeMax': 'Макс.',
@@ -1875,6 +1884,7 @@
       'app.unlockRemaining': '{block}. blokta kilit açılır: {blocks} blok kaldı (yaklaşık saniyede bir blok).',
       'app.unlockReady': 'Kilit açıldı: çıkışı tamamlayabilirsin.',
       'app.needFreeNim': 'Bakiyenin tamamı stake edildiyse, Nimiq Pay\'in Stake\'ten çık, Çıkışı tamamla veya doğrulayıcı değişikliğini gönderebilmesi için biraz kullanılabilir NIM gerekir: önce küçük bir miktar al. Bu NIM\'ler Nimiq Pay\'de her zamanki gibi kullanılabilir kalır.',
+      'app.signalWalletUpdating': 'Az önce NIM aldıysan veya geri aldıysan, Nimiq Pay cüzdanını hâlâ güncelliyor olabilir: birkaç saniye bekle ve tekrar dene.',
       'app.reserveNote': 'Stake\'ten çık, Çıkışı tamamla ve doğrulayıcı değişikliğinin çalışması için {reserve} NIM Nimiq Pay cüzdanında kalır; bunlar harcanmaz.',
       'app.reserveExceeded': 'En fazla {max} NIM stake edebilirsin: daha sonra stake\'ten çıkabilmen için {reserve} NIM Nimiq Pay\'de kalmalı. Hiçbir şey gönderilmedi.',
       'app.stakeMax': 'Maks.',
@@ -2009,6 +2019,7 @@
       'app.unlockRemaining': 'يُفتح القفل عند الكتلة {block}: تبقّى {blocks} كتلة (نحو كتلة واحدة في الثانية).',
       'app.unlockReady': 'تم فتح القفل: يمكنك إكمال إلغاء الستيك.',
       'app.needFreeNim': 'إذا كان رصيدك كله في الستيك، يحتاج Nimiq Pay إلى بعض عملات NIM المتاحة لإرسال إلغاء الستيك أو إكمال إلغاء الستيك أو تغيير المُصدق: استلم مبلغاً صغيراً أولاً. تبقى هذه العملات قابلة للاستخدام كالمعتاد في Nimiq Pay.',
+      'app.signalWalletUpdating': 'إذا كنت قد استلمت أو استرددت NIM للتو، فقد يكون Nimiq Pay لا يزال يحدّث محفظتك: انتظر بضع ثوانٍ وحاول مرة أخرى.',
       'app.reserveNote': 'تبقى {reserve} NIM في محفظة Nimiq Pay لكي يعمل إلغاء الستيك وإكمال إلغاء الستيك وتغيير المُصدق؛ لا يتم إنفاقها.',
       'app.reserveExceeded': 'يمكنك إيداع {max} NIM كحد أقصى: يجب أن تبقى {reserve} NIM في Nimiq Pay لتتمكن من إلغاء الستيك لاحقاً. لم يُرسل شيء.',
       'app.stakeMax': 'الحد الأقصى',
@@ -2415,6 +2426,10 @@
     var humanMsg = kind === 'balance' ? t('app.delegateFailedBalanceHint')
       : kind === 'rejected' ? t(expect.kind === 'create' ? 'app.createNeedsSingleTransfer' : 'app.delegateFailedRejected')
       : t('app.delegateFailed');
+    // 1.1.9: Unstake / Finish unstaking / Switch are sent from Nimiq Pay's swap contract, which is renewed after money
+    // comes in (real test 12/11: Claim at 66736578, new contract funded at 66736585). In that window the signal cannot
+    // be sent; a few seconds later it works.
+    if (kind !== 'cancelled' && /^(unstake|retire|update)$/.test(expect.kind)) humanMsg += ' ' + t('app.signalWalletUpdating');
     showErrorModal(humanMsg, rawDetail);
     releaseAction(false);
   }

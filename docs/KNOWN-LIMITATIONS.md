@@ -193,6 +193,12 @@ and reads a "no staker" answer again before a Create; the node itself is the ope
   account (payments are made from it, and Nimiq Pay renews it before its timeout), so those NIM stay spendable as
   usual. The app shows this note when the free balance of the basic account is 0; it blocks nothing, since the
   available NIM are normally in the swap contract.
+- **Right after receiving or claiming NIM: wait a few seconds (since 1.1.9).** Real test on 2026-11-12: Claim at
+  block 66736578; Nimiq Pay then returned its old swap contract to the wallet (66736581) and funded a new one
+  (66736585). An Unstake tried in that moment was refused, the same Unstake a few seconds later was executed
+  (66736697, from the new contract). Our reading, not confirmed by Nimiq Pay: while the swap contract is being
+  renewed there is no funded one to send the request from. When Unstake, Finish unstaking or Switch fails, the
+  error message now also says to wait a few seconds and try again.
 - **Still open on the Nimiq Pay side** (to be re-tested with the correct requests): Create stake from a swap contract
   built by merging several transfers.
 - **Right-to-left layout** is not implemented: Arabic is displayed with a left-to-right layout.

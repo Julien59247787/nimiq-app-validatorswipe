@@ -6,6 +6,14 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.9] — unreleased
+
+- **Clearer message right after receiving or claiming NIM.** When Unstake, Finish unstaking or Switch cannot be sent,
+  the error now adds: "If you just received or claimed NIM, Nimiq Pay may still be updating your wallet: wait a few
+  seconds and try again." (11 languages). Seen in a real test on 2026-11-12: an Unstake right after a Claim was
+  refused while Nimiq Pay renewed its swap contract, and went through a few seconds later
+  ([details](docs/KNOWN-LIMITATIONS.md)). The existing advice is kept.
+
 ## [1.1.8] — 2026-11-11
 
 - **Language menu shows all 11 languages.** The menu was capped at 280 px while the 11 languages need about 377 px,
