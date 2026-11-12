@@ -6,7 +6,7 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
-## [1.1.9] — unreleased
+## [1.1.9] — 2026-11-12
 
 - **Clearer message right after receiving or claiming NIM.** When Unstake, Finish unstaking or Switch cannot be sent,
   the error now adds: "If you just received or claimed NIM, Nimiq Pay may still be updating your wallet: wait a few
