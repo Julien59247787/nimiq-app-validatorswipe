@@ -6,6 +6,14 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.10] — unreleased
+
+- **An unknown state is never shown as known.** Every read of the app's API (validators list, staker status) now gives
+  up after 10 seconds instead of possibly waiting forever. An empty validators list shows the same note as a failed
+  request instead of silently showing only the 2 known nodes. When your stake cannot be read, a note says so (what is
+  shown may be out of date; the app tries again) and disappears at the next successful read. 11 languages.
+  Tested locally with the API answering 500, invalid JSON, an empty list or nothing at all.
+
 ## [1.1.9] — 2026-11-12
 
 - **Clearer message right after receiving or claiming NIM.** When Unstake, Finish unstaking or Switch cannot be sent,
