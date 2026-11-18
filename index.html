@@ -2600,7 +2600,27 @@
   // Switch are sent from the user's local account (no swap contract needed). Only that exact value switches the
   // reserve off; a missing method, an error, a timeout or any other value keeps the 1.1.6 behaviour. A method the
   // host does not know answers UnknownRequestError, which Nimiq Pay does not show as a toast.
-  function reserveLuna(){ return state.signalsFromLocal === true ? 0 : RESERVE_LUNA; }
+  // Nimiq Pay's own answer (nimiq/nimiq-pay-app#146, 2026-11-18): no getCapabilities(); instead window.nimiqPay.version
+  // (running version, OTA included) to compare with the release that ships nimiq/nimiq-pay-app#148 (signals from the
+  // local account). That release is not known yet: SIGNALS_LOCAL_MIN_VERSION stays null and the reserve stays on.
+  // Only a plain "x.y.z" version at or above the threshold switches it off; anything else keeps the reserve.
+  // getCapabilities() above is kept for now (harmless: UnknownRequestError) and goes away in the next version.
+  var SIGNALS_LOCAL_MIN_VERSION = null;
+  function parseVersion(v){
+    var m = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(String(v == null ? '' : v).trim());
+    return m ? [+m[1], +m[2], +m[3]] : null;
+  }
+  function hostVersionHasLocalSignals(){
+    var min = parseVersion(SIGNALS_LOCAL_MIN_VERSION);
+    if (!min) return false;
+    var cur;
+    try { cur = parseVersion(window.nimiqPay && window.nimiqPay.version); } catch (e) { return false; }
+    if (!cur) return false;
+    for (var i = 0; i < 3; i++){ if (cur[i] !== min[i]) return cur[i] > min[i]; }
+    return true;
+  }
+  function reserveOff(){ return state.signalsFromLocal === true || hostVersionHasLocalSignals(); }
+  function reserveLuna(){ return reserveOff() ? 0 : RESERVE_LUNA; }
   function detectCapabilities(){
     var n = state.nimiq;
     if (!n || typeof n.getCapabilities !== 'function' || state.capsAsked) return;
@@ -2686,7 +2706,7 @@
   function updateReserveUi(){
     var on = !!state.nimiq;
     var note = $('reserveNote');
-    note.hidden = !on || state.signalsFromLocal === true;
+    note.hidden = !on || reserveOff();
     if (on) note.textContent = t('app.reserveNote').replace('{reserve}', String(RESERVE_LUNA / 100000));
     var m = maxStakeLuna();
     $('stakeMaxBtn').hidden = !(on && m !== null && m >= 100000);
@@ -3283,7 +3303,7 @@
     // account; an emptied one is pruned and the request never reaches the chain (proved 2026-11-11). Information only:
     // the available NIM sit in that contract while wallet_balance_luna is 0, so nothing is blocked.
     var spend = state.spendableLuna;
-    $('needFreeNimNote').hidden = state.signalsFromLocal === true || !(state.nimiq && (active > 0 || inactive > 0) && (spend != null ? spend === 0 : (data && data.wallet_balance_luna === 0)));
+    $('needFreeNimNote').hidden = reserveOff() || !(state.nimiq && (active > 0 || inactive > 0) && (spend != null ? spend === 0 : (data && data.wallet_balance_luna === 0)));
   }
 
   function metricOrDash(value, suffix){
@@ -3568,7 +3588,7 @@
         }
         // Keep the reserve (1.1.5): Create / Add may not empty the swap contract. Only when the balance is known.
         var maxL = state.nimiq ? maxStakeLuna() : null;
-        if (!isSwitch && maxL !== null && state.signalsFromLocal !== true && stakeValueLuna > maxL){
+        if (!isSwitch && maxL !== null && !reserveOff() && stakeValueLuna > maxL){
           showErrorModal(t('app.reserveExceeded').replace('{max}', String(Math.floor(maxL / 100000))).replace('{reserve}', String(RESERVE_LUNA / 100000)), '');
           releaseAction(false);
           syncDelegateBtn();
