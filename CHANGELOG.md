@@ -6,6 +6,15 @@ publication, the version submitted to the Nimiq Mini Apps Competition (Cycle II)
 every change made since is listed below, with its commit, for traceability. Earlier development
 work is available in the Git history.
 
+## [1.1.11] — unreleased
+
+- **Validator NODENIMIQ2 (NQ51 7BS3 … KD4D) is closing.** Its card shows "Closing soon" and is listed last; stakers
+  delegating to it see a notice with a button that shows the suggested validator, NIMIQ-JU.FR by @Ju (NQ40 FC4D … 10VT).
+  The button sends nothing: the switch goes through the usual flow. Footer link to dashboard.nimiq-ju.fr. 11 languages.
+- **Ready for the Nimiq Pay release with nimiq/nimiq-pay-app#148.** Once that release sends Unstake, Finish unstaking and
+  Switch from your local account, the app recognises it from the Nimiq Pay version and drops the 5 NIM reserve.
+  The minimum version is set only once the release is published; until then nothing changes (reserve kept).
+
 ## [1.1.10] — unreleased
 
 - **An unknown state is never shown as known.** Every read of the app's API (validators list, staker status) now gives
