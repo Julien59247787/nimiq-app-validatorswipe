@@ -15,7 +15,7 @@ work is available in the Git history.
   Switch from your local account, the app recognises it from the Nimiq Pay version and drops the 5 NIM reserve.
   The minimum version is set only once the release is published; until then nothing changes (reserve kept).
 
-## [1.1.10] — unreleased
+## [1.1.10] — 2026-11-18
 
 - **An unknown state is never shown as known.** Every read of the app's API (validators list, staker status) now gives
   up after 10 seconds instead of possibly waiting forever. An empty validators list shows the same note as a failed
