@@ -360,6 +360,10 @@
           <span class="active-delegation-icon" aria-hidden="true">🛡️</span>
           <span id="activeDelegationText"></span>
         </div>
+        <div class="active-delegation-banner" id="closingValidatorBanner" style="flex-direction:column; color:var(--warn); border-color:var(--warn);" hidden>
+          <span id="closingValidatorText"></span>
+          <button type="button" class="btn btn-ghost" id="closingShowSuccessorBtn" data-i18n="app.closingShowSuccessor" style="font-size:.85rem; padding:10px 14px; min-height:44px;"></button>
+        </div>
         <p class="helptext" id="pendingNote" data-i18n="app.pendingConfirm" hidden>En attente de la confirmation de ta transaction par le réseau…</p>
         <button type="button" class="btn btn-ghost" id="unlockBtn" data-i18n="app.unlockContinue" hidden style="margin:8px 6px 0; font-size:.85rem; padding:12px 16px; min-height:44px;">Pas envoyé ? Débloquer</button>
 
@@ -540,7 +544,7 @@
   <a class="credit-bug-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/issues/new/choose" target="_blank" rel="noopener noreferrer" data-i18n="footer.reportBug">Signaler un bug</a>
   <span class="credit-separator" aria-hidden="true">&middot;</span>
   <a class="credit-bug-link credit-version-link" href="https://github.com/Julien59247787/nimiq-app-validatorswipe/releases/tag/v1.1.10" target="_blank" rel="noopener noreferrer">v1.1.10</a>
-  <a class="credit-mascot-link" href="https://dashboard-nodenimiq1.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le tableau de bord des validateurs" data-i18n-aria="footer.mascotLink" title="Ouvrir le tableau de bord des validateurs" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
+  <a class="credit-mascot-link" href="https://dashboard.nimiq-ju.fr/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir le tableau de bord des validateurs" data-i18n-aria="footer.mascotLink" title="Ouvrir le tableau de bord des validateurs" data-i18n-title="footer.mascotLink"><img class="credit-mascot" src="tux-nimiq-96.png" alt="" width="28" height="28" loading="lazy" decoding="async"></a>
 </div>
 
 <div class="success-modal-overlay" id="successModalOverlay" hidden>
@@ -606,6 +610,9 @@
       'app.stakeAmtLabel': 'Montant à déléguer (NIM)',
       'app.validatorsListError': 'Impossible de charger la liste complète des validateurs — affichage limité aux 2 nœuds connus.',
       'app.statusReadFailed': 'Impossible de lire ton stake sur le réseau pour le moment. Ce qui est affiché n\'est peut-être pas à jour ; nouvel essai automatique.',
+      'app.closingValidator': 'Ce validateur va fermer. Pour continuer à recevoir des récompenses, change de validateur, par exemple pour {successor}.',
+      'app.closingBadge': 'Ferme bientôt',
+      'app.closingShowSuccessor': 'Voir le validateur proposé',
       'app.balanceHint': 'Ce montant est pré-rempli avec ton solde disponible — vérifie-le avant de confirmer.',
       'app.delegating': 'Délégation en cours…',
       'app.delegateError': 'La délégation a échoué ou a été annulée.',
@@ -742,6 +749,9 @@
       'app.stakeAmtLabel': 'Amount to delegate (NIM)',
       'app.validatorsListError': 'Could not load the full validator list — showing only the 2 known nodes.',
       'app.statusReadFailed': 'Your stake could not be read from the network right now. What is shown may be out of date; the app will try again.',
+      'app.closingValidator': 'This validator is closing. To keep earning rewards, switch to another validator, for example {successor}.',
+      'app.closingBadge': 'Closing soon',
+      'app.closingShowSuccessor': 'Show the suggested validator',
       'app.balanceHint': 'This amount is pre-filled with your available balance — double-check it before confirming.',
       'app.delegating': 'Delegating…',
       'app.delegateError': 'The delegation failed or was cancelled.',
@@ -962,6 +972,9 @@
       'app.delegatedBadgePast': 'Historia',
       'app.validatorsListError': 'No se ha podido cargar la lista completa de validadores; la visualización se limita a los 2 nodos conocidos.',
       'app.statusReadFailed': 'No se pudo leer tu stake en la red por ahora. Lo que se muestra puede no estar actualizado; la app lo intentará de nuevo.',
+      'app.closingValidator': 'Este validador va a cerrar. Para seguir recibiendo recompensas, cambia de validador, por ejemplo a {successor}.',
+      'app.closingBadge': 'Cierra pronto',
+      'app.closingShowSuccessor': 'Ver el validador sugerido',
       'app.balanceHint': 'Esta cantidad aparece ya introducida con tu saldo disponible; compruébala antes de confirmar.',
       'app.delegateFailedBalanceHint': 'Parece que tu monedero no tiene suficientes NIM disponibles para esta delegación; comprueba tu saldo en Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay ha rechazado la transacción. Comprueba tu monedero e inténtalo de nuevo en un momento.',
@@ -1098,6 +1111,9 @@
       'app.delegatedBadgePast': '历史沿革',
       'app.validatorsListError': '无法加载完整的验证者列表——仅显示已知的2个节点。',
       'app.statusReadFailed': '暂时无法从网络读取你的质押。显示的内容可能不是最新的；应用会自动重试。',
+      'app.closingValidator': '该验证者即将关闭。要继续获得奖励，请更换验证者，例如 {successor}。',
+      'app.closingBadge': '即将关闭',
+      'app.closingShowSuccessor': '查看推荐的验证者',
       'app.balanceHint': '该金额已预先填入你的可用余额——确认前请核对。',
       'app.delegateFailedBalanceHint': '看来你的钱包中可用的NIM不足以进行此次授权——请在Nimiq Pay中查看你的余额。',
       'app.delegateFailedRejected': 'Nimiq Pay 拒绝了该笔交易。请检查你的钱包，稍后再试。',
@@ -1234,6 +1250,9 @@
       'app.delegatedBadgePast': '沿革',
       'app.validatorsListError': 'バリデーターの完全なリストを読み込めません — 既知の2つのノードに限定して表示されます。',
       'app.statusReadFailed': '現在、ネットワークからステークを読み取れません。表示内容は最新でない可能性があります。アプリが自動で再試行します。',
+      'app.closingValidator': 'このバリデーターはまもなく終了します。報酬を受け取り続けるには、{successor} などの別のバリデーターに変更してください。',
+      'app.closingBadge': 'まもなく終了',
+      'app.closingShowSuccessor': 'おすすめのバリデーターを見る',
       'app.balanceHint': 'この金額には、利用可能な残高が自動的に入力されています。確認する前に、金額を確認してください。',
       'app.delegateFailedBalanceHint': 'この委任を行うには、ウォレット内のNIM残高が不足しているようです。Nimiq Payで残高を確認してください。',
       'app.delegateFailedRejected': 'Nimiq Payが取引を拒否しました。ウォレットを確認して、しばらくしてからもう一度お試しください。',
@@ -1370,6 +1389,9 @@
       'app.delegatedBadgePast': '연혁',
       'app.validatorsListError': '검증자 전체 목록을 불러올 수 없습니다 — 알려진 2개의 노드만 표시됩니다.',
       'app.statusReadFailed': '지금은 네트워크에서 스테이크를 읽을 수 없습니다. 표시된 내용이 최신이 아닐 수 있으며, 앱이 다시 시도합니다.',
+      'app.closingValidator': '이 검증자는 곧 종료됩니다. 계속 보상을 받으려면 {successor} 등 다른 검증자로 변경하세요.',
+      'app.closingBadge': '곧 종료',
+      'app.closingShowSuccessor': '추천 검증자 보기',
       'app.balanceHint': '이 금액은 현재 사용 가능한 잔액으로 미리 입력되어 있습니다. 확인하기 전에 다시 한 번 확인해 주세요.',
       'app.delegateFailedBalanceHint': '이 위임에 필요한 NIM이 지갑에 충분하지 않은 것 같습니다. Nimiq Pay에서 잔액을 확인해 주세요.',
       'app.delegateFailedRejected': 'Nimiq Pay에서 거래를 거부했습니다. 지갑을 확인하고 잠시 후 다시 시도하세요.',
@@ -1506,6 +1528,9 @@
       'app.delegatedBadgePast': 'Geschichte',
       'app.validatorsListError': 'Die vollständige Liste der Validatoren konnte nicht geladen werden – die Anzeige ist auf die 2 bekannten Knoten beschränkt.',
       'app.statusReadFailed': 'Dein Stake konnte gerade nicht aus dem Netzwerk gelesen werden. Die Anzeige ist vielleicht nicht aktuell; die App versucht es erneut.',
+      'app.closingValidator': 'Dieser Validator wird geschlossen. Um weiter Belohnungen zu erhalten, wechsle den Validator, zum Beispiel zu {successor}.',
+      'app.closingBadge': 'Schließt bald',
+      'app.closingShowSuccessor': 'Vorgeschlagenen Validator anzeigen',
       'app.balanceHint': 'Dieser Betrag ist bereits mit deinem verfügbaren Guthaben vorausgefüllt – überprüfe ihn, bevor du bestätigst.',
       'app.delegateFailedBalanceHint': 'Es scheint, als hättest du in deiner Wallet nicht genügend NIM für diese Delegation – überprüfe deinen Kontostand in Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay hat die Transaktion abgelehnt. Prüfe deine Wallet und versuche es gleich noch einmal.',
@@ -1642,6 +1667,9 @@
       'app.delegatedBadgePast': 'Histórico',
       'app.validatorsListError': 'Não foi possível carregar a lista completa de validadores — a visualização está limitada aos 2 nós conhecidos.',
       'app.statusReadFailed': 'Não foi possível ler o teu stake na rede neste momento. O que é mostrado pode não estar atualizado; a app vai tentar novamente.',
+      'app.closingValidator': 'Este validador vai fechar. Para continuares a receber recompensas, muda de validador, por exemplo para {successor}.',
+      'app.closingBadge': 'Fecha em breve',
+      'app.closingShowSuccessor': 'Ver o validador sugerido',
       'app.balanceHint': 'Este valor é preenchido automaticamente com o teu saldo disponível — verifica-o antes de confirmares.',
       'app.delegateFailedBalanceHint': 'Parece que a tua carteira não tem NIM suficiente disponível para esta delegação — verifica o teu saldo no Nimiq Pay.',
       'app.delegateFailedRejected': 'O Nimiq Pay rejeitou a transação. Verifica a tua carteira e tenta novamente daqui a pouco.',
@@ -1778,6 +1806,9 @@
       'app.delegatedBadgePast': 'История',
       'app.validatorsListError': 'Не удалось загрузить полный список валидаторов — отображаются только 2 известных узла.',
       'app.statusReadFailed': 'Сейчас не удалось прочитать твой стейк из сети. Показанные данные могут быть устаревшими; приложение попробует снова.',
+      'app.closingValidator': 'Этот валидатор закрывается. Чтобы продолжать получать вознаграждения, смени валидатора, например на {successor}.',
+      'app.closingBadge': 'Скоро закроется',
+      'app.closingShowSuccessor': 'Показать предложенного валидатора',
       'app.balanceHint': 'В этом поле уже указана сумма твоего доступного остатка — проверь её перед подтверждением.',
       'app.delegateFailedBalanceHint': 'Похоже, в твоём кошельке недостаточно средств в NIM для этой делегации — проверь свой баланс в Nimiq Pay.',
       'app.delegateFailedRejected': 'Nimiq Pay отклонил транзакцию. Проверь свой кошелёк и попробуй ещё раз чуть позже.',
@@ -1914,6 +1945,9 @@
       'app.delegatedBadgePast': 'Geçmiş',
       'app.validatorsListError': 'Doğrulayıcıların tam listesi yüklenemedi — görüntüleme, bilinen 2 düğümle sınırlı.',
       'app.statusReadFailed': 'Stake\'in şu anda ağdan okunamadı. Gösterilenler güncel olmayabilir; uygulama yeniden deneyecek.',
+      'app.closingValidator': 'Bu doğrulayıcı kapanıyor. Ödül almaya devam etmek için doğrulayıcını değiştir, örneğin {successor}.',
+      'app.closingBadge': 'Yakında kapanıyor',
+      'app.closingShowSuccessor': 'Önerilen doğrulayıcıyı göster',
       'app.balanceHint': 'Bu tutar, mevcut bakiyenle önceden doldurulmuştur — onaylamadan önce kontrol et.',
       'app.delegateFailedBalanceHint': 'Görünüşe göre cüzdanında bu delegasyon için yeterli NIM yok — Nimiq Pay\'de bakiyeni kontrol et.',
       'app.delegateFailedRejected': 'Nimiq Pay işlemi reddetti. Cüzdanını kontrol et ve biraz sonra tekrar dene.',
@@ -2050,6 +2084,9 @@
       'app.delegatedBadgePast': 'التاريخ',
       'app.validatorsListError': 'يتعذر تحميل القائمة الكاملة للمُصدقين — يقتصر العرض على العقدتين المعروفتين.',
       'app.statusReadFailed': 'تعذّرت قراءة الستيك الخاص بك من الشبكة حالياً. قد لا يكون المعروض محدّثاً؛ سيحاول التطبيق مجدداً.',
+      'app.closingValidator': 'هذا المُصدق سيُغلق. لمواصلة الحصول على المكافآت، غيّر المُصدق، مثلاً إلى {successor}.',
+      'app.closingBadge': 'يُغلق قريباً',
+      'app.closingShowSuccessor': 'عرض المُصدق المقترح',
       'app.balanceHint': 'يتم ملء هذا المبلغ مسبقًا برصيدك المتاح — يرجى التحقق منه قبل التأكيد.',
       'app.delegateFailedBalanceHint': 'يبدو أن محفظتك لا تحتوي على رصيد كافٍ من NIM لإجراء عملية التفويض هذه — يرجى التحقق من رصيدك في Nimiq Pay.',
       'app.delegateFailedRejected': 'رفض Nimiq Pay هذه المعاملة. تحقق من محفظتك وأعد المحاولة بعد قليل.',
@@ -2204,13 +2241,19 @@
   // some fields null where NimiqHub/the protocol don't have enough history).
   // No invented numbers anywhere: a missing metric renders as "—", never a
   // guessed figure.
+  // Node1 shutdown (plan v0.3). Final names = decision D4, still open: placeholders on purpose, delivery is refused
+  // while one remains (check_d4.sh). The successor's displayed name normally comes live from the API (on-chain name).
+  var D4_SUCCESSOR_NAME = '__D4_SUCCESSOR_NAME__';
+  var CLOSING_VALIDATOR = 'NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D';
+  var SUCCESSOR_VALIDATOR = 'NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT';
+  function isClosingValidator(a){ return (a || '').replace(/\s+/g, '') === CLOSING_VALIDATOR.replace(/\s+/g, ''); }
   var KNOWN_VALIDATORS = {
     "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT": {
-      name: "NODENIMIQ1.NIMIQ-JU.FR by @Ju",
+      name: D4_SUCCESSOR_NAME,
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
     },
     "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D": {
-      name: "NODENIMIQ2.NIMIQ-JU.FR by @Ju",
+      name: "NODENIMIQ2.NIMIQ-JU.FR by @Ju (closed)",
       desc: "For the NIMIQ Project & Team - For the World Financial Freedom - For the NIMIQ Friends & Family"
     }
   };
@@ -2218,12 +2261,9 @@
   // Fallback used only if /api/v2/validators-list can't be reached (e.g.
   // previewing this file outside the validators' hosting).
   var FALLBACK_VALIDATORS = [
-    { name: "NODENIMIQ1.NIMIQ-JU.FR by @Ju", isKnown: true, address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
+    { name: D4_SUCCESSOR_NAME, isKnown: true, address: "NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT",
       availability: 99.77, reward: 11.71, staked: "1.09M NIM",
-      desc: KNOWN_VALIDATORS["NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT"].desc },
-    { name: "NODENIMIQ2.NIMIQ-JU.FR by @Ju", isKnown: true, address: "NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D",
-      availability: 99.48, reward: 11.71, staked: "467.93K NIM",
-      desc: KNOWN_VALIDATORS["NQ51 7BS3 0HVH 9R5M TUDH C5PG 490G S7XT KD4D"].desc }
+      desc: KNOWN_VALIDATORS["NQ40 FC4D HAT6 9N1H P52H P4FX QL8P CE6Y 10VT"].desc }
   ];
 
   function formatStake(luna){
@@ -2265,7 +2305,8 @@
           fee: v.fee != null ? v.fee * 100 : null,
           reward: v.reward_rate != null ? v.reward_rate * 100 : null,
           staked: formatStake(v.stake_luna),
-          desc: known ? known.desc : ''
+          desc: known ? known.desc : '',
+          closing: isClosingValidator(v.address)
         };
       });
       // Fixed order so browsing is stable and predictable run to run:
@@ -2276,6 +2317,7 @@
         return (v.availability != null ? 1 : 0) + (v.reliability != null ? 1 : 0) + (v.reward != null ? 1 : 0);
       }
       VALIDATORS = VALIDATORS.slice().sort(function(a, b){
+        if (!!a.closing !== !!b.closing) return a.closing ? 1 : -1;  // a closing validator goes last
         var diff = statCount(b) - statCount(a);
         if (diff !== 0) return diff;
         return a.name.localeCompare(b.name);
@@ -2640,7 +2682,7 @@
       afterWalletReads();
     });
   }
-  document.addEventListener('vs-lang', function(){ updateReserveUi(); if (lastStakerStatus) updateUnstakeUi(lastStakerStatus); });
+  document.addEventListener('vs-lang', function(){ updateActiveDelegationBanner(); updateReserveUi(); if (lastStakerStatus) updateUnstakeUi(lastStakerStatus); });
   // Spendable balance in Nimiq Pay = local account + swap contract, both listed by listAccounts and read with
   // getBalance (luna) of the host (Nimiq Pay >= 2.22.1). null = unknown (older host, no consensus): then nothing is
   // pre-filled from it and nothing is refused because of it.
@@ -3312,7 +3354,7 @@
 
   function cardHtml(v){
     return '<div class="vname">' + v.name + '</div>' +
-      '<div class="vtag">' + t('app.validatorTag') + '</div>' +
+      '<div class="vtag">' + (v.closing ? t('app.closingBadge') : t('app.validatorTag')) + '</div>' +
       '<div class="v-metric">' +
         '<div class="v-metric-row"><span>' + t('app.uptime') + '</span><b>' + metricOrDash(v.availability, '%') + '</b></div>' +
         '<div class="v-bar"><div class="v-bar-fill" style="width:' + (v.availability || 0) + '%"></div></div>' +
@@ -3431,6 +3473,10 @@
     // Session memory (delegated[]) is only a fallback for demo mode,
     // where there's no real wallet/API to check.
     var data = stakerData !== undefined ? stakerData : lastStakerStatus;
+    var closingBox = $('closingValidatorBanner');
+    var onClosing = !!(data && data.found && data.delegation && isClosingValidator(data.delegation));
+    closingBox.hidden = !onClosing;
+    if (onClosing) $('closingValidatorText').textContent = t('app.closingValidator').replace('{successor}', validatorNameForAddress(SUCCESSOR_VALIDATOR));
     if (data && data.found && data.delegation){
       $('activeDelegationText').textContent = t('app.activeDelegation').replace('{validator}', validatorNameForAddress(data.delegation));
       activeDelegationBanner.hidden = false;
@@ -3452,6 +3498,15 @@
     if (!browsing) renderShortlistCard();
   }
   browseTabBtn.addEventListener('click', function(){ setPhase('browse'); });
+  // Shows the successor's card; the switch itself goes through the usual flow (favourite, then Switch, with unstaking first
+  // if needed). Nothing is sent from this button.
+  $('closingShowSuccessorBtn').addEventListener('click', function(){
+    for (var i = 0; i < VALIDATORS.length; i++){
+      if (VALIDATORS[i].address.replace(/\s+/g, '') === SUCCESSOR_VALIDATOR.replace(/\s+/g, '')){ idx = i; break; }
+    }
+    setPhase('browse');
+    renderCard();
+  });
   shortlistTabBtn.addEventListener('click', function(){ setPhase('shortlist'); });
 
   function advanceCard(){
@@ -3708,7 +3763,7 @@
     probe.style.width = width + 'px';
     document.body.appendChild(probe);
     var tallest = 0;
-    [FALLBACK_VALIDATORS[0], FALLBACK_VALIDATORS[1]].forEach(function(v){
+    FALLBACK_VALIDATORS.forEach(function(v){  // every fallback card (one since node2's removal)
       var card = document.createElement('div');
       card.className = 'v-card';
       card.innerHTML = cardHtml(v);
